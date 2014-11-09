@@ -6,7 +6,7 @@ Originally in 2012, this project was supposed to be a split screen mod for the a
 Who knows, we might even add more to the list as soon as the splitscreen_mod is functional! At least we'll need a good looking splitscreen menu.
 
 ## current state
-From a technical point of view, the splitscreen mod is possible, as all required techniques have been implemented at least once. However, in the current state, this is not usable at all, lots of work and a complete rewrite of the old splitscreen code are required to streamline everything.
+From a technical point of view, the splitscreen mod is possible, as all required techniques have been implemented at least once. However, in the current state, this is **not usable at all,** lots of work and a complete rewrite of the old splitscreen code are required to streamline everything.
 
 So don't try to download anything, unless you are a developer and want to help.
 
