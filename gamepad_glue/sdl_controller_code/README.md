@@ -19,7 +19,7 @@ It should theoretically compile on Linux too, but we'll need to figure out how m
 * [Download Code::Blocks](http://www.codeblocks.org/downloads/26#windows) (the one that has MinGW included) and install it
 * [Download SDL2](http://libsdl.org/download-2.0.php) development libraries for MinGWx32
 * [Download SDL2_net](http://www.libsdl.org/projects/SDL_net/) *for 32-bit Windows*
-* Extract the `bin/`, `include/`, `lib/` and `share/` folders from the SDL2 and SDL2_net archives to `%Pogram Files%/Codeblocks/MinGW` (merge existing folders)
+* Extract the `bin`, `include`, `lib` and `share` folders from the SDL2 and SDL2_net archives to `%Pogram Files%/Codeblocks/MinGW/` (merge existing folders)
 * Start Code::Blocks
 * Create a new C-Project (console program, **not** SDL Project - this doesn't work with SDL2)
 * Open up the linker settings: `Project build options` / *click the parent entry on the left, that contains Debug and Release* / `Linker Settings`
