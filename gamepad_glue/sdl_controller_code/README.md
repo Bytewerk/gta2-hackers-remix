@@ -28,4 +28,4 @@ It should theoretically compile on Linux too, but we'll need to figure out how m
 
 ## Fix SDL 2.0.3
 You'll probably get the error `winapifamily.h: No such file or directory`, when you try to compile.
-This is a bug in the mentioned SDL version, [here's the fix.](http://stackoverflow.com/q/22446008/)
+This is a bug in the mentioned SDL version, [here's the fix.](http://stackoverflow.com/a/22600114)
