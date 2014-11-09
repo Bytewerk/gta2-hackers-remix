@@ -1,5 +1,5 @@
 # SDL Controller Code
-This program connects to the [proxy_dll](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/gamepad_glue/proxy_dll) via TCP. It also connects to an XInput compatible controller and - based on what the player does with it (press buttons etc.) - calculates the two movement bytes for GTA2 and sends those back to the DLL (which will in turn put these in the right location in the RAM).
+This program connects to the [proxy_dll](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/gamepad_glue/proxy_dll) via TCP. It also connects to an XInput compatible controller and - based on what the player does with it (press buttons etc.) - calculates the [two movement bytes](https://github.com/Bytewerk/gta2-hackers-remix/blob/master/gamepad_glue/sdl_controller_code/gta2_controls.h) for GTA2 and sends those back to the DLL (which will in turn put these in the right location in the RAM).
 
 Currently this only works for one controller, but the idea is, that we can have up to 6 different controllers (that's the limit of players in one GTA2 network game), with each of them connecting to its own GTA2 instance. This will get relevant for the [splitscreen_mod](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/splitscreen_mod).
 
