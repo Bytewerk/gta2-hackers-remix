@@ -3,7 +3,7 @@ Originally in 2012, this project was supposed to be a split screen mod for the a
 * [gamepad_glue](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/gamepad_glue): Allow modern XBox360-Controllers and compatible to be used with GTA2 (C, C++)
 * [splitscreen_mod](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/splitscreen_mod): Ultimate up-to-6-players-on-one-PC GTA2 party modification you should try on your new 4K projector ([AutoIt3](https://www.autoitscript.com/site))
 
-Who knows, we might even add more to the list as soon as the splitscreen_mod is functional! At least we'll need a good looking splitscreen menu.
+Who knows, we might even add more to the list as soon as the splitscreen_mod is functional! At least we'll need a good looking splitscreen menu and a Windows installer.
 
 ## current state
 From a technical point of view, the splitscreen mod is possible, as all required techniques have been implemented at least once. However, in the current state, this is **not usable at all,** lots of work and a complete rewrite of the old splitscreen code are required to streamline everything.
