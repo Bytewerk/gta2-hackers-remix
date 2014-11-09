@@ -11,3 +11,5 @@ From a technical point of view, the splitscreen mod is possible, as all required
 So don't try to download anything, unless you are a developer and want to help.
 
 **If you're curious, have a look at the [screenshots](https://github.com/Bytewerk/gta2-hackers-remix/issues/1)!**
+
+Leave comments at [gtamp.com](http://gtamp.com/forum/viewtopic.php?f=4&t=776)!
