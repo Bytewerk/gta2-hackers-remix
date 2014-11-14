@@ -3,6 +3,8 @@
 // movement bits, as ORed together in GTA2 memory
 // reverse engineered by robotanarchy
 
+// TODO: rename up/down in forward/backward
+
 #define GTA2_CTRL_NOT_MOVING 0
 #define GTA2_CTRL_FORWARD 1
 #define GTA2_CTRL_BACKWARD 2

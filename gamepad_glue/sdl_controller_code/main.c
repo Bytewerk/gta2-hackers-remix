@@ -1,3 +1,4 @@
+#include "controller_mapping.h"
 #include "game.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_net.h>
@@ -19,29 +20,31 @@
 
 int main(int argc, char *argv[]) {
   if (SDL_Init(SDL_INIT_GAMECONTROLLER) < 0)
-    return printf("SDL could not initialize!\nSDL Error: %s\n", SDL_GetError());
+    return printf("ERROR from SDL: %s\n", SDL_GetError());
 
-  if (SDLNet_Init() == -1) {
-    printf("SDLNet_Init: %s\n", SDLNet_GetError());
-    exit(2);
-  }
+  if (SDLNet_Init() == -1)
+    return printf("ERROR from SDLNet: %s\n", SDLNet_GetError());
 
-  game_t *game = malloc(sizeof(game_t));
-  game_init(game, 1);
-
-  printf("Stuff initialized!\n");
+  game_t *game = game_init();
 
   while (1) {
     SDL_Event e;
     if (!SDL_WaitEvent(&e))
       continue;
 
-    short ctrl_code = controller_mapping(game);
-    SDLNet_TCP_Send(game->sock, &ctrl_code, sizeof(short));
-  }
-  free(game);
+    // All players: calculate movement bytes from the gamepad
+    // input and send it to the associated GTA2 instance
+    for (int i = 0; i < game->player_count; i++) {
+      player_t *player = &(game->players[i]);
 
-  SDL_GameControllerClose(game->pad);
+      short ctrl_code = controller_mapping(player);
+      SDLNet_TCP_Send(player->sock, &ctrl_code, sizeof(short));
+    }
+  }
+
+  // TODO: Cleanup code!
+  // SDL_GameControllerClose(game->pad);
+  // SDL_GameControllerClose(game2->pad);
   SDL_Quit();
 
   return 0;

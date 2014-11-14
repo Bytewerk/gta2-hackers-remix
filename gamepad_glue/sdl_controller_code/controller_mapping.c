@@ -24,13 +24,13 @@ short map_trigger(SDL_GameController *pad, SDL_GameControllerAxis trigger,
   return SDL_GameControllerGetAxis(pad, trigger) > AXIS_DEADZONE ? ctrl_bit : 0;
 }
 
-short controller_mapping(game_t *game) {
+short controller_mapping(player_t *player) {
   short ret = GTA2_CTRL_NOT_MOVING;
 
   // TODO: check for the mapping change key
   // (but only if it was pressed and released)
 
-  switch (game->mapping) {
+  switch (player->mapping) {
   /*
                   Default:
                           triggers L/R: forward / backward
@@ -43,23 +43,24 @@ short controller_mapping(game_t *game) {
           RSB: Special 2
   */
   case 0:
-    ret |= map_trigger(game->pad, SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
+    ret |= map_trigger(player->pad, SDL_CONTROLLER_AXIS_TRIGGERRIGHT,
                        GTA2_CTRL_FORWARD);
-    ret |= map_trigger(game->pad, SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+    ret |= map_trigger(player->pad, SDL_CONTROLLER_AXIS_TRIGGERLEFT,
                        GTA2_CTRL_BACKWARD);
-    ret |= map_axis(game->pad, SDL_CONTROLLER_AXIS_LEFTX, GTA2_CTRL_RIGHT,
+    ret |= map_axis(player->pad, SDL_CONTROLLER_AXIS_LEFTX, GTA2_CTRL_RIGHT,
                     GTA2_CTRL_LEFT);
-    ret |= map_button(game->pad, SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+    ret |= map_button(player->pad, SDL_CONTROLLER_BUTTON_DPAD_LEFT,
                       GTA2_CTRL_WEAPON_PREV);
-    ret |= map_button(game->pad, SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+    ret |= map_button(player->pad, SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
                       GTA2_CTRL_WEAPON_NEXT);
-    ret |= map_button(game->pad, SDL_CONTROLLER_BUTTON_A, GTA2_CTRL_ATTACK);
-    ret |= map_button(game->pad, SDL_CONTROLLER_BUTTON_B,
+    ret |= map_button(player->pad, SDL_CONTROLLER_BUTTON_A, GTA2_CTRL_ATTACK);
+    ret |= map_button(player->pad, SDL_CONTROLLER_BUTTON_B,
                       GTA2_CTRL_JUMP_HANDBRAKE);
-    ret |= map_button(game->pad, SDL_CONTROLLER_BUTTON_X, GTA2_CTRL_ENTER_EXIT);
-    ret |= map_button(game->pad, SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
+    ret |=
+        map_button(player->pad, SDL_CONTROLLER_BUTTON_X, GTA2_CTRL_ENTER_EXIT);
+    ret |= map_button(player->pad, SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
                       GTA2_CTRL_SPECIAL_1);
-    ret |= map_button(game->pad, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
+    ret |= map_button(player->pad, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
                       GTA2_CTRL_SPECIAL_2);
     break;
 

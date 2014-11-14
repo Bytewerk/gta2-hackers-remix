@@ -1,1 +1,1 @@
-short controller_mapping(game_t *game);
+short controller_mapping(player_t *game);

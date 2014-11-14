@@ -1,40 +1,69 @@
 #include "game.h"
+#include "memory.h"
+#include "stdio.h"
 
 // SDL_init and SDL_net_init must be called before!
-void game_init(game_t *game, int player) {
-  // Set the default control-mapping. This can be toggled
-  // with the big Xbox360-button in the future.
-  game->mapping = 0;
+// try to open as many GTA2 connections, as possible
+// also try to map controllers to those GTA2 instances
+// TODO: get nickname from proxy_dll (Player 1, Player 2, etc.)
+//		and try to map the controller with the same number,
+//		so that the glowing number on the Xbox360 controllers
+//		actually match the player name
 
-  // Try to open all gamepads in a loop until one really
-  // works - or die
-  int joystick_count = SDL_NumJoysticks();
-  int pad_connected = 0;
-  for (int i = 0; i < joystick_count && !pad_connected; i++) {
-    if (!SDL_IsGameController(i))
-      continue;
-    game->pad = SDL_GameControllerOpen(i);
-    pad_connected = (game->pad != NULL);
-  }
-  if (!pad_connected) {
-    printf("Couldn't find a gamepad for player %i, exiting!\n", player);
-    exit(1);
-  }
+game_t *game_init() {
+  int controller_count = SDL_NumJoysticks();
+  int controller_index = 0;
 
-  // Try to connect to a socket in a loop, until one works
-  // - or die
-  int tcp_connected = 0;
+  game_t *game = malloc(sizeof(game_t));
+  game->player_count = 0;
+
+  printf("Initializing sdl_controller_code (%i joystick%s found)...\n",
+         controller_count, (controller_count == 1 ? "" : "s"));
+
+  // Try out ports 19990-19995
   IPaddress localhost;
-  for (int port = GAMEPADGLUE_START_PORT;
-       port < GAMEPADGLUE_START_PORT + 3 && !tcp_connected; port++) {
-    printf("(Player %i) Trying port %i...\n", player, port);
+  TCPsocket sock;
+  for (int port = GAMEPADGLUE_START_PORT; port < GAMEPADGLUE_START_PORT + 6;
+       port++) {
+    printf("Port %i: ", port);
     SDLNet_ResolveHost(&localhost, "localhost", port);
-    game->sock = SDLNet_TCP_Open(&localhost);
-    tcp_connected = game->sock != NULL;
+    sock = SDLNet_TCP_Open(&localhost);
+
+    if (sock != NULL) {
+      // TODO: perform cool handshake and display the players
+      // name instead of 'connected!'
+
+      printf("connected!\n");
+      player_t *player = &(game->players[game->player_count]);
+      player->mapping = 0;
+      player->sock = sock;
+      player->pad = NULL;
+
+      for (; controller_index < controller_count && player->pad == NULL;
+           controller_index++) {
+        if (SDL_IsGameController(controller_index)) {
+          player->pad = SDL_GameControllerOpen(controller_index);
+          if (player->pad == NULL)
+            printf("WARNING: Couldn't connect to controller #%i: %s!\n",
+                   controller_index,
+                   SDL_JoystickNameForIndex(controller_index));
+          else
+            printf(" => Assigned controller #%i: %s.\n", controller_index,
+                   SDL_GameControllerName(player->pad));
+        } else
+          printf("NOTE: Controller #%i: %s isn't an XInput compatible gamepad, "
+                 "skipping.\n",
+                 controller_index, SDL_JoystickNameForIndex(controller_index));
+      }
+
+      if (player->pad == NULL)
+        printf("ERROR: Couldn't find a suitable gamepad for this player.\n");
+      else
+        game->player_count++;
+    } else
+      printf("nothing.\n");
   }
-  if (!tcp_connected) {
-    printf("Failed to connect to proxydll of game %i, exiting!\n", player);
-    exit(2);
-  }
-  printf("Prepared gamepad and TCP connection for player %i\n", player);
+
+  printf("Init complete, enjoy the game!\n");
+  return game;
 }
