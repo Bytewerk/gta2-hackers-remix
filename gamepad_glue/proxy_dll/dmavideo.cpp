@@ -68,11 +68,8 @@ BOOL WINAPI DllMain(HINSTANCE hInst,DWORD reason,LPVOID)
 		p[19] = GetProcAddress(hL,"Vid_SetMode");
 		p[20] = GetProcAddress(hL,"Vid_ShutDown_SYS");
 		p[21] = GetProcAddress(hL,"Vid_WindowProc");
-
-		// Show a debug message
-		MessageBox(NULL, "DLL Attached!", "Hello!", NULL);
 	
-		// Start the input TCP server
+		// Start the input TCP server (see input_server.cpp)
 		_beginthread(input_server,0,NULL);
 	}
 	if (reason == DLL_PROCESS_DETACH)

@@ -2,8 +2,8 @@
 	This file is heavily copypasted from this tcp server example:
 	http://msdn.microsoft.com/en-us/library/windows/desktop/ms737593%28v=vs.85%29.aspx
 
-	Basically we listen on ports 19990-19999 (depending on which one works, think
-	of multiple GTA2 instances!), until a connection is established. As soon, as we
+	Basically we listen on ports 19990-19995 (depending on which one works, think
+	of up to 6 GTA2 instances!), until a connection is established. As soon, as we
 	get data, we stuff 2 bytes at a time to the address, where the current movement
 	is stored (overwriting the previous two).
 	
@@ -123,7 +123,7 @@ void __cdecl input_server(void* param)
 	while(1)
 	{
 		// try ports from 19990 to 19999
-		for(int i=0;i<10;i++)
+		for(int i=0;i<6;i++)
 		{
 			SOCKET ClientSocket = input_server_listen(GAMEPADGLUE_START_PORT + i);
 			if(ClientSocket == NULL) continue;
