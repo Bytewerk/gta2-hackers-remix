@@ -7,6 +7,7 @@
 
 typedef struct {
   SDL_GameController *pad;
+  SDL_JoystickID joystick_id;
   int mapping;
   TCPsocket sock;
 } player_t;

@@ -24,8 +24,18 @@ int main(int argc, char *argv[]) {
 
   if (SDLNet_Init() == -1)
     return printf("ERROR from SDLNet: %s\n", SDLNet_GetError());
+  printf("-------------------------------------\n");
+  printf("      G A M E P A D G L U E \n");
+  printf("-------------------------------------\n");
+  printf("Always start GTA2.exe before starting this program.\n");
+  printf("This only works, when the proxydll was copied in the GTA2 folder.\n");
+  printf("More info: https://github.com/Bytewerk/gta2-hackers-remix\n\n");
 
   game_t *game = game_init();
+  if (game == NULL)
+    return printf("ERROR: Couldn't assign any instance to a gamepad!\n");
+
+  printf("Press the guide button to cycle through the controller mappings!\n");
 
   while (1) {
     SDL_Event e;
@@ -36,8 +46,7 @@ int main(int argc, char *argv[]) {
     // input and send it to the associated GTA2 instance
     for (int i = 0; i < game->player_count; i++) {
       player_t *player = &(game->players[i]);
-
-      short ctrl_code = controller_mapping(player);
+      short ctrl_code = controller_mapping(&e, player);
       SDLNet_TCP_Send(player->sock, &ctrl_code, sizeof(short));
     }
   }

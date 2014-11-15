@@ -1,1 +1,1 @@
-short controller_mapping(player_t *game);
+short controller_mapping(SDL_Event *e, player_t *game);

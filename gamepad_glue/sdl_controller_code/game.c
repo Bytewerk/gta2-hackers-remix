@@ -1,6 +1,6 @@
 #include "game.h"
-#include "memory.h"
-#include "stdio.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 // SDL_init and SDL_net_init must be called before!
 // try to open as many GTA2 connections, as possible
@@ -9,7 +9,8 @@
 //		and try to map the controller with the same number,
 //		so that the glowing number on the Xbox360 controllers
 //		actually match the player name
-
+// This returns NULL if no GTA2 instance could be mapped to a gamepad.
+// (and does not free ram afterwards - FIXME)
 game_t *game_init() {
   int controller_count = SDL_NumJoysticks();
   int controller_index = 0;
@@ -43,6 +44,12 @@ game_t *game_init() {
            controller_index++) {
         if (SDL_IsGameController(controller_index)) {
           player->pad = SDL_GameControllerOpen(controller_index);
+
+          // We need this ID to find out which controller has pressed the guide
+          // button
+          player->joystick_id = SDL_JoystickInstanceID(
+              SDL_GameControllerGetJoystick(player->pad));
+
           if (player->pad == NULL)
             printf("WARNING: Couldn't connect to controller #%i: %s!\n",
                    controller_index,
@@ -65,5 +72,5 @@ game_t *game_init() {
   }
 
   printf("Init complete, enjoy the game!\n");
-  return game;
+  return game->player_count == 0 ? NULL : game;
 }
