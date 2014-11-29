@@ -1,5 +1,6 @@
 #include-once
 #include "screen_layout_db.au3"
+#include <Array.au3>
 
 ; This returns an array with geometrical data:
 ;	$ret[0]: x-pos
@@ -29,4 +30,22 @@ Func screen_layout_calc($screen_w, $screen_h, $border_size_px, _
 	; Give it back
 	Local $ret = [ $x, $y, $w, $h ]
 	Return $ret
+EndFunc
+
+; Returns a $player_res array (see arrays.txt)
+Func screen_layout_calc_array($gameinfo)
+	Local $player_res[ $gameinfo[0] ]
+
+	; TODO: make these configurable
+	Local $screen_w = @DesktopWidth
+	Local $screen_h = @DesktopHeight
+	Local $border_size = 10 ; not used yet
+
+	For $i = 1 To $gameinfo[0]
+		Local $geo = screen_layout_calc($screen_w, $screen_h, $border_size, _
+			$gameinfo[0] -1, $gameinfo[1], $i -1)
+		$player_res[$i -1] = $geo
+	Next
+
+	Return $player_res
 EndFunc

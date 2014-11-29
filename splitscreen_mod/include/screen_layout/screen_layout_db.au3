@@ -26,9 +26,6 @@ Func screen_layout_db($player_count, $variation, _
 		& "_p" & $player _
 		& "_"  & $geometry
 
-	; DEBUG
-	; If $value <> Null Then ConsoleWrite($varname & " => " & $value & @CRLF)
-
 	If $value == Null Then
 		If Not IsDeclared($varname) Then Return Null
 		Return Eval($varname)

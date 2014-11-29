@@ -17,9 +17,10 @@ screen_layout_init()
 ; Show the GUI until the user starts the game.
 ; See arrays.txt for the $gameinfo structure.
 $gameinfo = alphagui()
-
 registry_exe_modify($gameinfo[0], $config[0])
-registry_prepare($gameinfo)
+$player_res = screen_layout_calc_array($gameinfo)
+
+registry_prepare($gameinfo, $player_res)
 lobby_run($gameinfo, $config)
 merge($gameinfo, $config)
 ; run gamepad glue (pass stdout through)

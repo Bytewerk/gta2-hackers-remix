@@ -18,19 +18,14 @@ Func registry_exe_modify($player_count, $gta2_exe_path)
 	Next
 EndFunc
 
-; $gameinfo: See arrays.txt
-; TODO: sniff gta2.exe parameters!!
-Func registry_prepare($gameinfo)
+; $gameinfo, $player_res, $geo: See arrays.txt
+Func registry_prepare($gameinfo, $player_res)
 	For $i = 1 To $gameinfo[0] ; iterate over players 1...n
 		Local $root = "HKEY_CURRENT_USER\Software\GTA2HackersRemix\P" & $i
 
-
+		_ArrayDisplay($player_res)
 		; Set the resolution
-		Local $screen_w = @DesktopWidth
-		Local $screen_h = @DesktopHeight
-		Local $border_size = 10
-		Local $geo = screen_layout_calc($screen_w, $screen_h, $border_size, _
-			$gameinfo[0] -1, $gameinfo[1], $i -1)
+		Local $geo = $player_res[$i -1]
 		RegWrite($root&"\Screen","full_width","REG_DWORD", $geo[2])
 		RegWrite($root&"\Screen","full_height","REG_DWORD", $geo[3])
 		RegWrite($root&"\Screen","window_width","REG_DWORD", $geo[2])
@@ -41,6 +36,5 @@ Func registry_prepare($gameinfo)
 
 		; Set the player names
 		RegWrite($root&"\Network", "PlayerName", "REG_SZ", "Player "&$i)
-
 	Next
 EndFunc

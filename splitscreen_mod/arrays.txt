@@ -19,3 +19,9 @@ $gameinfo:
 [4]: (int) winning condition (points or tags, depending on [3])
 [5]: (int) time limit in minutes
 [6]: (boolean) cops enabled
+
+$player_res:
+Part of the full screen that is reserved for a specific player.
+[0]: $geo for player 1
+[1]: $geo for player 2
+...
