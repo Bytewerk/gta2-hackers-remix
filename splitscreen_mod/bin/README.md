@@ -1,2 +1,2 @@
-##### Compile and put here:
+##### Compile and put in this folder:
 - [registry_path_changer.exe](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/registry_path_changer)
