@@ -1,0 +1,21 @@
+AutoIt3 abstracts all the Windows API stuff to an easy
+scripting language, that's why we use it in this project.
+
+However, it doesn't really support C-structs or objects,
+so we need to keep such information in arrays. Here's
+the documentation.
+
+$geo (geometrical data):
+[0]: (int) x-pos
+[1]: (int) y-pos
+[2]: (int) width
+[3]: (int) height
+
+$gameinfo:
+[0]: (int) players (>=2)
+[1]: (int) screen layout (>=0)
+[2]: (String) map
+[3]: (String) game type ("Frags" | "Points" | "Tag")
+[4]: (int) winning condition (points or tags, depending on [3])
+[5]: (int) time limit in minutes
+[6]: (boolean) cops enabled
