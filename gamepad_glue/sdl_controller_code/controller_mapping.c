@@ -46,8 +46,8 @@ short controller_mapping(SDL_Event *e, player_t *player) {
       e->cbutton.which == player->joystick_id) {
     player->mapping++;
     player->mapping %= mapping_count;
-    printf("Some player switched to %s's mapping (%i/%i)!\n",
-           mapping_names[player->mapping], player->mapping + 1, mapping_count);
+    printf("%s's mapping (%i/%i)!\n", mapping_names[player->mapping],
+           player->mapping + 1, mapping_count);
   }
 
   short ret = GTA2_CTRL_NOT_MOVING;

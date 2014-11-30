@@ -18,15 +18,15 @@ game_t *game_init() {
   game_t *game = malloc(sizeof(game_t));
   game->player_count = 0;
 
-  printf("Initializing sdl_controller_code (%i joystick%s found)...\n",
-         controller_count, (controller_count == 1 ? "" : "s"));
+  printf("%i joystick%s found\n", controller_count,
+         (controller_count == 1 ? "" : "s"));
 
   // Try out ports 19990-19995
   IPaddress localhost;
   TCPsocket sock;
   for (int port = GAMEPADGLUE_START_PORT; port < GAMEPADGLUE_START_PORT + 6;
        port++) {
-    printf("Port %i: ", port);
+    printf("Port %i...\n", port);
     SDLNet_ResolveHost(&localhost, "localhost", port);
     sock = SDLNet_TCP_Open(&localhost);
 
@@ -34,7 +34,7 @@ game_t *game_init() {
       // TODO: perform cool handshake and display the players
       // name instead of 'connected!'
 
-      printf("connected!\n");
+      printf(" => connected!\n");
       player_t *player = &(game->players[game->player_count]);
       player->mapping = 0;
       player->sock = sock;
@@ -64,13 +64,13 @@ game_t *game_init() {
       }
 
       if (player->pad == NULL)
-        printf("ERROR: Couldn't find a suitable gamepad for this player.\n");
+        printf("ERROR: Couldn't find a gamepad.\n");
       else
         game->player_count++;
     } else
-      printf("nothing.\n");
+      printf(" => nothing.\n");
   }
 
-  printf("Init complete, enjoy the game!\n");
+  printf("Init complete, enjoy!\n");
   return game->player_count == 0 ? NULL : game;
 }

@@ -5,37 +5,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*
-    TODO:
-        - Make use of SDL_IsGameController, before attempting to open
-        - Depending on argc/argv, start an own TCP server (for interaction with
-   the menu)
-        - Maybe move the server to an own thread
-        - Allow switching between different controller mappings
-        - Support for multiple controllers
-            (should work in a single thread: open all controllers and
-             tcp connections to the proxy dlls, and in the main loop,
-             iterate through all controllers!)
-*/
-
 int main(int argc, char *argv[]) {
+  // Disable STDOUT buffering, so we can display the output in a AutoIt3 GUI
+  setbuf(stdout, NULL);
+
+  // Add any parameter to this exe file and it will only print the necessary
+  // stuff
+  int verbose = argc == 1;
+
   if (SDL_Init(SDL_INIT_GAMECONTROLLER) < 0)
     return printf("ERROR from SDL: %s\n", SDL_GetError());
 
   if (SDLNet_Init() == -1)
     return printf("ERROR from SDLNet: %s\n", SDLNet_GetError());
-  printf("-------------------------------------\n");
-  printf("      G A M E P A D G L U E \n");
-  printf("-------------------------------------\n");
-  printf("Always start GTA2.exe before starting this program.\n");
-  printf("This only works, when the proxydll was copied in the GTA2 folder.\n");
-  printf("More info: https://github.com/Bytewerk/gta2-hackers-remix\n\n");
+
+  if (verbose) {
+    printf("-------------------------------------\n");
+    printf("      G A M E P A D G L U E \n");
+    printf("-------------------------------------\n");
+    printf("Always start GTA2.exe before starting this program.\n");
+    printf(
+        "This only works, when the proxydll was copied in the GTA2 folder.\n");
+    printf("Run this program with any parameter to make it less verbose.\n");
+    printf("More info: https://github.com/Bytewerk/gta2-hackers-remix\n\n");
+  }
 
   game_t *game = game_init();
   if (game == NULL)
     return printf("ERROR: Couldn't assign any instance to a gamepad!\n");
 
-  printf("Press the guide button to cycle through the controller mappings!\n");
+  printf("[Guide]: Switch layout\n");
 
   while (1) {
     SDL_Event e;
