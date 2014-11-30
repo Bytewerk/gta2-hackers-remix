@@ -16,6 +16,11 @@ Func roughly_same($a, $b, $tolerance)
 	Return $b <= $a + $tolerance And $b >= $a - $tolerance
 EndFunc
 
+Func remove_style($hwnd, $style)
+	_WinAPI_SetWindowLong($hwnd, $GWL_STYLE, _
+		BitXOr($style, _WinAPI_GetWindowLong($hwnd,$GWL_STYLE)))
+EndFunc
+
 #cs
 	- Create a fullscreen GUI
 	- iterate through the player_res array
@@ -25,12 +30,17 @@ EndFunc
 Func merge($gameinfo, $config, $player_res)
 
 	; Create a Fullscreen GUI
+	l("Creating fullscreen GUI")
 	Local $full = GUICreate("Hackers Remix", $config[1] ,$config[2], _
 		0, 0, $WS_POPUP);, BitOR($WS_EX_TOOLWINDOW, $WS_EX_TOPMOST))
 	GUISetBkColor(0x000000)
 	GUISetCursor(16,1)
 	GUISetState(@SW_SHOW)
 
+	; If we do the merge stuff directly, the games will have a
+	; black screen and crash!
+	l("Waiting for games to initialize")
+	sleep(2000)
 
 	; Iterate through player_res
 	Local $i
@@ -46,10 +56,15 @@ Func merge($gameinfo, $config, $player_res)
 			If roughly_same($geo_win[2],$geo_player[2],20) _
 				And roughly_same($geo_win[3],$geo_player[3],80) Then
 
-				; TODO: remove window borders
-
 				; If we're here, we found the right window.
-				; Merge it now!
+
+				; This doesn't really work
+				; l("Removing window border", $i+1)
+				; remove_style($hwnd, $WS_BORDER)
+				; remove_style($hwnd, $WS_CAPTION)
+				; remove_style($hwnd, $WS_DLGFRAME)
+
+				l("Merging window",$i+1)
 				_WinAPI_SetParent($hwnd,$full)
 				_WinAPI_SetWindowPos($hwnd, $HWND_BOTTOM, _
 					$geo_player[0], $geo_player[1], _
@@ -64,6 +79,8 @@ Func merge($gameinfo, $config, $player_res)
 			EndIf
 		Next
 	Next
+
+	l("Windows should be merged now")
 
 	While 1
 		Local $msg = GUIGetMsg()
