@@ -6,6 +6,5 @@ To make this mod happen, we need to set up and control (that is, automating GUI 
 
 [AutoIt3](http://autoitscript.com) abstracts the Windows API to a perfectly documented scripting language. We don't need to install a big IDE like Visual Studio, and while AutoIt3 is not open source for [valid reasons](http://www.wikivs.com/wiki/Autohotkey_vs_AutoIt_v3), it is freeware.
 
-## Why is there no code yet?
-In 2012 and 2013, there were already two versions of the code (with quite a lot lines of code). Now even more time has passed, and the last missing piece to stick it all together, which is the [gamepad_glue](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/gamepad_glue), is finally present.
-The new splitscren_mod will be rewritten from scratch and directly focus on integrating that new controller code.
+## Current status
+There's an [alpha Windows GUI](https://github.com/Bytewerk/gta2-hackers-remix/issues/1#issuecomment-64163492) (we're aiming for a fullscreen SDL GUI that can be controlled with a gamepad later!), that can actually start up to 6 instances of GTA2 and set the right screen resolutions in each instance. GTA2 Windows don't get merged to a one yet.
