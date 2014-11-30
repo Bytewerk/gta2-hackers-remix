@@ -56,20 +56,29 @@ Func merge($gameinfo, $config, $player_res)
 			If roughly_same($geo_win[2],$geo_player[2],20) _
 				And roughly_same($geo_win[3],$geo_player[3],80) Then
 
-				; If we're here, we found the right window.
+				; Removing the window border doesn't work as good as
+				; just placing the borders off-screen. We assume that
+				; the bottom border has the same size as the one on the
+				; left and right.
+				Local $offset_x = ($geo_win[2] - $geo_player[2]) / 2
+				Local $offset_y = ($geo_win[3] - $geo_player[3]) - $offset_x
+				Local $pos_x	= $geo_player[0] - $offset_x
+				Local $pos_y	= $geo_player[1] - $offset_y
 
-				; This doesn't really work
-				; l("Removing window border", $i+1)
-				; remove_style($hwnd, $WS_BORDER)
-				; remove_style($hwnd, $WS_CAPTION)
-				; remove_style($hwnd, $WS_DLGFRAME)
-
+				l("Offset X: " & $offset_x & "; Offset Y: " & $offset_y, $i-1)
 				l("Merging window",$i+1)
 				_WinAPI_SetParent($hwnd,$full)
 				_WinAPI_SetWindowPos($hwnd, $HWND_BOTTOM, _
-					$geo_player[0], $geo_player[1], _
+					$pos_x, $pos_y, _
 					$geo_player[2], $geo_player[3], _
 					$SWP_NOSIZE)
+
+				; This doesn't work!
+				; remove_style($hwnd, $WS_CAPTION)
+				; remove_style($hwnd, $WS_BORDER)
+				; remove_style($hwnd, $WS_DLGFRAME)
+				; _WinAPI_RedrawWindow($hwnd)
+
 
 				; Remove "GTA2" from the title, so it won't be
 				; matched again
