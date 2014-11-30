@@ -6,7 +6,7 @@ Func l($text, $i = -1)
 	If $i <> -1 Then $text = "#"&$i&": " & $text
 	ConsoleWrite($text & @crlf)
 
-	If $statuswin Then
+	If IsArray($statuswin) Then
 		statuswin_log($statuswin, $text)
 	EndIf
 EndFunc
