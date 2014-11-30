@@ -7,18 +7,29 @@
 	- Rename it
 	- Get the resolution
 	- Move the window to the right position in the new window
-
 #ce
-Func merge($gameinfo, $config)
-	; Prepare a player-number (0 to n) -> $geo array
-	Local $player_to_geo[ $gameinfo[0] ]
-	Local $screen_w = @DesktopWidth
-	Local $screen_h = @DesktopHeight
-	For $i = 0 To $gameinfo[0] -1
-		$player_to_geo[$i] = screen_layout_calc($screen_w, $screen_h, 10, _
-			$gameinfo[0] -1, $gameinfo[1], $i)
-	Next
+Func merge($gameinfo, $player_res)
+	Local $i
+	Local $j
 
+	For $i = 0 To UBound($player_res) -1
+		; TODO: use more specific filter than the title.
+		WinWait("GTA2")
+		Local $hwnd = WinGetHandle("GTA2")
+		Local $pos = WinGetPos($hwnd)
+		Local $width  = $pos[0]
+		Local $height = $pos[1]
+
+		; Try to find the matching resolution and rename
+		; the window according to the player number
+		For $j = 0 To UBound($player_res) -1
+			Local $geo = $player_res[$j]
+			If $geo[2] <> $width Or $geo[3] <> $height Then ContinueLoop
+
+			WinSetTitle($hwnd, "", "GTA2: Player " & ($i+1))
+			ExitLoop
+		Next
+	Next
 
 	; Wait for the next GTA2 instance
 	WinWait("GTA2")

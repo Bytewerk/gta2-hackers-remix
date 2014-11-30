@@ -23,7 +23,6 @@ Func registry_prepare($gameinfo, $player_res)
 	For $i = 1 To $gameinfo[0] ; iterate over players 1...n
 		Local $root = "HKEY_CURRENT_USER\Software\GTA2HackersRemix\P" & $i
 
-		_ArrayDisplay($player_res)
 		; Set the resolution
 		Local $geo = $player_res[$i -1]
 		RegWrite($root&"\Screen","full_width","REG_DWORD", $geo[2])
