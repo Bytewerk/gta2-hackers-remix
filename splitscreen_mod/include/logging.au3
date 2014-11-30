@@ -5,5 +5,8 @@ Func l($text, $i = -1)
 	Global $statuswin
 	If $i <> -1 Then $text = "#"&$i&": " & $text
 	ConsoleWrite($text & @crlf)
-	statuswin_log($statuswin, $text)
+
+	If $statuswin Then
+		statuswin_log($statuswin, $text)
+	EndIf
 EndFunc

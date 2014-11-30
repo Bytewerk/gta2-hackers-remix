@@ -92,9 +92,4 @@ Func merge($gameinfo, $config, $player_res)
 
 	l("Windows SHOULD BE merged now")
 	l("(it's alpha, don't expect too much :p)")
-
-	While 1
-		Local $msg = GUIGetMsg()
-		If $msg = $GUI_EVENT_CLOSE Then ExitLoop
-	WEnd
 EndFunc

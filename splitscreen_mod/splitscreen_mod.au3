@@ -8,6 +8,7 @@
 #include "include\gta2_launcher\lobby.au3"
 #include "include\merge.au3"
 #include "include\statuswin.au3"
+#include "include\gamepad_glue.au3"
 
 Func die()
 	Local $i
@@ -15,6 +16,7 @@ Func die()
 	For $i = 0 To 6
 		ProcessClose("Player"&$i&".exe")
 	Next
+	ProcessClose("sdl_controller_code.exe")
 	Exit
 EndFunc
 
@@ -44,4 +46,4 @@ lobby_run($gameinfo, $config)
 WinSetTrans($statuswin[0],"",255)
 
 merge($gameinfo, $config, $player_res)
-; run gamepad glue (pass stdout through)
+gamepad_glue()
