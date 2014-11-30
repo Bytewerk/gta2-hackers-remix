@@ -40,8 +40,8 @@ Func config_init()
 	$config[0] = $gta2_path
 
 	; TODO: read these from the config
-	$config[1] = 800; @DesktopWidth
-	$config[2] = 600; @DesktopHeight
+	$config[1] = @DesktopWidth
+	$config[2] = @DesktopHeight
 	$config[3] = 10
 	Return $config
 EndFunc

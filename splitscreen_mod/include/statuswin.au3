@@ -19,8 +19,7 @@ Func statuswin_create()
 	Local $statuswin[9]
 	Local $x = @DesktopWidth - 450
 	Local $y = @DesktopHeight - 140
-	Local $title = "G2HR: Status"
-	$statuswin[0] = GUICreate($title,400,90, $x, $y, _
+	$statuswin[0] = GUICreate("G2HR: Status",400,90, $x, $y, _
 		$WS_POPUP, BitOR($WS_EX_TOPMOST, $WS_EX_TOOLWINDOW))
 	GUISetBkColor(0x000000)
 
@@ -35,7 +34,7 @@ Func statuswin_create()
 	Next
 
 	$statuswin[8] = True
-	WinSetTrans($title,"",200)
+	WinSetTrans($statuswin[0],"",200)
 	GUISetState(@SW_SHOW)
 
 	Return $statuswin

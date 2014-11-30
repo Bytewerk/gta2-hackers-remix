@@ -31,11 +31,12 @@ Func merge($gameinfo, $config, $player_res)
 
 	; Create a Fullscreen GUI
 	l("Creating fullscreen GUI")
-	Local $full = GUICreate("Hackers Remix", $config[1] ,$config[2], _
-		0, 0, $WS_POPUP);, BitOR($WS_EX_TOOLWINDOW, $WS_EX_TOPMOST))
+	Local $full = GUICreate("G2HR", $config[1] ,$config[2], _
+		0, 0, $WS_POPUP)
 	GUISetBkColor(0x000000)
 	GUISetCursor(16,1)
 	GUISetState(@SW_SHOW)
+	WinActivate($full)
 
 	; If we do the merge stuff directly, the games will have a
 	; black screen and crash!
@@ -65,7 +66,7 @@ Func merge($gameinfo, $config, $player_res)
 				Local $pos_x	= $geo_player[0] - $offset_x
 				Local $pos_y	= $geo_player[1] - $offset_y
 
-				l("Offset X: " & $offset_x & "; Offset Y: " & $offset_y, $i-1)
+				l("Border Offset: " & $offset_x & ", " & $offset_y, $i+1)
 				l("Merging window",$i+1)
 				_WinAPI_SetParent($hwnd,$full)
 				_WinAPI_SetWindowPos($hwnd, $HWND_BOTTOM, _
@@ -89,7 +90,8 @@ Func merge($gameinfo, $config, $player_res)
 		Next
 	Next
 
-	l("Windows should be merged now")
+	l("Windows SHOULD BE merged now")
+	l("(it's alpha, don't expect too much :p)")
 
 	While 1
 		Local $msg = GUIGetMsg()

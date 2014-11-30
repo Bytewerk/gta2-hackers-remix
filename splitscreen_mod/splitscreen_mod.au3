@@ -39,5 +39,9 @@ registry_exe_modify($gameinfo[0], $config[0])
 $player_res = screen_layout_calc_array($gameinfo, $config)
 registry_prepare($gameinfo, $player_res)
 lobby_run($gameinfo, $config)
+
+; Avoid flickering
+WinSetTrans($statuswin[0],"",255)
+
 merge($gameinfo, $config, $player_res)
 ; run gamepad glue (pass stdout through)
