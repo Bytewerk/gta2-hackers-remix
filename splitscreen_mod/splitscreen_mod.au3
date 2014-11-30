@@ -7,16 +7,34 @@
 #include "include\gta2_launcher\registry.au3"
 #include "include\gta2_launcher\lobby.au3"
 #include "include\merge.au3"
+#include "include\statuswin.au3"
+
+Func die()
+	Local $i
+	l("Shutting down...")
+	For $i = 0 To 6
+		ProcessClose("Player"&$i&".exe")
+	Next
+	Exit
+EndFunc
+
+Global $statuswin = statuswin_create()
+l("GTA2 Hackers Remix: Splitscreen Mod Alpha")
+l("-------------------------------------------")
+l("[F1]: Toggle this window")
+l("[F2]: Close")
+HotKeySet("{F1}", "statuswin_toggle")
+HotKeySet("{F2}","die")
+
 
 ; $config: See arrays.txt
 $config = config_init()
-
-
 screen_layout_init()
 
 ; Show the GUI until the user starts the game.
 ; See arrays.txt for the $gameinfo structure.
 $gameinfo = alphagui()
+
 registry_exe_modify($gameinfo[0], $config[0])
 $player_res = screen_layout_calc_array($gameinfo, $config)
 registry_prepare($gameinfo, $player_res)

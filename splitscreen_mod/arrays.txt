@@ -20,14 +20,27 @@ $geo (geometrical data):
 $gameinfo:
 [0]: (int) players (>=2)
 [1]: (int) screen layout (>=0)
-[2]: (String) map
-[3]: (String) game type ("Frags" | "Points" | "Tag")
+[2]: (string) map
+[3]: (string) game type ("Frags" | "Points" | "Tag")
 [4]: (int) winning condition (points or tags, depending on [3])
 [5]: (int) time limit in minutes
-[6]: (boolean) cops enabled
+[6]: (bool) cops enabled
 
 $player_res:
 Part of the full screen that is reserved for a specific player.
 [0]: $geo for player 1
 [1]: $geo for player 2
 ...
+
+
+$statuswin:
+Default values for lines are Null. Use statuswin_log() to add
+a line to the window.
+[0]: GUI handler
+[1]: text label handler
+[2]: (string) line 1
+...
+[7]: (string) line 6
+[8]: (bool) is visible
+
+

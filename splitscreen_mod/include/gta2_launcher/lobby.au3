@@ -12,10 +12,10 @@ Func lobby_run($gameinfo, $config)
 		Local $param = "-j 127.0.0.1"
 		If $i == 1 Then $param = "-c"
 
-		l("Launching with parameter: "&$param, $i)
+		l("Launching GTA2 with parameter: "&$param, $i)
 		Run($cache & "\Player" & $i & ".exe " & $param,$workingdir)
 
-		l("Waiting for network window...", $i)
+		l("Waiting for network window. This may take a while!", $i)
 		WinWait("Network GTA2", "")
 		WinSetTitle("Network GTA2", "", "GTA2: Player "&$i)
 	Next
@@ -33,6 +33,4 @@ Func lobby_run($gameinfo, $config)
 
 	l("Launching...")
 	ControlClick($host, "", $GTA2_LOBBY_START)
-	l("Stub: merging windows etc.")
-	l("Stub: launching gamepad glue")
 EndFunc

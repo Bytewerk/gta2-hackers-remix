@@ -177,8 +177,10 @@ Func alphagui()
 	While 1
 		Local $msg = GUIGetMsg()
 
-		If $msg = $GUI_EVENT_CLOSE Then _
+		If $msg = $GUI_EVENT_CLOSE Then
+			l("Shutting down...")
 			Exit
+		EndIf
 		If $msg = $link_github Then _
 			ShellExecute("https://github.com/Bytewerk/gta2-hackers-remix")
 		If $msg = $link_bytewerk Then _

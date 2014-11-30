@@ -1,9 +1,9 @@
 #include-once
+#include "statuswin.au3"
 
-; For now, this just gets printed to STDOUT.
-; We might create an extra debug gui, that can be toggled with a hotkey
-; or something like that.
 Func l($text, $i = -1)
-	If $i <> -1 Then ConsoleWrite("Player "&$i&": ")
+	Global $statuswin
+	If $i <> -1 Then $text = "#"&$i&": " & $text
 	ConsoleWrite($text & @crlf)
+	statuswin_log($statuswin, $text)
 EndFunc
