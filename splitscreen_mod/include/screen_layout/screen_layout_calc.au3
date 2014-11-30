@@ -33,16 +33,11 @@ Func screen_layout_calc($screen_w, $screen_h, $border_size_px, _
 EndFunc
 
 ; Returns a $player_res array (see arrays.txt)
-Func screen_layout_calc_array($gameinfo)
+Func screen_layout_calc_array($gameinfo, $config)
 	Local $player_res[ $gameinfo[0] ]
 
-	; TODO: make these configurable
-	Local $screen_w = @DesktopWidth
-	Local $screen_h = @DesktopHeight
-	Local $border_size = 10 ; not used yet
-
 	For $i = 1 To $gameinfo[0]
-		Local $geo = screen_layout_calc($screen_w, $screen_h, $border_size, _
+		Local $geo = screen_layout_calc($config[1], $config[2], $config[3], _
 			$gameinfo[0] -1, $gameinfo[1], $i -1)
 		$player_res[$i -1] = $geo
 	Next

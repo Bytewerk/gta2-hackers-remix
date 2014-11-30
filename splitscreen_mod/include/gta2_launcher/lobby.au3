@@ -32,7 +32,7 @@ Func lobby_run($gameinfo, $config)
 	; TODO: Cops field
 
 	l("Launching...")
-	; ControlClick($host, "", $GTA2_LOBBY_START)
+	ControlClick($host, "", $GTA2_LOBBY_START)
 	l("Stub: merging windows etc.")
 	l("Stub: launching gamepad glue")
 EndFunc

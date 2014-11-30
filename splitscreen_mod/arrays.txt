@@ -5,6 +5,12 @@ However, it doesn't really support C-structs or objects,
 so we need to keep such information in arrays. Here's
 the documentation.
 
+$config:
+[0]: (String) Full path to GTA2.exe (with GTA2.exe at the end)
+[1]: (int) Fullscreen Width
+[2]: (int) Fullscreen Height
+[3]: (int) Border size
+
 $geo (geometrical data):
 [0]: (int) x-pos
 [1]: (int) y-pos

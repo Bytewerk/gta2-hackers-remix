@@ -36,9 +36,14 @@ Func config_init()
 
 
 	; Return everything as $config (see arrays.txt)
-	Local $config[1]
+	Local $config[4]
 	$config[0] = $gta2_path
-	Return $config
 
+	; TODO: read these from the config,
+	; make @DesktopWidth, @DesktopHeight default
+	$config[1] = 800
+	$config[2] = 600
+	$config[3] = 10
+	Return $config
 EndFunc
 
