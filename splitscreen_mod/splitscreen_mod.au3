@@ -1,3 +1,5 @@
+#AutoIt3Wrapper_icon=gta2-split.ico
+#NoTrayIcon
 #include <Array.au3>
 #include "include\logging.au3"
 #include "include\screen_layout\screen_layout_init.au3"
