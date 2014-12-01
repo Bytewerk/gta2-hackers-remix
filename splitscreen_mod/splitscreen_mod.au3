@@ -47,3 +47,9 @@ WinSetTrans($statuswin[0],"",255)
 
 merge($gameinfo, $config, $player_res)
 gamepad_glue()
+
+; When Gamepad Glue has quit (eg. because no players)
+; were attached, keep the game open for screenshots
+while 1
+	sleep(1000)
+WEnd

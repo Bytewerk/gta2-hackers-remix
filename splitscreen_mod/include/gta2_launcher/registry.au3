@@ -12,10 +12,23 @@ Func registry_exe_modify($player_count, $gta2_exe_path)
 	Local $cache = @AppDataDir & "\GTA2 Hackers Remix\Modified GTA2.exe Cache"
 	DirCreate($cache)
 
+	; Copy the GTA2.exe to the cache folder, each time with a different
+	; Registry path (so we can control the screen resolutions independently)
 	For $i = 1 To $player_count
 		If Not FileExists($cache & "\Player" & $i & ".exe") Then _
 			Run(@ScriptDir & '\bin\registry_path_changer.exe ' &$i&' "' & $gta2_exe_path & '" "Player' & $i &'.exe"', $cache,@SW_HIDE)
 	Next
+
+
+	Local $gta2dir = StringMid($gta2_exe_path, 1, _
+		StringInStr($gta2_exe_path, "\", 1, -1))
+
+	; Copy the proxy_dll.dll to $cache/dmavideo.dll and the
+	; real dmavideo.dll to $cache/original_dmavideo.dll
+	If Not FileExists($cache & "\dmavideo.dll") Then _
+		FileCopy(@ScriptDir & "\bin\proxy_dll.dll", $cache & "\dmavideo.dll")
+	If Not FileExists( $cache & "\dmavideo_original.dll") Then _
+		FileCopy($gta2dir & "\dmavideo.dll", $cache & "\dmavideo_original.dll")
 EndFunc
 
 ; $gameinfo, $player_res, $geo: See arrays.txt
