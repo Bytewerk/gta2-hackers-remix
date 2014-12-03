@@ -2,8 +2,8 @@
 ![2014-12-01 splitscreen gamepad glue fancy debug window](https://cloud.githubusercontent.com/assets/7833187/5239777/1b5f3b2a-78ee-11e4-8992-4a47f8038041.jpg)
 
 
-# gta2-hackers-remix
-This is a meta-mod for GTA2 (1999), mainly to get a splitscreen mod working. Later we might other things such as a new fullscreen menu that can be controlled with a gamepad. So far we've got the following (only click for technical details, otherwise read on):
+# GTA2 Hackers Remix
+This is a meta-mod for GTA2 (1999), **mainly to get a splitscreen mod working.** Later we might other things such as a new fullscreen menu that can be controlled with a gamepad and [Linux/Wine](https://github.com/Bytewerk/gta2-hackers-remix/wiki/Linux-(Wine)) support. So far we've got the following (only click for technical details, otherwise read on):
 
 
 Mod | Description | Language
@@ -11,9 +11,7 @@ Mod | Description | Language
 [gamepad_glue](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/gamepad_glue) | XBox360-Controller support (and compatible) | C, C++
 [splitscreen_mod](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/splitscreen_mod) | Ultimate up-to-6-players-on-one-PC party hack | AutoIt3
 
-As soon as the splitscreen is working stable, we might **add more stuff** such as a gamepad-controllable fullscreen menu and a Windows installer. [Linux/Wine](https://github.com/Bytewerk/gta2-hackers-remix/wiki/Linux-(Wine)) support is also planned!
-
-## current state
+## Current state
 There's an **alpha version** you can check out if you're prepared to give some feedback and [report bugs!](https://github.com/Bytewerk/gta2-hackers-remix/issues) It still has lots of issues, but it works as a technical preview.
 
 * **[get the alpha](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.2.0-splitscreen_mod)**
