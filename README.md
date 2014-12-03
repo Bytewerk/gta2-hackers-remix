@@ -8,7 +8,7 @@ This is a meta-mod for GTA2 (1999), **mainly to get a splitscreen mod working.**
 
 Mod | Description | Language
 ----|-------------|------------
-[gamepad_glue](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/gamepad_glue) | XBox360-Controller support (and compatible) | C, C++
+[gamepad_glue](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/gamepad_glue) | Xbox360-Controller support (and compatible) | C, C++
 [splitscreen_mod](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/splitscreen_mod) | Ultimate up-to-6-players-on-one-PC party hack | AutoIt3
 
 ## Current state
