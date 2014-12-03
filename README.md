@@ -3,14 +3,18 @@
 
 
 # gta2-hackers-remix
-Originally in 2012, this project was supposed to be a **split screen mod** for the awesome network multiplayer mode of GTA2 (1999). It turns out, that in order to get that working, we'd also need to create a new game controller abstraction. So this is the meta project for the following mods:
-* [gamepad_glue](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/gamepad_glue): Allow modern XBox360-Controllers and compatible to be used with GTA2 (C, C++)
-* [splitscreen_mod](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/splitscreen_mod): Ultimate up-to-6-players-on-one-PC GTA2 party modification you should try on your new 4K projector ([AutoIt3](https://www.autoitscript.com/site))
+This is a meta-mod for GTA2 (1999), mainly to get a splitscreen mod working. Later we might other things such as a new fullscreen menu that can be controlled with a gamepad. So far we've got the following (only click for technical details, otherwise read on):
 
-Who knows, we **might even add more to the list** as soon as the splitscreen_mod is functional! At least we'll need a good looking splitscreen menu and a Windows installer.
+
+Mod | Description | Language
+----|-------------|------------
+[gamepad_glue](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/gamepad_glue) | XBox360-Controller support (and compatible) | C, C++
+[splitscreen_mod](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/splitscreen_mod) | Ultimate up-to-6-players-on-one-PC party hack | AutoIt3
+
+As soon as the splitscreen is working stable, we might **add more stuff** such as a gamepad-controllable fullscreen menu and a Windows installer. [Linux/Wine](https://github.com/Bytewerk/gta2-hackers-remix/wiki/Linux-(Wine)) support is also planned!
 
 ## current state
-There's an **alpha version** you can check out if you're prepared to give some feedback and [report bugs](https://github.com/Bytewerk/gta2-hackers-remix/issues)! It still has lots of issues, but it works as a technical preview.
+There's an **alpha version** you can check out if you're prepared to give some feedback and [report bugs!](https://github.com/Bytewerk/gta2-hackers-remix/issues) It still has lots of issues, but it works as a technical preview.
 
 * **[get the alpha](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.2.0-splitscreen_mod)**
 * **[screenshots](https://github.com/Bytewerk/gta2-hackers-remix/issues/1)**
