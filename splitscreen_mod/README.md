@@ -6,7 +6,7 @@ To make this mod happen, we need to set up and control (that is, automating GUI 
 
 [AutoIt3](http://autoitscript.com) abstracts the Windows API to a perfectly documented scripting language. We don't need to install a big IDE like Visual Studio, and while AutoIt3 is not open source for [valid reasons](http://www.wikivs.com/wiki/Autohotkey_vs_AutoIt_v3), it is freeware.
 
-## Setup Guide
+## Development Setup Guide
 AutoIt3 is just a scripting language that is mostly easy to use and has a very good documentation (`F1` for help in SciTE). Even if you have very little programming knowledge, it might be just enough to start hacking on this mod.
 * Grab and install the latest [AutoIt3](https://www.autoitscript.com/site/autoit/downloads/) and their [advanced  SciTE Editor](https://www.autoitscript.com/site/autoit-script-editor/downloads/)
 * Download the `splitscreen_mod` source with [Github for Windows](http://windows.github.com/)
