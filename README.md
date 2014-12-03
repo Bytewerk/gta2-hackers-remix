@@ -16,4 +16,5 @@ There's an **alpha version** you can check out if you're prepared to give some f
 
 * **[get the alpha](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.2.0-splitscreen_mod)**
 * **[screenshots](https://github.com/Bytewerk/gta2-hackers-remix/issues/1)**
+* **[issues](https://github.com/Bytewerk/gta2-hackers-remix/issues)**
 * **[gtamp.com thread](http://gtamp.com/forum/viewtopic.php?f=4&t=776)**
