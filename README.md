@@ -3,7 +3,7 @@
 
 
 # GTA2 Hackers Remix
-This is a meta-mod for GTA2 (1999), **mainly to get a splitscreen mod working.** Later we might other things such as a new fullscreen menu that can be controlled with a gamepad and [Linux/Wine](https://github.com/Bytewerk/gta2-hackers-remix/wiki/Linux-(Wine)) support. So far we've got the following (only *click for technical details,* otherwise read on):
+This is a meta-mod for GTA2 (1999), **mainly to get a splitscreen mod working.** Later we might other things such as a new fullscreen menu that can be controlled with a gamepad and [Linux/Wine](https://github.com/Bytewerk/gta2-hackers-remix/wiki/Linux-(Wine)) support. So far we've got the following (*only click for technical details, otherwise read on*):
 
 
 Mod | Description | Language
