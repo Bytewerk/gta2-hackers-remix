@@ -1,7 +1,7 @@
 # proxy_dll
 If you want to know, why this is necessary, read the [gamepad_glue](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/gamepad_glue) `README` first.
 
-Grab the project files and latest pre-compiled binary from [here.](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.0.0-proxy_dll)
+Grab the project files and latest pre-compiled binary from [here.](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.0.1-proxy_dll)
 
 ## What is a Proxy DLL?
 
