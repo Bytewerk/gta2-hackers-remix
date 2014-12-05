@@ -152,7 +152,7 @@ Func alphagui()
 	$lbl_win_condition = GUICtrlCreateLabel("Frags to Win", 300, 160, 64, 17)
 	$npt_win_condition = GUICtrlCreateInput("10", 400, 155, 170, 21, BitOR($GUI_SS_DEFAULT_INPUT,$ES_NUMBER))
 	GUICtrlCreateLabel("Time Limit (minutes)", 300, 190, 96, 17)
-	$npt_time_limit = GUICtrlCreateInput("5", 400, 185, 170, 21)
+	$npt_time_limit = GUICtrlCreateInput("30", 400, 185, 170, 21)
 	GUICtrlCreateLabel("Cops enabled", 300, 220, 69, 17)
 
 

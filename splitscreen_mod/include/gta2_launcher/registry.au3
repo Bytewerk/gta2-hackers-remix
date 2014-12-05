@@ -33,6 +33,10 @@ EndFunc
 
 ; $gameinfo, $player_res, $geo: See arrays.txt
 Func registry_prepare($gameinfo, $player_res)
+	; Maybe this helps to fix some crashes?
+	; RegDelete("HKEY_CURRENT_USER\Software\GTA2HackersRemix")
+
+
 	For $i = 1 To $gameinfo[0] ; iterate over players 1...n
 		Local $root = "HKEY_CURRENT_USER\Software\GTA2HackersRemix\P" & $i
 
