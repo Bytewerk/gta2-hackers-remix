@@ -35,10 +35,11 @@ short map_trigger(SDL_GameController *pad, SDL_GameControllerAxis trigger,
           on github (or post it to the gtamp thread)
 */
 short controller_mapping(SDL_Event *e, player_t *player) {
-  int mapping_count = 2;
+  int mapping_count = 3;
   const char *mapping_names[mapping_count];
   mapping_names[0] = "(Default) robotanarchy";
   mapping_names[1] = "Cuban-Pete";
+  mapping_names[2] = "Ranomier";
 
   // The guide button rotates through the mappings
   if (e->type == SDL_CONTROLLERBUTTONDOWN &&
@@ -125,6 +126,32 @@ short controller_mapping(SDL_Event *e, player_t *player) {
         map_button(player->pad, SDL_CONTROLLER_BUTTON_Y, GTA2_CTRL_ENTER_EXIT);
 
     break;
+
+  case 2:
+    /*
+            Ranomier's mapping
+    */
+    ret |= map_axis(player->pad, SDL_CONTROLLER_AXIS_LEFTX, GTA2_CTRL_RIGHT,
+                    GTA2_CTRL_LEFT);
+    ret |= map_axis(player->pad, SDL_CONTROLLER_AXIS_LEFTY, GTA2_CTRL_BACKWARD,
+                    GTA2_CTRL_FORWARD); // not sure if switched
+    ret |= map_trigger(player->pad, SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+                       GTA2_CTRL_SPECIAL_1);
+    ret |= map_trigger(player->pad, SDL_CONTROLLER_AXIS_TRIGGERLEFT,
+                       GTA2_CTRL_ATTACK);
+    ret |= map_button(player->pad, SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
+                      GTA2_CTRL_WEAPON_PREV);
+    ret |= map_button(player->pad, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER,
+                      GTA2_CTRL_WEAPON_NEXT);
+    ret |= map_button(player->pad, SDL_CONTROLLER_BUTTON_A,
+                      GTA2_CTRL_JUMP_HANDBRAKE);
+    ret |=
+        map_button(player->pad, SDL_CONTROLLER_BUTTON_Y, GTA2_CTRL_ENTER_EXIT);
+    ret |=
+        map_button(player->pad, SDL_CONTROLLER_BUTTON_X,
+                   GTA2_CTRL_SPECIAL_2); // not sure if special 1 and 2 switched
+
+    // TODO: dpad -> cam?
   }
   return ret;
 }
