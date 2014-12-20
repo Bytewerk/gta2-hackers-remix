@@ -1,4 +1,4 @@
-#AutoIt3Wrapper_icon=gta2-split.ico
+#AutoIt3Wrapper_icon=g2hr.ico
 #NoTrayIcon
 #include <Array.au3>
 #include "include\logging.au3"
