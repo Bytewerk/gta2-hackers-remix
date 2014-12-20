@@ -4,6 +4,7 @@
 ; $config: see arrays.txt
 Func lobby_run($config)
 	Local $cache = @AppDataDir & "\GTA2 Hackers Remix\Modified GTA2.exe Cache"
+	Local $host_title = "GTA2 Multiplayer Setup"
 
 	; Working dir: GTA2.exe path, cut off at the last '\' char
 	Local $workingdir = StringMid($config[0], 1, _
@@ -13,24 +14,39 @@ Func lobby_run($config)
 		Local $param = "-j 127.0.0.1"
 		If $i == 1 Then $param = "-c"
 
+		; Note: the @SW_HIDE will hide the network window, but not the ingame window!
 		l("Launching GTA2 with parameter: "&$param, $i)
-		Run($cache & "\Player" & $i & ".exe " & $param,$workingdir)
+		Run($cache & "\Player" & $i & ".exe " & $param,$workingdir, @SW_HIDE)
 
 		l("Waiting for network window. This may take a while!", $i)
 		WinWait("Network GTA2", "")
-		WinSetTitle("Network GTA2", "", "GTA2: Player "&$i)
+
+		If $i == 1 Then
+			WinSetTitle("Network GTA2", "",$host_title)
+
+			ControlHide($host_title, "", $GTA2_LOBBY_REJECT)
+			ControlHide($host_title, "", $GTA2_LOBBY_START)
+			ControlHide($host_title, "", $GTA2_LOBBY_CANCEL)
+
+			ControlMove($host_title, "", $GTA2_LOBBY_START, 30, 150, 160, 100)
+			ControlSetText($host_title, "", $GTA2_LOBBY_START, "START IT ALREADY")
+			ControlSetText($host_title, "", $GTA2_LOBBY_CHAT, @CRLF & "Remember: Respect is everything!" _
+				& @CRLF & @CRLF & "...and also that you can only quit this mod properly with [F2]." _
+				& @CRLF & @CRLF & "Set up the game as you like it, and click the start button when you're ready." _
+				& @CRLF & @CRLF & "It will appear after all players have joined the lobby.")
+
+			WinSetState($host_title,"",@SW_SHOW)
+			WinActivate($host_title)
+		Else
+			WinSetTitle("Network GTA2", "", "GTA2: Player "&$i)
+		EndIf
 	Next
 	l("All players have joined the lobby!")
+	ControlShow($host_title, "", $GTA2_LOBBY_START)
+	WinActivate($host_title)
+	ControlFocus($host_title, "", $GTA2_LOBBY_START)
 
-	WinSetState("GTA2: Player 1","",@SW_SHOW)
-	WinActivate("GTA2: Player 1")
-	l("-------------------------------")
-	l("You may now configure the game.")
-	l("Click 'Start' when you're ready!")
-	l("(or press [F2] to quit)")
-	l("-------------------------------")
-
-	While WinExists("GTA2: Player 1")
+	While WinExists($host_title)
 		Sleep(100)
 	WEnd
 EndFunc

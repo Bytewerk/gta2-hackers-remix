@@ -57,7 +57,7 @@ gamepad_glue($config)
 
 ; When Gamepad Glue has quit (eg. because no players)
 ; were attached, keep the game open for screenshots.
-l("Press [F2] to shut the mod down properly")
+l("Press [F2] to shut the mod down properly!")
 While 1
 	Sleep(1000)
 	fake_focus($config)
