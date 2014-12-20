@@ -12,6 +12,7 @@
 #include "include\statuswin.au3"
 #include "include\gamepad_glue.au3"
 #include "include\taskbar.au3"
+#include "include\other.au3"
 
 Func die()
 	Local $i
@@ -51,10 +52,14 @@ lobby_run($config)
 WinSetTrans($statuswin[0],"",255)
 
 merge($config, $player_res)
-gamepad_glue()
+gamepad_glue($config)
+
 
 ; When Gamepad Glue has quit (eg. because no players)
-; were attached, keep the game open for screenshots
-while 1
-	sleep(1000)
+; were attached, keep the game open for screenshots.
+l("Press [F2] to shut the mod down properly")
+While 1
+	Sleep(1000)
+	fake_focus($config)
 WEnd
+
