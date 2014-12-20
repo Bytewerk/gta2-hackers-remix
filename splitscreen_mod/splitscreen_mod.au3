@@ -30,8 +30,11 @@ l("GTA2 Hackers Remix: Splitscreen Mod Alpha")
 l("-------------------------------------------")
 l("[F1]: Toggle this window")
 l("[F2]: Quit")
+l("[F3]: Force ingame windows to have sound")
+l("-------------------------------------------")
 HotKeySet("{F1}", "statuswin_toggle")
 HotKeySet("{F2}","die")
+HotKeySet("{F3}","fake_focus")
 
 
 ; $config: See arrays.txt
@@ -60,6 +63,6 @@ gamepad_glue($config)
 l("Press [F2] to shut the mod down properly!")
 While 1
 	Sleep(1000)
-	fake_focus($config)
+	; fake_focus()
 WEnd
 

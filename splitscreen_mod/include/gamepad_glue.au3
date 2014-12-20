@@ -22,11 +22,11 @@ Func gamepad_glue($config)
 		; game is actually running. Make sure that every window
 		; thinks, that it has focus (see other.au3). Doing this
 		; every second is enough.
-		$i +=1
-		If $i == 10 Then
-			fake_focus($config)
-			$i = 0
-		EndIf
+		;$i +=1
+		;If $i == 10 Then
+		;	fake_focus()
+		;	$i = 0
+		;EndIf
 
 		Sleep(100)
 	WEnd

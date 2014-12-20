@@ -6,7 +6,10 @@
 ; Without this fix, having sound in all windows at the same time
 ; is pure luck and will not work with wine for example.
 ; Credits to sqozz for finding this!
-Func fake_focus($config)
+
+Global $config
+
+Func fake_focus()
 	Local $i
 	For $i=0 To $config[7]
 		_SendMessage(WinGetHandle("Player "&($i+1)), 0x0007)

@@ -138,7 +138,7 @@ Func alphagui(ByRef $config)
 	GUICtrlCreateLabel("Map", 300, 100, 25, 17)
 
 	; Draw layout buttons
-	Local $btn_layouts = alphagui_buttons_screenlayout(2)
+	Local $btn_layouts = alphagui_buttons_screenlayout($config[7])
 	alphagui_buttons_active($btn_layouts, $btn_layouts[ $config[8] ])
 
 	; Draw player buttons

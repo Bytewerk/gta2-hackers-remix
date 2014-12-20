@@ -103,4 +103,7 @@ Func merge($config, $player_res)
 
 	l("Windows SHOULD BE merged now")
 	l("(it's alpha, don't expect too much :p)")
+
+	l("Sending fake focus message")
+	fake_focus()
 EndFunc
