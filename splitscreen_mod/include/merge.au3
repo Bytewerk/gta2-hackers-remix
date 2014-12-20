@@ -4,6 +4,7 @@
 #include <Array.au3>
 #include "screen_layout\screen_layout_calc.au3"
 #include "logging.au3"
+#include "taskbar.au3"
 
 
 #cs
@@ -28,6 +29,8 @@ EndFunc
 		merge that window
 #ce
 Func merge($config, $player_res)
+
+	If $config[6] Then taskbar_hide(True)
 
 	If $config[4] Then
 		l("Creating fullscreen GUI")

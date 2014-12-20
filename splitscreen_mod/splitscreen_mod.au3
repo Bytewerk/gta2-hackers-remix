@@ -11,10 +11,12 @@
 #include "include\merge.au3"
 #include "include\statuswin.au3"
 #include "include\gamepad_glue.au3"
+#include "include\taskbar.au3"
 
 Func die()
 	Local $i
 	l("Shutting down...")
+	taskbar_hide(False)
 	For $i = 0 To 6
 		ProcessClose("Player"&$i&".exe")
 	Next
