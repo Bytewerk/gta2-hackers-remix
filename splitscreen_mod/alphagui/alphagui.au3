@@ -117,11 +117,14 @@ EndFunc
 	$gameinfo array (see arrays.txt).
 #ce
 Func alphagui()
-	Local $gui = GUICreate("GTA2 Splitscreen Mod", 601, 351, 243, 146)
+	Local $version = "0.3.0-splitscreen_mod"
+	Local $gui = GUICreate("G2HR", 601, 351, 243, 146)
 
 	; Title
 	GUICtrlCreateLabel("GTA2 Hackers Remix: Splitscreen Mod ALPHA", 20, 30, 537, 25)
 	GUICtrlSetFont(-1, 16, 400, 0, "Lucida Console")
+	GUICtrlCreateLabel($version, 440, 48, 107, 17)
+
 	; Left side
 	GUICtrlCreateLabel("Players", 20, 100, 38, 17)
 	GUICtrlCreateLabel("Layout", 20, 130, 36, 17)
@@ -139,29 +142,21 @@ Func alphagui()
 	Local $preview = alphagui_screen_preview_draw(2, 0)
 
 	; Right side
-	$combo_map = GUICtrlCreateCombo("Hidden Surprise", 400, 95, 170, 25, BitOR($CBS_DROPDOWN,$CBS_AUTOHSCROLL))
-	GUICtrlCreateLabel("Game Type", 300, 130, 59, 17)
-
-	Local $btn_gametypes = ["Frags", "Points", "Tag"]
-	For $i = 0 To 2
-		$btn_gametypes[$i] = GUICtrlCreateButton($btn_gametypes[$i], _
-			400 + $i * 60, 125, 50, 25)
-	Next
-	alphagui_buttons_active($btn_gametypes,$btn_gametypes[0])
-
-	$lbl_win_condition = GUICtrlCreateLabel("Frags to Win", 300, 160, 64, 17)
-	$npt_win_condition = GUICtrlCreateInput("10", 400, 155, 170, 21, BitOR($GUI_SS_DEFAULT_INPUT,$ES_NUMBER))
-	GUICtrlCreateLabel("Time Limit (minutes)", 300, 190, 96, 17)
-	$npt_time_limit = GUICtrlCreateInput("30", 400, 185, 170, 21)
-	GUICtrlCreateLabel("Cops enabled", 300, 220, 69, 17)
+	$grp_options = GUICtrlCreateGroup("Splitscreen Hack Options", 280, 152, 281, 113)
+	$chk_merge = GUICtrlCreateCheckbox("Merge all GTA2 windows to a big one", 296, 176, 233, 17)
+	GUICtrlCreateLabel("Sleep before merge:", 312, 202, 99, 17)
+	$merge_sleep = GUICtrlCreateInput("0", 424, 200, 57, 21, $ES_NUMBER)
+	GUICtrlCreateLabel("ms", 488, 202, 17, 17)
+	$ck_hide_taskbar = GUICtrlCreateCheckbox("Hide Windows Taskbar", 296, 232, 209, 17)
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
+	$lbl_note = GUICtrlCreateLabel("Screen layouts with other aspect ratios than 4:3 will cause graphical and/or camera glitches.", 280, 96, 282, 33)
 
 
-	Local $btn_cops = ["Yes", "No"]
-	For $i = 0 To 1
-		$btn_cops[$i] = GUICtrlCreateButton($btn_cops[$i], _
-			400 + $i * 60, 215, 50, 25)
-	Next
-	alphagui_buttons_active($btn_cops,$btn_cops[0])
+
+
+
+
+
 
 	; Start button and some links
 	$btn_start = GUICtrlCreateButton("GTA2", 400, 300, 170, 25)
@@ -194,29 +189,17 @@ Func alphagui()
 			Local $gameinfo[7]
 			$gameinfo[0] = alphagui_buttons_active_value($btn_players)
 			$gameinfo[1] = alphagui_buttons_active_value($btn_layouts)
+			#cs
 			$gameinfo[2] = GUICtrlRead($combo_map)
 			$gameinfo[3] = alphagui_buttons_active_value($btn_gametypes)
 			$gameinfo[4] = GUICtrlRead($npt_win_condition)
 			$gameinfo[5] = GUICtrlRead($npt_time_limit)
 			$gameinfo[6] = (alphagui_buttons_active_value($btn_cops) == "Yes")
+			#ce
 			GUIDelete()
 			Return $gameinfo
 		EndIf
 
-
-		alphagui_buttons_handle_msg($btn_cops,$msg)
-
-		If alphagui_buttons_handle_msg($btn_gametypes,$msg) Then
-			Local $active = alphagui_buttons_active_value($btn_gametypes)
-			If $active == "Frags" Or $active == "Points" Then
-				GUICtrlSetData($lbl_win_condition,$active & " to Win")
-				GUICtrlSetState($lbl_win_condition,$GUI_SHOW)
-				GUICtrlSetState($npt_win_condition,$GUI_SHOW)
-			Else
-				GUICtrlSetState($lbl_win_condition,$GUI_HIDE)
-				GUICtrlSetState($npt_win_condition,$GUI_HIDE)
-			EndIf
-		EndIf
 
 		Local $layout_redraw = False
 		If alphagui_buttons_handle_msg($btn_players, $msg) Then
