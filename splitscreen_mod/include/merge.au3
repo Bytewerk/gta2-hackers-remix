@@ -29,19 +29,23 @@ EndFunc
 #ce
 Func merge($config, $player_res)
 
-	; Create a Fullscreen GUI
-	l("Creating fullscreen GUI")
-	Local $full = GUICreate("G2HR", $config[1] ,$config[2], _
-		0, 0, $WS_POPUP)
-	GUISetBkColor(0x000000)
-	GUISetCursor(16,1)
-	GUISetState(@SW_SHOW)
-	WinActivate($full)
+	If $config[4] Then
+		l("Creating fullscreen GUI")
+		Local $full = GUICreate("G2HR", $config[1] ,$config[2], _
+			0, 0, $WS_POPUP)
+		GUISetBkColor(0x000000)
+		GUISetCursor(16,1)
+		GUISetState(@SW_SHOW)
+		WinActivate($full)
 
-	; If we do the merge stuff directly, the games will have a
-	; black screen and crash!
-	l("Waiting for games to initialize")
-	sleep(2000)
+		; If we do the merge stuff directly, the games will have a
+		; black screen and crash - not sure about that anymore.
+		l("Waiting for games to initialize")
+		sleep($config[5])
+	Else
+		l("Fullscreen (merge) GUI is disabled")
+	EndIf
+
 
 	; Iterate through player_res
 	Local $i
@@ -67,8 +71,12 @@ Func merge($config, $player_res)
 				Local $pos_y	= $geo_player[1] - $offset_y
 
 				l("Border Offset: " & $offset_x & ", " & $offset_y, $i+1)
-				l("Merging window",$i+1)
-				_WinAPI_SetParent($hwnd,$full)
+
+				If $config[4] Then
+					l("Merging window",$i+1)
+					_WinAPI_SetParent($hwnd,$full)
+				EndIf
+
 				_WinAPI_SetWindowPos($hwnd, $HWND_BOTTOM, _
 					$pos_x, $pos_y, _
 					$geo_player[2], $geo_player[3], _

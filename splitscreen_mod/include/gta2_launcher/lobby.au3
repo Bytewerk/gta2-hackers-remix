@@ -24,8 +24,11 @@ Func lobby_run($config)
 
 	WinSetState("GTA2: Player 1","",@SW_SHOW)
 	WinActivate("GTA2: Player 1")
+	l("-------------------------------")
 	l("You may now configure the game.")
 	l("Click 'Start' when you're ready!")
+	l("(or press [F2] to quit)")
+	l("-------------------------------")
 
 	While WinExists("GTA2: Player 1")
 		Sleep(100)

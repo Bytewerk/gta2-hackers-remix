@@ -26,7 +26,7 @@ Global $statuswin = statuswin_create()
 l("GTA2 Hackers Remix: Splitscreen Mod Alpha")
 l("-------------------------------------------")
 l("[F1]: Toggle this window")
-l("[F2]: Close")
+l("[F2]: Quit")
 HotKeySet("{F1}", "statuswin_toggle")
 HotKeySet("{F2}","die")
 
