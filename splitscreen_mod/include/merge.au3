@@ -95,7 +95,7 @@ Func merge($config, $player_res)
 				; Remove "GTA2" from the title, so it won't be
 				; matched again
 				WinSetTitle($hwnd,"", "Player "&($i+1))
-
+				WinSetState($hwnd,"",@SW_SHOW)
 				ExitLoop
 			EndIf
 		Next
