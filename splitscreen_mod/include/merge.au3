@@ -27,7 +27,7 @@ EndFunc
 		find a matching GTA2 window (from WinList)
 		merge that window
 #ce
-Func merge($gameinfo, $config, $player_res)
+Func merge($config, $player_res)
 
 	; Create a Fullscreen GUI
 	l("Creating fullscreen GUI")

@@ -33,12 +33,12 @@ Func screen_layout_calc($screen_w, $screen_h, $border_size_px, _
 EndFunc
 
 ; Returns a $player_res array (see arrays.txt)
-Func screen_layout_calc_array($gameinfo, $config)
-	Local $player_res[ $gameinfo[0] ]
+Func screen_layout_calc_array($config)
+	Local $player_res[ $config[7] ]
 
-	For $i = 1 To $gameinfo[0]
+	For $i = 1 To $config[7]
 		Local $geo = screen_layout_calc($config[1], $config[2], $config[3], _
-			$gameinfo[0] -1, $gameinfo[1], $i -1)
+			$config[7] -1, $config[8], $i -1)
 		$player_res[$i -1] = $geo
 	Next
 

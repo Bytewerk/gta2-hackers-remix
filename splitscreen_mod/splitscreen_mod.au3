@@ -37,17 +37,18 @@ screen_layout_init()
 
 ; Show the GUI until the user starts the game.
 ; See arrays.txt for the $gameinfo structure.
-$gameinfo = alphagui()
+alphagui($config)
+config_save($config)
 
-registry_exe_modify($gameinfo[0], $config[0])
-$player_res = screen_layout_calc_array($gameinfo, $config)
-registry_prepare($gameinfo, $player_res)
-lobby_run($gameinfo, $config)
+registry_exe_modify($config[7], $config[0])
+$player_res = screen_layout_calc_array($config)
+registry_prepare($config, $player_res)
+lobby_run($config)
 
 ; Avoid flickering
 WinSetTrans($statuswin[0],"",255)
 
-merge($gameinfo, $config, $player_res)
+merge($config, $player_res)
 gamepad_glue()
 
 ; When Gamepad Glue has quit (eg. because no players)

@@ -31,13 +31,13 @@ Func registry_exe_modify($player_count, $gta2_exe_path)
 		FileCopy($gta2dir & "\dmavideo.dll", $cache & "\dmavideo_original.dll")
 EndFunc
 
-; $gameinfo, $player_res, $geo: See arrays.txt
-Func registry_prepare($gameinfo, $player_res)
+; $config, $player_res, $geo: See arrays.txt
+Func registry_prepare($config, $player_res)
 	; Maybe this helps to fix some crashes?
 	; RegDelete("HKEY_CURRENT_USER\Software\GTA2HackersRemix")
 
 
-	For $i = 1 To $gameinfo[0] ; iterate over players 1...n
+	For $i = 1 To $config[7] ; iterate over players 1...n
 		Local $root = "HKEY_CURRENT_USER\Software\GTA2HackersRemix\P" & $i
 
 		; Set the resolution

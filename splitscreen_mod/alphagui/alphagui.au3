@@ -111,12 +111,19 @@ Func alphagui_screen_preview_draw($player_count, $variation, $preview_old = NULL
 	Return $preview
 EndFunc
 
+Func alphagui_ischecked($ctrl)
+    Return BitAND(GUICtrlRead($ctrl), $GUI_CHECKED) = $GUI_CHECKED
+EndFunc
+
+
+
+
 #cs
 	This GUI exits the program, if it gets closed.
 	When the player clicks on start, it returns a
 	$gameinfo array (see arrays.txt).
 #ce
-Func alphagui()
+Func alphagui(ByRef $config)
 	Local $version = "0.3.0-splitscreen_mod"
 	Local $gui = GUICreate("G2HR", 601, 351, 243, 146)
 
@@ -132,31 +139,28 @@ Func alphagui()
 
 	; Draw layout buttons
 	Local $btn_layouts = alphagui_buttons_screenlayout(2)
+	alphagui_buttons_active($btn_layouts, $btn_layouts[ $config[8] ])
 
 	; Draw player buttons
 	Local $btn_players[5]
 	For $i = 0 To 4
 		$btn_players[$i] = GUICtrlCreateButton($i+2, 80+$i*30, 95, 25, 25)
 	Next
-	alphagui_buttons_active($btn_players, $btn_players[0])
-	Local $preview = alphagui_screen_preview_draw(2, 0)
+	alphagui_buttons_active($btn_players, $btn_players[ $config[7] - 2 ])
+	Local $preview = alphagui_screen_preview_draw($config[7], $config[8])
 
 	; Right side
-	$grp_options = GUICtrlCreateGroup("Splitscreen Hack Options", 280, 152, 281, 113)
+	GUICtrlCreateGroup("Splitscreen Hack Options", 280, 152, 281, 113)
 	$chk_merge = GUICtrlCreateCheckbox("Merge all GTA2 windows to a big one", 296, 176, 233, 17)
+	If $config[4] == "True" Then GUICtrlSetState(-1,$GUI_CHECKED)
+
 	GUICtrlCreateLabel("Sleep before merge:", 312, 202, 99, 17)
-	$merge_sleep = GUICtrlCreateInput("0", 424, 200, 57, 21, $ES_NUMBER)
+	$ipt_merge_sleep = GUICtrlCreateInput($config[5], 424, 200, 57, 21, $ES_NUMBER)
 	GUICtrlCreateLabel("ms", 488, 202, 17, 17)
 	$ck_hide_taskbar = GUICtrlCreateCheckbox("Hide Windows Taskbar", 296, 232, 209, 17)
-	GUICtrlCreateGroup("", -99, -99, 1, 1)
-	$lbl_note = GUICtrlCreateLabel("Screen layouts with other aspect ratios than 4:3 will cause graphical and/or camera glitches.", 280, 96, 282, 33)
+	If $config[6] == "True" Then GUICtrlSetState(-1,$GUI_CHECKED)
 
-
-
-
-
-
-
+	GUICtrlCreateLabel("Screen layouts with other aspect ratios than 4:3 will cause graphical and/or camera glitches.", 280, 96, 282, 33)
 
 	; Start button and some links
 	$btn_start = GUICtrlCreateButton("GTA2", 400, 300, 170, 25)
@@ -166,8 +170,11 @@ Func alphagui()
 	GUICtrlSetColor(-1, 0x0000FF)
 	$link_github = GUICtrlCreateLabel("github", 20, 312, 33, 17)
 	GUICtrlSetColor(-1, 0x0000FF)
-	GUISetState(@SW_SHOW)
 
+
+
+
+	GUISetState(@SW_SHOW)
 
 	While 1
 		Local $msg = GUIGetMsg()
@@ -183,23 +190,16 @@ Func alphagui()
 		If $msg = $link_gtamp Then _
 			ShellExecute("http://gtamp.com/forum/viewtopic.php?t=776")
 
-
-		; return $gameinfo (see arrays.txt)
+		; Start: Write all information back to $config and return
 		If $msg = $btn_start Then
-			Local $gameinfo[7]
-			$gameinfo[0] = alphagui_buttons_active_value($btn_players)
-			$gameinfo[1] = alphagui_buttons_active_value($btn_layouts)
-			#cs
-			$gameinfo[2] = GUICtrlRead($combo_map)
-			$gameinfo[3] = alphagui_buttons_active_value($btn_gametypes)
-			$gameinfo[4] = GUICtrlRead($npt_win_condition)
-			$gameinfo[5] = GUICtrlRead($npt_time_limit)
-			$gameinfo[6] = (alphagui_buttons_active_value($btn_cops) == "Yes")
-			#ce
+			$config[4] = alphagui_ischecked($chk_merge)
+			$config[5] = GUICtrlRead($ipt_merge_sleep)
+			$config[6] = alphagui_ischecked($ck_hide_taskbar)
+			$config[7] = alphagui_buttons_active_value($btn_players)
+			$config[8] = alphagui_buttons_active_value($btn_layouts)
 			GUIDelete()
-			Return $gameinfo
+			Return
 		EndIf
-
 
 		Local $layout_redraw = False
 		If alphagui_buttons_handle_msg($btn_players, $msg) Then

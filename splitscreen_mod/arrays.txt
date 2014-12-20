@@ -9,22 +9,18 @@ $config:
 [0]: (String) Full path to GTA2.exe (with GTA2.exe at the end)
 [1]: (int) Fullscreen Width
 [2]: (int) Fullscreen Height
-[3]: (int) Border size
+[3]: (int) Border size (TODO)
+[4]: (bool) Merge windows to a big one
+[5]: (int) Sleep before merge (in ms)
+[6]: (bool) Hide windows taskbar
+[7]: (int) Player Count (2-6)
+[8]: (int) Screen Layout ID (>=0)
 
 $geo (geometrical data):
 [0]: (int) x-pos
 [1]: (int) y-pos
 [2]: (int) width
 [3]: (int) height
-
-$gameinfo:
-[0]: (int) players (>=2)
-[1]: (int) screen layout (>=0)
-[2]: (string) map
-[3]: (string) game type ("Frags" | "Points" | "Tag")
-[4]: (int) winning condition (points or tags, depending on [3])
-[5]: (int) time limit in minutes
-[6]: (bool) cops enabled
 
 $player_res:
 Part of the full screen that is reserved for a specific player.
