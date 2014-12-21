@@ -14,7 +14,8 @@ Func lobby_run($config)
 		Local $param = "-j 127.0.0.1"
 		If $i == 1 Then $param = "-c"
 
-		; Note: the @SW_HIDE will hide the network window, but not the ingame window!
+		; @SW_HIDE will hide both the network and the ingame window until they get manually activated.
+		; Doesn't work on wine (so we hide the client network windows manually below).
 		l("Launching GTA2 with parameter: "&$param, $i)
 		Run($cache & "\Player" & $i & ".exe " & $param,$workingdir, @SW_HIDE)
 
@@ -39,6 +40,9 @@ Func lobby_run($config)
 			WinActivate($host_title)
 		Else
 			WinSetTitle("Network GTA2", "", "GTA2: Player "&$i)
+
+			; Wine ignores the @SW_HIDE passed as Run argument, see above.
+			WinSetState("GTA2: Player "&$i, "", @SW_HIDE)
 		EndIf
 	Next
 	l("All players have joined the lobby!")
