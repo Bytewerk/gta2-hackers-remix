@@ -6,6 +6,8 @@
 # do that :)
 #
 # TODO: check for installed programs (winetricks, wine, xrandr)
+# TODO: take resolution as parameters, use desktop resolution
+# 	as default
 #
 
 export DISPLAY=:0
