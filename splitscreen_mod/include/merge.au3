@@ -50,9 +50,11 @@ Func merge($config, $player_res)
 	EndIf
 
 
-	; Iterate through player_res
+	; Iterate backwards through player_res, so the window title
+	; of the lower windows get covered by the higher ones.
+	; TODO: add a real splitscreen border
 	Local $i
-	For $i = 0 To UBound($player_res) -1
+	For $i = UBound($player_res) -1 To 0 Step -1
 		WinWait("GTA2")
 		Local $geo_player = $player_res[$i]
 		Local $list = WinList("GTA2")
