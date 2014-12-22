@@ -23,7 +23,7 @@ It should theoretically compile on Linux too, but we'll need to figure out how m
 * Start Code::Blocks
 * Create a new C-Project (console program, **not** SDL Project - this doesn't work with SDL2)
 * Open up the linker settings: `Project build options` / *click the parent entry on the left, that contains Debug and Release* / `Linker Settings`
-* Link with: `mingw32`, `SDL2main`, `SDL2`
+* Link with: `mingw32`, `SDL2main`, `SDL2`, `SDL2_net`
 * In the compiler settings, add the flag: `-std=c99`
 
 ## Fix SDL 2.0.3
