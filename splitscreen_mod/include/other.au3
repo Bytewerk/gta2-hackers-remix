@@ -10,9 +10,16 @@
 Global $config
 
 Func fake_focus()
-   l("Sending fake focus messages to all windows...")
+	l("Sending fake focus messages to all windows...")
 	Local $i
 	For $i=0 To $config[7]
 		_SendMessage(WinGetHandle("Player "&($i+1)), 0x0007)
 	Next
 EndFunc
+
+Func is_running_in_wine()
+	RegRead("HKEY_CURRENT_USER\Software\Wine", "")
+	If @error > 0 Then Return False
+	Return True
+EndFunc
+

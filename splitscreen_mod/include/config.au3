@@ -1,5 +1,6 @@
 #include <Misc.au3>
 #include <FileConstants.au3>
+#include "other.au3"
 
 #cs
 	TODO:
@@ -22,7 +23,7 @@ Func config_init()
 
 	; Load settings from the ini into $config (read arrays.txt)
 	; TODO :multi monitor support
-	Local $config[9]
+	Local $config[10]
 	$config[0] = IniRead($ini, "Settings", "GTA2.exe Path", @ProgramFilesDir & "\Rockstar Games\GTA2\GTA2.exe")
 	$config[1] = @DesktopWidth
 	$config[2] = @DesktopHeight
@@ -32,6 +33,7 @@ Func config_init()
 	$config[6] = IniRead($ini, "Settings", "Hide Taskbar", true)
 	$config[7] = IniRead($ini, "Settings", "Player Count", 2)
 	$config[8] = IniRead($ini, "Settings", "Screen Layout", 0)
+	$config[9] = is_running_in_wine()
 
 	; Ask for the right GTA2.exe
 	Local $right_version = "This mod only works with Vike's modified GTA2 version 11.44.0.0 or above." &@CRLF & _

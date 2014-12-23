@@ -15,6 +15,7 @@ $config:
 [6]: (bool) Hide windows taskbar
 [7]: (int) Player Count (2-6)
 [8]: (int) Screen Layout ID (>=0)
+[9]: (bool) is running in Wine (Linux)?
 
 $geo (geometrical data):
 [0]: (int) x-pos

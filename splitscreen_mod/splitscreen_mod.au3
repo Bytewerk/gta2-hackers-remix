@@ -41,6 +41,8 @@ HotKeySet("{F3}","fake_focus")
 $config = config_init()
 screen_layout_init()
 
+; TODO: handle $config[9] (is running in wine?) here
+
 ; Show the GUI until the user starts the game.
 ; See arrays.txt for the $gameinfo structure.
 alphagui($config)
