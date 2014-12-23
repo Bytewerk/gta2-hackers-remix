@@ -36,7 +36,6 @@ Func registry_prepare($config, $player_res)
 	; Maybe this helps to fix some crashes?
 	; RegDelete("HKEY_CURRENT_USER\Software\GTA2HackersRemix")
 
-
 	For $i = 1 To $config[7] ; iterate over players 1...n
 		Local $root = "HKEY_CURRENT_USER\Software\GTA2HackersRemix\P" & $i
 
@@ -50,7 +49,23 @@ Func registry_prepare($config, $player_res)
 		; Force windowed mode
 		RegWrite($root&"\Screen", "start_mode", "REG_DWORD", 0)
 
-		; Set the player names
+		; Set the player name
 		RegWrite($root&"\Network", "PlayerName", "REG_SZ", "Player "&$i)
+
+		; Working network settings, when selecting TCP/IP and 127.0.0.1.
+		; Simply dumped with: ConsoleWrite(RegRead(...))
+		; This might help with issue #6 - but it currently doesn't solve it.
+		RegWrite($root&"\Network", "protocol_selected", "REG_DWORD", 0)
+		RegWrite($root&"\Network", "TCPIPAddrStringd", "REG_BINARY", _
+			   Binary("0x3100320037002E0030002E0030002E0031000000"))
+		RegWrite($root&"\Network", "TCPIPAddrStrings", "REG_DWORD", 20)
+
+		RegWrite($root&"\Network", "UseConnectiond", "REG_BINARY", _
+			   Binary("0x60F518132C91D0119DAA00A0C90A43CB0400000064000000C016D907AFE0CF119C4E00A0C905425E10000000E05EE9367785CF11960C0080C7534E82A03232E6BF9DD0119CC100A0C905425E140000003100320037002E0030002E0030002E0031000000"))
+		RegWrite($root&"\Network", "UseConnections", "REG_DWORD", 100)
+
+		RegWrite($root&"\Network", "UseProtocold", "REG_BINARY", _
+			   Binary("0xE05EE9367785CF11960C0080C7534E82"))
+		RegWrite($root&"\Network", "UseProtocols", "REG_DWORD", 16)
 	Next
 EndFunc
