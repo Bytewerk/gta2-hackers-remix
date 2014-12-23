@@ -124,13 +124,13 @@ EndFunc
 	$gameinfo array (see arrays.txt).
 #ce
 Func alphagui(ByRef $config)
-	Local $version = "0.3.0-splitscreen_mod"
+	Local $version = "0.3.1-splitscreen_mod"
 	Local $gui = GUICreate("G2HR", 601, 351, 243, 146)
 
 	; Title
 	GUICtrlCreateLabel("GTA2 Hackers Remix: Splitscreen Mod ALPHA", 20, 30, 537, 25)
 	GUICtrlSetFont(-1, 16, 400, 0, "Lucida Console")
-	GUICtrlCreateLabel($version, 440, 48, 107, 17)
+	GUICtrlCreateLabel($version, 440, 48, 120, 17)
 
 	; Left side
 	GUICtrlCreateLabel("Players", 20, 100, 38, 17)
@@ -165,7 +165,7 @@ Func alphagui(ByRef $config)
 	GUICtrlCreateLabel("Screen layouts with other aspect ratios than 4:3 will cause graphical and/or camera glitches.", 280, 96, 282, 33)
 
 	; Start button and some links
-	$btn_start = GUICtrlCreateButton("GTA2", 400, 300, 170, 25)
+	$btn_start = GUICtrlCreateButton("&GTA2", 400, 300, 170, 25)
 	$link_gtamp = GUICtrlCreateLabel("gtamp thread", 160, 312, 100, 17)
 	GUICtrlSetColor(-1, 0x0000FF)
 	$link_bytewerk = GUICtrlCreateLabel("bytewerk", 80, 312, 47, 17)

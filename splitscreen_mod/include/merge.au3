@@ -30,6 +30,9 @@ EndFunc
 #ce
 Func merge($config, $player_res)
 
+   MouseMove(@DesktopWidth, @DesktopHeight, 0)
+
+
 	If $config[6] Then taskbar_hide(True)
 
 	If $config[4] Then

@@ -12,7 +12,7 @@ Global $config
 Func fake_focus()
 	l("Sending fake focus messages to all windows...")
 	Local $i
-	For $i=0 To $config[7]
+	For $config[7] To $i = 0 Step -1
 		_SendMessage(WinGetHandle("Player "&($i+1)), 0x0007)
 	Next
 EndFunc
