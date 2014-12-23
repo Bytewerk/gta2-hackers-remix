@@ -1,2 +1,2 @@
 #!/bin/bash
-./sdl_controller_code.$(uname -m)
+./sdl_controller_code.$(uname -m) $*

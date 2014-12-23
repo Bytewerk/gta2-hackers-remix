@@ -4,7 +4,10 @@
 
 Func gamepad_glue($config)
 	l("Starting gamepad glue...")
-	Local $pid = Run(@ScriptDir & "\bin\sdl_controller_code.exe nonverbose", _
+	Local $ext = "exe"
+
+	If $config[9] Then $ext = "sh"
+	Local $pid = Run(@ScriptDir & "\bin\sdl_controller_code."&$ext&" nonverbose", _
 		@ScriptDir & "\bin", @SW_HIDE, $STDOUT_CHILD)
 	Local $i = 0
 	While ProcessExists($pid)
