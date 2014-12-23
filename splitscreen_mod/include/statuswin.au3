@@ -15,7 +15,7 @@ EndFunc
 
 
 ; Returns $statuswin (see arrays.txt)
-Func statuswin_create()
+Func statuswin_create($config)
 	Local $statuswin[9]
 	Local $x = @DesktopWidth - 450
 	Local $y = @DesktopHeight - 140
@@ -35,7 +35,10 @@ Func statuswin_create()
 
 	$statuswin[8] = True
 	WinSetTrans($statuswin[0],"",200)
-	GUISetState(@SW_SHOW)
+
+	; By default, hide the status window in Wine,
+	; Linux terminals are a lot better anyway.
+	If Not $config[9] Then GUISetState(@SW_SHOW)
 
 	Return $statuswin
 EndFunc

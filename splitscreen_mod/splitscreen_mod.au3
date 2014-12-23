@@ -28,15 +28,15 @@ EndFunc
 ; $config: See arrays.txt
 $config = config_init()
 
-If $config[9] And EnvGet("G2HR_WINE_SCRIPT") == "" Then _
+If $config[9] And EnvGet("G2HR_WINE_SCRIPT") == "" And @Compiled Then _
 	Exit MsgBox(16, "G2HR", "When running in wine, please execute the bundled splitscreen_wine.sh instead.")
 
 screen_layout_init()
 
-Global $statuswin = statuswin_create()
+Global $statuswin = statuswin_create($config)
 l("GTA2 Hackers Remix: Splitscreen Mod Alpha")
 l("-------------------------------------------")
-l("[F1]: Toggle this window")
+l("[F1]: Toggle status window")
 l("[F2]: Quit")
 l("[F3]: Force ingame windows to have sound")
 l("-------------------------------------------")

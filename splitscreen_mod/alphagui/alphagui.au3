@@ -150,15 +150,17 @@ Func alphagui(ByRef $config)
 	Local $preview = alphagui_screen_preview_draw($config[7], $config[8])
 
 	; Right side
-	GUICtrlCreateGroup("Splitscreen Hack Options", 280, 152, 281, 113)
-	$chk_merge = GUICtrlCreateCheckbox("Merge all GTA2 windows to a big one", 296, 176, 233, 17)
-	If $config[4] == "True" Then GUICtrlSetState(-1,$GUI_CHECKED)
+	If Not $config[9] Then
+	   GUICtrlCreateGroup("Splitscreen Hack Options", 280, 152, 281, 113)
+	   $chk_merge = GUICtrlCreateCheckbox("Merge all GTA2 windows to a big one", 296, 176, 233, 17)
+	   If $config[4] == "True" Then GUICtrlSetState(-1,$GUI_CHECKED)
 
-	GUICtrlCreateLabel("Sleep before merge:", 312, 202, 99, 17)
-	$ipt_merge_sleep = GUICtrlCreateInput($config[5], 424, 200, 57, 21, $ES_NUMBER)
-	GUICtrlCreateLabel("ms", 488, 202, 17, 17)
-	$ck_hide_taskbar = GUICtrlCreateCheckbox("Hide Windows Taskbar", 296, 232, 209, 17)
-	If $config[6] == "True" Then GUICtrlSetState(-1,$GUI_CHECKED)
+	   GUICtrlCreateLabel("Sleep before merge:", 312, 202, 99, 17)
+	   $ipt_merge_sleep = GUICtrlCreateInput($config[5], 424, 200, 57, 21, $ES_NUMBER)
+	   GUICtrlCreateLabel("ms", 488, 202, 17, 17)
+	   $ck_hide_taskbar = GUICtrlCreateCheckbox("Hide Windows Taskbar", 296, 232, 209, 17)
+	   If $config[6] == "True" Then GUICtrlSetState(-1,$GUI_CHECKED)
+   EndIf
 
 	GUICtrlCreateLabel("Screen layouts with other aspect ratios than 4:3 will cause graphical and/or camera glitches.", 280, 96, 282, 33)
 
@@ -170,9 +172,6 @@ Func alphagui(ByRef $config)
 	GUICtrlSetColor(-1, 0x0000FF)
 	$link_github = GUICtrlCreateLabel("github", 20, 312, 33, 17)
 	GUICtrlSetColor(-1, 0x0000FF)
-
-
-
 
 	GUISetState(@SW_SHOW)
 
@@ -192,9 +191,15 @@ Func alphagui(ByRef $config)
 
 		; Start: Write all information back to $config and return
 		If $msg = $btn_start Then
-			$config[4] = alphagui_ischecked($chk_merge)
-			$config[5] = GUICtrlRead($ipt_merge_sleep)
-			$config[6] = alphagui_ischecked($ck_hide_taskbar)
+		   If Not $config[9] Then
+			   $config[4] = alphagui_ischecked($chk_merge)
+			   $config[5] = GUICtrlRead($ipt_merge_sleep)
+			   $config[6] = alphagui_ischecked($ck_hide_taskbar)
+			Else
+			   $config[4] = False
+			   $config[5] = False
+			   $config[6] = False
+			EndIf
 			$config[7] = alphagui_buttons_active_value($btn_players)
 			$config[8] = alphagui_buttons_active_value($btn_layouts)
 			GUIDelete()
