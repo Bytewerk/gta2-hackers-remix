@@ -25,6 +25,14 @@ Func die()
 	Exit
 EndFunc
 
+; $config: See arrays.txt
+$config = config_init()
+
+If $config[9] And EnvGet("G2HR_WINE_SCRIPT") == "" Then _
+	Exit MsgBox(16, "G2HR", "When running in wine, please execute the bundled splitscreen_wine.sh instead.")
+
+screen_layout_init()
+
 Global $statuswin = statuswin_create()
 l("GTA2 Hackers Remix: Splitscreen Mod Alpha")
 l("-------------------------------------------")
@@ -36,12 +44,6 @@ HotKeySet("{F1}", "statuswin_toggle")
 HotKeySet("{F2}","die")
 HotKeySet("{F3}","fake_focus")
 
-
-; $config: See arrays.txt
-$config = config_init()
-screen_layout_init()
-
-; TODO: handle $config[9] (is running in wine?) here
 
 ; Show the GUI until the user starts the game.
 ; See arrays.txt for the $gameinfo structure.

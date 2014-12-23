@@ -14,6 +14,7 @@ export DISPLAY=:0
 export WINEPREFIX=~/.wine-g2hr
 export WINEARCH=win32
 export LANG=C
+export G2HR_WINE_SCRIPT=true
 
 # Set the desired resolution
 # width=800
