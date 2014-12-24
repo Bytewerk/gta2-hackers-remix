@@ -2,7 +2,7 @@
 ![2014-12-01 splitscreen gamepad glue fancy debug window](https://cloud.githubusercontent.com/assets/7833187/5239777/1b5f3b2a-78ee-11e4-8992-4a47f8038041.jpg)
 
 
-# GTA2 Hackers Remix
+# GTA2 Hacker's Remix
 This is a meta-mod for GTA2 (1999), **mainly to get a splitscreen mod working.** Later we might add other things such as a new fullscreen menu that can be controlled with a gamepad and [Linux/Wine](https://github.com/Bytewerk/gta2-hackers-remix/wiki/Linux-(Wine)) support. So far we've got the following (*only click for technical details, otherwise read on*):
 
 
