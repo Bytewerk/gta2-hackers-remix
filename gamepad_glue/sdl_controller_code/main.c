@@ -1,17 +1,18 @@
 #include "controller_mapping.h"
 #include "game.h"
+#include "injected_api.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_net.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
-  // Disable STDOUT buffering, so we can display the output in a AutoIt3 GUI
+  // Disable STDOUT buffering, so we can display the output in the AutoIt3 GUI
   setbuf(stdout, NULL);
 
   // Add any parameter to this exe file and it will only print the necessary
   // stuff
-  int verbose = argc == 1;
+  int verbose = (argc == 1);
 
   if (SDL_Init(SDL_INIT_GAMECONTROLLER) < 0)
     return printf("ERROR from SDL: %s\n", SDL_GetError());
@@ -30,6 +31,8 @@ int main(int argc, char *argv[]) {
     printf("More info: https://github.com/Bytewerk/gta2-hackers-remix\n\n");
   }
 
+  SDL_GameControllerAddMappingsFromFile("../data/gamecontrollerdb.txt");
+
   game_t *game = game_init();
   if (game == NULL)
     return printf("ERROR: Couldn't assign any instance to a gamepad!\n");
@@ -46,7 +49,18 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < game->player_count; i++) {
       player_t *player = &(game->players[i]);
       short ctrl_code = controller_mapping(&e, player);
-      SDLNet_TCP_Send(player->sock, &ctrl_code, sizeof(short));
+
+      // add a frame around the message
+      int frame_size = 1 + sizeof(IA_IN_MOVEMENT_t);
+      char *frame = malloc(frame_size);
+      frame[0] = IA_IN_MOVEMENT;
+
+      IA_IN_MOVEMENT_t *data = (IA_IN_MOVEMENT_t *)(frame + 1);
+      data->movement = ctrl_code;
+
+      SDLNet_TCP_Send(player->sock, frame, frame_size);
+
+      free(frame);
     }
   }
 

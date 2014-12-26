@@ -19,6 +19,7 @@
 #include <windows.h>
 #include <process.h>
 
+
 // Speed up the build process
 // http://stackoverflow.com/a/11040290
 #define VC_EXTRALEAN
@@ -30,7 +31,7 @@
 #pragma pack(1)
 
 // TCP server code:
-#include "input_server.h"
+#include "injected_thread.h"
 
 HINSTANCE hLThis = 0;
 HINSTANCE hL = 0;
@@ -69,8 +70,8 @@ BOOL WINAPI DllMain(HINSTANCE hInst,DWORD reason,LPVOID)
 		p[20] = GetProcAddress(hL,"Vid_ShutDown_SYS");
 		p[21] = GetProcAddress(hL,"Vid_WindowProc");
 	
-		// Start the input TCP server (see input_server.cpp)
-		_beginthread(input_server,0,NULL);
+		// Start the injected thread (see injected_thread.cpp)
+		_beginthread(injected_thread,0,NULL);
 	}
 	if (reason == DLL_PROCESS_DETACH)
 	{
