@@ -2,7 +2,7 @@
 
 // Incoming messages
 #define IA_IN_MOVEMENT 0x00
-typedef struct { char movement; } IA_IN_MOVEMENT_t;
+typedef struct { short /*2 bytes*/ movement; } IA_IN_MOVEMENT_t;
 
 #define IA_IN_TEXT 0x01
 typedef enum { PICKUP, NETWORK, BIG } gta2_textpos_t;
