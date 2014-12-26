@@ -1,8 +1,6 @@
 # proxy_dll
 If you want to know, why this is necessary, read the [gamepad_glue](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/gamepad_glue) `README` first.
 
-Grab the project files and latest pre-compiled binary from [here.](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.0.1-proxy_dll)
-
 ## What is a Proxy DLL?
 
 A `Proxy DLL` is a shared Windows library `(DLL)`, that has the same interface as the `DLL`-file it imitates and redirects all functions to the original `DLL` (just like a web proxy, hence the name). Just like the original library, it gets loaded in the address space of the process, that opens it. Here, we can modify the behaviour of the process!
@@ -19,4 +17,9 @@ It starts a TCP server on one of the ports in the range 19990-19995 (it tries th
 As soon, as a connection is established, it stuffs each incoming pair of bytes (=> always 2 at the same time!) into the address, that stores the player movement in GTA2.exe, overwriting the previous two bytes. See [here](https://github.com/Bytewerk/gta2-hackers-remix/blob/master/gamepad_glue/sdl_controller_code/gta2_controls.h) for a list of possible movement codes.
 
 When the connection goes down, a new TCP server gets started (on the next free port). This way we can change the [SDL controller code](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/gamepad_glue/sdl_controller_code) without restarting GTA2 each time!
+
+# Development
+Grab the project files from [here](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.0.1-proxy_dll) and import them with the *freeware-unless-you-got-a-bigass-company* [Visual Studio 2013 Community Edition](http://www.visualstudio.com/news/vs2013-community-vs).
+If you already have the 2010 version installed, it is also fine.
+
 
