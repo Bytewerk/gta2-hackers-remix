@@ -31,5 +31,11 @@ typedef struct { char byte; } IA_OUT_RUMBLE_t;
 #define IA_OUT_SCORE_DIFF 0x04
 typedef struct { int diff; } IA_OUT_SCORE_DIFF_t;
 
+#define IA_OUT_DEBUG_TEXT 0x05
+typedef struct {
+  char print_hex;
+  char text[100];
+} IA_OUT_DEBUG_TEXT_t;
+
 // outgoing events (without arguments)
 #define IA_OUT_QUIT 0xE0

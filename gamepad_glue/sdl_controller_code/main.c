@@ -62,14 +62,24 @@ int main(int argc, char *argv[]) {
         // https://github.com/Bytewerk/gta2-hackers-remix/wiki/0x665770-Rumble-Byte
         case IA_OUT_RUMBLE: {
           char rumble = buffer[1];
-          if (rumble == 0)
-            printf("rumble: 0 => ignoring!\n");
-          else if (rumble > 0) {
-            int duration = 150 + rumble * 50;
-            SDL_HapticRumblePlay(player->haptic, 1.0, duration);
-            // printf("rumble: %i; duration: %i\n", buffer[1], duration);
-          }
+          int duration = 150 + rumble * 50;
+          SDL_HapticRumblePlay(player->haptic, 1.0, duration);
+          // printf("rumble: %i; duration: %i\n", buffer[1], duration);
           break;
+        }
+        case IA_OUT_DEBUG_TEXT: {
+          char print_hex = buffer[1];
+          char *text = buffer + 2;
+          printf("[%i]: %s\n", i + 1, text);
+          if (print_hex)
+            for (int j = 2; j < 17; j++)
+              printf("\tbuffer[%i]: %c (%x)\n", j, buffer[j], buffer[j]);
+          break;
+        }
+        default: {
+          printf("ERROR: got junk from player %i's GTA2 instance:\n", i + 1);
+          // for(int j=0;j<10;j++)
+          //    printf("\tbuffer[%i]: %c (%x)\n", j, buffer[j], buffer[j]);
         }
         }
       }

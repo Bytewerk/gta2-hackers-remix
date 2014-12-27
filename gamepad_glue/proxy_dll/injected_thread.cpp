@@ -21,6 +21,7 @@
 #include <ws2tcpip.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdarg.h>
 
 #include "gta2_memory.h"
 #include "injected_api.h"
@@ -98,13 +99,25 @@ SOCKET injected_thread_listen(int port)
 }
 
 
-/*
-	Print debug messages like this:
+// This is a debug message that can send a string down the
+// pipe to the connected sdl_contoller_code (which should
+// in turn print it on stdout with the player instance number).
+// Format and the remaining arguments can be used like in printf.
+// Make sure that the message length is max. ~90 characters!
+void socklog(SOCKET ClientSocket, char print_hex, const char* format, ...)
+{
+	va_list args;
 
-	char buffer[100];
-	sprintf(buffer, "New Rumble: %i", rumble);
-	MessageBox(NULL, buffer, "G2HR", NULL);
-*/
+	char buffer[200];
+	buffer[0] = IA_OUT_DEBUG_TEXT;
+	buffer[1] = print_hex;
+
+	va_start(args, format);
+	vsprintf(buffer + 2, format, args);
+	va_end(args);
+
+	send(ClientSocket, buffer, sizeof(buffer), 0);
+}
 
 // returns 1 if receiving still works
 // returns 0 if the connection is dead
@@ -124,7 +137,13 @@ int injected_thread_receive(SOCKET ClientSocket)
 		case IA_IN_MOVEMENT:
 		{
 			memcpy(GTA2_ADDR_MOVEMENT, recvbuf + 1, 2);
+			socklog(ClientSocket, 0, "Got movement: %x %x\n", recvbuf[1], recvbuf[2]);
 			break;
+		}
+		default:
+		{
+			socklog(ClientSocket, 0, "What? Here's what I got:");
+			socklog(ClientSocket, 1, recvbuf);
 		}
 	}
 
@@ -166,7 +185,6 @@ void __cdecl injected_thread(void* param)
 		{
 			SOCKET ClientSocket = injected_thread_listen(TCP_SERVER_START_PORT + i);
 			if(ClientSocket == NULL) continue;
-
 			while(injected_thread_receive(ClientSocket));
 		}
 
