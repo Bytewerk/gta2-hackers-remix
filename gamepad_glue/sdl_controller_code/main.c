@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
   // stuff
   int verbose = (argc == 1);
 
-  if (SDL_Init(SDL_INIT_GAMECONTROLLER) < 0)
+  if (SDL_Init(SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC) < 0)
     return printf("ERROR from SDL: %s\n", SDL_GetError());
 
   if (SDLNet_Init() == -1)
@@ -39,10 +39,44 @@ int main(int argc, char *argv[]) {
 
   printf("[Guide]: Switch layout\n");
 
+  // create a socket set over all sockets, so we can check them for activity
+  SDLNet_SocketSet set = SDLNet_AllocSocketSet(game->player_count);
+  for (int i = 0; i < game->player_count; i++)
+    SDLNet_AddSocket(set, game->players[i].sock);
+
+  // shake all gamepads, so they know we're ready :)
+  for (int i = 0; i < game->player_count; i++)
+    SDL_HapticRumblePlay(game->players[i].haptic, 1.0, 1000);
+
   while (1) {
+    // Handle incoming TCP data, if any
+    if (SDLNet_CheckSockets(set, 0))
+      for (int i = 0; i < game->player_count; i++) {
+        player_t *player = &(game->players[i]);
+        if (!SDLNet_SocketReady(player->sock))
+          continue;
+
+        char buffer[200];
+        SDLNet_TCP_Recv(player->sock, buffer, sizeof(buffer));
+        switch (buffer[0]) {
+        // https://github.com/Bytewerk/gta2-hackers-remix/wiki/0x665770-Rumble-Byte
+        case IA_OUT_RUMBLE: {
+          char rumble = buffer[1];
+          if (rumble == 0)
+            printf("rumble: 0 => ignoring!\n");
+          else if (rumble > 0) {
+            int duration = 150 + rumble * 50;
+            SDL_HapticRumblePlay(player->haptic, 1.0, duration);
+            // printf("rumble: %i; duration: %i\n", buffer[1], duration);
+          }
+          break;
+        }
+        }
+      }
+
+    // Handle game controller activity
     SDL_Event e;
-    if (!SDL_WaitEvent(&e))
-      continue;
+    SDL_WaitEventTimeout(&e, 50);
 
     // All players: calculate movement bytes from the gamepad
     // input and send it to the associated GTA2 instance

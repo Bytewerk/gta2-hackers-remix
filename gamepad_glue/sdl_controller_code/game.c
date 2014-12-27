@@ -44,11 +44,9 @@ game_t *game_init() {
            controller_index++) {
         if (SDL_IsGameController(controller_index)) {
           player->pad = SDL_GameControllerOpen(controller_index);
-
-          // We need this ID to find out which controller has pressed the guide
-          // button
-          player->joystick_id = SDL_JoystickInstanceID(
-              SDL_GameControllerGetJoystick(player->pad));
+          player->joystick = SDL_GameControllerGetJoystick(player->pad);
+          player->joystick_id = SDL_JoystickInstanceID(player->joystick);
+          player->haptic = SDL_HapticOpenFromJoystick(player->joystick);
 
           if (player->pad == NULL)
             printf("WARNING: Couldn't connect to controller #%i: %s!\n",
@@ -57,6 +55,8 @@ game_t *game_init() {
           else
             printf(" => Assigned controller #%i: %s.\n", controller_index,
                    SDL_GameControllerName(player->pad));
+          if (SDL_HapticRumbleInit(player->haptic) != 0)
+            printf("NOTICE: Couldn't initialize rumble.\n");
         } else
           printf("NOTE: Controller #%i: %s isn't an XInput compatible gamepad, "
                  "skipping.\n",

@@ -5,7 +5,7 @@
 typedef struct { short /*2 bytes*/ movement; } IA_IN_MOVEMENT_t;
 
 #define IA_IN_TEXT 0x01
-typedef enum { PICKUP, NETWORK, BIG } gta2_textpos_t;
+typedef enum { ITEM, NETWORK, BIG } gta2_textpos_t;
 typedef struct {
   gta2_textpos_t position;
   char timer;

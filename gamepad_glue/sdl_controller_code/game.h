@@ -7,7 +7,9 @@
 
 typedef struct {
   SDL_GameController *pad;
-  SDL_JoystickID joystick_id;
+  SDL_Joystick *joystick;
+  SDL_JoystickID joystick_id; // needed to access the GUIDE button
+  SDL_Haptic *haptic;         // rumble / force feedback
   int mapping;
   TCPsocket sock;
 } player_t;

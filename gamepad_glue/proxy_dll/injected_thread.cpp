@@ -97,21 +97,56 @@ SOCKET injected_thread_listen(int port)
 	return ClientSocket;
 }
 
+
+/*
+	Print debug messages like this:
+
+	char buffer[100];
+	sprintf(buffer, "New Rumble: %i", rumble);
+	MessageBox(NULL, buffer, "G2HR", NULL);
+*/
+
 // returns 1 if receiving still works
 // returns 0 if the connection is dead
 int injected_thread_receive(SOCKET ClientSocket)
 {
     char recvbuf[DEFAULT_BUFLEN];
 
-	// return 0 on disconnect or error
+	// Wait until the client has a new message. This happens at least every 50ms,
+	// see SDL_WaitEventTimeout() in main.c of sdl_controller_code.
+	// Also return on disconnect.
 	if (recv(ClientSocket, recvbuf, DEFAULT_BUFLEN, 0) <= 0)
 		return 0;
 
+	// The message type is the first byte
 	switch (recvbuf[0])
 	{
 		case IA_IN_MOVEMENT:
-			memcpy((void*)GTA2_MOVEMENT, recvbuf+1, 2);
+		{
+			memcpy(GTA2_ADDR_MOVEMENT, recvbuf + 1, 2);
 			break;
+		}
+	}
+
+	// Edge detection for the rumble byte
+	// https://github.com/Bytewerk/gta2-hackers-remix/wiki/0x665770-Rumble-Byte
+	static char rumble = 0x00;
+	if(rumble != *GTA2_ADDR_RUMBLE)
+	{
+		rumble = *GTA2_ADDR_RUMBLE;
+
+		if (rumble > 0)
+		{
+			char buffer[2];
+			buffer[0] = IA_OUT_RUMBLE;
+			buffer[1] = rumble;
+			send(ClientSocket, buffer, sizeof(buffer), 0);
+		}
+
+		// Sometimes the game doesn't clean up this value!
+		// so make sure that we reset it
+		// TODO: make sure this gets initialized to 0x00
+		*GTA2_ADDR_RUMBLE = 0x00;
 	}
 
 	return 1; // everything's fine
