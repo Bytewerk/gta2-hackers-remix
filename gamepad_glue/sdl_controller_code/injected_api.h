@@ -26,7 +26,7 @@ typedef struct {
 typedef struct { int handle; } IA_OUT_WINHANDLE_t;
 
 #define IA_OUT_RUMBLE 0x03
-typedef struct { char byte; } IA_OUT_RUMBLE_t;
+typedef struct { char rumble; } IA_OUT_RUMBLE_t;
 
 #define IA_OUT_SCORE_DIFF 0x04
 typedef struct { int diff; } IA_OUT_SCORE_DIFF_t;

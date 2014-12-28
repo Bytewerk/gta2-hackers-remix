@@ -39,50 +39,12 @@ int main(int argc, char *argv[]) {
 
   printf("[Guide]: Switch layout\n");
 
-  // create a socket set over all sockets, so we can check them for activity
-  SDLNet_SocketSet set = SDLNet_AllocSocketSet(game->player_count);
-  for (int i = 0; i < game->player_count; i++)
-    SDLNet_AddSocket(set, game->players[i].sock);
-
-  // shake all gamepads, so they know we're ready :)
+  // shake all controllers, so players know we're ready :)
   for (int i = 0; i < game->player_count; i++)
     SDL_HapticRumblePlay(game->players[i].haptic, 1.0, 1000);
 
   while (1) {
-    // Handle incoming TCP data, if any
-    if (SDLNet_CheckSockets(set, 0))
-      for (int i = 0; i < game->player_count; i++) {
-        player_t *player = &(game->players[i]);
-        if (!SDLNet_SocketReady(player->sock))
-          continue;
-
-        char buffer[200];
-        SDLNet_TCP_Recv(player->sock, buffer, sizeof(buffer));
-        switch (buffer[0]) {
-        // https://github.com/Bytewerk/gta2-hackers-remix/wiki/0x665770-Rumble-Byte
-        case IA_OUT_RUMBLE: {
-          char rumble = buffer[1];
-          int duration = 150 + rumble * 50;
-          SDL_HapticRumblePlay(player->haptic, 1.0, duration);
-          // printf("rumble: %i; duration: %i\n", buffer[1], duration);
-          break;
-        }
-        case IA_OUT_DEBUG_TEXT: {
-          char print_hex = buffer[1];
-          char *text = buffer + 2;
-          printf("[%i]: %s\n", i + 1, text);
-          if (print_hex)
-            for (int j = 2; j < 17; j++)
-              printf("\tbuffer[%i]: %c (%x)\n", j, buffer[j], buffer[j]);
-          break;
-        }
-        default: {
-          printf("ERROR: got junk from player %i's GTA2 instance:\n", i + 1);
-          // for(int j=0;j<10;j++)
-          //    printf("\tbuffer[%i]: %c (%x)\n", j, buffer[j], buffer[j]);
-        }
-        }
-      }
+    iaout_receive(game);
 
     // Handle game controller activity
     SDL_Event e;
@@ -108,9 +70,8 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  // TODO: Cleanup code!
-  // SDL_GameControllerClose(game->pad);
-  // SDL_GameControllerClose(game2->pad);
+  // TODO: Cleanup code and a sane way to quit the process
+  // Close game controller, haptic stuff etc.
   SDL_Quit();
 
   return 0;
