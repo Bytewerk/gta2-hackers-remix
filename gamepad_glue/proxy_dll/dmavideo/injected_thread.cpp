@@ -137,13 +137,13 @@ int injected_thread_receive(SOCKET ClientSocket)
 		case IA_IN_MOVEMENT:
 		{
 			memcpy(GTA2_ADDR_MOVEMENT, recvbuf + 1, 2);
-			socklog(ClientSocket, 0, "Got movement: %x %x\n", recvbuf[1], recvbuf[2]);
+			// socklog(ClientSocket, 0, "Got movement: %x %x\n", recvbuf[1], recvbuf[2]);
 			break;
 		}
 		default:
 		{
-			socklog(ClientSocket, 0, "What? Here's what I got:");
-			socklog(ClientSocket, 1, recvbuf);
+			// socklog(ClientSocket, 0, "What? Here's what I got:");
+			// socklog(ClientSocket, 1, recvbuf);
 		}
 	}
 
@@ -185,6 +185,8 @@ void __cdecl injected_thread(void* param)
 		{
 			SOCKET ClientSocket = injected_thread_listen(TCP_SERVER_START_PORT + i);
 			if(ClientSocket == NULL) continue;
+
+			socklog(ClientSocket, 0, "Hello there!");
 			while(injected_thread_receive(ClientSocket));
 		}
 
