@@ -26,6 +26,11 @@
 *.exe
 *.out
 *.app
-
 *.x86_64
 *.i686
+
+
+# Code::Blocks project files
+*.cbp
+*.depend
+*.layout
