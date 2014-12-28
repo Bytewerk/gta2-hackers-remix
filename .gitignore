@@ -34,3 +34,19 @@
 *.cbp
 *.depend
 *.layout
+
+# Visual Studio (2013, add others if you need) project files
+# see also: http://git.io/visual-studio-gitignore
+# VS project root
+Debug/
+Release/
+ipch/
+*.sdf
+*.sln
+*.suo
+
+# VS project: dmavideo folder
+*.vcxproj
+*.filters
+*.user
+*.def
