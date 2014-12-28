@@ -16,7 +16,15 @@ void iaout_receive(game_t *game) {
   }
 }
 
-// returns the count of bytes parsed
+// 'break' out of the case if the data is garbage!
+#define FRAMEDATACASE(NAME, CODE)                                              \
+  case NAME: {                                                                 \
+    SDLNet_TCP_Recv(player->sock, &buffer, sizeof(buffer));                    \
+    NAME##_t *data = &buffer;                                                  \
+    CODE return 1 + sizeof(NAME##_t);                                          \
+  }
+
+// returns the count of bytes parsed, 0 on error
 int iaout_parser(player_t *player) {
   char header;
   char buffer[200];
