@@ -20,11 +20,13 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <stdarg.h>
 
 #include "gta2_memory.h"
-#include "injected_api.h"
+#include "../../injected_api.h"
+
+// FIXME: It doesn't compile, when including the .h file here :(
+// Is this a bug in the MSVC linker?
+#include "ia_server.c"
 
 
 // Speed up the build process
@@ -35,7 +37,6 @@
 // Need to link with Ws2_32.lib
 #pragma comment (lib, "Ws2_32.lib")
 
-#define DEFAULT_BUFLEN 200
 #define TCP_SERVER_START_PORT 19990
 
 
@@ -99,74 +100,21 @@ SOCKET injected_thread_listen(int port)
 }
 
 
-// This is a debug message that can send a string down the
-// pipe to the connected sdl_contoller_code (which should
-// in turn print it on stdout with the player instance number).
-// Format and the remaining arguments can be used like in printf.
-// Make sure that the message length is max. ~90 characters!
-void socklog(SOCKET ClientSocket, char print_hex, const char* format, ...)
-{
-	va_list args;
-
-	char buffer[200];
-	buffer[0] = IA_OUT_DEBUG_TEXT;
-	buffer[1] = print_hex;
-
-	va_start(args, format);
-	vsprintf(buffer + 2, format, args);
-	va_end(args);
-
-	send(ClientSocket, buffer, sizeof(buffer), 0);
-}
-
 // returns 1 if receiving still works
 // returns 0 if the connection is dead
 int injected_thread_receive(SOCKET ClientSocket)
 {
-    char recvbuf[DEFAULT_BUFLEN];
+	char header;
 
-	// Wait until the client has a new message. This happens at least every 50ms,
-	// see SDL_WaitEventTimeout() in main.c of sdl_controller_code.
-	// Also return on disconnect.
-	if (recv(ClientSocket, recvbuf, DEFAULT_BUFLEN, 0) <= 0)
+	// Wait until the client has a new message. This happens at least
+	// every 50ms, see SDL_WaitEventTimeout() in main.c of
+	// sdl_controller_code. Also return on disconnect.
+	if (recv(ClientSocket, &header, 1, 0) <= 0)
 		return 0;
 
-	// The message type is the first byte
-	switch (recvbuf[0])
-	{
-		case IA_IN_MOVEMENT:
-		{
-			memcpy(GTA2_ADDR_MOVEMENT, recvbuf + 1, 2);
-			// socklog(ClientSocket, 0, "Got movement: %x %x\n", recvbuf[1], recvbuf[2]);
-			break;
-		}
-		default:
-		{
-			// socklog(ClientSocket, 0, "What? Here's what I got:");
-			// socklog(ClientSocket, 1, recvbuf);
-		}
-	}
-
-	// Edge detection for the rumble byte
-	// https://github.com/Bytewerk/gta2-hackers-remix/wiki/0x665770-Rumble-Byte
-	static char rumble = 0x00;
-	if(rumble != *GTA2_ADDR_RUMBLE)
-	{
-		rumble = *GTA2_ADDR_RUMBLE;
-
-		if (rumble > 0)
-		{
-			char buffer[2];
-			buffer[0] = IA_OUT_RUMBLE;
-			buffer[1] = rumble;
-			send(ClientSocket, buffer, sizeof(buffer), 0);
-		}
-
-		// Sometimes the game doesn't clean up this value!
-		// so make sure that we reset it
-		// TODO: make sure this gets initialized to 0x00
-		*GTA2_ADDR_RUMBLE = 0x00;
-	}
+	ia_server_parser(ClientSocket, header);
+	
+	ia_server_rumble_byte(ClientSocket);
 
 	return 1; // everything's fine
 }
@@ -186,7 +134,7 @@ void __cdecl injected_thread(void* param)
 			SOCKET ClientSocket = injected_thread_listen(TCP_SERVER_START_PORT + i);
 			if(ClientSocket == NULL) continue;
 
-			socklog(ClientSocket, 0, "Hello there!");
+			ia_server_log(ClientSocket, 0, "Hello there!");
 			while(injected_thread_receive(ClientSocket));
 		}
 

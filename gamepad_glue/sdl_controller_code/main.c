@@ -1,6 +1,7 @@
+#include "../injected_api.h"
 #include "controller_mapping.h"
 #include "game.h"
-#include "injected_api.h"
+#include "ia_client.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_net.h>
 #include <stdio.h>
@@ -44,7 +45,7 @@ int main(int argc, char *argv[]) {
     SDL_HapticRumblePlay(game->players[i].haptic, 1.0, 1000);
 
   while (1) {
-    iaout_receive(game);
+    ia_client_receive(game);
 
     // Handle game controller activity
     SDL_Event e;
@@ -57,11 +58,11 @@ int main(int argc, char *argv[]) {
       short ctrl_code = controller_mapping(&e, player);
 
       // add a frame around the message
-      int frame_size = 1 + sizeof(IA_IN_MOVEMENT_t);
+      int frame_size = 1 + sizeof(IA_MOVEMENT_t);
       char *frame = malloc(frame_size);
-      frame[0] = IA_IN_MOVEMENT;
+      frame[0] = IA_MOVEMENT;
 
-      IA_IN_MOVEMENT_t *data = (IA_IN_MOVEMENT_t *)(frame + 1);
+      IA_MOVEMENT_t *data = (IA_MOVEMENT_t *)(frame + 1);
       data->movement = ctrl_code;
 
       SDLNet_TCP_Send(player->sock, frame, frame_size);
