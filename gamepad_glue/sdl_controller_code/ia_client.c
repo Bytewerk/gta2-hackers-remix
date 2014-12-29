@@ -44,13 +44,8 @@ int ia_client_parser(player_t *player, char header) {
 }
 
 void ia_client_receive(game_t *game) {
-  if (!SDLNet_CheckSockets(game->socket_set, 0)) {
-    static int counter = 0;
-    counter++;
-    if (counter % 10 == 0)
-      printf("%i nothing to parse.\n", counter);
+  if (!SDLNet_CheckSockets(game->socket_set, 0))
     return;
-  }
 
   for (int i = 0; i < game->player_count; i++) {
     char header;

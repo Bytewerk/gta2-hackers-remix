@@ -57,18 +57,17 @@ void ia_server_rumble_byte(SOCKET ClientSocket) {
 // returns the count of bytes parsed, 0 on error
 int ia_server_parser(SOCKET ClientSocket, char header) {
   char buffer[200];
-  static int counter = 0;
-  counter++;
   // receive header byte
 
   switch (header) {
-    FRAMEDATACASE(IA_MOVEMENT, {
-      memcpy(GTA2_ADDR_MOVEMENT, &(data->movement), 2);
-      if (counter % 50 == 0)
-        ia_server_log(ClientSocket, 0, "%i - %x", counter, data->movement);
-    })
+    FRAMEDATACASE(IA_MOVEMENT,
+                  { memcpy(GTA2_ADDR_MOVEMENT, &(data->movement), 2); })
   }
 
-  ia_server_log(ClientSocket, 0, "proxy_dll got garbage!");
+  static int garbage_counter = 0;
+  garbage_counter++;
+
+  if ((garbage_counter + 99) % 100 == 0)
+    ia_server_log(ClientSocket, 0, "garbage_counter: %i!", garbage_counter);
   return 0;
 }
