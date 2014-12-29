@@ -49,7 +49,7 @@ void ia_server_rumble_byte(SOCKET ClientSocket) {
 // 'break' out of the case if the data is garbage!
 #define FRAMEDATACASE(NAME, CODE)                                              \
   case NAME: {                                                                 \
-    recv(ClientSocket, buffer, sizeof(buffer), 0);                             \
+    recv(ClientSocket, buffer, sizeof(NAME##_t), 0);                           \
     NAME##_t *data = (NAME##_t *)&buffer;                                      \
     CODE return 1 + sizeof(NAME##_t);                                          \
   }
@@ -57,12 +57,16 @@ void ia_server_rumble_byte(SOCKET ClientSocket) {
 // returns the count of bytes parsed, 0 on error
 int ia_server_parser(SOCKET ClientSocket, char header) {
   char buffer[200];
-
+  static int counter = 0;
+  counter++;
   // receive header byte
 
   switch (header) {
-    FRAMEDATACASE(IA_MOVEMENT,
-                  { memcpy(GTA2_ADDR_MOVEMENT, &(data->movement), 2); })
+    FRAMEDATACASE(IA_MOVEMENT, {
+      memcpy(GTA2_ADDR_MOVEMENT, &(data->movement), 2);
+      if (counter % 50 == 0)
+        ia_server_log(ClientSocket, 0, "%i - %x", counter, data->movement);
+    })
   }
 
   ia_server_log(ClientSocket, 0, "proxy_dll got garbage!");

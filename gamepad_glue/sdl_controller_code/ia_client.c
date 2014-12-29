@@ -6,7 +6,7 @@
 // 'break' out of the case if the data is garbage!
 #define FRAMEDATACASE(NAME, CODE)                                              \
   case NAME: {                                                                 \
-    SDLNet_TCP_Recv(player->sock, &buffer, sizeof(buffer));                    \
+    SDLNet_TCP_Recv(player->sock, &buffer, sizeof(NAME##_t));                  \
     NAME##_t *data = &buffer;                                                  \
     CODE return 1 + sizeof(NAME##_t);                                          \
   }
@@ -44,8 +44,13 @@ int ia_client_parser(player_t *player, char header) {
 }
 
 void ia_client_receive(game_t *game) {
-  if (!SDLNet_CheckSockets(game->socket_set, 0))
+  if (!SDLNet_CheckSockets(game->socket_set, 0)) {
+    static int counter = 0;
+    counter++;
+    if (counter % 10 == 0)
+      printf("%i nothing to parse.\n", counter);
     return;
+  }
 
   for (int i = 0; i < game->player_count; i++) {
     char header;
