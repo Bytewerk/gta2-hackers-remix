@@ -137,14 +137,8 @@ void __cdecl injected_thread(void* param)
 			ia_server_log(ClientSocket, "Hello there!");
 
 			// Get the base offset of GTA2.exe
-			// TODO: the module may also be called Player1.exe etc.
 			// see also: http://stackoverflow.com/a/17965759
-			EXE_OFFSET = (char*)GetModuleHandle("gta2.exe");
-
-			ia_server_log(ClientSocket, "Offset:        %p", EXE_OFFSET);
-			ia_server_log(ClientSocket, "Pointer:       %p", EXE_OFFSET + 0x1E8DC0);
-			ia_server_log(ClientSocket, "->resolved:    %p", *((char**)(EXE_OFFSET + 0x1E8DC0)));
-			ia_server_log(ClientSocket, "Score pointer: %p", (*((char**)(EXE_OFFSET + 0x1E8DC0))) + 0x188);
+			EXE_OFFSET = (char*)GetModuleHandle(0);
 
 			while(injected_thread_receive(ClientSocket));
 		}

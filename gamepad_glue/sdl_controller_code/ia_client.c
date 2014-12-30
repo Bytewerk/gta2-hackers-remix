@@ -40,6 +40,10 @@ int ia_client_parser(player_t *player, char header) {
       printf("Player %i %s\n", player->id + 1,
              player->in_vehicle ? "entered a vehicle" : "left a vehicle");
     });
+
+    FRAMEDATACASE(IA_SCORE_DELTA, {
+      printf("Player %i Score Delta: %i\n", player->id + 1, data->delta);
+    });
   }
 
   printf("[%i] Garbage:    %02x", player->id + 1, header & 0xff);

@@ -69,7 +69,7 @@ BOOL WINAPI DllMain(HINSTANCE hInst,DWORD reason,LPVOID)
 		p[19] = GetProcAddress(hL,"Vid_SetMode");
 		p[20] = GetProcAddress(hL,"Vid_ShutDown_SYS");
 		p[21] = GetProcAddress(hL,"Vid_WindowProc");
-	
+
 		// Start the injected thread (see injected_thread.cpp)
 		_beginthread(injected_thread,0,NULL);
 	}
