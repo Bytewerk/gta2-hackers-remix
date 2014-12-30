@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
+// do something with 'data' in the CODE section
 // 'break' out of the case if the data is garbage!
 #define FRAMEDATACASE(NAME, CODE)                                              \
   case NAME: {                                                                 \
@@ -13,7 +14,10 @@
 
 // returns the count of bytes parsed, 0 on error
 int ia_client_parser(player_t *player, char header) {
+  // pre-fill the buffer to make debugging easier
   char buffer[200];
+  for (int i = 0; i < sizeof(buffer); i++)
+    buffer[i] = 0x42;
 
   switch (header) {
     // http://git.io/0x665770
@@ -21,7 +25,7 @@ int ia_client_parser(player_t *player, char header) {
       if (data->rumble > 20 || data->rumble < -20)
         break;
       SDL_HapticRumblePlay(player->haptic, 1.0, 150 + data->rumble * 50);
-    })
+    });
 
     FRAMEDATACASE(IA_DEBUG_TEXT, {
       if (data->print_hex != 0 && data->print_hex != 1)
@@ -37,9 +41,22 @@ int ia_client_parser(player_t *player, char header) {
         for (int i = 0; i < 15; i++)
           printf("\ttext[%i]: %c (%x)\n", i, data->text[i], data->text[i]);
     });
+
+    FRAMEDATACASE(IA_VEHICLE_INFO, {
+      if (data->in_vehicle != 0 && data->in_vehicle != 1)
+        break;
+
+      player->in_vehicle = data->in_vehicle;
+      printf("Player %i %s\n", player->id + 1,
+             player->in_vehicle ? "entered a vehicle" : "left a vehicle");
+    });
   }
 
-  printf("Got garbage from [%i]!\n", player->id + 1);
+  printf("[%i] Garbage:    %02x", player->id + 1, header & 0xff);
+  for (int i = 0; i < 15; i++)
+    printf("%s %02x", (i % 5 == 0) ? " |" : "", buffer[i] & 0xff);
+  printf("\n");
+
   return 0;
 }
 

@@ -114,7 +114,7 @@ int injected_thread_receive(SOCKET ClientSocket)
 
 	ia_server_parser(ClientSocket, header);
 	
-	ia_server_rumble_byte(ClientSocket);
+	ia_server_send_info(ClientSocket);
 
 	return 1; // everything's fine
 }

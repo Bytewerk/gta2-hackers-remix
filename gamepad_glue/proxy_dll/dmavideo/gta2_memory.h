@@ -1,8 +1,21 @@
 #pragma once
 
+/*
+        Before reverse engineering new addresses,
+        check this thread first:
+        http://gtamp.com/forum/viewtopic.php?t=700
+*/
+
+/*
+        Addresses found by robotanarchy:
+*/
+
+#define GTA2_ADDR_PLAYER_IN_VEHICLE (char *)0x5e20bc
+
 // See also: sdl_controller_code/gta2_controls.h
 #define GTA2_ADDR_MOVEMENT (char *)0x5ecacc
 
+// http://git.io/g2hr-rumble-byte
 #define GTA2_ADDR_RUMBLE (char *)0x665770
 
 /*

@@ -13,6 +13,9 @@ typedef struct {
   SDL_JoystickID joystick_id; // needed to access the GUIDE button
   SDL_Haptic *haptic;         // rumble / force feedback
   TCPsocket sock;
+
+  // variables from GTA2 RAM
+  char in_vehicle;
 } player_t;
 
 typedef struct {
