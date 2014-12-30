@@ -41,8 +41,10 @@ int ia_client_parser(player_t *player, char header) {
              player->in_vehicle ? "entered a vehicle" : "left a vehicle");
     });
 
+    // run-over rumble
     FRAMEDATACASE(IA_SCORE_DELTA, {
-      printf("Player %i Score Delta: %i\n", player->id + 1, data->delta);
+      if (player->in_vehicle && data->delta < 500)
+        SDL_HapticRumblePlay(player->haptic, 1.0, 300);
     });
   }
 
