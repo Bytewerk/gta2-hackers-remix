@@ -92,10 +92,9 @@ int ia_server_parser(SOCKET ClientSocket, char header) {
                   { memcpy(GTA2_ADDR_MOVEMENT, &(data->movement), 2); });
   }
 
-  static int garbage_counter = 0;
-  garbage_counter++;
-
-  if ((garbage_counter + 99) % 100 == 0)
-    ia_server_log(ClientSocket, "garbage_counter: %i!", garbage_counter);
+  // send the 5 first bytes back
+  ia_server_log(ClientSocket, "Got garbage: %x %x %x %x %x", header & 0xff,
+                buffer[0] & 0xff, buffer[1] & 0xff, buffer[2] & 0xff,
+                buffer[3] & 0xff);
   return 0;
 }
