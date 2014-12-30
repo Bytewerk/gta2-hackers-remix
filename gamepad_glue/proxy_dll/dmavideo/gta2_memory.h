@@ -9,9 +9,9 @@
 /*
         Addresses found by robotanarchy
 */
+char *EXE_OFFSET;
 
-#define GTA2_ADDR_SCORE (int *)(*((int **)0x1F5BBC) + 0x2d4)
-
+#define GTA2_ADDR_SCORE (int *)(*((char **)(EXE_OFFSET + 0x1E8DC0)) + 0x188)
 #define GTA2_ADDR_PLAYER_IN_VEHICLE (char *)0x5e20bc
 
 // See also: sdl_controller_code/gta2_controls.h

@@ -1,6 +1,6 @@
 #pragma once
 
-#define INJECTED_API_VERSION 2
+#define INJECTED_API_VERSION 3
 
 // Client to server messages
 #define IA_MOVEMENT 0x00
@@ -27,8 +27,8 @@ typedef struct { char text[100]; } IA_DEBUG_TEXT_t;
 #define IA_VEHICLE_INFO 0x03
 typedef struct { char in_vehicle; } IA_VEHICLE_INFO_t;
 
-#define IA_SCORE_DIFF 0x04 // TODO
-typedef struct { int diff; } IA_SCORE_DIFF_t;
+#define IA_SCORE_DELTA 0x04 // TODO
+typedef struct { int delta; } IA_SCORE_DELTA_t;
 
 #define IA_SCOREBOARD 0x05 // TODO
 typedef struct {

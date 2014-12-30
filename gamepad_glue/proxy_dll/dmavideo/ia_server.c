@@ -67,9 +67,20 @@ void ia_server_rumble_byte(SOCKET ClientSocket) {
   }
 }
 
+void ia_server_score_change(SOCKET ClientSocket) {
+  static int score = 0;
+  if (*GTA2_ADDR_SCORE != score) {
+    int delta = *GTA2_ADDR_SCORE - score;
+    if (delta > 0)
+      FRAMEDATASEND(IA_SCORE_DELTA, data->delta = delta);
+    score = *GTA2_ADDR_SCORE;
+  }
+}
+
 void ia_server_send_info(SOCKET ClientSocket) {
   ia_server_player_info(ClientSocket);
   ia_server_rumble_byte(ClientSocket);
+  ia_server_score_change(ClientSocket);
 }
 
 // returns the count of bytes parsed, 0 on error
