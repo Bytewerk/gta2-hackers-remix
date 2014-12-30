@@ -7,8 +7,10 @@
 */
 
 /*
-        Addresses found by robotanarchy:
+        Addresses found by robotanarchy
 */
+
+#define GTA2_ADDR_SCORE (int *)(*((int **)0x1F5BBC) + 0x2d4)
 
 #define GTA2_ADDR_PLAYER_IN_VEHICLE (char *)0x5e20bc
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#define INJECTED_API_VERSION 1
+#define INJECTED_API_VERSION 2
 
 // Client to server messages
 #define IA_MOVEMENT 0x00
@@ -22,10 +22,7 @@ typedef struct { int version; } IA_API_VERSION_t;
 typedef struct { char rumble; } IA_RUMBLE_t;
 
 #define IA_DEBUG_TEXT 0x02
-typedef struct {
-  char print_hex;
-  char text[100];
-} IA_DEBUG_TEXT_t;
+typedef struct { char text[100]; } IA_DEBUG_TEXT_t;
 
 #define IA_VEHICLE_INFO 0x03
 typedef struct { char in_vehicle; } IA_VEHICLE_INFO_t;
@@ -44,3 +41,7 @@ typedef struct { int handle; } IA_WINHANDLE_t;
 
 // Server to client events (without arguments)
 #define IA_QUIT 0xE0 // TODO
+
+// If you want to see hex output in the terminal,
+// just use this reserved garbage byte.
+#define IA_GARBAGE 0xFF

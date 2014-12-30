@@ -11,7 +11,7 @@
   {                                                                            \
     char buffer[sizeof(NAME##_t) + 1];                                         \
     buffer[0] = NAME;                                                          \
-    NAME##_t *data = ((NAME##_t *)&buffer) + 1;                                \
+    NAME##_t *data = (NAME##_t *)(buffer + 1);                                 \
     CODE;                                                                      \
     send(ClientSocket, buffer, sizeof(buffer), 0);                             \
   }
@@ -29,20 +29,15 @@
 // pipe to the connected sdl_contoller_code (which should
 // in turn print it on stdout with the player instance number).
 // Format and the remaining arguments can be used like in printf.
-// Make sure that the message length is max. ~90 characters!
-void ia_server_log(SOCKET ClientSocket, char print_hex, const char *format,
-                   ...) {
+// Max. length of the string is in injected_api.h.
+void ia_server_log(SOCKET ClientSocket, const char *format, ...) {
   va_list args;
 
-  char buffer[200];
-  buffer[0] = IA_DEBUG_TEXT;
-  buffer[1] = print_hex;
-
-  va_start(args, format);
-  vsprintf(buffer + 2, format, args);
-  va_end(args);
-
-  send(ClientSocket, buffer, sizeof(buffer), 0);
+  FRAMEDATASEND(IA_DEBUG_TEXT, {
+    va_start(args, format);
+    vsprintf_s(data->text, sizeof(data->text), format, args);
+    va_end(args);
+  });
 }
 
 void ia_server_player_info(SOCKET ClientSocket) {
@@ -50,6 +45,7 @@ void ia_server_player_info(SOCKET ClientSocket) {
   // enemies in vehicles?) and for different controller
   // layouts for driving in vehicles
   static char in_vehicle = 0x00;
+
   if (in_vehicle != *GTA2_ADDR_PLAYER_IN_VEHICLE)
     FRAMEDATASEND(IA_VEHICLE_INFO,
                   data->in_vehicle = in_vehicle = *GTA2_ADDR_PLAYER_IN_VEHICLE);
@@ -89,6 +85,6 @@ int ia_server_parser(SOCKET ClientSocket, char header) {
   garbage_counter++;
 
   if ((garbage_counter + 99) % 100 == 0)
-    ia_server_log(ClientSocket, 0, "garbage_counter: %i!", garbage_counter);
+    ia_server_log(ClientSocket, "garbage_counter: %i!", garbage_counter);
   return 0;
 }

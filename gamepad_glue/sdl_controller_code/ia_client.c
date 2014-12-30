@@ -28,18 +28,8 @@ int ia_client_parser(player_t *player, char header) {
     });
 
     FRAMEDATACASE(IA_DEBUG_TEXT, {
-      if (data->print_hex != 0 && data->print_hex != 1)
-        break;
-
-      char debug_text[100];
-      strncpy(&debug_text, data->text, 99);
-      debug_text[99] = '\0';
-      printf("[%i]: %s\n", player->id + 1, debug_text);
-
-      // print hex codes
-      if (data->print_hex)
-        for (int i = 0; i < 15; i++)
-          printf("\ttext[%i]: %c (%x)\n", i, data->text[i], data->text[i]);
+      data->text[sizeof(data->text) - 2] = '\0';
+      printf("[%i]: %s\n", player->id + 1, data->text);
     });
 
     FRAMEDATACASE(IA_VEHICLE_INFO, {
