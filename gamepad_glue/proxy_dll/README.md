@@ -19,7 +19,7 @@ As soon, as a connection is established, it stuffs each incoming pair of bytes (
 When the connection goes down, a new TCP server gets started (on the next free port). This way we can change the [SDL controller code](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/gamepad_glue/sdl_controller_code) without restarting GTA2 each time!
 
 # Development
-Grab the project files from [here](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.0.1-proxy_dll) and import them with the *freeware-unless-you-got-a-bigass-company* [Visual Studio 2013 Community Edition](http://www.visualstudio.com/news/vs2013-community-vs).
-If you already have the 2010 version installed, it is also fine.
+Grab the project files from [this release](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.0.3-IDE-projects) and import them with the *freeware-unless-you-got-a-bigass-company* [Visual Studio 2013 Community Edition](http://www.visualstudio.com/news/vs2013-community-vs).
+If you already have the 2010 version installed, you can use the project files from [here](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.0.1-proxy_dll).
 
 
