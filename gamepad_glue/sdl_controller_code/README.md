@@ -18,12 +18,10 @@ It should theoretically compile on Linux too, but we'll need to figure out how m
 * [Download Code::Blocks](http://www.codeblocks.org/downloads/26#windows) (the one that has MinGW included) and install it
 * [Download SDL2](http://libsdl.org/download-2.0.php) development libraries for MinGWx32
 * [Download SDL2_net](http://www.libsdl.org/projects/SDL_net/) *for 32-bit Windows*
+* [Download the latest project files](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.0.3-IDE-projects)
 * Extract the `bin`, `include`, `lib` and `share` folders from the SDL2 and SDL2_net archives to `%Pogram Files%/Codeblocks/MinGW/` (merge existing folders)
-* Start Code::Blocks
-* Create a new C-Project (console program, **not** SDL Project - this doesn't work with SDL2)
-* Open up the linker settings: `Project build options` / *click the parent entry on the left, that contains Debug and Release* / `Linker Settings`
-* Link with: `mingw32`, `SDL2main`, `SDL2`, `SDL2_net`
-* In the compiler settings, add the flag: `-std=c99`
+* open the project
+* start hacking
 
 ## Fix SDL 2.0.3
 You'll probably get the error `winapifamily.h: No such file or directory`, when you try to compile.
