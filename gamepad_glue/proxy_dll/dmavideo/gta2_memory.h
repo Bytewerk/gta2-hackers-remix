@@ -4,14 +4,22 @@
         Before reverse engineering new addresses,
         check this thread first:
         http://gtamp.com/forum/viewtopic.php?t=700
+
+        All addresses in this file were found by
+        robotanarchy, except for the following.
+
+        Credit to Sektor (gtamp.com):
+                GTA2_MPADDR_KILLS
+                GTA2_MPADDR_POINTS
 */
 
-/*
-        Addresses found by robotanarchy
-*/
 char *EXE_OFFSET;
+char MP_PLAYER_ID; // 0...5
 
-#define GTA2_ADDR_SCORE (int *)(*((char **)(EXE_OFFSET + 0x1E8DC0)) + 0x188)
+//
+// Addresses that work in both single- (SP) and multiplayer (MP)
+//
+
 #define GTA2_ADDR_PLAYER_IN_VEHICLE (char *)0x5e20bc
 
 // See also: sdl_controller_code/gta2_controls.h
@@ -19,6 +27,18 @@ char *EXE_OFFSET;
 
 // http://git.io/g2hr-rumble-byte
 #define GTA2_ADDR_RUMBLE (char *)0x665770
+
+//
+// Different for SP and MP
+//
+
+// FIXME: this one only works for the first game started.
+// maybe a different pointer works better?
+#define GTA2_ADDRSP_SCORE (int *)(*((char **)(EXE_OFFSET + 0x1E8DC0)) + 0x188)
+
+#define GTA2_ADDRMP_SCORE (int *)((char *)0x5EC50C + MP_PLAYER_ID * 0x04);
+#define GTA2_ADDRMP_KILLS (char *)0x5EC4BA + MP_PLAYER_ID * 0x0A;
+#define GTA2_ADDRMP_POINTS (char *)0x5EC500 + MP_PLAYER_ID * 0x02;
 
 /*
         GTA2 Text adresses all have the folowing layout:
