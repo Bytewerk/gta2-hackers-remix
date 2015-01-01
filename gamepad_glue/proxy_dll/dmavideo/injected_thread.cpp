@@ -134,7 +134,7 @@ void __cdecl injected_thread(void* param)
 			SOCKET ClientSocket = injected_thread_listen(TCP_SERVER_START_PORT + i);
 			if(ClientSocket == NULL) continue;
 
-			ia_server_log(ClientSocket, "Hello there!");
+			ia_server_init(ClientSocket);
 
 			// Get the base offset of GTA2.exe
 			// see also: http://stackoverflow.com/a/17965759

@@ -29,7 +29,7 @@ int ia_client_parser(player_t *player, char header) {
 
     FRAMEDATACASE(IA_DEBUG_TEXT, {
       data->text[sizeof(data->text) - 2] = '\0';
-      printf("[%i]: %s\n", player->id + 1, data->text);
+      printf("#%i> %s\n", player->id + 1, data->text);
     });
 
     FRAMEDATACASE(IA_VEHICLE_INFO, {
@@ -37,18 +37,27 @@ int ia_client_parser(player_t *player, char header) {
         break;
 
       player->in_vehicle = data->in_vehicle;
-      printf("Player %i %s\n", player->id + 1,
+      printf("#%i: %s\n", player->id + 1,
              player->in_vehicle ? "entered a vehicle" : "left a vehicle");
     });
 
-    // run-over rumble
+    FRAMEDATACASE(IA_API_VERSION, {
+      if (data->version != INJECTED_API_VERSION)
+        printf("#%i ERROR: Injected API version mismatch (client: %i, server: "
+               "%i)!\n",
+               player->id + 1, INJECTED_API_VERSION, data->version);
+      else
+        printf("#%i: Connection initialized!\n", player->id + 1);
+    });
+
+    // TODO: make this more generic
     FRAMEDATACASE(IA_SCORE_DELTA, {
       if (player->in_vehicle && data->delta < 500)
         SDL_HapticRumblePlay(player->haptic, 1.0, 300);
     });
   }
 
-  printf("[%i] Garbage:    %02x", player->id + 1, header & 0xff);
+  printf("#%i GARBAGE:    %02x", player->id + 1, header & 0xff);
   for (int i = 0; i < 15; i++)
     printf("%s %02x", (i % 5 == 0) ? " |" : "", buffer[i] & 0xff);
   printf("\n");

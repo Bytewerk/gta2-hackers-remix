@@ -1,6 +1,6 @@
 #pragma once
 
-#define INJECTED_API_VERSION 3
+#define INJECTED_API_VERSION 4
 
 // Client to server messages
 #define IA_MOVEMENT 0x00
@@ -15,9 +15,6 @@ typedef struct {
 } IA_TEXT_t;
 
 // Server to client messages
-#define IA_API_VERSION 0x00 // TODO
-typedef struct { int version; } IA_API_VERSION_t;
-
 #define IA_RUMBLE 0x01
 typedef struct { char rumble; } IA_RUMBLE_t;
 
@@ -38,6 +35,9 @@ typedef struct {
 
 #define IA_WINHANDLE 0x06 // TODO
 typedef struct { int handle; } IA_WINHANDLE_t;
+
+#define IA_API_VERSION 0x07
+typedef struct { int version; } IA_API_VERSION_t;
 
 // Server to client events (without arguments)
 #define IA_QUIT 0xE0 // TODO

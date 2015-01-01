@@ -40,6 +40,12 @@ void ia_server_log(SOCKET ClientSocket, const char *format, ...) {
   });
 }
 
+void ia_server_init(SOCKET ClientSocket) {
+  FRAMEDATASEND(IA_API_VERSION, data->version = INJECTED_API_VERSION);
+
+  ia_server_log(ClientSocket, "Hello there!");
+}
+
 void ia_server_player_info(SOCKET ClientSocket) {
   // This one will be useful for rumble (running over
   // enemies in vehicles?) and for different controller
