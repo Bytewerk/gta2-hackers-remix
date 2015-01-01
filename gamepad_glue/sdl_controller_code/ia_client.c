@@ -8,7 +8,7 @@
 #define FRAMEDATACASE(NAME, CODE)                                              \
   case NAME: {                                                                 \
     SDLNet_TCP_Recv(player->sock, &buffer, sizeof(NAME##_t));                  \
-    NAME##_t *data = &buffer;                                                  \
+    NAME##_t *data = (NAME##_t *)&buffer;                                      \
     CODE return 1 + sizeof(NAME##_t);                                          \
   }
 

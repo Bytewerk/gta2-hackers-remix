@@ -59,7 +59,7 @@ SOCKET injected_thread_listen(int port)
 
     // Resolve the server address and port
 	char port_string[10];
-	_itoa(port,port_string,10);
+	_itoa_s(port, port_string, 10);
 
     iResult = getaddrinfo(NULL, port_string, &hints, &result);
 

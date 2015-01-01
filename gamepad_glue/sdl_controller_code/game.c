@@ -76,7 +76,7 @@ game_t *game_init() {
   // create a socket set over all sockets, so we can check them for activity
   game->socket_set = SDLNet_AllocSocketSet(game->player_count);
   for (int i = 0; i < game->player_count; i++)
-    SDLNet_AddSocket(game->socket_set, game->players[i].sock);
+    SDLNet_TCP_AddSocket(game->socket_set, game->players[i].sock);
 
   printf("Init complete, enjoy!\n");
   return game->player_count == 0 ? NULL : game;
