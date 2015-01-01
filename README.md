@@ -10,6 +10,7 @@ There's an **alpha version** you can check out if you're prepared to give some f
 
 * **[get the alpha](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.3.1-splitscreen_mod)** ***(new: 0.3.1!)***
 * **[screenshots](https://github.com/Bytewerk/gta2-hackers-remix/issues/1)** *(and a video, scroll down!)*
+* **[bytewerk wiki](http://wiki.bytewerk.org/index.php/GTA2_Hackers_Remix)** *(german)*
 * **[gtamp.com thread](http://gtamp.com/forum/viewtopic.php?f=4&t=776)**
 * **[tracker](https://github.com/Bytewerk/gta2-hackers-remix/issues)**
 
