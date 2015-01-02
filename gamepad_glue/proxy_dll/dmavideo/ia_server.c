@@ -85,7 +85,7 @@ void ia_server_score_change(SOCKET ClientSocket) {
 
 void ia_server_send_info(SOCKET ClientSocket) {
   ia_server_player_info(ClientSocket);
-  ia_server_rumble_byte(ClientSocket);
+  // ia_server_rumble_byte(ClientSocket);
   // ia_server_score_change(ClientSocket);
 }
 
