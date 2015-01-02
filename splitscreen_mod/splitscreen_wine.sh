@@ -48,11 +48,3 @@ winetricks -q directplay vb6run
 # start the mod as virtual desktop
 cd "$src"
 wine explorer /desktop=G2HR,${width}x${height} splitscreen_mod.exe
-
-
-# to get it working, you'll need to start a normal network game first:
-# cd ~/gta2/GTA2-MP
-# wine explorer /desktop=G2HR,${width}x${height} gta2manager.exe
-
-
-

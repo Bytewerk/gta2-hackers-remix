@@ -124,7 +124,7 @@ EndFunc
 	$gameinfo array (see arrays.txt).
 #ce
 Func alphagui(ByRef $config)
-	Local $version = "0.3.1-splitscreen_mod"
+	Local $version = "0.3.2-splitscreen_mod"
 	Local $gui = GUICreate("G2HR", 601, 351, 243, 146)
 
 	; Title
