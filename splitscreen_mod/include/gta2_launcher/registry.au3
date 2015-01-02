@@ -16,7 +16,7 @@ Func registry_exe_modify($player_count, $gta2_exe_path)
 	; Registry path (so we can control the screen resolutions independently)
 	For $i = 1 To $player_count
 		If Not FileExists($cache & "\Player" & $i & ".exe") Then _
-			Run(@ScriptDir & '\bin\registry_path_changer.exe ' &$i&' "' & $gta2_exe_path & '" "Player' & $i &'.exe"', $cache,@SW_HIDE)
+			RunWait(@ScriptDir & '\bin\registry_path_changer.exe ' &$i&' "' & $gta2_exe_path & '" "Player' & $i &'.exe"', $cache,@SW_HIDE)
 	Next
 
 
@@ -29,6 +29,13 @@ Func registry_exe_modify($player_count, $gta2_exe_path)
 		FileCopy(@ScriptDir & "\bin\proxy_dll.dll", $cache & "\dmavideo.dll")
 	If Not FileExists( $cache & "\dmavideo_original.dll") Then _
 		FileCopy($gta2dir & "\dmavideo.dll", $cache & "\dmavideo_original.dll")
+EndFunc
+
+
+Func regwrite_if_empty($keyname, $valuename, $type, $value)
+	RegRead($keyname, $valuename)
+	If @Error Then _
+		RegWrite($keyname, $valuename, $type, $value)
 EndFunc
 
 
@@ -48,6 +55,15 @@ Func registry_prepare_network($root)
 		Binary("0xE05EE9367785CF11960C0080C7534E82"))
 	RegWrite($root&"\Network", "UseProtocols", "REG_DWORD", 16)
 
+
+	regwrite_if_empty($root&"\Network", "f_limit", "REG_DWORD", 0x03)
+	regwrite_if_empty($root&"\Network", "game_speed", "REG_DWORD", 0x01)
+	regwrite_if_empty($root&"\Network", "game_time_limit", "REG_DWORD", 0x0e)
+	regwrite_if_empty($root&"\Network", "game_type", "REG_DWORD", 0x01)
+	regwrite_if_empty($root&"\Network", "map_index", "REG_DWORD", 0x00)
+	regwrite_if_empty($root&"\Network", "police", "REG_DWORD", 0x00)
+	regwrite_if_empty($root&"\Network", "show_player_names", "REG_DWORD", 0x01)
+
 EndFunc
 
 ; $config, $player_res, $geo: See arrays.txt
@@ -57,13 +73,21 @@ Func registry_prepare($config, $player_res)
 	; Write the network settings to the normal registry path.
 	; They seem to always get loaded from there, even if the path
 	; was hacked like in Player1.exe to Player6.exe.
-	registry_prepare_network("HKEY_CURRENT_USER\Software\DMA Design Ltd\GTA2");
+	$root = "HKEY_CURRENT_USER\Software\DMA Design Ltd\GTA2";
+	RegWrite($root&"\Screen", "special_recognition", "REG_DWORD", 0x01)
+	registry_prepare_network($root);
+
+
+   $root = "HKEY_CURRENT_USER\Software\Aureal\A3D"
+   RegWrite($root, "SplashAudio", "REG_DWORD", 0x00)
+   RegWrite($root, "SplashScreen", "REG_DWORD", 0x00)
+
 
 	; Player1.exe to Player6.exe have different registry paths
 	; (that is the main purpose for the exe files!). Write all
 	; registry settings for each instance here.
 	For $i = 1 To $config[7]
-		Local $root = "HKEY_CURRENT_USER\Software\GTA2HackersRemix\P" & $i
+		$root = "HKEY_CURRENT_USER\Software\GTA2HackersRemix\P" & $i
 
 		; First set the stuff we care about:
 		; resolution, windowed mode, player name,
@@ -106,10 +130,7 @@ Func registry_prepare($config, $player_res)
 		RegWrite($root&"\Screen", "tripple_buffer", "REG_DWORD", 0x00)
 		RegWrite($root&"\Screen", "videodevice", "REG_DWORD", 0x01)
 		RegWrite($root&"\Screen", "videoname", "REG_SZ", "dmavideo.dll")
-
-
-
-
+		RegWrite($root&"\Screen", "special_recognition", "REG_DWORD", 0x01)
 	Next
 EndFunc
 
