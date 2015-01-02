@@ -1,6 +1,7 @@
 #include "../injected_api.h"
 #include "game.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 // do something with 'data' in the CODE section
@@ -77,7 +78,14 @@ void ia_client_receive(game_t *game) {
     do {
       if (!SDLNet_SocketReady(player->sock))
         break;
-      SDLNet_TCP_Recv(player->sock, &header, 1);
+
+      // receive the next error byte or shutdown
+      // if the connection is dead!
+      if (SDLNet_TCP_Recv(player->sock, &header, 1) <= 0) {
+        printf("#%i: Socket disconnected. Shutting down...\n", player->id + 1);
+        game_cleanup(game);
+        exit(0);
+      }
     } while (ia_client_parser(player, header));
   }
 }

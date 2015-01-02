@@ -10,7 +10,6 @@
 //		so that the glowing number on the Xbox360 controllers
 //		actually match the player name
 // This returns NULL if no GTA2 instance could be mapped to a gamepad.
-// (and does not free ram afterwards - FIXME)
 game_t *game_init() {
   int controller_count = SDL_NumJoysticks();
   int controller_index = 0;
@@ -80,4 +79,16 @@ game_t *game_init() {
 
   printf("Init complete, enjoy!\n");
   return game->player_count == 0 ? NULL : game;
+}
+
+void game_cleanup(game_t *game) {
+  printf("Cleaning up...\n");
+  for (int i = 0; i < game->player_count; i++) {
+    player_t *player = &(game->players[i]);
+    SDL_HapticClose(player->haptic);
+    SDL_GameControllerClose(player->pad);
+    SDLNet_TCP_Close(player->sock);
+    SDL_Quit();
+  }
+  printf("Cleanup done!\n");
 }

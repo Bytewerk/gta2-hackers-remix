@@ -25,3 +25,4 @@ typedef struct {
 } game_t;
 
 game_t *game_init();
+void game_cleanup(game_t *game);

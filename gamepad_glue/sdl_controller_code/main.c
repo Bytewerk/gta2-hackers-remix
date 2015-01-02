@@ -70,10 +70,5 @@ int main(int argc, char *argv[]) {
       free(frame);
     }
   }
-
-  // TODO: Cleanup code and a sane way to quit the process
-  // Close game controller, haptic stuff etc.
-  SDL_Quit();
-
   return 0;
 }
