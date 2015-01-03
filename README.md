@@ -8,7 +8,7 @@ This is a meta-mod for GTA2 (1999), **mainly to get a splitscreen mod working.**
 #### Current State
 There's an **alpha version** you can check out if you're prepared to give some feedback and [report bugs!](https://github.com/Bytewerk/gta2-hackers-remix/issues) It still has lots of issues, but it works as a technical preview.
 
-* **[get the alpha](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.3.1-splitscreen_mod)** ***(new: 0.3.1!)***
+* **[get the alpha](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.3.2-splitscreen_mod)** ***(new: 0.3.2!)***
 * **[screenshots](https://github.com/Bytewerk/gta2-hackers-remix/issues/1)** *(and a video, scroll down!)*
 * **[bytewerk wiki](http://wiki.bytewerk.org/index.php/GTA2_Hackers_Remix)** *(german)*
 * **[gtamp.com thread](http://gtamp.com/forum/viewtopic.php?f=4&t=776)**
