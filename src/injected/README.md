@@ -1,5 +1,4 @@
-# proxy_dll
-If you want to know, why this is necessary, read the [gamepad_glue](https://github.com/Bytewerk/gta2-hackers-remix/tree/master/gamepad_glue) `README` first.
+# Injected Component (proxy_dll)
 
 ## What is a Proxy DLL?
 
