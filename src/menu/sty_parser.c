@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* offsets in fstyle.sty, found with the code below
     Chunk: PPAL - Size: 0065536 - Delta: 0000006 - Offset: 0000006
@@ -47,9 +48,29 @@ void sty_parser_find_chunks(char* buffer, uint32_t size)
 
 */
 
-// FIXME
+void sty_parser_read_font_base(sty_t *sty, char *buffer_pos, uint32_t length,
+                               char *type) {
+  if (strcmp("FONB", type))
+    return;
+
+  printf("\tFONB chunk\n");
+
+  // get the font_count and check if it makes sense
+  uint16_t font_count = *(uint16_t *)buffer_pos;
+  if (font_count * 2 + 2 != length)
+    exit(printf("ERROR: font_count doesn't match chunk size!\n"));
+
+  // save the font base
+  uint16_t *base = malloc(2 * font_count);
+  for (int i = 0; i < font_count; i++)
+    base[i] = *(uint16_t *)(buffer_pos + 2 + 2 * i);
+
+  sty->font_base->font_count = font_count;
+  sty->font_base->base = base;
+}
+
 // returns the next offset or 0
-uint32_t sty_parser_read_next_chunk(char *buffer, uint32_t offset,
+uint32_t sty_parser_read_next_chunk(sty_t *sty, char *buffer, uint32_t offset,
                                     uint32_t sty_size) {
   // read the chunk type and size
   char type[5];
@@ -58,19 +79,22 @@ uint32_t sty_parser_read_next_chunk(char *buffer, uint32_t offset,
   type[5] = '\0';
   uint32_t chunk_size = *(uint32_t *)(buffer + offset + 4);
 
-  printf("Chunk: %s (size: %06i)\n", type, chunk_size);
+  // check if the chunk size makes sense
+  if (!chunk_size || offset >= sty_size)
+    exit(printf("ERROR!\n"));
 
+  // read the chunk content - whatever fits
+  sty_parser_read_font_base(sty, buffer + offset + 8, chunk_size, type);
+
+  // return the new offset (or 0 if we're done here)
   offset += chunk_size + 8 /* chunk header */;
   if (offset == sty_size)
     return 0;
-
-  if (!chunk_size || offset >= sty_size)
-    exit(printf("ERROR!\n"));
   return offset;
 }
 
 sty_t *sty_parser(char *filename) {
-  printf("sty_parser: reading file %s\n\n", filename);
+  printf("sty_parser: reading file %s\n", filename);
 
   // open the file
   FILE *handle;
@@ -91,16 +115,27 @@ sty_t *sty_parser(char *filename) {
     exit(printf("Read error!\n"));
   fclose(handle);
 
+  // check the file header
   if (buffer[0] != 'G' || buffer[1] != 'B' || buffer[2] != 'S' ||
       buffer[3] != 'T')
     exit(printf("This isn't a GBST file!\n"));
 
+  // create an empty sty structure
+  sty_t *sty = malloc(sizeof(sty_t));
+  sty->font_base = malloc(sizeof(font_base_t));
+  sty->font_base->font_count = 0;
+
+  // fill the sty
   uint32_t offset = 6; // skip the header!
   while (offset)
-    offset = sty_parser_read_next_chunk(buffer, offset, size);
-
-  // sty_parser_find_chunks(buffer, size);
+    offset = sty_parser_read_next_chunk(sty, buffer, offset, size);
 
   free(buffer);
-  return NULL;
+  return sty;
+}
+
+void sty_cleanup(sty_t *sty) {
+  if (sty->font_base->font_count)
+    free(sty->font_base->base);
+  free(sty);
 }
