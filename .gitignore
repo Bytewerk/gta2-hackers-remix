@@ -1,3 +1,6 @@
+# GTA2 sty files (copied to the menu code tree for testing)
+*.sty
+
 # Compiled Object files
 *.slo
 *.lo
