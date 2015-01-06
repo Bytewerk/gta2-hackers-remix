@@ -6,5 +6,6 @@
 int main() {
   printf("Hello world!\n");
   sty_parser("fstyle.sty");
+  // sty_parser("bil.sty");
   return 0;
 }
