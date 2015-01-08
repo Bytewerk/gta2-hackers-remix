@@ -4,69 +4,56 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* offsets in fstyle.sty, found with the code below
-    Chunk: PPAL - Size: 0065536 - Delta: 0000006 - Offset: 0000006
-    Chunk: SPRB - Size: 0000012 - Delta: 0065544 - Offset: 0065550
-    Chunk: FONB - Size: 0000030 - Delta: 0000020 - Offset: 0065570
-    Chunk: PALX - Size: 0032768 - Delta: 0000038 - Offset: 0065608
-    Chunk: SPRG - Size: 0655360 - Delta: 0032776 - Offset: 0098384
-    Chunk: SPRX - Size: 0014128 - Delta: 0655368 - Offset: 0753752
-    Chunk: PALB - Size: 0000016 - Delta: 0014136 - Offset: 0767888
-*/
+// how to access a single letter in theory:
+// sprite_id = (character-code - first character) +
+// sty->font_base->base[font_id]
+// then look up that ID in the sprite index.
 
-/*
-void sty_parser_find_chunks(char* buffer, uint32_t size)
-{
-    const char *GTA2_STY_CHUNK_NAMES [] =
-        {"PALX", "PPAL","PALB","TILE",
-        "SPRG","SPRX","SPRB","DELS","DELX","FONB","CARI",
-        "OBJI","PSXT","RECY"};
-    uint32_t last = 0;
-
-    for(uint32_t i=0;i<size;i++)
-    {
-        for(int j=0;j<14;j++)
-        {
-            if(   buffer[i+0] != GTA2_STY_CHUNK_NAMES[j][0]
-               || buffer[i+1] != GTA2_STY_CHUNK_NAMES[j][1]
-               || buffer[i+2] != GTA2_STY_CHUNK_NAMES[j][2]
-               || buffer[i+3] != GTA2_STY_CHUNK_NAMES[j][3]
-            ) continue;
-
-            uint32_t chunk_size = *(uint32_t*) (buffer + i + 4);
-
-            printf("Chunk: %c%c%c%c ", buffer[i], buffer[i+1],
-                buffer[i+2], buffer[i+3]);
-            printf("- Size: %07i ", chunk_size);
-            printf("- Delta: %07i ", i -last);
-            printf("- Offset: %07i ", i);
-            printf("\n");
-            last = i;
-        }
-    }
-}
-
-*/
-
-void sty_parser_read_font_base(sty_t *sty, char *buffer_pos, uint32_t length,
-                               char *type) {
-  if (strcmp("FONB", type))
-    return;
-
+// Font base
+void sty_parser_read_FONB(sty_t *sty, char *buffer_pos, uint32_t length) {
   printf("\tFONB chunk\n");
 
-  // get the font_count and check if it makes sense
+  // read and validate the font count
   uint16_t font_count = *(uint16_t *)buffer_pos;
   if (font_count * 2 + 2 != length)
     exit(printf("ERROR: font_count doesn't match chunk size!\n"));
 
-  // save the font base
+  // read the font base
   uint16_t *base = malloc(2 * font_count);
-  for (int i = 0; i < font_count; i++)
-    base[i] = *(uint16_t *)(buffer_pos + 2 + 2 * i);
+  for (uint16_t i = 0; i < font_count; i++)
+    base[i] = *(uint16_t *)(buffer_pos + 2 + 2 * i) +
+              (i ? base[i - 1] : 0); // add the last one, if any
 
+  // save everything in the sty struct
   sty->font_base->font_count = font_count;
   sty->font_base->base = base;
+}
+
+// Sprite index
+void sty_parser_read_SPRX(sty_t *sty, char *buffer_pos, uint32_t length) {
+  printf("\tSPRX chunk\n", length);
+
+  // calculate and validate the sprite count
+  uint16_t sprite_count = length / sizeof(sprite_entry_t);
+  if (length % sizeof(sprite_entry_t))
+    exit(printf("ERROR: chunk length isn't a multiple of sprite_entry_t!\n"));
+
+  // read the sprite infos
+  sprite_entry_t *sprite_entries =
+      malloc(sizeof(sprite_entry_t) * sprite_count);
+  for (uint16_t i = 0; i < sprite_count; i++)
+    sprite_entries[i] =
+        *(sprite_entry_t *)(buffer_pos + sizeof(sprite_entry_t) * i);
+
+  // save everything in the sty struct
+  sty->sprite_index->sprite_count = sprite_count;
+  sty->sprite_index->sprite_entries = sprite_entries;
+}
+
+// Sprite graphics
+void sty_parser_read_SPRG(sty_t *sty, char *buffer_pos, uint32_t length) {
+  printf("\tSPRG chunk\n");
+  // TODO!
 }
 
 // returns the next offset or 0
@@ -83,8 +70,13 @@ uint32_t sty_parser_read_next_chunk(sty_t *sty, char *buffer, uint32_t offset,
   if (!chunk_size || offset >= sty_size)
     exit(printf("ERROR!\n"));
 
-  // read the chunk content - whatever fits
-  sty_parser_read_font_base(sty, buffer + offset + 8, chunk_size, type);
+  // read the chunk content (FIXME: make this more readable, makro?)
+  if (!strcmp("FONB", type))
+    sty_parser_read_FONB(sty, buffer + offset + 8, chunk_size);
+  if (!strcmp("SPRX", type))
+    sty_parser_read_SPRX(sty, buffer + offset + 8, chunk_size);
+  // if(!strcmp("SPRG", type))
+  //    sty_parser_read_SPRG(sty, buffer + offset + 8, chunk_size);
 
   // return the new offset (or 0 if we're done here)
   offset += chunk_size + 8 /* chunk header */;
@@ -124,6 +116,8 @@ sty_t *sty_parser(char *filename) {
   sty_t *sty = malloc(sizeof(sty_t));
   sty->font_base = malloc(sizeof(font_base_t));
   sty->font_base->font_count = 0;
+  sty->sprite_index = malloc(sizeof(sprite_index_t));
+  sty->sprite_index->sprite_count = 0;
 
   // fill the sty
   uint32_t offset = 6; // skip the header!
@@ -137,5 +131,7 @@ sty_t *sty_parser(char *filename) {
 void sty_cleanup(sty_t *sty) {
   if (sty->font_base->font_count)
     free(sty->font_base->base);
+  if (sty->sprite_index->sprite_count)
+    free(sty->sprite_index->sprite_entries);
   free(sty);
 }

@@ -4,8 +4,9 @@
 #include <stdlib.h>
 
 int main() {
-  printf("Hello world!\n");
-  sty_parser("fstyle.sty");
-  // sty_parser("bil.sty");
+  sty_t *sty = sty_parser("fstyle.sty");
+
+  sty_cleanup(sty);
+  printf("Cleaned up!\n");
   return 0;
 }
