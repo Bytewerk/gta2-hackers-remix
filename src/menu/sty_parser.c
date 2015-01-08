@@ -25,8 +25,8 @@ void sty_parser_read_FONB(sty_t *sty, char *buffer_pos, uint32_t length) {
               (i ? base[i - 1] : 0); // add the last one, if any
 
   // save everything in the sty struct
-  sty->font_base->font_count = font_count;
-  sty->font_base->base = base;
+  sty->font_base.font_count = font_count;
+  sty->font_base.base = base;
 }
 
 // Sprite index
@@ -46,14 +46,22 @@ void sty_parser_read_SPRX(sty_t *sty, char *buffer_pos, uint32_t length) {
         *(sprite_entry_t *)(buffer_pos + sizeof(sprite_entry_t) * i);
 
   // save everything in the sty struct
-  sty->sprite_index->sprite_count = sprite_count;
-  sty->sprite_index->sprite_entries = sprite_entries;
+  sty->sprite_index.sprite_count = sprite_count;
+  sty->sprite_index.sprite_entries = sprite_entries;
 }
 
 // Sprite graphics
 void sty_parser_read_SPRG(sty_t *sty, char *buffer_pos, uint32_t length) {
   printf("\tSPRG chunk\n");
-  // TODO!
+
+  // copy the whole blob in a new buffer
+  char *blob = malloc(length);
+  for (uint32_t i = 0; i < length; i++)
+    blob[i] = buffer_pos[i];
+
+  // save everything in the sty struct
+  sty->sprite_blob.blob_length = length;
+  sty->sprite_blob.blob = blob;
 }
 
 // returns the next offset or 0
@@ -75,8 +83,8 @@ uint32_t sty_parser_read_next_chunk(sty_t *sty, char *buffer, uint32_t offset,
     sty_parser_read_FONB(sty, buffer + offset + 8, chunk_size);
   if (!strcmp("SPRX", type))
     sty_parser_read_SPRX(sty, buffer + offset + 8, chunk_size);
-  // if(!strcmp("SPRG", type))
-  //    sty_parser_read_SPRG(sty, buffer + offset + 8, chunk_size);
+  if (!strcmp("SPRG", type))
+    sty_parser_read_SPRG(sty, buffer + offset + 8, chunk_size);
 
   // return the new offset (or 0 if we're done here)
   offset += chunk_size + 8 /* chunk header */;
@@ -114,10 +122,9 @@ sty_t *sty_parser(char *filename) {
 
   // create an empty sty structure
   sty_t *sty = malloc(sizeof(sty_t));
-  sty->font_base = malloc(sizeof(font_base_t));
-  sty->font_base->font_count = 0;
-  sty->sprite_index = malloc(sizeof(sprite_index_t));
-  sty->sprite_index->sprite_count = 0;
+  sty->font_base.font_count = 0;
+  sty->sprite_index.sprite_count = 0;
+  sty->sprite_blob.blob_length = 0;
 
   // fill the sty
   uint32_t offset = 6; // skip the header!
@@ -129,9 +136,11 @@ sty_t *sty_parser(char *filename) {
 }
 
 void sty_cleanup(sty_t *sty) {
-  if (sty->font_base->font_count)
-    free(sty->font_base->base);
-  if (sty->sprite_index->sprite_count)
-    free(sty->sprite_index->sprite_entries);
+  if (sty->font_base.font_count)
+    free(sty->font_base.base);
+  if (sty->sprite_index.sprite_count)
+    free(sty->sprite_index.sprite_entries);
+  if (sty->sprite_blob.blob_length)
+    free(sty->sprite_blob.blob);
   free(sty);
 }

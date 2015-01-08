@@ -28,9 +28,14 @@ typedef struct {
 } sprite_index_t;
 
 typedef struct {
-  font_base_t *font_base;
-  sprite_index_t *sprite_index;
+  uint32_t blob_length;
+  char *blob;
+} sprite_blob_t;
 
+typedef struct {
+  font_base_t font_base;
+  sprite_index_t sprite_index;
+  sprite_blob_t sprite_blob;
 } sty_t;
 
 sty_t *sty_parser(char *filename);
