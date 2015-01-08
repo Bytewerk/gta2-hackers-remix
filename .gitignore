@@ -1,5 +1,6 @@
-# GTA2 sty files (copied to the menu code tree for testing)
+# GTA2 files copied to the code tree for testing
 *.sty
+*.tga
 
 # Compiled Object files
 *.slo
