@@ -4,15 +4,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+// This parser can handle the following chunks (we only want to draw the fonts):
+//   FONB, SPRX, SPRG
+
 // how to access a single letter in theory:
-// sprite_id = (character-code - first character) +
-// sty->font_base->base[font_id]
+// sprite_id = (character-code - first character) + sty->font_base.base[font_id]
 // then look up that ID in the sprite index.
 
 // Font base
 void sty_parser_read_FONB(sty_t *sty, char *buffer_pos, uint32_t length) {
-  printf("\tFONB chunk\n");
-
   // read and validate the font count
   uint16_t font_count = *(uint16_t *)buffer_pos;
   if (font_count * 2 + 2 != length)
@@ -31,8 +31,6 @@ void sty_parser_read_FONB(sty_t *sty, char *buffer_pos, uint32_t length) {
 
 // Sprite index
 void sty_parser_read_SPRX(sty_t *sty, char *buffer_pos, uint32_t length) {
-  printf("\tSPRX chunk\n", length);
-
   // calculate and validate the sprite count
   uint16_t sprite_count = length / sizeof(sprite_entry_t);
   if (length % sizeof(sprite_entry_t))
@@ -52,9 +50,7 @@ void sty_parser_read_SPRX(sty_t *sty, char *buffer_pos, uint32_t length) {
 
 // Sprite graphics
 void sty_parser_read_SPRG(sty_t *sty, char *buffer_pos, uint32_t length) {
-  printf("\tSPRG chunk\n");
-
-  // copy the whole blob in a new buffer
+  // copy the whole blob into a new buffer
   char *blob = malloc(length);
   for (uint32_t i = 0; i < length; i++)
     blob[i] = buffer_pos[i];
@@ -78,7 +74,7 @@ uint32_t sty_parser_read_next_chunk(sty_t *sty, char *buffer, uint32_t offset,
   if (!chunk_size || offset >= sty_size)
     exit(printf("ERROR!\n"));
 
-  // read the chunk content (FIXME: make this more readable, makro?)
+  // read the chunk content
   if (!strcmp("FONB", type))
     sty_parser_read_FONB(sty, buffer + offset + 8, chunk_size);
   if (!strcmp("SPRX", type))
