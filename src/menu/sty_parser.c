@@ -90,7 +90,7 @@ uint32_t sty_parser_read_next_chunk(sty_t *sty, char *buffer, uint32_t offset,
 }
 
 sty_t *sty_parser(char *filename) {
-  printf("sty_parser: reading file %s\n", filename);
+  printf("loading %s...\n", filename);
 
   // open the file
   FILE *handle;

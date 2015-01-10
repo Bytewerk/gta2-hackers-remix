@@ -35,23 +35,22 @@ void menu_tga_load(menu_t *menu, const char *name) {
   // append the new texture to the list
   if (menu->tga_textures) {
     menu_tga_texture_t *list_pos = menu->tga_textures;
-    while (list_pos && list_pos->next)
+    while (list_pos->next)
       list_pos = list_pos->next;
-    list_pos = tga_texture;
+    list_pos->next = tga_texture;
   } else
     menu->tga_textures = tga_texture;
 }
 
 menu_tga_texture_t *menu_tga_get(menu_t *menu, const char *name) {
   menu_tga_texture_t *list_pos = menu->tga_textures;
-  while (list_pos && list_pos->next) {
+  while (list_pos) {
     if (list_pos->name == name)
       return list_pos;
-    printf("current list item name: %s != %s\n", list_pos->name, name);
     list_pos = list_pos->next;
   }
 
-  printf("ERROR: tried to access non-cached tga file: %s\n", name);
+  printf("ERROR: tried to access non-cached file: %s.tga\n", name);
   exit(1);
 }
 
