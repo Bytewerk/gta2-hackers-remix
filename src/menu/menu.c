@@ -9,12 +9,59 @@
 // also blackphoenix (the creator of openGTA2) has created
 // images for missing characters, which will probably be useful
 
-// call SDL_init before!
+// menu->renderer must be initialized before.
+// The menu should be started in the GTA2 path
+// as working dir.
+void menu_tga_load(menu_t *menu, const char *name) {
+  menu_tga_texture_t *tga_texture = malloc(sizeof(menu_tga_texture_t));
+  tga_texture->name = name;
+  tga_texture->next = NULL;
+
+  char fullpath[100];
+  snprintf(fullpath, sizeof(fullpath), "data/frontend/%s.tga", name);
+
+  printf("loading %s...\n", fullpath);
+
+  SDL_Surface *surface = IMG_Load(fullpath);
+  if (!surface)
+    exit(printf("Failed to load '%s'!\n", fullpath));
+
+  // Create a texture from the surface and free it afterwards
+  tga_texture->tex = SDL_CreateTextureFromSurface(menu->renderer, surface);
+  tga_texture->width = surface->w;
+  tga_texture->height = surface->h;
+  SDL_FreeSurface(surface);
+
+  // append the new texture to the list
+  if (menu->tga_textures) {
+    menu_tga_texture_t *list_pos = menu->tga_textures;
+    while (list_pos && list_pos->next)
+      list_pos = list_pos->next;
+    list_pos = tga_texture;
+  } else
+    menu->tga_textures = tga_texture;
+}
+
+menu_tga_texture_t *menu_tga_get(menu_t *menu, const char *name) {
+  menu_tga_texture_t *list_pos = menu->tga_textures;
+  while (list_pos && list_pos->next) {
+    if (list_pos->name == name)
+      return list_pos;
+    printf("current list item name: %s != %s\n", list_pos->name, name);
+    list_pos = list_pos->next;
+  }
+
+  printf("ERROR: tried to access non-cached tga file: %s\n", name);
+  exit(1);
+}
+
+// call SDL_init before
 menu_t *menu_init() {
   menu_t *menu = malloc(sizeof(menu_t));
 
   menu->controller_count = 0;
   menu->screen = MAIN;
+  menu->tga_textures = NULL;
 
   // create the SDL window
   menu->window =
@@ -25,10 +72,26 @@ menu_t *menu_init() {
 
   menu->renderer = SDL_CreateRenderer(menu->window, -1, 0);
   SDL_SetRenderDrawColor(menu->renderer, 0, 0, 0, 0); // black
+
+  // cache all GTA2 menu TGAs as textures
+  const char *tga_files[] = {"1", "1_Play", "1_Options",
+                             "1_Quit"}; // more: todo!
+  for (int i = 0; i < (sizeof(tga_files) / sizeof(char *)); i++)
+    menu_tga_load(menu, tga_files[i]);
+
   return menu;
 }
 
 void menu_cleanup(menu_t *menu) {
+  // free all tga textures
+  menu_tga_texture_t *list_pos = menu->tga_textures;
+  while (list_pos && list_pos->next) {
+    menu_tga_texture_t *delete_me = list_pos;
+    list_pos = delete_me->next;
+    SDL_DestroyTexture(delete_me->tex);
+    free(delete_me);
+  }
+
   SDL_DestroyRenderer(menu->renderer);
   SDL_DestroyWindow(menu->window);
   free(menu);
@@ -40,23 +103,14 @@ void menu_cleanup(menu_t *menu) {
 void menu_draw(menu_t *menu) {
   SDL_RenderClear(menu->renderer);
 
-  // TODO: cache all menu images first!
-  SDL_Surface *left = IMG_Load("1_Play.tga");
-  SDL_Surface *right = IMG_Load("1.tga");
-
-  SDL_Texture *l_tex = SDL_CreateTextureFromSurface(menu->renderer, left);
-  SDL_Texture *r_tex = SDL_CreateTextureFromSurface(menu->renderer, right);
+  SDL_Texture *left = menu_tga_get(menu, "1_Play")->tex;
+  SDL_Texture *right = menu_tga_get(menu, "1")->tex;
 
   SDL_Rect dstrect_l = {0, 0, 320, 480};
-  SDL_RenderCopy(menu->renderer, l_tex, NULL, &dstrect_l);
-
   SDL_Rect dstrect_r = {320, 0, 320, 480};
-  SDL_RenderCopy(menu->renderer, r_tex, NULL, &dstrect_r);
+
+  SDL_RenderCopy(menu->renderer, left, NULL, &dstrect_l);
+  SDL_RenderCopy(menu->renderer, right, NULL, &dstrect_r);
 
   SDL_RenderPresent(menu->renderer);
-
-  SDL_DestroyTexture(l_tex);
-  SDL_DestroyTexture(r_tex);
-  SDL_FreeSurface(left);
-  SDL_FreeSurface(right);
 }
