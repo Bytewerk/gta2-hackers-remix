@@ -84,7 +84,7 @@ menu_t *menu_init() {
 void menu_cleanup(menu_t *menu) {
   // free all tga textures
   menu_tga_texture_t *list_pos = menu->tga_textures;
-  while (list_pos && list_pos->next) {
+  while (list_pos) {
     menu_tga_texture_t *delete_me = list_pos;
     list_pos = delete_me->next;
     SDL_DestroyTexture(delete_me->tex);
