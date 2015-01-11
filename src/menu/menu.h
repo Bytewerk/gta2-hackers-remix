@@ -1,4 +1,5 @@
 #pragma once
+#include "sty_parser.h"
 #include <SDL2/SDL.h>
 #include <stdint.h>
 
@@ -16,6 +17,7 @@ typedef struct {
   SDL_Window *window;
   SDL_Renderer *renderer;
   menu_tga_texture_t *tga_textures;
+  sty_t *fstyle;
 
   unsigned char controller_count;
   screen_t screen;

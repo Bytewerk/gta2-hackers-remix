@@ -1,4 +1,5 @@
 #include "menu.h"
+#include "sty_parser.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
@@ -61,6 +62,7 @@ menu_t *menu_init() {
   menu->controller_count = 0;
   menu->screen = MAIN;
   menu->tga_textures = NULL;
+  menu->fstyle = sty_parser("data/fstyle.sty");
 
   // create the SDL window
   menu->window =
@@ -82,6 +84,8 @@ menu_t *menu_init() {
 }
 
 void menu_cleanup(menu_t *menu) {
+  sty_cleanup(menu->fstyle);
+
   // free all tga textures
   menu_tga_texture_t *list_pos = menu->tga_textures;
   while (list_pos) {
