@@ -5,7 +5,9 @@
 #include <string.h>
 
 // This parser can handle the following chunks (we only want to draw the fonts):
-//   FONB, SPRX, SPRG
+//   FONB, SPRX, SPRG,
+// TODO:
+//	PALX, PPAL, PALB
 
 // how to access a single letter in theory:
 // sprite_id = (character-code - first character) + sty->font_base.base[font_id]
@@ -60,6 +62,21 @@ void sty_parser_read_SPRG(sty_t *sty, char *buffer_pos, uint32_t length) {
   sty->sprite_blob.blob = blob;
 }
 
+// Palette index
+void sty_parser_read_PALX(sty_t *sty, char *buffer_pos, uint32_t length) {
+  // TODO
+}
+
+// Physical palettes
+void sty_parser_read_PPAL(sty_t *sty, char *buffer_pos, uint32_t length) {
+  // TODO
+}
+
+// Palette Base
+void sty_parser_read_PALB(sty_t *sty, char *buffer_pos, uint32_t length) {
+  // TODO
+}
+
 // returns the next offset or 0
 uint32_t sty_parser_read_next_chunk(sty_t *sty, char *buffer, uint32_t offset,
                                     uint32_t sty_size) {
@@ -81,6 +98,12 @@ uint32_t sty_parser_read_next_chunk(sty_t *sty, char *buffer, uint32_t offset,
     sty_parser_read_SPRX(sty, buffer + offset + 8, chunk_size);
   if (!strcmp("SPRG", type))
     sty_parser_read_SPRG(sty, buffer + offset + 8, chunk_size);
+  if (!strcmp("PALX", type))
+    sty_parser_read_PALX(sty, buffer + offset + 8, chunk_size);
+  if (!strcmp("PPAL", type))
+    sty_parser_read_PPAL(sty, buffer + offset + 8, chunk_size);
+  if (!strcmp("PALB", type))
+    sty_parser_read_PALB(sty, buffer + offset + 8, chunk_size);
 
   // return the new offset (or 0 if we're done here)
   offset += chunk_size + 8 /* chunk header */;

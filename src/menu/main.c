@@ -11,7 +11,8 @@ int main(int argc, char *argv[]) {
 
   menu_t *menu = menu_init();
 
-  letter_draw(menu, 2, 0, 0, 'a');
+  // TODO:
+  // letter_draw(menu, 5, 0, 0, 'a');
 
   while (1) {
     SDL_Event event;
