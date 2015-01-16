@@ -19,7 +19,6 @@ ui_t *ui_init(tk_t *tk) {
   tk_control_setbg(tk, ctrl, NULL, "1_quit", "1");
 
   tk->screen = ui->main;
-
   return ui;
 }
 

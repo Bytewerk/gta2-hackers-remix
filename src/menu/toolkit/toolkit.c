@@ -70,11 +70,7 @@ void tk_frame(tk_t *tk, SDL_Event *event) {
       // go to next control (TODO: create an extra
       // function for this)
 
-      tk_screen_t *screen = tk->screen;
-
-      screen->selected_control = screen->selected_control->next
-                                     ? screen->selected_control->next
-                                     : screen->first_control;
+      tk_control_prev(tk->screen);
     }
   }
 

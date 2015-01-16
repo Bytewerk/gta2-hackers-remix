@@ -40,3 +40,24 @@ tk_control_t *tk_control_cleanup(tk_control_t *ctrl) {
   free(ctrl);
   return todo;
 }
+
+void tk_control_next(tk_screen_t *screen) {
+  screen->selected_control = screen->selected_control->next
+                                 ? screen->selected_control->next
+                                 : screen->first_control;
+}
+
+void tk_control_prev(tk_screen_t *screen) {
+  tk_control_t *selected = screen->selected_control;
+  tk_control_t *listpos = screen->first_control;
+
+  // first entry -> get the last one!
+  if (selected == listpos)
+    while (listpos->next)
+      listpos = listpos->next;
+  else
+    while (listpos && listpos->next != selected)
+      listpos = listpos->next;
+
+  screen->selected_control = listpos;
+}

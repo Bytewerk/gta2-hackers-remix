@@ -49,3 +49,6 @@ tk_background_t *tk_create_background(tk_t *tk, const char *full,
                                       const char *left, const char *right);
 
 tk_control_t *tk_control_cleanup(tk_control_t *ctrl);
+
+void tk_control_next(tk_screen_t *screen);
+void tk_control_prev(tk_screen_t *screen);
