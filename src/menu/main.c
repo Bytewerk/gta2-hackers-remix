@@ -30,10 +30,10 @@ int main(int argc, char *argv[]) {
 
   while (1) {
     SDL_Event event;
-    tk_frame(tk);
     SDL_WaitEvent(&event);
     if (event.type == SDL_QUIT)
       break;
+    tk_frame(tk, &event);
   }
 
   tk_cleanup(tk);

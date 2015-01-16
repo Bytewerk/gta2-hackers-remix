@@ -57,15 +57,24 @@ void tk_cleanup(tk_t *tk) {
   free(tk);
 }
 
-void tk_frame(tk_t *tk) {
+void tk_frame(tk_t *tk, SDL_Event *event) {
   SDL_RenderClear(tk->renderer);
-
-  // TODO: handle input
 
   // fade to the next background, if it has changed
 
-  if (tk->screen)
+  if (tk->screen) {
     tk_screen_draw(tk);
+
+    if (event->type == SDL_KEYDOWN) {
+      // go to next control
+
+      tk_screen_t *screen = tk->screen;
+
+      screen->selected_control = screen->selected_control->next
+                                     ? screen->selected_control->next
+                                     : screen->first_control;
+    }
+  }
 
   SDL_RenderPresent(tk->renderer);
 }

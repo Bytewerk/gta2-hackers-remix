@@ -11,7 +11,7 @@ void tk_init_gta2_background(tk_t *tk, const char *name);
 
 tk_screen_t *tk_screen_create(tk_t *tk, tk_screen_t *back);
 
-void tk_frame(tk_t *tk);
+void tk_frame(tk_t *tk, SDL_Event *event);
 
 void tk_screen_cleanup(tk_screen_t *screen);
 void tk_cleanup(tk_t *tk);
