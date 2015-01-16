@@ -15,9 +15,9 @@ tk_control_t *tk_control_add(tk_screen_t *screen, char type, void *event_func,
   ctrl->next = NULL;
   ctrl->title = title;
   ctrl->type = type;
-  ctrl->data = NULL;             // depends on type, TODO
-  ctrl->event_func = event_func; // TODO
+  ctrl->data = NULL; // depends on type, TODO
   ctrl->bg = NULL;
+  ctrl->event_func = event_func; // TODO
 
   if (screen->first_control) {
     tk_control_t *listpos = screen->first_control;

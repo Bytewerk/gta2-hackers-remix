@@ -37,7 +37,13 @@ void tk_screen_draw(tk_t *tk) {
     DRAWBG(right, 320, 000, 320, 480);
   }
 
-  // TODO: draw controls!
+  printf("\n");
+  tk_control_t *ctrl = screen->first_control;
+  while (ctrl) {
+    printf("[%c] %s\n", (ctrl == screen->selected_control) ? 'x' : ' ',
+           ctrl->title);
+    ctrl = ctrl->next;
+  }
 }
 
 #undef DRAWBG
