@@ -1,7 +1,7 @@
 #include "toolkit.h"
 
-tk_screen_t *tk_screen_create(tk_t *tk, const char *full, const char *left,
-                              const char *right) {
+tk_screen_t *tk_screen_create(tk_t *tk, tk_screen_t *back, const char *full,
+                              const char *left, const char *right) {
   tk_screen_t *screen = malloc(sizeof(tk_screen_t));
   screen->first_control = NULL;
   screen->selected_control = NULL;
@@ -23,7 +23,6 @@ tk_screen_t *tk_screen_create(tk_t *tk, const char *full, const char *left,
 #define DRAWBG(WHERE, XPOS, YPOS, WIDTH, HEIGHT)                               \
   {                                                                            \
     if (bg->WHERE) {                                                           \
-      printf("drawing background: %s\n", bg->WHERE->name);                     \
       SDL_Rect dstrect = {XPOS, YPOS, WIDTH, HEIGHT};                          \
       SDL_RenderCopy(tk->renderer, bg->WHERE->texture, NULL, &dstrect);        \
     };                                                                         \

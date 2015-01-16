@@ -9,8 +9,8 @@
 tk_t *tk_init(const char *title);
 void tk_init_gta2_background(tk_t *tk, const char *name);
 
-tk_screen_t *tk_screen_create(tk_t *tk, const char *full, const char *left,
-                              const char *right);
+tk_screen_t *tk_screen_create(tk_t *tk, tk_screen_t *back, const char *full,
+                              const char *left, const char *right);
 
 void tk_frame(tk_t *tk);
 

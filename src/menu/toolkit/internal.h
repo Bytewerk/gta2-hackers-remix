@@ -27,7 +27,8 @@ typedef struct tk_control_t {
   tk_background_t *bg; // NULL: use screen bg
 } tk_control_t;
 
-typedef struct {
+typedef struct tk_screen_t {
+  struct tk_screen_t *back;
   tk_control_t *first_control;
   tk_control_t *selected_control;
   tk_background_t *bg; // NULL: control bg || black
