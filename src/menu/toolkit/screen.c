@@ -1,19 +1,17 @@
 #include "toolkit.h"
 
-tk_screen_t *tk_screen_create(tk_t *tk, tk_screen_t *back, const char *full,
-                              const char *left, const char *right) {
+void tk_screen_setbg(tk_t *tk, tk_screen_t *screen, const char *full,
+                     const char *left, const char *right) {
+  if (screen->bg)
+    free(screen->bg);
+  screen->bg = tk_create_background(tk, full, left, right);
+}
+
+tk_screen_t *tk_screen_create(tk_t *tk, tk_screen_t *back) {
   tk_screen_t *screen = malloc(sizeof(tk_screen_t));
   screen->first_control = NULL;
   screen->selected_control = NULL;
-
-  if (full || left || right) {
-    tk_background_t *bg = malloc(sizeof(tk_background_t));
-    bg->full = full ? tk_texture_get(tk, full) : NULL;
-    bg->left = left ? tk_texture_get(tk, left) : NULL;
-    bg->right = right ? tk_texture_get(tk, right) : NULL;
-    screen->bg = bg;
-  } else
-    screen->bg = NULL;
+  screen->bg = NULL;
 
   return screen;
 }
@@ -47,5 +45,9 @@ void tk_screen_draw(tk_t *tk) {
 void tk_screen_cleanup(tk_screen_t *screen) {
   if (screen->bg)
     free(screen->bg);
-  // TODO: cleanup all controls! (create controls.c/.h ?)
+
+  // clean up all controls (todo: verify with valgrind!)
+  tk_control_t *ctrl = screen->first_control;
+  while (ctrl)
+    ctrl = tk_control_cleanup(ctrl);
 }

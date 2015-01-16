@@ -1,0 +1,42 @@
+#include "control_data.h"
+#include "toolkit.h"
+
+void tk_control_setbg(tk_t *tk, tk_control_t *ctrl, const char *full,
+                      const char *left, const char *right) {
+  if (ctrl->bg)
+    free(ctrl->bg);
+  ctrl->bg = tk_create_background(tk, full, left, right);
+}
+
+tk_control_t *tk_control_add(tk_screen_t *screen, char type, void *event_func,
+                             const char *title) {
+  tk_control_t *ctrl = malloc(sizeof(tk_control_t));
+
+  ctrl->next = NULL;
+  ctrl->title = title;
+  ctrl->type = type;
+  ctrl->data = NULL;             // depends on type, TODO
+  ctrl->event_func = event_func; // TODO
+  ctrl->bg = NULL;
+
+  if (screen->first_control) {
+    tk_control_t *listpos = screen->first_control;
+    while (listpos->next)
+      listpos = listpos->next;
+    listpos->next = ctrl;
+
+  } else {
+    screen->first_control = ctrl;
+    screen->selected_control = ctrl;
+  }
+
+  return ctrl;
+}
+
+tk_control_t *tk_control_cleanup(tk_control_t *ctrl) {
+  tk_control_t *todo = ctrl->next;
+  if (ctrl->data)
+    free(ctrl->data);
+  free(ctrl);
+  return todo;
+}

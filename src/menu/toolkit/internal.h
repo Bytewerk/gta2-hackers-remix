@@ -20,7 +20,7 @@ typedef struct {
 
 typedef struct tk_control_t {
   struct tk_control_t *next;
-  char *title;
+  const char *title;
   char type;
   void *data;
   void *event_func;
@@ -44,3 +44,8 @@ typedef struct {
 
 void tk_screen_draw(tk_t *tk);
 tk_texture_t *tk_texture_get(tk_t *tk, const char *name);
+
+tk_background_t *tk_create_background(tk_t *tk, const char *full,
+                                      const char *left, const char *right);
+
+tk_control_t *tk_control_cleanup(tk_control_t *ctrl);
