@@ -5,6 +5,7 @@
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // call SDL_init before!
 tk_t *tk_init(const char *title) {
@@ -29,7 +30,7 @@ tk_t *tk_init(const char *title) {
 tk_texture_t *tk_texture_get(tk_t *tk, const char *name) {
   tk_texture_t *listpos = tk->textures;
   while (listpos) {
-    if (listpos->name == name)
+    if (!strcmp(listpos->name, name))
       return listpos;
     listpos = listpos->next;
   }
@@ -66,7 +67,8 @@ void tk_frame(tk_t *tk, SDL_Event *event) {
     tk_screen_draw(tk);
 
     if (event->type == SDL_KEYDOWN) {
-      // go to next control
+      // go to next control (TODO: create an extra
+      // function for this)
 
       tk_screen_t *screen = tk->screen;
 

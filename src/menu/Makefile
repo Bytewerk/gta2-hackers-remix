@@ -9,6 +9,6 @@
 output = menu.$(shell uname -m)
 
 $(output): *.c */*.c */*.h
-	c99 *.c toolkit/*.c -lSDL2 -lSDL2_image -lSDL2_net -o $(output)
+	c99 *.c */*.c -lSDL2 -lSDL2_image -lSDL2_net -o $(output)
 clean:
 	rm $(output)
