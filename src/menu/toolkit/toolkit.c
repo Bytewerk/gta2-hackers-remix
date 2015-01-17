@@ -67,8 +67,13 @@ void tk_frame(tk_t *tk, SDL_Event *event) {
     tk_screen_draw(tk);
 
     if (event->type == SDL_KEYDOWN) {
-      tk_screen_back(tk);
-      // tk_control_down(tk->screen);
+      SDL_Keycode key = event->key.keysym.sym;
+      if (key == SDLK_UP)
+        tk_control_up(tk->screen);
+      if (key == SDLK_DOWN)
+        tk_control_down(tk->screen);
+      if (key == SDLK_ESCAPE)
+        tk_screen_back(tk);
     }
   }
 
