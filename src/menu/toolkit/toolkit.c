@@ -67,10 +67,8 @@ void tk_frame(tk_t *tk, SDL_Event *event) {
     tk_screen_draw(tk);
 
     if (event->type == SDL_KEYDOWN) {
-      // go to next control (TODO: create an extra
-      // function for this)
-
-      tk_control_prev(tk->screen);
+      tk_screen_back(tk);
+      // tk_control_down(tk->screen);
     }
   }
 

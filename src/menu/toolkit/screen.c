@@ -1,4 +1,5 @@
 #include "toolkit.h"
+#include <stdlib.h>
 
 void tk_screen_setbg(tk_t *tk, tk_screen_t *screen, const char *full,
                      const char *left, const char *right) {
@@ -9,6 +10,7 @@ void tk_screen_setbg(tk_t *tk, tk_screen_t *screen, const char *full,
 
 tk_screen_t *tk_screen_create(tk_t *tk, tk_screen_t *back) {
   tk_screen_t *screen = malloc(sizeof(tk_screen_t));
+  screen->back = back;
   screen->first_control = NULL;
   screen->selected_control = NULL;
   screen->bg = NULL;
@@ -56,4 +58,12 @@ void tk_screen_cleanup(tk_screen_t *screen) {
   tk_control_t *ctrl = screen->first_control;
   while (ctrl)
     ctrl = tk_control_cleanup(ctrl);
+}
+
+void tk_screen_back(tk_t *tk) {
+  // TODO: clean up everything!
+  if (!tk->screen || !tk->screen->back)
+    exit(0);
+
+  tk->screen = tk->screen->back;
 }

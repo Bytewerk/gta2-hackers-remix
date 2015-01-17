@@ -41,13 +41,7 @@ tk_control_t *tk_control_cleanup(tk_control_t *ctrl) {
   return todo;
 }
 
-void tk_control_next(tk_screen_t *screen) {
-  screen->selected_control = screen->selected_control->next
-                                 ? screen->selected_control->next
-                                 : screen->first_control;
-}
-
-void tk_control_prev(tk_screen_t *screen) {
+void tk_control_up(tk_screen_t *screen) {
   tk_control_t *selected = screen->selected_control;
   tk_control_t *listpos = screen->first_control;
 
@@ -60,4 +54,10 @@ void tk_control_prev(tk_screen_t *screen) {
       listpos = listpos->next;
 
   screen->selected_control = listpos;
+}
+
+void tk_control_down(tk_screen_t *screen) {
+  screen->selected_control = screen->selected_control->next
+                                 ? screen->selected_control->next
+                                 : screen->first_control;
 }
