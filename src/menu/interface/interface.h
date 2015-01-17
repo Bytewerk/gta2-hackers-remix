@@ -1,5 +1,6 @@
 #pragma once
 #include "../toolkit/toolkit.h"
+#include "ui_text.h"
 
 typedef struct {
   tk_screen_t *main;
