@@ -8,12 +8,14 @@ void tk_screen_setbg(tk_t *tk, tk_screen_t *screen, const char *full,
   screen->bg = tk_create_background(tk, full, left, right);
 }
 
-tk_screen_t *tk_screen_create(tk_t *tk, tk_screen_t *back) {
+// data is for some user data
+tk_screen_t *tk_screen_create(tk_t *tk, void *ui_data, tk_screen_t *back) {
   tk_screen_t *screen = malloc(sizeof(tk_screen_t));
   screen->back = back;
   screen->first_control = NULL;
   screen->selected_control = NULL;
   screen->bg = NULL;
+  screen->ui_data = ui_data;
 
   return screen;
 }

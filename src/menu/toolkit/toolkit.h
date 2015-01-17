@@ -9,7 +9,7 @@
 tk_t *tk_init(const char *title);
 void tk_init_gta2_background(tk_t *tk, const char *name);
 
-tk_screen_t *tk_screen_create(tk_t *tk, tk_screen_t *back);
+tk_screen_t *tk_screen_create(tk_t *tk, void *ui_data, tk_screen_t *back);
 
 void tk_frame(tk_t *tk, SDL_Event *event);
 

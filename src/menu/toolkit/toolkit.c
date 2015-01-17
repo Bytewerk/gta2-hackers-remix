@@ -74,6 +74,8 @@ void tk_frame(tk_t *tk, SDL_Event *event) {
         tk_control_down(tk->screen);
       if (key == SDLK_ESCAPE)
         tk_screen_back(tk);
+      if (key == SDLK_RETURN)
+        tk_control_enter(tk);
     }
   }
 

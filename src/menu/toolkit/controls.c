@@ -61,3 +61,13 @@ void tk_control_down(tk_screen_t *screen) {
                                  ? screen->selected_control->next
                                  : screen->first_control;
 }
+
+void tk_control_enter(tk_t *tk) {
+  if (!tk->screen || !tk->screen->selected_control)
+    return;
+
+  void (*event_func)(tk_t *, void *) = tk->screen->selected_control->event_func;
+
+  if (event_func)
+    event_func(tk, tk->screen->ui_data);
+}
