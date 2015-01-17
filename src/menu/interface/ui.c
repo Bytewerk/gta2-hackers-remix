@@ -1,23 +1,30 @@
 #include "../toolkit/toolkit.h"
 #include "interface.h"
 
-void ui_credits(tk_t *tk, ui_t *ui) { tk->screen = ui->credits; }
+void ui_mainmenu(tk_t *tk, ui_t *ui) {
+  if (tk->screen->selected_control->title == "Quit")
+    tk->screen = ui->credits;
+}
+
+void ui_quit(tk_t *tk, ui_t *ui) {
+  exit(0); // TODO: cleanup!
+}
 
 ui_t *ui_init(tk_t *tk) {
   ui_t *ui = malloc(sizeof(ui_t));
   tk_control_t *ctrl;
 
   // Credits screen (TODO: actually display credits ;) )
-  ui->credits = tk_screen_create(tk, (void *)ui, NULL);
+  ui->credits = tk_screen_create(tk, (void *)ui, NULL, &ui_quit);
   tk_screen_setbg(tk, ui->credits, "credits", NULL, NULL);
 
   // Main menu
-  ui->main = tk_screen_create(tk, (void *)ui, ui->credits);
-  ctrl = tk_control_add(ui->main, 0x00, NULL, "Start");
+  ui->main = tk_screen_create(tk, (void *)ui, ui->credits, &ui_mainmenu);
+  ctrl = tk_control_add(ui->main, 0x00, "Start");
   tk_control_setbg(tk, ctrl, NULL, "1_play", "1");
-  ctrl = tk_control_add(ui->main, 0x00, NULL, "Options");
+  ctrl = tk_control_add(ui->main, 0x00, "Options");
   tk_control_setbg(tk, ctrl, NULL, "1_options", "1");
-  ctrl = tk_control_add(ui->main, 0x00, &ui_credits, "Quit");
+  ctrl = tk_control_add(ui->main, 0x00, "Quit");
   tk_control_setbg(tk, ctrl, NULL, "1_quit", "1");
 
   tk->screen = ui->main;

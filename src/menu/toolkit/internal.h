@@ -23,7 +23,6 @@ typedef struct tk_control_t {
   const char *title;
   char type;
   void *data;
-  void *event_func;
   tk_background_t *bg; // NULL: use screen bg
 } tk_control_t;
 
@@ -33,6 +32,7 @@ typedef struct tk_screen_t {
   tk_control_t *selected_control;
   tk_background_t *bg; // NULL: control bg || black
   void *ui_data;
+  void *event_func; // func(tk_t* tk, ui_t* ui)
 } tk_screen_t;
 
 typedef struct {

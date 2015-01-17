@@ -9,7 +9,8 @@
 tk_t *tk_init(const char *title);
 void tk_init_gta2_background(tk_t *tk, const char *name);
 
-tk_screen_t *tk_screen_create(tk_t *tk, void *ui_data, tk_screen_t *back);
+tk_screen_t *tk_screen_create(tk_t *tk, void *ui_data, tk_screen_t *back,
+                              void *event_func);
 
 void tk_frame(tk_t *tk, SDL_Event *event);
 
@@ -22,8 +23,7 @@ void tk_screen_setbg(tk_t *tk, tk_screen_t *screen, const char *full,
 void tk_control_setbg(tk_t *tk, tk_control_t *ctrl, const char *full,
                       const char *left, const char *right);
 
-tk_control_t *tk_control_add(tk_screen_t *screen, char type, void *event_func,
-                             const char *title);
+tk_control_t *tk_control_add(tk_screen_t *screen, char type, const char *title);
 
 // TODO:
 // (load PNGs which have a transparent space at the position
