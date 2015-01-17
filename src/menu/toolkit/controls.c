@@ -43,6 +43,8 @@ tk_control_t *tk_control_cleanup(tk_control_t *ctrl) {
 void tk_control_up(tk_screen_t *screen) {
   tk_control_t *selected = screen->selected_control;
   tk_control_t *listpos = screen->first_control;
+  if (!selected)
+    return;
 
   // first entry -> get the last one!
   if (selected == listpos)
@@ -56,6 +58,9 @@ void tk_control_up(tk_screen_t *screen) {
 }
 
 void tk_control_down(tk_screen_t *screen) {
+  if (!screen->selected_control)
+    return;
+
   screen->selected_control = screen->selected_control->next
                                  ? screen->selected_control->next
                                  : screen->first_control;
