@@ -8,10 +8,11 @@ void tk_control_setbg(tk_t *tk, tk_control_t *ctrl, const char *full,
   ctrl->bg = tk_create_background(tk, full, left, right);
 }
 
-tk_control_t *tk_control_add(tk_screen_t *screen, char type,
-                             const char *title) {
+tk_control_t *tk_control_add(tk_screen_t *screen, char type, const char *title,
+                             tk_screen_t *onclick_screen) {
   tk_control_t *ctrl = malloc(sizeof(tk_control_t));
 
+  ctrl->onclick_screen = onclick_screen;
   ctrl->next = NULL;
   ctrl->title = title;
   ctrl->type = type;
@@ -67,10 +68,16 @@ void tk_control_down(tk_screen_t *screen) {
 }
 
 void tk_control_enter(tk_t *tk) {
-  if (!tk->screen || !tk->screen->event_func)
+  if (!tk->screen)
     return;
 
-  void (*event_func)(tk_t *, void *) = tk->screen->event_func;
+  if (tk->screen->event_func) {
+    void (*event_func)(tk_t *, void *) = tk->screen->event_func;
 
-  event_func(tk, tk->screen->ui_data);
+    event_func(tk, tk->screen->ui_data);
+  }
+
+  if (tk->screen->selected_control &&
+      tk->screen->selected_control->onclick_screen)
+    tk->screen = tk->screen->selected_control->onclick_screen;
 }

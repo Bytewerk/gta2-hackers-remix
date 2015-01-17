@@ -1,11 +1,6 @@
 #include "../toolkit/toolkit.h"
 #include "interface.h"
 
-void ui_mainmenu(tk_t *tk, ui_t *ui) {
-  if (tk->screen->selected_control->title == "Quit")
-    tk->screen = ui->credits;
-}
-
 void ui_quit(tk_t *tk, ui_t *ui) {
   exit(0); // TODO: cleanup!
 }
@@ -19,12 +14,12 @@ ui_t *ui_init(tk_t *tk) {
   tk_screen_setbg(tk, ui->credits, "credits", NULL, NULL);
 
   // Main menu
-  ui->main = tk_screen_create(tk, (void *)ui, ui->credits, &ui_mainmenu);
-  ctrl = tk_control_add(ui->main, 0x00, "Start");
+  ui->main = tk_screen_create(tk, (void *)ui, ui->credits, NULL);
+  ctrl = tk_control_add(ui->main, 0x00, "Start", NULL);
   tk_control_setbg(tk, ctrl, NULL, "1_play", "1");
-  ctrl = tk_control_add(ui->main, 0x00, "Options");
+  ctrl = tk_control_add(ui->main, 0x00, "Options", NULL);
   tk_control_setbg(tk, ctrl, NULL, "1_options", "1");
-  ctrl = tk_control_add(ui->main, 0x00, "Quit");
+  ctrl = tk_control_add(ui->main, 0x00, "Quit", ui->credits);
   tk_control_setbg(tk, ctrl, NULL, "1_quit", "1");
 
   tk->screen = ui->main;

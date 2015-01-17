@@ -18,12 +18,14 @@ typedef struct {
   tk_texture_t *right;
 } tk_background_t;
 
+struct tk_screen_t;
 typedef struct tk_control_t {
   struct tk_control_t *next;
   const char *title;
   char type;
   void *data;
   tk_background_t *bg; // NULL: use screen bg
+  struct tk_screen_t *onclick_screen;
 } tk_control_t;
 
 typedef struct tk_screen_t {
