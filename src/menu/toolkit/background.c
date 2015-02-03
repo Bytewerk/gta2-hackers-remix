@@ -26,6 +26,22 @@ void tk_init_gta2_background(tk_t *tk, const char *name) {
   if (!surface)
     exit(printf("File read error!\n", fullpath));
 
+  // Workaround to fix reported "wrong colors" bug,
+  // until it gets fixed upstream:
+  //		https://bugzilla.libsdl.org/show_bug.cgi?id=2840
+  // Pixels in the TGA are two bytes wide, and to
+  // correct the colors, they need to be switched!
+
+  char *pixels = surface->pixels;
+  for (int y = 0; y < surface->h; y++)
+    for (int x = 0; x < surface->w; x++) {
+      int left_byte_addr = y * surface->w * 2 + x * 2;
+      char left_old = pixels[left_byte_addr];
+
+      pixels[left_byte_addr + 0] = pixels[left_byte_addr + 1];
+      pixels[left_byte_addr + 1] = left_old;
+    }
+
   // Create a texture from the surface and free it afterwards
   tex->texture = SDL_CreateTextureFromSurface(tk->renderer, surface);
   tex->width = surface->w;
