@@ -24,7 +24,7 @@ void tk_init_gta2_background(tk_t *tk, const char *name) {
 
   SDL_Surface *surface = IMG_Load(fullpath);
   if (!surface)
-    exit(printf("Failed to load '%s'!\n", fullpath));
+    exit(printf("File read error!\n", fullpath));
 
   // Create a texture from the surface and free it afterwards
   tex->texture = SDL_CreateTextureFromSurface(tk->renderer, surface);

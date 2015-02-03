@@ -1,6 +1,10 @@
 # GTA2 files copied to the code tree for testing
 *.sty
 *.tga
+*.raw
+*.sdt
+*.wav
+
 
 # Compiled Object files
 *.slo
