@@ -9,6 +9,21 @@
         that wav file with SDL. However, that would require writing
         it to the harddrive again. There's probably a better way!
 
+
+        New approach (not programmed yet):
+                Create an internal struct to store the audio data (meta + raw
+   audio).
+
+                Create an own SDL_AudioSpec
+                        http://wiki.libsdl.org/SDL_AudioSpec
+                ...and open the default output device:
+                        http://wiki.libsdl.org/SDL_OpenAudioDevice#device
+                        (allow_changes to 0, so SDL takes care of transforming
+   the format, if necessary)
+
+                Fill it with audio data, when it should play a sound:
+                        http://wiki.libsdl.org/SDL_ClearQueuedAudio
+                        http://wiki.libsdl.org/SDL_QueueAudio
 */
 
 /*
@@ -47,35 +62,6 @@ void tk_init_gta2_sound(tk_t *tk) {
     fread(&unk1, 4, 1, sdt);
     fread(&unk2, 4, 1, sdt);
     fread(&unk3, 4, 1, sdt);
-
-    // SDL2 can load wav files directly, so we'll create one in RAM
-    // TODO: SDL2 can load wav files only from files! we'll need to directly
-    // push the audio into SDL structs!
-    /*
-    tk_sdt2wav_header_t* wav = malloc(sizeof(tk_sdt2wav_header_t) + size);
-    wav->riff_chunk_id = 0x46464952; // RIFF
-    wav->riff_chunk_size = size + 36;
-    wav->riff_type = 0x45564157; // WAVE
-    wav->fmt_chunk_id = 0x20746D66; // "fmt "
-    wav->fmt_16 = 16;
-    wav->fmt_format_tag = 1;
-    wav->fmt_channels = 1;
-    wav->fmt_sample_rate = freq;
-    wav->fmt_bytes_per_second = freq * 2;
-    wav->fmt_bytes_per_sample = 2;
-    wav->fmt_significant_bits = 16;
-    wav->fmt_extra_format_bytes = 0x61746164;
-    wav->fmt_audio_data_size = size;
-
-    // add the sound data after the header
-    fseek(raw,start_offset,0);
-    fread(wav + sizeof(tk_sdt2wav_header_t),size,1,raw);
-    */
-
-    // TODO: actually import with SDL, append to tk struct!
-    // TODO: also write cleanup function!!
-
-    // free(wav);
   }
   fclose(raw);
   fclose(sdt);
