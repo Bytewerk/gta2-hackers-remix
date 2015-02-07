@@ -1,4 +1,5 @@
 #pragma once
+#include "../sfx/sfx.h"
 #include "../sty_loader/sty_parser.h"
 #include <SDL2/SDL.h>
 #include <stdint.h>
@@ -38,19 +39,12 @@ typedef struct tk_screen_t {
 } tk_screen_t;
 
 typedef struct {
-  SDL_AudioSpec *up_down;
-  SDL_AudioSpec *enter;
-  SDL_AudioSpec *left_right;
-  SDL_AudioSpec *back;
-} tk_sound_t;
-
-typedef struct {
   sty_t *fstyle;
   SDL_Window *window;
   SDL_Renderer *renderer;
   tk_texture_t *textures;
   tk_screen_t *screen;
-  tk_sound_t *sound;
+  sfx_t *sfx;
 } tk_t;
 
 void tk_screen_draw(tk_t *tk);

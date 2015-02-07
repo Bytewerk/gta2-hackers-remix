@@ -8,8 +8,9 @@
 #include <string.h>
 
 // call SDL_init before!
-tk_t *tk_init(const char *title) {
+tk_t *tk_init(sfx_t *sfx, const char *title) {
   tk_t *tk = malloc(sizeof(tk_t));
+  tk->sfx = sfx;
   tk->screen = NULL;
   tk->textures = NULL;
   tk->fstyle = NULL; // sty_parser("data/fstyle.sty");

@@ -1,4 +1,5 @@
 #include "interface/interface.h"
+#include "sfx/sfx.h"
 #include "toolkit/toolkit.h"
 #include <SDL2/SDL.h>
 #include <stdio.h>
@@ -8,10 +9,22 @@ int main(int argc, char *argv[]) {
   const char *tgas[] = {"1",      "1_play",   "1_options",
                         "1_quit", "3_tables", "credits" /* ... */};
 
-  // Initialize SDL2, the toolkit and the GTA2 backgrounds
+  // Initialize everything
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
     exit(printf("SDL_ERROR: %s\n", SDL_GetError()));
-  tk_t *tk = tk_init("G2HR");
+
+  sfx_t *sfx = sfx_init();
+
+  // FIXME:
+  // We'll have to wait for SDL 2.0.4 for this
+  // or change the code, so it doesn't use
+  // SDL_QueueAudio in order to get this
+  // working.
+  // sfx_play(sfx, SFX_FSTYLE_RETURN);
+
+  // TODO: also add sty-stuff as parameter to the init
+  // function?
+  tk_t *tk = tk_init(sfx, "G2HR");
   for (int i = 0; i < sizeof(tgas) / sizeof(char *); i++)
     tk_init_gta2_background(tk, tgas[i]);
 
@@ -27,6 +40,7 @@ int main(int argc, char *argv[]) {
 
   ui_cleanup(tk, ui);
   tk_cleanup(tk);
+  sfx_cleanup(sfx);
   SDL_Quit();
 
   printf("Cleaned up!\n");
