@@ -5,6 +5,8 @@
 *.sdt
 *.wav
 
+# Logs, eg. from std2wav
+*.log
 
 # Compiled Object files
 *.slo
