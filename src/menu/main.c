@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
                         "1_quit", "3_tables", "credits" /* ... */};
 
   // Initialize SDL2, the toolkit and the GTA2 backgrounds
-  if (SDL_Init(SDL_INIT_VIDEO) < 0)
+  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
     exit(printf("SDL_ERROR: %s\n", SDL_GetError()));
   tk_t *tk = tk_init("G2HR");
   for (int i = 0; i < sizeof(tgas) / sizeof(char *); i++)

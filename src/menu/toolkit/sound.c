@@ -24,6 +24,14 @@
                 Fill it with audio data, when it should play a sound:
                         http://wiki.libsdl.org/SDL_ClearQueuedAudio
                         http://wiki.libsdl.org/SDL_QueueAudio
+
+        - Oh wait, that won't work, because then we can't play background music
+   in the menu (wav format).
+                So we'll need to use the SDL2_mixer library for that I guess.
+        - Loading RAW audio data into SDL2_mixer seems to be complicated as
+   well. We could also
+                play the menu music in the native program (hack hack), so the
+   approach above is good enough.
 */
 
 /*
@@ -49,7 +57,7 @@ void tk_init_gta2_sound(tk_t *tk) {
   fseek(sdt, 0, 0);
 
   // iterate through all included audio samples of the raw file,
-  // and save the ones we need in the WAV format in RAM
+  // and save the ones we need in RAM
   for (int i = 0; i < fmax; i++) {
     // TODO: check if we actually need this file, otherwise continue!
 
