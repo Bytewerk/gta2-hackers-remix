@@ -5,7 +5,7 @@
     The following structs are more or less directly
     from the official spec ("GTA2 Style Format.doc"):
         font_base_t
-        sprite_entry_t
+        sprite_meta_t
 */
 
 typedef struct {
@@ -20,11 +20,11 @@ typedef struct {
   uint8_t width;
   uint8_t height;
   uint16_t pad;
-} sprite_entry_t;
+} sprite_meta_t;
 
 typedef struct {
   uint16_t sprite_count;
-  sprite_entry_t *sprite_entries;
+  sprite_meta_t *sprite_entries;
 } sprite_index_t;
 
 typedef struct {
@@ -38,5 +38,5 @@ typedef struct {
   sprite_blob_t sprite_blob;
 } sty_t;
 
-sty_t *sty_parser(char *filename);
+sty_t *sty_load(char *filename);
 void sty_cleanup(sty_t *sty);

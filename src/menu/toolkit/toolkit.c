@@ -1,5 +1,4 @@
 #include "toolkit.h"
-#include "../sty_loader/sty_parser.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -13,7 +12,7 @@ tk_t *tk_init(sfx_t *sfx, const char *title) {
   tk->sfx = sfx;
   tk->screen = NULL;
   tk->textures = NULL;
-  tk->fstyle = NULL; // sty_parser("data/fstyle.sty");
+  // tk->fstyle = NULL; // sty_parser("data/fstyle.sty");
 
   // create the SDL window
   tk->window =

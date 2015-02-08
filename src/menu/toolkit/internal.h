@@ -1,6 +1,5 @@
 #pragma once
 #include "../sfx/sfx.h"
-#include "../sty_loader/sty_parser.h"
 #include <SDL2/SDL.h>
 #include <stdint.h>
 
@@ -39,7 +38,7 @@ typedef struct tk_screen_t {
 } tk_screen_t;
 
 typedef struct {
-  sty_t *fstyle;
+  // sty_t* fstyle;
   SDL_Window *window;
   SDL_Renderer *renderer;
   tk_texture_t *textures;

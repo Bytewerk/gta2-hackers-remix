@@ -1,17 +1,27 @@
-#include "sty_parser.h"
+#include "sty.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-// This parser can handle the following chunks (we only want to draw the fonts):
-//   FONB, SPRX, SPRG,
-// TODO:
-//	PALX, PPAL, PALB
+/*
+        TODO:
+                - add support for PALX, PPAL, PALB, SPRB (-> read Black_Phoenix'
+   sty2tex.cpp)
+                - write functions that display sprites in SDL (-> Black_Phoenix'
+   tilewrite.cpp can convert sprites to BMPs)
+                - create font code, that can draw strings and measure how large
+   they will be
 
-// how to access a single letter in theory:
-// sprite_id = (character-code - first character) + sty->font_base.base[font_id]
-// then look up that ID in the sprite index.
+        This parser can currently handle the following chunks (we only want to
+   draw the fonts):
+                FONB, SPRX, SPRG,
+
+        how to access a single letter in theory:
+        sprite_id = (character-code - first character) +
+   sty->font_base.base[font_id]
+        then look up that ID in the sprite index.
+*/
 
 // Font base
 void sty_parser_read_FONB(sty_t *sty, char *buffer_pos, uint32_t length) {
@@ -34,16 +44,15 @@ void sty_parser_read_FONB(sty_t *sty, char *buffer_pos, uint32_t length) {
 // Sprite index
 void sty_parser_read_SPRX(sty_t *sty, char *buffer_pos, uint32_t length) {
   // calculate and validate the sprite count
-  uint16_t sprite_count = length / sizeof(sprite_entry_t);
-  if (length % sizeof(sprite_entry_t))
-    exit(printf("ERROR: chunk length isn't a multiple of sprite_entry_t!\n"));
+  uint16_t sprite_count = length / sizeof(sprite_meta_t);
+  if (length % sizeof(sprite_meta_t))
+    exit(printf("ERROR: chunk length isn't a multiple of sprite_meta_t!\n"));
 
   // read the sprite infos
-  sprite_entry_t *sprite_entries =
-      malloc(sizeof(sprite_entry_t) * sprite_count);
+  sprite_meta_t *sprite_entries = malloc(sizeof(sprite_meta_t) * sprite_count);
   for (uint16_t i = 0; i < sprite_count; i++)
     sprite_entries[i] =
-        *(sprite_entry_t *)(buffer_pos + sizeof(sprite_entry_t) * i);
+        *(sprite_meta_t *)(buffer_pos + sizeof(sprite_meta_t) * i);
 
   // save everything in the sty struct
   sty->sprite_index.sprite_count = sprite_count;
@@ -112,7 +121,7 @@ uint32_t sty_parser_read_next_chunk(sty_t *sty, char *buffer, uint32_t offset,
   return offset;
 }
 
-sty_t *sty_parser(char *filename) {
+sty_t *sty_load(char *filename) {
   printf("loading %s...\n", filename);
 
   // open the file
@@ -145,12 +154,12 @@ sty_t *sty_parser(char *filename) {
   sty->sprite_index.sprite_count = 0;
   sty->sprite_blob.blob_length = 0;
 
-  // fill the sty
+  // fill the sty struct and free the buffer
   uint32_t offset = 6; // skip the header!
   while (offset)
     offset = sty_parser_read_next_chunk(sty, buffer, offset, size);
-
   free(buffer);
+
   return sty;
 }
 
