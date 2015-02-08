@@ -3,18 +3,19 @@
 
 
 # GTA2 Hacker's Remix
-This is a meta-mod for GTA2 (1999), **mainly to get a splitscreen mod working.** Later we might add other things such as a new fullscreen menu that can be controlled with a gamepad and [Linux/Wine](https://github.com/Bytewerk/gta2-hackers-remix/wiki/Linux-(Wine)) support.
+This is a meta-mod for *Grand Theft Auto 2* (1999), which has an all new **splitscreen mode** as its main feature. In the current state, all players need **Xbox360 controllers** (or compatible). The whole mod is designed to run on both Windows and **Linux** (partially via Wine).
+Check out the **alpha** version, which already **works pretty well.** Behind the scenes, a **[post-alpha](https://github.com/Bytewerk/gta2-hackers-remix/tree/post-alpha)** version is being developed with a full reimplementation of the original GTA2 menu that will incorperate the new features (controlling it via gamepad and setting up splitscreen games).
 
-#### Current State
-There's an **alpha version** you can check out if you're prepared to give some feedback and [report bugs!](https://github.com/Bytewerk/gta2-hackers-remix/issues) It still has lots of issues, but it works as a technical preview.
-
-* **[get the alpha](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.3.2-splitscreen_mod)** ***(new: 0.3.2!)***
+### Links
+* **[get the alpha](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.3.2-splitscreen_mod)** ***(0.3.2)***
 * **[screenshots](https://github.com/Bytewerk/gta2-hackers-remix/issues/1)** *(and a video, scroll down!)*
 * **[bytewerk wiki](http://wiki.bytewerk.org/index.php/GTA2_Hackers_Remix)** *(german)*
 * **[gtamp.com thread](http://gtamp.com/forum/viewtopic.php?f=4&t=776)**
 * **[tracker](https://github.com/Bytewerk/gta2-hackers-remix/issues)**
 
 #### Technical Details
+
+*Note: The current development code has a [different code structure](https://github.com/Bytewerk/gta2-hackers-remix/wiki/Post-Alpha-Code-Structure), where both mods (along with the new menu) are more tightly integrated.*
 
 Mod | Description | Language
 ----|-------------|------------
