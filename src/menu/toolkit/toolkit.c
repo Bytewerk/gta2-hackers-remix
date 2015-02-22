@@ -7,8 +7,9 @@
 #include <string.h>
 
 // call SDL_init before!
-tk_t *tk_init(sfx_t *sfx, const char *title) {
+tk_t *tk_init(sty_t *fsty, sfx_t *sfx, const char *title) {
   tk_t *tk = malloc(sizeof(tk_t));
+  tk->fsty = fsty;
   tk->sfx = sfx;
   tk->screen = NULL;
   tk->textures = NULL;
@@ -40,8 +41,6 @@ tk_texture_t *tk_texture_get(tk_t *tk, const char *name) {
 }
 
 void tk_cleanup(tk_t *tk) {
-  // sty_cleanup(tk->fstyle);
-
   // free all textures (TODO: verify with valgrind!)
   tk_texture_t *listpos = tk->textures;
   while (listpos) {

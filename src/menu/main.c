@@ -1,5 +1,6 @@
 #include "interface/interface.h"
 #include "sfx/sfx.h"
+#include "sty/sty.h"
 #include "toolkit/toolkit.h"
 #include <SDL2/SDL.h>
 #include <stdio.h>
@@ -13,6 +14,7 @@ int main(int argc, char *argv[]) {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
     exit(printf("SDL_ERROR: %s\n", SDL_GetError()));
 
+  sty_t *fsty = sty_load("data/fstyle.sty");
   sfx_t *sfx = sfx_init();
 
   // FIXME:
@@ -22,9 +24,7 @@ int main(int argc, char *argv[]) {
   // working.
   // sfx_play(sfx, SFX_FSTYLE_RETURN);
 
-  // TODO: also add sty-stuff as parameter to the init
-  // function?
-  tk_t *tk = tk_init(sfx, "G2HR");
+  tk_t *tk = tk_init(fsty, sfx, "G2HR");
   for (int i = 0; i < sizeof(tgas) / sizeof(char *); i++)
     tk_init_gta2_background(tk, tgas[i]);
 
@@ -40,6 +40,7 @@ int main(int argc, char *argv[]) {
 
   ui_cleanup(tk, ui);
   tk_cleanup(tk);
+  sty_cleanup(fsty);
   sfx_cleanup(sfx);
   SDL_Quit();
 

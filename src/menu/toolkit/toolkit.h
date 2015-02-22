@@ -6,7 +6,7 @@
 // init:   should be one instance only
 // create: many instances
 
-tk_t *tk_init(sfx_t *sfx, const char *title);
+tk_t *tk_init(sty_t *fsty, sfx_t *sfx, const char *title);
 void tk_init_gta2_background(tk_t *tk, const char *name);
 
 tk_screen_t *tk_screen_create(tk_t *tk, void *ui_data, tk_screen_t *back,
