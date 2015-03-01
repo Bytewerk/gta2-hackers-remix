@@ -56,8 +56,8 @@ void sty_parser_read_SPRX(sty_t *sty, char *buffer_pos, uint32_t length) {
         *(sprite_meta_t *)(buffer_pos + sizeof(sprite_meta_t) * i);
 
   // save everything in the sty struct
-  sty->sprite_index.sprite_count = sprite_count;
-  sty->sprite_index.sprite_entries = sprite_entries;
+  sty->sprite_index.count = sprite_count;
+  sty->sprite_index.entries = sprite_entries;
 }
 
 // Sprite graphics
@@ -177,7 +177,7 @@ sty_t *sty_load(char *filename) {
   // create an empty sty structure
   sty_t *sty = malloc(sizeof(sty_t));
   sty->font_base.font_count = 0;
-  sty->sprite_index.sprite_count = 0;
+  sty->sprite_index.count = 0;
   sty->sprite_blob.blob_length = 0;
 
   // fill the sty struct and free the buffer
@@ -192,8 +192,8 @@ sty_t *sty_load(char *filename) {
 void sty_cleanup(sty_t *sty) {
   if (sty->font_base.font_count)
     free(sty->font_base.base);
-  if (sty->sprite_index.sprite_count)
-    free(sty->sprite_index.sprite_entries);
+  if (sty->sprite_index.count)
+    free(sty->sprite_index.entries);
   if (sty->sprite_blob.blob_length)
     free(sty->sprite_blob.blob);
   free(sty);

@@ -25,8 +25,8 @@ typedef struct {
 } sprite_meta_t;
 
 typedef struct {
-  uint16_t sprite_count;
-  sprite_meta_t *sprite_entries;
+  uint16_t count;
+  sprite_meta_t *entries;
 } sprite_index_t;
 
 typedef struct {
@@ -58,11 +58,12 @@ typedef struct {
   font_base_t font_base;
   sprite_index_t sprite_index;
   sprite_blob_t sprite_blob;
-  pallete_base_t pallete_base;
   sprite_base_t sprite_base;
+  pallete_base_t pallete_base;
   uint16_t pallete_index[16384];
   uint32_t pallete[64 * 64 * 256];
 } sty_t;
 
 sty_t *sty_load(char *filename);
 void sty_cleanup(sty_t *sty);
+void sty_sprite(sty_t *sty, int sprite_id);
