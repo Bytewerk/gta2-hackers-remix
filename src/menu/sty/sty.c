@@ -6,16 +6,17 @@
 
 /*
         TODO:
-                - add support for PALX, PPAL, PALB, SPRB (-> read Black_Phoenix'
-   sty2tex.cpp)
                 - write functions that display sprites in SDL (-> Black_Phoenix'
    tilewrite.cpp can convert sprites to BMPs)
                 - create font code, that can draw strings and measure how large
    they will be
+                - find out, if memory copy functions are more effective
 
         This parser can currently handle the following chunks (we only want to
    draw the fonts):
-                FONB, SPRX, SPRG,
+                FONB, SPRX, SPRG, PALX, PPAL, PALB, SPRB
+
+        Most of this is untested, so they are probably buggy.
 
         how to access a single letter in theory:
         sprite_id = (character-code - first character) +
@@ -73,17 +74,40 @@ void sty_parser_read_SPRG(sty_t *sty, char *buffer_pos, uint32_t length) {
 
 // Palette index
 void sty_parser_read_PALX(sty_t *sty, char *buffer_pos, uint32_t length) {
-  // TODO
+  char *pallete_index = (char *)sty->pallete_index;
+
+  for (uint32_t i = 0; i < 32768; i++)
+    pallete_index[i] = buffer_pos[i];
 }
 
 // Physical palettes
 void sty_parser_read_PPAL(sty_t *sty, char *buffer_pos, uint32_t length) {
-  // TODO
+  // FIXME: use malloc instead and save length
+
+  char *pallete = (char *)sty->pallete;
+  for (uint32_t i = 0; i < length; i++)
+    pallete[i] = buffer_pos[i];
 }
 
 // Palette Base
 void sty_parser_read_PALB(sty_t *sty, char *buffer_pos, uint32_t length) {
-  // TODO
+  char *palette_base = (char *)&(sty->pallete_base);
+
+  for (uint32_t i = 0; i < length; i++)
+    palette_base[i] = buffer_pos[i];
+}
+
+// Sprite Base
+void sty_parser_read_SPRB(sty_t *sty, char *buffer_pos, uint32_t length) {
+  uint16_t *buffer = (uint16_t *)buffer_pos;
+  uint16_t *sprite_base = (uint16_t *)&(sty->sprite_base);
+  uint16_t sum = 0;
+
+  sprite_base[0] = 0;
+  for (int i = 1; i < sizeof(sprite_base_t) / sizeof(uint16_t); i++) {
+    sum += buffer_pos[i - 1];
+    sprite_base[i] = sum;
+  }
 }
 
 // returns the next offset or 0
@@ -113,6 +137,8 @@ uint32_t sty_parser_read_next_chunk(sty_t *sty, char *buffer, uint32_t offset,
     sty_parser_read_PPAL(sty, buffer + offset + 8, chunk_size);
   if (!strcmp("PALB", type))
     sty_parser_read_PALB(sty, buffer + offset + 8, chunk_size);
+  if (!strcmp("SPRB", type))
+    sty_parser_read_SPRB(sty, buffer + offset + 8, chunk_size);
 
   // return the new offset (or 0 if we're done here)
   offset += chunk_size + 8 /* chunk header */;

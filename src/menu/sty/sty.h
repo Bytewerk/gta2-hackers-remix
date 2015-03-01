@@ -6,6 +6,8 @@
     from the official spec ("GTA2 Style Format.doc"):
         font_base_t
         sprite_meta_t
+        pallete_base_t
+        sprite_base_t
 */
 
 typedef struct {
@@ -33,9 +35,33 @@ typedef struct {
 } sprite_blob_t;
 
 typedef struct {
+  uint16_t tile;
+  uint16_t sprite;
+  uint16_t car_remap;
+  uint16_t ped_remap;
+  uint16_t code_obj_remap;
+  uint16_t map_obj_remap;
+  uint16_t user_remap;
+  uint16_t font_remap;
+} pallete_base_t;
+
+typedef struct {
+  uint16_t car;
+  uint16_t ped;
+  uint16_t code_obj;
+  uint16_t map_obj;
+  uint16_t user;
+  uint16_t font;
+} sprite_base_t;
+
+typedef struct {
   font_base_t font_base;
   sprite_index_t sprite_index;
   sprite_blob_t sprite_blob;
+  pallete_base_t pallete_base;
+  sprite_base_t sprite_base;
+  uint16_t pallete_index[16384];
+  uint32_t pallete[64 * 64 * 256];
 } sty_t;
 
 sty_t *sty_load(char *filename);
