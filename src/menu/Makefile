@@ -9,7 +9,7 @@
 output = menu.$(shell uname -m)
 
 $(output): *.c */*.c */*.h
-	c99 *.c */*.c -lSDL2 -lSDL2_image -lSDL2_net -o $(output) -Wfatal-errors
+	gcc -std=c99 *.c */*.c -lSDL2 -lSDL2_image -o $(output) -Wfatal-errors #-lSDL2_net
 
 clean:
 	rm $(output)
