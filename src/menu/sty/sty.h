@@ -1,4 +1,5 @@
 #pragma once
+#include <SDL2/SDL.h>
 #include <stdint.h>
 
 /*
@@ -66,4 +67,4 @@ typedef struct {
 
 sty_t *sty_load(char *filename);
 void sty_cleanup(sty_t *sty);
-void sty_sprite(sty_t *sty, int sprite_id);
+SDL_Texture *sty_sprite(SDL_Renderer *renderer, sty_t *sty, int sprite_id);

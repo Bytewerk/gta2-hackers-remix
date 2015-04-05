@@ -17,7 +17,8 @@ int main(int argc, char *argv[]) {
 
   // DEBUG: sprite 4 is a red circle with a white
   // border and transparend background.
-  sty_sprite(fsty, 4);
+  SDL_Texture *sprite = sty_sprite(renderer, fsty, 4);
+  SDL_Rect dest_rect = {0, 0, 640, 480};
 
   while (1) {
     SDL_Event event;
@@ -26,9 +27,7 @@ int main(int argc, char *argv[]) {
       break;
 
     SDL_RenderClear(renderer);
-
-    // TODO: draw sprites here for testing!
-
+    SDL_RenderCopy(renderer, sprite, NULL, &dest_rect);
     SDL_RenderPresent(renderer);
   }
 }
