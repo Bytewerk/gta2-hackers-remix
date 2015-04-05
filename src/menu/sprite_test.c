@@ -4,6 +4,11 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
+  if (argc != 2) {
+    printf("Syntax: %s sprite_id\n", argv[0]);
+    return 1;
+  }
+
   if (SDL_Init(SDL_INIT_VIDEO) < 0)
     exit(printf("SDL_ERROR: %s\n", SDL_GetError()));
 
@@ -17,7 +22,8 @@ int main(int argc, char *argv[]) {
 
   // DEBUG: sprite 4 is a red circle with a white
   // border and transparend background.
-  SDL_Texture *sprite = sty_sprite(renderer, fsty, 4);
+  int sprite_id = atoi(argv[1]);
+  SDL_Texture *sprite = sty_sprite(renderer, fsty, sprite_id);
   SDL_Rect dest_rect = {0, 0, 640, 480};
 
   while (1) {

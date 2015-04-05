@@ -12,8 +12,15 @@ SDL_Texture *sty_sprite(SDL_Renderer *renderer, sty_t *sty, int sprite_id) {
   int base_x = meta.ptr % 256;
   int base_y = meta.ptr / 256;
   int base = meta.ptr - base_x - base_y * 256;
-
   char *blob = sty->sprite_blob.blob;
+
+  printf("Debug info:\n");
+  printf("\tsprite_id: %i\n", sprite_id);
+  printf("\twidth:     %i\n", width);
+  printf("\theight:    %i\n", height);
+  printf("\tbase_x:    %i\n", base_x);
+  printf("\tbase_y:    %i\n", base_y);
+  printf("\tbase:      %i\n", base);
 
   uint32_t *pixels = malloc(sizeof(uint32_t) * width * height);
   SDL_Texture *tex = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
@@ -33,5 +40,6 @@ SDL_Texture *sty_sprite(SDL_Renderer *renderer, sty_t *sty, int sprite_id) {
   }
 
   SDL_UpdateTexture(tex, NULL, pixels, width * sizeof(uint32_t));
+  free(pixels);
   return tex;
 }

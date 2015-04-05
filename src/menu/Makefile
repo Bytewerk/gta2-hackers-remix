@@ -8,6 +8,9 @@
 
 output = menu.$(shell uname -m)
 
+
+# FIXME: add -Wall and then correct all errors!
+
 $(output): main.c */*.c */*.h
 	gcc -std=c99 main.c */*.c -lSDL2 -lSDL2_image -o $(output) -Wfatal-errors #-lSDL2_net
 
