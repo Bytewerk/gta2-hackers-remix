@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
       SDL_CreateWindow("G2HR - sprite test", SDL_WINDOWPOS_UNDEFINED,
                        SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN);
   SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
-  SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0); // black
+  SDL_SetRenderDrawColor(renderer, 0, 0xff, 0, 0); // green
 
   sty_t *fsty = sty_load("data/fstyle.sty");
 

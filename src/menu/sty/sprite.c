@@ -30,15 +30,6 @@ SDL_Texture *sty_sprite(SDL_Renderer *renderer, sty_t *sty, int sprite_id) {
   uint32_t base = meta.ptr - base_x - base_y * 256;
   char *blob = sty->sprite_blob.blob;
 
-  printf("Debug info:\n");
-  printf("\tsprite_id: %i\n", sprite_id);
-  printf("\twidth:     %i\n", width);
-  printf("\theight:    %i\n", height);
-  printf("\tptr:       %i\n", meta.ptr);
-  printf("\tbase_x:    %i\n", base_x);
-  printf("\tbase_y:    %i\n", base_y);
-  printf("\tbase:      %i\n", base); /* base is always 0 - wut? */
-
   uint32_t *pixels = malloc(sizeof(uint32_t) * width * height);
   SDL_Texture *tex = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
                                        SDL_TEXTUREACCESS_STATIC, width, height);
@@ -50,16 +41,13 @@ SDL_Texture *sty_sprite(SDL_Renderer *renderer, sty_t *sty, int sprite_id) {
           ((uint8_t *)blob)[base + (base_x + x + (base_y + y) * 256)];
       uint16_t pal_id =
           (vpallete / 64) * 256 * 64 + (vpallete % 64) + color * 64;
-      uint16_t final_color = (sty->pallete[pal_id]) & 0xFFFFFF;
 
-      // TODO: alpha color!
+      uint32_t final_color = (sty->pallete[pal_id]) & 0xFFFFFF;
+      uint32_t alpha_color = ((color > 0) * 0xFF) << 24;
 
-      pixels[x + y * width] = final_color;
-      printf("%8i ", color);
+      pixels[x + y * width] = final_color + alpha_color;
     }
-    printf("\n");
   }
-  printf("\n");
 
   SDL_UpdateTexture(tex, NULL, pixels, width * sizeof(uint32_t));
   free(pixels);
