@@ -61,6 +61,7 @@ void tk_frame(tk_t *tk, SDL_Event *event) {
   SDL_RenderClear(tk->renderer);
 
   // fade to the next background, if it has changed
+  // TODO: actually fade, not just switch backgrounds ;)
 
   if (tk->screen) {
     tk_screen_draw(tk);

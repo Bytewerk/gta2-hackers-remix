@@ -38,6 +38,7 @@
 *.app
 *.x86_64
 *.i686
+*.bin
 
 
 # Code::Blocks project files

@@ -17,6 +17,9 @@ void sty_sprite(sty_t *sty, int sprite_id) {
 
   char *blob = sty->sprite_blob.blob;
 
+  printf("SPRITE %i; WIDTH: %i; HEIGHT: %i; base_x: %i; base_y: %i\n",
+         sprite_id, width, height, base_x, base_y);
+
   for (int y = height - 1; y >= 0; y--) {
     for (int x = 0; x < width; x++) {
       uint16_t color =

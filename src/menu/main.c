@@ -16,10 +16,6 @@ int main(int argc, char *argv[]) {
 
   sty_t *fsty = sty_load("data/fstyle.sty");
 
-  // DEBUG:
-  // sty_sprite(fsty, 3);
-  // exit(0);
-
   sfx_t *sfx = sfx_init();
 
   // FIXME:
