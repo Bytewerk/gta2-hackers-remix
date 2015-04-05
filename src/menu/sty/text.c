@@ -10,7 +10,11 @@
 
         This function draws a text string directly to the renderer.
         Text must be \0-terminated!
+
+        FIXME: offset doesn't really work yet!
 */
+
+#define GTA2_FIRST_CHAR ')'
 
 void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, char *text) {
   int offset_x = 0;
@@ -19,8 +23,10 @@ void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, char *text) {
   for (; *text != '\0'; text++) {
     char letter = *text;
     int width, height;
-    int sprite_id =
-        (letter - 'a') + sty->sprite_base.font + sty->font_base.base[font_id];
+    int sprite_id = (letter - GTA2_FIRST_CHAR) + sty->sprite_base.font +
+                    sty->font_base.base[font_id];
+
+    printf("charcode for '%c': %i\n", letter, letter);
 
     SDL_Texture *sprite = sty_sprite(renderer, sty, sprite_id);
     SDL_QueryTexture(sprite, NULL, NULL, &width, &height);

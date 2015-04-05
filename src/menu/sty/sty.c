@@ -6,8 +6,6 @@
 
 /*
         TODO:
-                - write functions that display sprites in SDL (-> Black_Phoenix'
-   tilewrite.cpp can convert sprites to BMPs)
                 - create font code, that can draw strings and measure how large
    they will be
                 - find out, if memory copy functions are more effective
@@ -15,13 +13,6 @@
         This parser can currently handle the following chunks (we only want to
    draw the fonts):
                 FONB, SPRX, SPRG, PALX, PPAL, PALB, SPRB
-
-        Most of this is untested, so they are probably buggy.
-
-        how to access a single letter in theory:
-        sprite_id = (character-code - first character) +
-   sty->font_base.base[font_id]
-        then look up that ID in the sprite index.
 */
 
 // Font base
