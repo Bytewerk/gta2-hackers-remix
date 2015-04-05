@@ -24,12 +24,18 @@ int main(int argc, char *argv[]) {
   SDL_Texture *sprite = sty_sprite(renderer, fsty, sprite_id);
   SDL_Rect dest_rect = {0, 0, 640, 480};
 
+  printf("sprite_id: %i\n", sprite_id);
   while (1) {
     SDL_Event event;
     SDL_WaitEvent(&event);
     if (event.type == SDL_QUIT)
       break;
-
+    if (event.type == SDL_KEYDOWN) {
+      SDL_DestroyTexture(sprite);
+      sprite_id++;
+      sprite = sty_sprite(renderer, fsty, sprite_id);
+      printf("sprite_id: %i\n", sprite_id);
+    }
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, sprite, NULL, &dest_rect);
     SDL_RenderPresent(renderer);
