@@ -68,3 +68,4 @@ typedef struct {
 sty_t *sty_load(char *filename);
 void sty_cleanup(sty_t *sty);
 SDL_Texture *sty_sprite(SDL_Renderer *renderer, sty_t *sty, int sprite_id);
+void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, char *text);

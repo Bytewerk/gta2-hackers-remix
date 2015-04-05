@@ -4,8 +4,9 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
+
   if (argc != 2) {
-    printf("Syntax: %s sprite_id\n", argv[0]);
+    printf("Syntax: %s text_string\n", argv[0]);
     return 1;
   }
 
@@ -21,23 +22,14 @@ int main(int argc, char *argv[]) {
 
   sty_t *fsty = sty_load("data/fstyle.sty");
 
-  int sprite_id = atoi(argv[1]);
-  SDL_Texture *sprite = sty_sprite(renderer, fsty, sprite_id);
-
-  printf("sprite_id: %i\n", sprite_id);
   while (1) {
     SDL_Event event;
     SDL_WaitEvent(&event);
     if (event.type == SDL_QUIT)
       break;
-    if (event.type == SDL_KEYDOWN) {
-      SDL_DestroyTexture(sprite);
-      sprite_id++;
-      sprite = sty_sprite(renderer, fsty, sprite_id);
-      printf("sprite_id: %i\n", sprite_id);
-    }
+
     SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, sprite, NULL, NULL);
+    sty_text(renderer, fsty, 0, argv[1]);
     SDL_RenderPresent(renderer);
   }
 }
