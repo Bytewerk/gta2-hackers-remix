@@ -22,21 +22,21 @@ int main(int argc, char *argv[]) {
   SDL_SetRenderDrawColor(renderer, 0, 0xff, 0, 0); // green
   SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
-  sty_t *fsty = sty_load("data/fstyle.sty");
+  sty_t *fsty = sty_load("data/ste.sty");
 
-  int font_id = 0;
+  int font_id = -1;
   int font_count = fsty->font_base.font_count;
-  printf("font_id: %i/%i\n", font_id + 1, font_count);
   while (1) {
     SDL_Event event;
     SDL_WaitEvent(&event);
     if (event.type == SDL_QUIT)
       break;
-    if (event.type == SDL_KEYDOWN) {
+    if (event.type == SDL_KEYDOWN || font_id == -1) {
       font_id++;
       if (font_id >= fsty->font_base.font_count - 1)
         font_id = 0;
-      printf("font_id: %i/%i\n", font_id + 1, font_count);
+      printf("font_id %i/%i, offset: %i\n", font_id + 1, font_count,
+             fsty->font_base.base[font_id]);
     }
     SDL_RenderClear(renderer);
     // sty_text(renderer, fsty, atoi(argv[1]), argv[2]);
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
     // print 200 characters, starting at the font base
     int offset_x = 0;
     int offset_y = 0;
-    int offset_n = 42;
+    int offset_n = 0; // 42;
 
     for (int y = 0; y < 10; y++) {
       for (int x = 0; x < 20; x++) {
@@ -58,6 +58,7 @@ int main(int argc, char *argv[]) {
 
         SDL_Rect dest = {offset_x, offset_y, width, height};
         SDL_RenderCopy(renderer, sprite, NULL, &dest);
+        SDL_DestroyTexture(sprite);
 
         offset_x += 32;
       }
