@@ -4,19 +4,8 @@
 /*
         Based on Black_Phoenix' tilewrite.cpp
 
-        tracing in tilewrite.cpp:
-                save_sprite(name, sprite_id) // creates a bitmap file with the
-                        sprite
-                - gets called in sty2tex.cpp
-                - source in tilewrite.cpp
-                - writes a BMP header, calls write_sprite_bmp(sprite_id);
-                        from the same file!
-
-        write_sprite_bmp(sprite_id)
-
-
-        - added debug print code to both my and Black_Phoenix code
-        - the final_color is completely different!
+        SDL_Texture seems to be the best choice here, according to:
+                https://wiki.libsdl.org/MigrationGuide
 */
 
 SDL_Texture *sty_sprite(SDL_Renderer *renderer, sty_t *sty, int sprite_id) {
@@ -37,18 +26,24 @@ SDL_Texture *sty_sprite(SDL_Renderer *renderer, sty_t *sty, int sprite_id) {
   // fill the pixels buffer
   for (int y = height - 1; y >= 0; y--) {
     for (int x = 0; x < width; x++) {
+      uint32_t final_color;
       uint16_t color =
           ((uint8_t *)blob)[base + (base_x + x + (base_y + y) * 256)];
-      uint16_t pal_id =
-          (vpallete / 64) * 256 * 64 + (vpallete % 64) + color * 64;
 
-      uint32_t final_color = (sty->pallete[pal_id]) & 0xFFFFFF;
-      uint32_t alpha_color = ((color > 0) * 0xFF) << 24;
+      if (!color)
+        final_color = 0; // fully transparent
+      else {
+        uint16_t pal_id =
+            (vpallete / 64) * 256 * 64 + (vpallete % 64) + color * 64;
+        final_color = sty->pallete[pal_id];
+        final_color |= 0xFF000000; // no alpha
+      }
 
-      pixels[x + y * width] = final_color + alpha_color;
+      pixels[x + y * width] = final_color;
     }
   }
 
+  SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_BLEND);
   SDL_UpdateTexture(tex, NULL, pixels, width * sizeof(uint32_t));
   free(pixels);
   return tex;

@@ -17,12 +17,12 @@ int main(int argc, char *argv[]) {
                        SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN);
   SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
   SDL_SetRenderDrawColor(renderer, 0, 0xff, 0, 0); // green
+  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
   sty_t *fsty = sty_load("data/fstyle.sty");
 
   int sprite_id = atoi(argv[1]);
   SDL_Texture *sprite = sty_sprite(renderer, fsty, sprite_id);
-  SDL_Rect dest_rect = {0, 0, 640, 480};
 
   printf("sprite_id: %i\n", sprite_id);
   while (1) {
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
       printf("sprite_id: %i\n", sprite_id);
     }
     SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, sprite, NULL, &dest_rect);
+    SDL_RenderCopy(renderer, sprite, NULL, NULL);
     SDL_RenderPresent(renderer);
   }
 }
