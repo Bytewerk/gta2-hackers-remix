@@ -3,22 +3,21 @@
 
 /*
         TODO:
-                - add automatic line breaks (incl. max_width parameter)
-                - cache whole font sets as textures before using them?
-                - add x,y offsets
                 - resize the letters, according to the resolution
+                - add automatic line breaks (incl. max_width parameter)?
+                - cache whole font sets as textures before using them?
+                        (not sure if this has any benefit)
+
+        FIXME: dest.w, dest.h gets ignored
 
         This function draws a text string directly to the renderer.
         Text must be \0-terminated!
-
-        FIXME: offset doesn't really work yet!
 */
 
 #define GTA2_FIRST_CHAR '!'
 
-void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, char *text) {
-  int offset_x = 0;
-  int offset_y = 0;
+void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, SDL_Rect dest,
+              char *text) {
   int base =
       sty->sprite_base.font + sty->font_base.base[font_id] - GTA2_FIRST_CHAR;
 
@@ -35,7 +34,7 @@ void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, char *text) {
     // the width of the 'A' character. Inspired by Black_Phoenix'
     // blog post: http://brain.wireos.com/?p=1647
     if (letter == ' ') {
-      offset_x += sty->sprite_index.entries['A' + base].width / 2;
+      dest.x += sty->sprite_index.entries['A' + base].width / 2;
       continue;
     }
 
@@ -44,9 +43,9 @@ void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, char *text) {
     SDL_Texture *sprite = sty_sprite(renderer, sty, 0, letter + base);
     SDL_QueryTexture(sprite, NULL, NULL, &width, &height);
 
-    SDL_Rect dest = {offset_x, offset_y, width, height};
-    SDL_RenderCopy(renderer, sprite, NULL, &dest);
+    SDL_Rect letter_dest = {dest.x, dest.y, width, height};
+    SDL_RenderCopy(renderer, sprite, NULL, &letter_dest);
 
-    offset_x += width;
+    dest.x += width;
   }
 }

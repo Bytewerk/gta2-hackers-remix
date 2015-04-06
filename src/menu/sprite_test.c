@@ -36,7 +36,8 @@ int main(int argc, char *argv[]) {
              sty->font_base.base[font_id]);
     }
     SDL_RenderClear(renderer);
-    sty_text(renderer, sty, font_id, argv[1]);
+    SDL_Rect dest = {20, 20, 0, 0};
+    sty_text(renderer, sty, font_id, dest, argv[1]);
 
     /*
     // print 200 characters, starting at the font base
