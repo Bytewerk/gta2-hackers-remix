@@ -20,6 +20,12 @@ void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, char *text) {
   int offset_x = 0;
   int offset_y = 0;
 
+  if (font_id >= sty->font_base.font_count) {
+    printf("WARNING: Can't draw font_id %i (max: %i)!\n", font_id,
+           sty->font_base.font_count - 1);
+    return;
+  }
+
   for (; *text != '\0'; text++) {
     char letter = *text;
     int width, height;

@@ -15,7 +15,7 @@ $(output): main.c */*.c */*.h
 	gcc -std=c99 main.c */*.c -lSDL2 -lSDL2_image -o $(output) -Wfatal-errors #-lSDL2_net
 
 sprite_test.bin: sprite_test.c sty/*.c sty/*.h
-	gcc -std=c99 sprite_test.c sty/*.c -lSDL2 -o sprite_test.bin -Wfatal-errors
+	gcc -g -std=c99 sprite_test.c sty/*.c -lSDL2 -o sprite_test.bin -Wfatal-errors
 
 
 clean:

@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
       break;
     if (event.type == SDL_KEYDOWN || font_id == -1) {
       font_id++;
-      if (font_id >= sty->font_base.font_count - 1)
+      if (font_id >= sty->font_base.font_count)
         font_id = 0;
       printf("font_id %i/%i, offset: %i\n", font_id + 1, font_count,
              sty->font_base.base[font_id]);
@@ -56,11 +56,12 @@ int main(int argc, char *argv[]) {
             letter + sty->sprite_base.font + sty->font_base.base[font_id];
 
         SDL_Texture *sprite = sty_sprite(renderer, sty, sprite_id);
-        SDL_QueryTexture(sprite, NULL, NULL, &width, &height);
-
-        SDL_Rect dest = {offset_x, offset_y, width, height};
-        SDL_RenderCopy(renderer, sprite, NULL, &dest);
-        SDL_DestroyTexture(sprite);
+        if (sprite) {
+          SDL_QueryTexture(sprite, NULL, NULL, &width, &height);
+          SDL_Rect dest = {offset_x, offset_y, width, height};
+          SDL_RenderCopy(renderer, sprite, NULL, &dest);
+          SDL_DestroyTexture(sprite);
+        }
 
         offset_x += 32;
       }
