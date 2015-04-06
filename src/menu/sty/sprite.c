@@ -8,7 +8,8 @@
                 https://wiki.libsdl.org/MigrationGuide
 */
 
-SDL_Texture *sty_sprite(SDL_Renderer *renderer, sty_t *sty, int sprite_id) {
+SDL_Texture *sty_sprite(SDL_Renderer *renderer, sty_t *sty, char silent,
+                        int sprite_id) {
   // red 'E' for ERROR :)
   uint32_t error_pixels[] = {
       0xFFFF0000, 0xFFFF0000, 0xFFFF0000, 0xFFFF0000, 0xFFFF0000,
@@ -31,8 +32,9 @@ SDL_Texture *sty_sprite(SDL_Renderer *renderer, sty_t *sty, int sprite_id) {
   // check if out of bounds
   char draw_error = 0;
   if (base + width * height * 256 >= sty->sprite_blob.blob_length) {
-    printf("ERROR: trying to draw a sprite outside of the blob: %i\n",
-           sprite_id);
+    if (!silent)
+      printf("ERROR: trying to draw a sprite outside of the blob: %i\n",
+             sprite_id);
     width = 5;
     height = 5;
     draw_error = 1;
@@ -65,8 +67,9 @@ SDL_Texture *sty_sprite(SDL_Renderer *renderer, sty_t *sty, int sprite_id) {
   }
 
   // blend it on a new texture and return it
-  SDL_Texture *tex = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
-                                       SDL_TEXTUREACCESS_STATIC, width, height);
+  SDL_Texture *tex =
+      SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
+                        SDL_TEXTUREACCESS_STREAMING, width, height);
   SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_BLEND);
   SDL_UpdateTexture(tex, NULL, pixels, width * sizeof(uint32_t));
   if (!draw_error)

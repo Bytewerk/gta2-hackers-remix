@@ -34,7 +34,7 @@ void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, char *text) {
 
     printf("charcode for '%c': %i\n", letter, letter);
 
-    SDL_Texture *sprite = sty_sprite(renderer, sty, sprite_id);
+    SDL_Texture *sprite = sty_sprite(renderer, sty, 0, sprite_id);
     SDL_QueryTexture(sprite, NULL, NULL, &width, &height);
 
     SDL_Rect dest = {offset_x, offset_y, width, height};

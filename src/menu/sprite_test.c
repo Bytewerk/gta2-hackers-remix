@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
       font_id++;
       if (font_id >= sty->font_base.font_count)
         font_id = 0;
-      printf("font_id %i/%i, offset: %i\n", font_id + 1, font_count,
+      printf("font_id %i/%i, offset: %i\n", font_id, font_count - 1,
              sty->font_base.base[font_id]);
     }
     SDL_RenderClear(renderer);
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
         int sprite_id =
             letter + sty->sprite_base.font + sty->font_base.base[font_id];
 
-        SDL_Texture *sprite = sty_sprite(renderer, sty, sprite_id);
+        SDL_Texture *sprite = sty_sprite(renderer, sty, 1, sprite_id);
         if (sprite) {
           SDL_QueryTexture(sprite, NULL, NULL, &width, &height);
           SDL_Rect dest = {offset_x, offset_y, width, height};
