@@ -14,7 +14,7 @@
         FIXME: offset doesn't really work yet!
 */
 
-#define GTA2_FIRST_CHAR ')'
+#define GTA2_FIRST_CHAR '!'
 
 void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, char *text) {
   int offset_x = 0;
