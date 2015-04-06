@@ -4,8 +4,8 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
-  if (argc != 3) {
-    printf("Syntax: %s font_id text_string\n", argv[0]);
+  if (argc != 2) {
+    printf("Syntax: %s text_string\n", argv[0]);
     return 1;
   }
 
@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 
   sty_t *sty = sty_load("data/fstyle.sty");
 
-  int font_id = -1;
+  int font_id = 2;
   int font_count = sty->font_base.font_count;
   while (1) {
     SDL_Event event;
@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
              sty->font_base.base[font_id]);
     }
     SDL_RenderClear(renderer);
-    sty_text(renderer, sty, atoi(argv[1]), argv[2]);
+    sty_text(renderer, sty, font_id, argv[1]);
 
     /*
     // print 200 characters, starting at the font base
