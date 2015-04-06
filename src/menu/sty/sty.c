@@ -96,7 +96,7 @@ void sty_parser_read_SPRB(sty_t *sty, char *buffer_pos, uint32_t length) {
 
   sprite_base[0] = 0;
   for (int i = 1; i < sizeof(sprite_base_t) / sizeof(uint16_t); i++) {
-    sum += buffer_pos[i - 1];
+    sum += buffer[i - 1];
     sprite_base[i] = sum;
   }
 }

@@ -22,10 +22,10 @@ int main(int argc, char *argv[]) {
   SDL_SetRenderDrawColor(renderer, 0, 0xff, 0, 0); // green
   SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
-  sty_t *fsty = sty_load("data/ste.sty");
+  sty_t *sty = sty_load("data/fstyle.sty");
 
   int font_id = -1;
-  int font_count = fsty->font_base.font_count;
+  int font_count = sty->font_base.font_count;
   while (1) {
     SDL_Event event;
     SDL_WaitEvent(&event);
@@ -33,15 +33,17 @@ int main(int argc, char *argv[]) {
       break;
     if (event.type == SDL_KEYDOWN || font_id == -1) {
       font_id++;
-      if (font_id >= fsty->font_base.font_count - 1)
+      if (font_id >= sty->font_base.font_count - 1)
         font_id = 0;
       printf("font_id %i/%i, offset: %i\n", font_id + 1, font_count,
-             fsty->font_base.base[font_id]);
+             sty->font_base.base[font_id]);
     }
     SDL_RenderClear(renderer);
-    // sty_text(renderer, fsty, atoi(argv[1]), argv[2]);
+    // sty_text(renderer, sty, atoi(argv[1]), argv[2]);
 
     // print 200 characters, starting at the font base
+    // fixme: this likes to segfault when it goes out of bounds,
+    // so currently we can't print the last font!
     int offset_x = 0;
     int offset_y = 0;
     int offset_n = 0; // 42;
@@ -51,9 +53,9 @@ int main(int argc, char *argv[]) {
         char letter = x + 20 * y + offset_n;
         int width, height;
         int sprite_id =
-            letter + fsty->sprite_base.font + fsty->font_base.base[font_id];
+            letter + sty->sprite_base.font + sty->font_base.base[font_id];
 
-        SDL_Texture *sprite = sty_sprite(renderer, fsty, sprite_id);
+        SDL_Texture *sprite = sty_sprite(renderer, sty, sprite_id);
         SDL_QueryTexture(sprite, NULL, NULL, &width, &height);
 
         SDL_Rect dest = {offset_x, offset_y, width, height};
