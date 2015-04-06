@@ -92,13 +92,10 @@ void sty_parser_read_PALB(sty_t *sty, char *buffer_pos, uint32_t length) {
 void sty_parser_read_SPRB(sty_t *sty, char *buffer_pos, uint32_t length) {
   uint16_t *buffer = (uint16_t *)buffer_pos;
   uint16_t *sprite_base = (uint16_t *)&(sty->sprite_base);
-  uint16_t sum = 0;
 
   sprite_base[0] = 0;
-  for (int i = 1; i < sizeof(sprite_base_t) / sizeof(uint16_t); i++) {
-    sum += buffer[i - 1];
-    sprite_base[i] = sum;
-  }
+  for (int i = 1; i < sizeof(sprite_base_t) / sizeof(uint16_t); i++)
+    sprite_base[i] = buffer[i - 1] + sprite_base[i - 1];
 }
 
 // returns the next offset or 0
