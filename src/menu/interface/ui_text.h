@@ -5,6 +5,6 @@
 //
 
 // Main menu
-#define UI_TEXT_START "Start"
-#define UI_TEXT_OPTIONS "Options"
-#define UI_TEXT_QUIT "Quit"
+#define UI_TEXT_START "START"
+#define UI_TEXT_OPTIONS "OPTIONS"
+#define UI_TEXT_QUIT "QUIT"

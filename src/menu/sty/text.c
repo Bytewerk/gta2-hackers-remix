@@ -17,7 +17,7 @@
 #define GTA2_FIRST_CHAR '!'
 
 void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, SDL_Rect dest,
-              char *text) {
+              const char *text) {
   int base =
       sty->sprite_base.font + sty->font_base.base[font_id] - GTA2_FIRST_CHAR;
 

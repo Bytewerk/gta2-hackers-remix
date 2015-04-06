@@ -42,12 +42,17 @@ void tk_screen_draw(tk_t *tk) {
     DRAWBG(right, 320, 000, 320, 480);
   }
 
-  printf("\n");
   tk_control_t *ctrl = screen->first_control;
+  // TODO: make this MUCH MORE dynamic!
+  SDL_Rect dest = {350, 250, 0, 0};
   while (ctrl) {
-    printf("[%c] %s\n", (ctrl == screen->selected_control) ? 'x' : ' ',
-           ctrl->title);
+    sty_text(tk->renderer, tk->fsty, (ctrl == screen->selected_control)
+                                         ? GTA2_FONT_FSTYLE_RED_BLACK_NORMAL
+                                         : GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
+             dest, ctrl->title);
     ctrl = ctrl->next;
+
+    dest.y += 20;
   }
 }
 

@@ -13,7 +13,6 @@ tk_t *tk_init(sty_t *fsty, sfx_t *sfx, const char *title) {
   tk->sfx = sfx;
   tk->screen = NULL;
   tk->textures = NULL;
-  // tk->fstyle = NULL; // sty_parser("data/fstyle.sty");
 
   // create the SDL window
   tk->window =
