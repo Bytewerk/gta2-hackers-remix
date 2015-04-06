@@ -38,13 +38,13 @@ void tk_screen_draw(tk_t *tk) {
 
   if (bg) {
     DRAWBG(full, 000, 000, 640, 480);
-    DRAWBG(left, 000, 000, 320, 480);
-    DRAWBG(right, 320, 000, 320, 480);
+    DRAWBG(left, 000, 000, 278, 480);
+    DRAWBG(right, 278, 000, 362, 480);
   }
 
   tk_control_t *ctrl = screen->first_control;
   // TODO: make this MUCH MORE dynamic!
-  SDL_Rect dest = {350, 250, 0, 0};
+  SDL_Rect dest = {300, 250, 0, 0};
   while (ctrl) {
     sty_text(tk->renderer, tk->fsty, (ctrl == screen->selected_control)
                                          ? GTA2_FONT_FSTYLE_RED_BLACK_NORMAL
