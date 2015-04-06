@@ -24,6 +24,10 @@ tk_t *tk_init(sty_t *fsty, sfx_t *sfx, const char *title) {
   tk->renderer = SDL_CreateRenderer(tk->window, -1, 0);
   SDL_SetRenderDrawColor(tk->renderer, 0, 0, 0, 0); // black
 
+  // set the virtual resolution to 640x480
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+  SDL_RenderSetLogicalSize(tk->renderer, 640, 480);
+
   return tk;
 }
 
