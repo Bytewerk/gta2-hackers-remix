@@ -16,7 +16,10 @@ ui_t *ui_init(tk_t *tk) {
   // Main menu
   ui->main = tk_screen_create(tk, (void *)ui, ui->credits, NULL);
 
-  ctrl = tk_control_add(ui->main, TK_BUTTON, UI_TEXT_START, NULL);
+  ctrl = tk_control_add(ui->main, TK_BUTTON, UI_TEXT_CAMPAIGNS, NULL);
+  tk_control_setbg(tk, ctrl, NULL, "1_play", "1");
+
+  ctrl = tk_control_add(ui->main, TK_BUTTON, UI_TEXT_MULTIPLAYER, NULL);
   tk_control_setbg(tk, ctrl, NULL, "1_play", "1");
 
   ctrl = tk_control_add(ui->main, TK_BUTTON, UI_TEXT_OPTIONS, NULL);
