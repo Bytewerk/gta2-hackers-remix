@@ -36,45 +36,9 @@ int main(int argc, char *argv[]) {
              sty->font_base.base[font_id]);
     }
     SDL_RenderClear(renderer);
+
     SDL_Rect dest = {20, 20, 0, 0};
     sty_text(renderer, sty, font_id, dest, argv[1]);
-
-    /*
-    // print 200 characters, starting at the font base
-    // fixme: this likes to segfault when it goes out of bounds,
-    // so currently we can't print the last font!
-    int offset_x = 0;
-    int offset_y = 0;
-    int offset_n = 0;//42;
-
-    for(int y=0;y<10;y++)
-    {
-            for(int x=0;x<20;x++)
-            {
-                    char letter = x + 20*y + offset_n;
-                    int width, height;
-                    int sprite_id = letter + sty->sprite_base.font
-                            + sty->font_base.base[font_id];
-
-                    SDL_Texture* sprite = sty_sprite(renderer, sty, 1,
-    sprite_id);
-                    if(sprite)
-                    {
-                            SDL_QueryTexture(sprite, NULL, NULL, &width,
-    &height);
-                            SDL_Rect dest = { offset_x, offset_y, width,
-    height};
-                            SDL_RenderCopy(renderer, sprite, NULL, &dest);
-                            SDL_DestroyTexture(sprite);
-                    }
-
-                    offset_x+=32;
-            }
-            offset_x = 0;
-            offset_y += 480/10;
-    }
-
-    */
 
     SDL_RenderPresent(renderer);
   }
