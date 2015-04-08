@@ -80,8 +80,11 @@ void tk_screen_draw(tk_t *tk) {
                                          ? GTA2_FONT_FSTYLE_RED_BLACK_NORMAL
                                          : GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
              argb, dest, ctrl->title);
+
+    dest.y += tk_control_get_height(ctrl);
+    dest.y += tk_control_get_vpadding(ctrl);
+
     ctrl = ctrl->next;
-    dest.y += 20;
   }
 }
 

@@ -43,6 +43,22 @@ tk_control_t *tk_control_cleanup(tk_control_t *ctrl) {
   return todo;
 }
 
+int tk_control_get_height(tk_control_t *ctrl) {
+  switch (ctrl->type) {
+  case TK_BUTTON:
+    return 12;
+  }
+  return 20;
+}
+
+int tk_control_get_vpadding(tk_control_t *ctrl) {
+  switch (ctrl->type) {
+  case TK_BUTTON:
+    return 8;
+  }
+  return 0;
+}
+
 /*
         NOTE: Always have at least one enabled control on a screen,
                 otherwise the up/down functions will loop until stack overflow

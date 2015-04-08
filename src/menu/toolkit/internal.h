@@ -55,7 +55,9 @@ typedef struct {
   char quit;
 } tk_t;
 
+void tk_screen_back(tk_t *tk);
 void tk_screen_draw(tk_t *tk);
+
 tk_texture_t *tk_texture_get(tk_t *tk, const char *name);
 
 tk_background_t *tk_create_background(tk_t *tk, const char *full,
@@ -65,5 +67,7 @@ tk_control_t *tk_control_cleanup(tk_control_t *ctrl);
 
 void tk_control_up(tk_screen_t *screen);
 void tk_control_down(tk_screen_t *screen);
-void tk_screen_back(tk_t *tk);
 void tk_control_onclick(tk_t *tk);
+
+int tk_control_get_height(tk_control_t *ctrl);
+int tk_control_get_vpadding(tk_control_t *ctrl);
