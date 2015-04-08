@@ -10,11 +10,12 @@ ui_t *ui_init(tk_t *tk) {
   ui_t *ui = malloc(sizeof(ui_t));
 
   // Credits screen (TODO: actually display credits ;) )
-  ui->credits = tk_screen_create(tk, (void *)ui, NULL, &ui_quit);
+  ui->credits = tk_screen_create(tk, (void *)ui, CREDITS, NULL, &ui_quit);
   tk_screen_setbg(tk, ui->credits, "credits", NULL, NULL);
 
   // Main menu
-  ui->main = tk_screen_create(tk, (void *)ui, ui->credits, NULL);
+  ui->main = tk_screen_create(tk, (void *)ui, BOTTOM_RIGHT, ui->credits, NULL);
+  ui->main->bottom_text_low = "GTA2 HACKER'S REMIX";
 
   tk_control_t *play;
   tk_control_add(ui->main, play, UI_TEXT_PLAY, TK_BUTTON, NULL);

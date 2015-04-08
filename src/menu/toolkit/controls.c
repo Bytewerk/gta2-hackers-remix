@@ -18,7 +18,8 @@ tk_control_t *tk_control_add_internal(tk_screen_t *screen, const char *title,
   ctrl->type = type;
   ctrl->data = data;
   ctrl->bg = NULL;
-  ctrl->bottom_text = NULL;
+  ctrl->bottom_text_high = NULL;
+  ctrl->bottom_text_low = NULL;
 
   if (screen->first_control) {
     tk_control_t *listpos = screen->first_control;
@@ -37,8 +38,6 @@ tk_control_t *tk_control_cleanup(tk_control_t *ctrl) {
   free(ctrl->data); // is always set!
   if (ctrl->bg)
     free(ctrl->bg);
-  if (ctrl->bottom_text)
-    free(ctrl->bottom_text);
   free(ctrl);
   return todo;
 }

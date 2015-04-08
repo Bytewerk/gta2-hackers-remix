@@ -19,11 +19,6 @@ typedef struct {
   tk_texture_t *right;
 } tk_background_t;
 
-typedef struct {
-  char line_count;
-  char **line;
-} tk_bottom_text_t;
-
 struct tk_screen_t;
 typedef struct tk_control_t {
   struct tk_control_t *next;
@@ -31,7 +26,8 @@ typedef struct tk_control_t {
   char type;
   void *data;
   tk_background_t *bg; // NULL: use screen bg
-  tk_bottom_text_t *bottom_text;
+  const char *bottom_text_high;
+  const char *bottom_text_low;
 } tk_control_t;
 
 typedef enum { BOTTOM_RIGHT, NORMAL, CREDITS } tk_screen_layout_t;
@@ -43,6 +39,8 @@ typedef struct tk_screen_t {
   tk_screen_layout_t layout;
   void *ui_data;
   void *event_func; // func(tk_t* tk, ui_t* ui)
+  const char *bottom_text_high;
+  const char *bottom_text_low;
 } tk_screen_t;
 
 typedef struct {

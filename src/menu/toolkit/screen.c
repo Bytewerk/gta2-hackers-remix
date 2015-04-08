@@ -8,14 +8,17 @@ void tk_screen_setbg(tk_t *tk, tk_screen_t *screen, const char *full,
   screen->bg = tk_create_background(tk, full, left, right);
 }
 
-tk_screen_t *tk_screen_create(tk_t *tk, void *ui_data, tk_screen_t *back,
+tk_screen_t *tk_screen_create(tk_t *tk, void *ui_data,
+                              tk_screen_layout_t layout, tk_screen_t *back,
                               void *event_func) {
   tk_screen_t *screen = malloc(sizeof(tk_screen_t));
   screen->back = back;
   screen->first_control = NULL;
   screen->selected_control = NULL;
   screen->bg = NULL;
+  screen->ui_data = ui_data;
   screen->event_func = event_func;
+  screen->layout = layout;
 
   return screen;
 }
@@ -42,16 +45,19 @@ void tk_screen_draw(tk_t *tk) {
   }
 
   tk_control_t *ctrl = screen->first_control;
-  // TODO: make this MUCH MORE dynamic!
-  SDL_Rect dest = {300, 250, 0, 0};
-  while (ctrl) {
-    sty_text(tk->renderer, tk->fsty, (ctrl == screen->selected_control)
-                                         ? GTA2_FONT_FSTYLE_RED_BLACK_NORMAL
-                                         : GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
-             dest, ctrl->title);
-    ctrl = ctrl->next;
 
-    dest.y += 20;
+  // FIXME
+  if (screen->layout == BOTTOM_RIGHT) {
+    SDL_Rect dest = {300, 250, 0, 0};
+    while (ctrl) {
+      sty_text(tk->renderer, tk->fsty,
+               (ctrl == screen->selected_control)
+                   ? GTA2_FONT_FSTYLE_RED_BLACK_NORMAL
+                   : GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
+               dest, ctrl->title);
+      ctrl = ctrl->next;
+      dest.y += 20;
+    }
   }
 }
 
