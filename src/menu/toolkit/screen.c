@@ -84,6 +84,10 @@ void tk_screen_draw(tk_t *tk) {
     dest.y += tk_control_get_height(ctrl);
     dest.y += tk_control_get_vpadding(ctrl);
 
+    if (ctrl->type == TK_CIRCLE) {
+      sty_circle(tk->renderer, tk->fsty, dest, '1'); // FIXME
+    }
+
     ctrl = ctrl->next;
   }
 }
