@@ -20,6 +20,9 @@ tk_screen_t *tk_screen_create(tk_t *tk, void *ui_data,
   screen->event_func = event_func;
   screen->layout = layout;
 
+  screen->bottom_text_high = NULL;
+  screen->bottom_text_low = NULL;
+
   return screen;
 }
 
@@ -31,6 +34,17 @@ tk_screen_t *tk_screen_create(tk_t *tk, void *ui_data,
       SDL_Rect dstrect = {XPOS, YPOS, WIDTH, HEIGHT};                          \
       SDL_RenderCopy(tk->renderer, bg->WHERE->texture, NULL, &dstrect);        \
     };                                                                         \
+  }
+#define DRAWBOTTOMTEXT(SOURCE)                                                 \
+  for (char is_low = 0; is_low < 2; is_low++) {                                \
+    const char *text =                                                         \
+        is_low ? SOURCE->bottom_text_low : SOURCE->bottom_text_high;           \
+    if (!text)                                                                 \
+      continue;                                                                \
+                                                                               \
+    SDL_Rect dest = {300, 440 + is_low * 20, 0, 0};                            \
+    sty_text(tk->renderer, tk->fsty, GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, dest,  \
+             text);                                                            \
   }
 
 void tk_screen_draw(tk_t *tk) {
@@ -44,9 +58,13 @@ void tk_screen_draw(tk_t *tk) {
     DRAWBG(right, 278, 000, 362, 480);
   }
 
-  tk_control_t *ctrl = screen->first_control;
+  if (control && control->bottom_text_low)
+    DRAWBOTTOMTEXT(control)
+  else
+    DRAWBOTTOMTEXT(screen)
 
-  // FIXME
+  // draw controls - TODO: support more controls and layouts
+  tk_control_t *ctrl = screen->first_control;
   if (screen->layout == BOTTOM_RIGHT) {
     SDL_Rect dest = {300, 250, 0, 0};
     while (ctrl) {
@@ -62,6 +80,7 @@ void tk_screen_draw(tk_t *tk) {
 }
 
 #undef DRAWBG
+#undef DRAWBOTTOMTEXT
 
 void tk_screen_cleanup(tk_screen_t *screen) {
   if (screen->bg)

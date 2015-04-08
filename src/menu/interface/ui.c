@@ -13,9 +13,9 @@ ui_t *ui_init(tk_t *tk) {
   ui->credits = tk_screen_create(tk, (void *)ui, CREDITS, NULL, &ui_quit);
   tk_screen_setbg(tk, ui->credits, "credits", NULL, NULL);
 
-  // Main menu
+  // Main menu (TODO: save the version number as #define somewhere)
   ui->main = tk_screen_create(tk, (void *)ui, BOTTOM_RIGHT, ui->credits, NULL);
-  ui->main->bottom_text_low = "GTA2 HACKER'S REMIX";
+  ui->main->bottom_text_low = "G2HR V0.4";
 
   tk_control_t *play;
   tk_control_add(ui->main, play, UI_TEXT_PLAY, TK_BUTTON, NULL);
