@@ -47,6 +47,8 @@ int tk_control_get_height(tk_control_t *ctrl) {
   switch (ctrl->type) {
   case TK_BUTTON:
     return 12;
+  case TK_CIRCLE:
+    return 12;
   }
   return 20;
 }
@@ -55,6 +57,8 @@ int tk_control_get_vpadding(tk_control_t *ctrl) {
   switch (ctrl->type) {
   case TK_BUTTON:
     return 8;
+  case TK_CIRCLE:
+    return 8 + 25 + 8;
   }
   return 0;
 }

@@ -7,7 +7,7 @@ void sty_circle(SDL_Renderer *renderer, sty_t *sty, SDL_Rect dest,
                 char letter) {
   SDL_Texture *sprite;
   dest.x += 105;
-  dest.y += 5;
+  dest.y += 25;
   dest.w = dest.h = 32;
 
   // circle

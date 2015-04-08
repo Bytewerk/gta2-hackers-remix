@@ -81,12 +81,12 @@ void tk_screen_draw(tk_t *tk) {
                                          : GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
              argb, dest, ctrl->title);
 
-    dest.y += tk_control_get_height(ctrl);
-    dest.y += tk_control_get_vpadding(ctrl);
-
     if (ctrl->type == TK_CIRCLE) {
       sty_circle(tk->renderer, tk->fsty, dest, '1'); // FIXME
     }
+
+    dest.y += tk_control_get_height(ctrl);
+    dest.y += tk_control_get_vpadding(ctrl);
 
     ctrl = ctrl->next;
   }
