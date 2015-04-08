@@ -15,7 +15,6 @@ tk_screen_t *tk_screen_create(tk_t *tk, void *ui_data, tk_screen_t *back,
   screen->first_control = NULL;
   screen->selected_control = NULL;
   screen->bg = NULL;
-  screen->ui_data = ui_data;
   screen->event_func = event_func;
 
   return screen;

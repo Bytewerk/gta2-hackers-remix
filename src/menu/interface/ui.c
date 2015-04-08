@@ -2,12 +2,12 @@
 #include "interface.h"
 
 void ui_quit(tk_t *tk, ui_t *ui) {
+  printf("ui_quit()\n");
   exit(0); // TODO: cleanup!
 }
 
 ui_t *ui_init(tk_t *tk) {
   ui_t *ui = malloc(sizeof(ui_t));
-  tk_control_t *ctrl;
 
   // Credits screen (TODO: actually display credits ;) )
   ui->credits = tk_screen_create(tk, (void *)ui, NULL, &ui_quit);
@@ -16,18 +16,20 @@ ui_t *ui_init(tk_t *tk) {
   // Main menu
   ui->main = tk_screen_create(tk, (void *)ui, ui->credits, NULL);
 
-  ctrl = tk_control_add(ui->main, TK_BUTTON, UI_TEXT_CAMPAIGNS, NULL);
-  tk_control_setbg(tk, ctrl, NULL, "1_play", "1");
+  tk_control_t *play;
+  tk_control_add(ui->main, play, UI_TEXT_PLAY, TK_BUTTON, NULL);
+  tk_control_setbg(tk, play, NULL, "1_play", "1");
 
-  ctrl = tk_control_add(ui->main, TK_BUTTON, UI_TEXT_MULTIPLAYER, NULL);
-  tk_control_setbg(tk, ctrl, NULL, "1_play", "1");
+  tk_control_t *options;
+  tk_control_add(ui->main, options, UI_TEXT_OPTIONS, TK_BUTTON, NULL);
+  tk_control_setbg(tk, options, NULL, "1_options", "1");
 
-  ctrl = tk_control_add(ui->main, TK_BUTTON, UI_TEXT_OPTIONS, NULL);
-  tk_control_setbg(tk, ctrl, NULL, "1_options", "1");
+  tk_control_t *quit;
+  tk_control_add(ui->main, quit, UI_TEXT_QUIT, TK_BUTTON,
+                 data->onclick_screen = ui->credits);
+  tk_control_setbg(tk, quit, NULL, "1_quit", "1");
 
-  ctrl = tk_control_add(ui->main, TK_BUTTON, UI_TEXT_QUIT, ui->credits);
-  tk_control_setbg(tk, ctrl, NULL, "1_quit", "1");
-
+  // Default screen is Main Menu
   tk->screen = ui->main;
   return ui;
 }

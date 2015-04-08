@@ -63,8 +63,11 @@ void tk_cleanup(tk_t *tk) {
 void tk_frame(tk_t *tk, SDL_Event *event) {
   SDL_RenderClear(tk->renderer);
 
-  // fade to the next background, if it has changed
-  // TODO: actually fade, not just switch backgrounds ;)
+  // switch to the next background, if it has changed
+  // TODO: also handle mouse input!
+  // TODO: add backspace => esc
+  // TODO: rename tk_control* functions here to tk_action_* ?
+  // TODO: rename _enter to _onclick
 
   if (tk->screen) {
     tk_screen_draw(tk);

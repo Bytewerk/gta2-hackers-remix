@@ -23,8 +23,36 @@ void tk_screen_setbg(tk_t *tk, tk_screen_t *screen, const char *full,
 void tk_control_setbg(tk_t *tk, tk_control_t *ctrl, const char *full,
                       const char *left, const char *right);
 
-tk_control_t *tk_control_add(tk_screen_t *screen, char type, const char *title,
-                             tk_screen_t *onclick_screen);
+/*
+        Always use this macro for adding controls!
+
+        Parameters:
+                tk_screen_t* SCREEN,
+                tk_control_t* UNINITIALIZED_CTRL,
+                char* TITLE,
+                char TYPE,
+                        see control_data.h
+                (c code) DATACODE,
+                        fill data here (see example) or NULL
+
+        Example:
+                tk_control_t* rainbow_toggle;
+                tk_control_add(screen, rainbow_toggle, TK_BOOLEAN,
+                        "Enable Awesome Rainbows?",
+                        data->value = true;
+                );
+*/
+#define tk_control_add(SCREEN, UNINITIALIZED_CTRL, TITLE, TYPE, DATACODE)      \
+  {                                                                            \
+    TYPE##_DATA_t *data = malloc(sizeof(TYPE##_DATA_t));                       \
+    memset(data, 0, sizeof(TYPE##_DATA_t));                                    \
+    DATACODE;                                                                  \
+    UNINITIALIZED_CTRL =                                                       \
+        tk_control_add_internal(SCREEN, TITLE, TYPE, (void *)data);            \
+  }
+
+tk_control_t *tk_control_add_internal(tk_screen_t *screen, const char *title,
+                                      char type, void *data);
 
 // TODO:
 // (load PNGs which have a transparent space at the position

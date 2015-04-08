@@ -8,35 +8,37 @@ void tk_control_setbg(tk_t *tk, tk_control_t *ctrl, const char *full,
   ctrl->bg = tk_create_background(tk, full, left, right);
 }
 
-tk_control_t *tk_control_add(tk_screen_t *screen, char type, const char *title,
-                             tk_screen_t *onclick_screen) {
+// always use the tk_control_add macro instead!
+tk_control_t *tk_control_add_internal(tk_screen_t *screen, const char *title,
+                                      char type, void *data) {
   tk_control_t *ctrl = malloc(sizeof(tk_control_t));
 
-  ctrl->onclick_screen = onclick_screen;
   ctrl->next = NULL;
   ctrl->title = title;
   ctrl->type = type;
-  ctrl->data = NULL; // depends on type, TODO
+  ctrl->data = data;
   ctrl->bg = NULL;
+  ctrl->bottom_text = NULL;
 
   if (screen->first_control) {
     tk_control_t *listpos = screen->first_control;
     while (listpos->next)
       listpos = listpos->next;
     listpos->next = ctrl;
-
   } else {
     screen->first_control = ctrl;
     screen->selected_control = ctrl;
   }
-
   return ctrl;
 }
 
 tk_control_t *tk_control_cleanup(tk_control_t *ctrl) {
   tk_control_t *todo = ctrl->next;
-  if (ctrl->data)
-    free(ctrl->data);
+  free(ctrl->data); // is always set!
+  if (ctrl->bg)
+    free(ctrl->bg);
+  if (ctrl->bottom_text)
+    free(ctrl->bottom_text);
   free(ctrl);
   return todo;
 }
@@ -71,13 +73,21 @@ void tk_control_enter(tk_t *tk) {
   if (!tk->screen)
     return;
 
+  tk_control_t *ctrl = tk->screen->selected_control;
+  if (!ctrl)
+    return;
+
   if (tk->screen->event_func) {
     void (*event_func)(tk_t *, void *) = tk->screen->event_func;
 
     event_func(tk, tk->screen->ui_data);
   }
 
-  if (tk->screen->selected_control &&
-      tk->screen->selected_control->onclick_screen)
-    tk->screen = tk->screen->selected_control->onclick_screen;
+  if (ctrl->type == TK_BUTTON) {
+    TK_BUTTON_DATA_t *data = (TK_BUTTON_DATA_t *)ctrl->data;
+    // if(data->onclick_func) -- TODO
+
+    if (data->onclick_screen)
+      tk->screen = data->onclick_screen;
+  }
 }
