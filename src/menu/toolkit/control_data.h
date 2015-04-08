@@ -28,12 +28,13 @@ typedef struct {
   char **entries;
 } TK_LIST_DATA_t;
 
-#define TK_NUMBER 0x04
+// min, max are really chars, eg: '0' - 'B'
+#define TK_CIRCLE 0x04
 typedef struct {
   char value;
   char min;
   char max;
-} TK_NUMBER_DATA_t;
+} TK_CIRCLE_DATA_t;
 
 // something like that. draw_func should get x,y as coordinates.
 // not really imeplemented yet!

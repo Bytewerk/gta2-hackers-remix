@@ -28,7 +28,8 @@ ui_t *ui_init(tk_t *tk) {
   tk_control_setbg(tk, scores, NULL, "2_league", "2");
 
   tk_control_t *start;
-  tk_control_add(ui->play, start, "START PLAY IN AREA", TK_NUMBER, NULL);
+  tk_control_add(ui->play, start, "START PLAY IN AREA", TK_CIRCLE,
+                 data->value = '1';);
   tk_control_setbg(tk, start, NULL, "2_level1", "2");
 
   // Main menu (TODO: save the version number as #define somewhere)
