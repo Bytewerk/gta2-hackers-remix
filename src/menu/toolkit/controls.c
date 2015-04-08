@@ -20,6 +20,7 @@ tk_control_t *tk_control_add_internal(tk_screen_t *screen, const char *title,
   ctrl->bg = NULL;
   ctrl->bottom_text_high = NULL;
   ctrl->bottom_text_low = NULL;
+  ctrl->disabled = 0;
 
   if (screen->first_control) {
     tk_control_t *listpos = screen->first_control;

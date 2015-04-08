@@ -28,6 +28,7 @@ typedef struct tk_control_t {
   tk_background_t *bg; // NULL: use screen bg
   const char *bottom_text_high;
   const char *bottom_text_low;
+  char disabled;
 } tk_control_t;
 
 typedef enum { BOTTOM_RIGHT, NORMAL, CREDITS } tk_screen_layout_t;

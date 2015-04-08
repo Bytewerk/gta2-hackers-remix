@@ -73,7 +73,7 @@ void tk_screen_draw(tk_t *tk) {
   while (ctrl) {
     uint32_t argb = 0xffffffff;
 
-    if (ctrl->type == TK_BUTTON && ((TK_BUTTON_DATA_t *)ctrl->data)->disabled)
+    if (ctrl->disabled)
       argb = 0x77ffffff;
 
     sty_text(tk->renderer, tk->fsty, (ctrl == screen->selected_control)

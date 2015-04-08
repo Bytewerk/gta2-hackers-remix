@@ -10,7 +10,6 @@
 typedef struct {
   void *onclick_func;
   tk_screen_t *onclick_screen;
-  char disabled;
 } TK_BUTTON_DATA_t;
 
 #define TK_BOOLEAN 0x01

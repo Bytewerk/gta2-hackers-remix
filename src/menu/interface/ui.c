@@ -20,8 +20,8 @@ ui_t *ui_init(tk_t *tk) {
   name->bottom_text_low = "DELETE:  DELETE PLAYER";
 
   tk_control_t *resume;
-  tk_control_add(ui->play, resume, "RESUME SAVED STATUS", TK_BUTTON,
-                 data->disabled = 1);
+  tk_control_add(ui->play, resume, "RESUME SAVED STATUS", TK_BUTTON, NULL);
+  resume->disabled = 1;
 
   tk_control_t *scores;
   tk_control_add(ui->play, scores, "VIEW HIGH SCORES", TK_BUTTON, NULL);
