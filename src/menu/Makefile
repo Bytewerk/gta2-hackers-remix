@@ -2,21 +2,21 @@
 # However, SDL is crossplattform and some parts can at least be
 # developed on Linux. So here's the Makefile.
 #
+# FIXME: The makefile isn't written very well, but Make doesn't
+# offer automatic dependency resolution and creating objects
+# only works for one c file at a time (one folder would be handy).
+# So we'll keep it like that for now. Compilation speed isn't really
+# slow anyway.
+#
 # To develop the menu code on windows, see:
 # http://git.io/g2hr-codeblocks-setup
 #
 
-output = menu.$(shell uname -m)
 
-
-# FIXME: add -Wall and then fix all warnings!
-
-$(output): main.c */*.c */*.h
-	gcc -g -std=c99 main.c */*.c -lSDL2 -lSDL2_image -o $(output) -Wall #-lSDL2_net
-
-sprite_test.bin: sprite_test.c sty/*.c sty/*.h
-	gcc -g -std=c99 sprite_test.c sty/*.c -lSDL2 -o sprite_test.bin -Wfatal-errors
+out/menu.bin: main.c */*.c */*.h
+	mkdir -p out
+	gcc -Wall -g -std=c99 main.c */*.c -lSDL2 -lSDL2_image -lSDL2_net -o $@
 
 
 clean:
-	rm $(output)
+	rm -r out || true
