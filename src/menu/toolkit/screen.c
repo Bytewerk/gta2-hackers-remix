@@ -43,8 +43,8 @@ tk_screen_t *tk_screen_create(tk_t *tk, void *ui_data,
       continue;                                                                \
                                                                                \
     SDL_Rect dest = {300, 440 + is_low * 20, 0, 0};                            \
-    sty_text(tk->renderer, tk->fsty, GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, dest,  \
-             text);                                                            \
+    sty_text(tk->renderer, tk->fsty, GTA2_FONT_FSTYLE_WHITE_BLACK_TINY,        \
+             0xffffffff, dest, text);                                          \
   }
 
 void tk_screen_draw(tk_t *tk) {
@@ -71,10 +71,15 @@ void tk_screen_draw(tk_t *tk) {
     dest.y = 250;
 
   while (ctrl) {
+    uint32_t argb = 0xffffffff;
+
+    if (ctrl->type == TK_BUTTON && ((TK_BUTTON_DATA_t *)ctrl->data)->disabled)
+      argb = 0x77ffffff;
+
     sty_text(tk->renderer, tk->fsty, (ctrl == screen->selected_control)
                                          ? GTA2_FONT_FSTYLE_RED_BLACK_NORMAL
                                          : GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
-             dest, ctrl->title);
+             argb, dest, ctrl->title);
     ctrl = ctrl->next;
     dest.y += 20;
   }

@@ -70,5 +70,5 @@ sty_t *sty_load(char *filename);
 void sty_cleanup(sty_t *sty);
 SDL_Texture *sty_sprite(SDL_Renderer *renderer, sty_t *sty, char silent,
                         int sprite_id);
-void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, SDL_Rect dest,
-              const char *text);
+void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
+              SDL_Rect dest, const char *text);
