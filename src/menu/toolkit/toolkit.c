@@ -67,13 +67,10 @@ void tk_frame(tk_t *tk, SDL_Event *event) {
 
   // switch to the next background, if it has changed
   // TODO: also handle mouse input!
-  // TODO: add backspace => esc
   // TODO: rename tk_control* functions here to tk_action_* ?
   // TODO: rename _enter to _onclick
 
   if (tk->screen) {
-    tk_screen_draw(tk);
-
     if (event->type == SDL_KEYDOWN) {
       SDL_Keycode key = event->key.keysym.sym;
       if (key == SDLK_UP)
@@ -83,8 +80,9 @@ void tk_frame(tk_t *tk, SDL_Event *event) {
       if (key == SDLK_ESCAPE || key == SDLK_BACKSPACE)
         tk_screen_back(tk);
       if (key == SDLK_RETURN)
-        tk_control_enter(tk);
+        tk_control_onclick(tk);
     }
+    tk_screen_draw(tk);
   }
 
   SDL_RenderPresent(tk->renderer);

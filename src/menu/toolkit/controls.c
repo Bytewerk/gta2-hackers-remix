@@ -45,7 +45,8 @@ tk_control_t *tk_control_cleanup(tk_control_t *ctrl) {
 
 /*
         NOTE: Always have at least one enabled control on a screen,
-                otherwise the up/down functions will loop forever.
+                otherwise the up/down functions will loop until stack overflow
+                (not the website ;) ).
 */
 
 void tk_control_up(tk_screen_t *screen) {
@@ -80,7 +81,7 @@ void tk_control_down(tk_screen_t *screen) {
     tk_control_down(screen);
 }
 
-void tk_control_enter(tk_t *tk) {
+void tk_control_onclick(tk_t *tk) {
   if (!tk->screen)
     return;
 

@@ -21,6 +21,20 @@
                 ;)
 */
 
+char sty_font_spacing(int font_id) {
+  switch (font_id) {
+  case GTA2_FONT_FSTYLE_WHITE_BLACK_TINY:
+    return 8;
+  case GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL:
+    return 11;
+  case GTA2_FONT_FSTYLE_RED_BLACK_NORMAL:
+    return 11;
+  case GTA2_FONT_FSTYLE_WHITE_RED_NORMAL:
+    return 11;
+  }
+  return 0;
+}
+
 void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
               SDL_Rect dest, const char *text) {
   int base = sty->sprite_base.font + sty->font_base.base[font_id] -
@@ -42,8 +56,7 @@ void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
       letter = ';';
 
     if (letter == ' ') {
-      // Pixel perfect for GTA2_FONT_FSTYLE_WHITE_BLACK_TINY
-      dest.x += 8;
+      dest.x += sty_font_spacing(font_id);
       continue;
     }
 

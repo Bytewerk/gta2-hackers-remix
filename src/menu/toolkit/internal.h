@@ -66,4 +66,4 @@ tk_control_t *tk_control_cleanup(tk_control_t *ctrl);
 void tk_control_up(tk_screen_t *screen);
 void tk_control_down(tk_screen_t *screen);
 void tk_screen_back(tk_t *tk);
-void tk_control_enter(tk_t *tk);
+void tk_control_onclick(tk_t *tk);

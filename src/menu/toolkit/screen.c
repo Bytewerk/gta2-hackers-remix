@@ -74,7 +74,7 @@ void tk_screen_draw(tk_t *tk) {
     uint32_t argb = 0xffffffff;
 
     if (ctrl->disabled)
-      argb = 0x77ffffff;
+      argb = 0x9cffffff;
 
     sty_text(tk->renderer, tk->fsty, (ctrl == screen->selected_control)
                                          ? GTA2_FONT_FSTYLE_RED_BLACK_NORMAL
