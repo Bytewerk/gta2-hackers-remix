@@ -65,7 +65,7 @@ void tk_screen_draw(tk_t *tk) {
 
   // draw controls - TODO: support more controls and layouts
   tk_control_t *ctrl = screen->first_control;
-  SDL_Rect dest = {300, 200, 0, 0};
+  SDL_Rect dest = {300, 210, 0, 0};
 
   if (screen->layout == BOTTOM_RIGHT)
     dest.y = 250;
