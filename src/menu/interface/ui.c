@@ -58,6 +58,7 @@ ui_t *ui_init(tk_t *tk) {
 }
 
 void ui_cleanup(tk_t *tk, ui_t *ui) {
+  tk_screen_cleanup(ui->play);
   tk_screen_cleanup(ui->main);
   tk_screen_cleanup(ui->credits);
   tk->screen = NULL;
