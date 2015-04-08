@@ -43,6 +43,11 @@ tk_control_t *tk_control_cleanup(tk_control_t *ctrl) {
   return todo;
 }
 
+/*
+        NOTE: Always have at least one enabled control on a screen,
+                otherwise the up/down functions will loop forever.
+*/
+
 void tk_control_up(tk_screen_t *screen) {
   tk_control_t *selected = screen->selected_control;
   tk_control_t *listpos = screen->first_control;
@@ -58,6 +63,9 @@ void tk_control_up(tk_screen_t *screen) {
       listpos = listpos->next;
 
   screen->selected_control = listpos;
+
+  if (screen->selected_control->disabled)
+    tk_control_up(screen);
 }
 
 void tk_control_down(tk_screen_t *screen) {
@@ -67,6 +75,9 @@ void tk_control_down(tk_screen_t *screen) {
   screen->selected_control = screen->selected_control->next
                                  ? screen->selected_control->next
                                  : screen->first_control;
+
+  if (screen->selected_control->disabled)
+    tk_control_down(screen);
 }
 
 void tk_control_enter(tk_t *tk) {
