@@ -1,3 +1,4 @@
+#include "font.h"
 #include "sty.h"
 #include <stdio.h>
 
@@ -15,12 +16,10 @@
         Text must be \0-terminated!
 */
 
-#define GTA2_FIRST_CHAR '!'
-
 void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, SDL_Rect dest,
               const char *text) {
-  int base =
-      sty->sprite_base.font + sty->font_base.base[font_id] - GTA2_FIRST_CHAR;
+  int base = sty->sprite_base.font + sty->font_base.base[font_id] -
+             GTA2_FONT_FIRST_CHAR;
 
   if (font_id >= sty->font_base.font_count) {
     printf("WARNING: Can't draw font_id %i (max: %i, text: %s)!\n", font_id,

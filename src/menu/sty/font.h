@@ -1,5 +1,7 @@
 #pragma once
 
+#define GTA2_FONT_FIRST_CHAR '!'
+
 // FORMAT:
 // GTA2_FONT styname foreground background size
 
