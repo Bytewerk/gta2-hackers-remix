@@ -2,7 +2,7 @@
 # However, SDL is crossplattform and some parts can at least be
 # developed on Linux. So here's the Makefile.
 #
-# FIXME: The makefile isn't written very well, but Make doesn't
+# FIXME: The Makefile isn't written very well, but make doesn't
 # offer automatic dependency resolution and creating objects
 # only works for one c file at a time (one folder would be handy).
 # So we'll keep it like that for now. Compilation speed isn't really
