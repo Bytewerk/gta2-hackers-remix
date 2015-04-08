@@ -24,7 +24,7 @@ void tk_init_gta2_background(tk_t *tk, const char *name) {
 
   SDL_Surface *surface = IMG_Load(fullpath);
   if (!surface)
-    exit(printf("File read error!\n", fullpath));
+    exit(printf("File read error!\n"));
 
   // Workaround to fix reported "wrong colors" bug,
   // until it gets fixed upstream:

@@ -17,7 +17,6 @@ void sfx_load_fstyle(sfx_t *sfx) {
 
   // calculate the sample count from the 'sdt' file size
   // and verify it
-  int fileid = 0;
   fseek(sdt, 0, 2);
   int samples_count = ftell(sdt) / 24;
   fseek(sdt, 0, 0);
@@ -27,7 +26,7 @@ void sfx_load_fstyle(sfx_t *sfx) {
 
   // iterate through all included audio samples of the raw file,
   // and save the ones we need in the sfx struct
-  for (char i = 0; i < samples_count; i++) {
+  for (int i = 0; i < samples_count; i++) {
     // check if we need this sample at all
     if (i != SFX_FSTYLE_RETURN && i != SFX_FSTYLE_LEFT &&
         i != SFX_FSTYLE_RIGHT && i != SFX_FSTYLE_BACK && i != SFX_FSTYLE_CHEAT)
@@ -76,10 +75,9 @@ sfx_t *sfx_init() {
 }
 
 // Just cut off already playing SFX. GTA2 does it the same way.
-void sfx_play(sfx_t *sfx, char id) {
-  sfx_sample_t *sample = sfx->sample[id];
-
+void sfx_play(sfx_t *sfx, int id) {
   // FIXME: These functions don't exist yet, we'll have to wait for SDL 2.0.4!
+  // sfx_sample_t* sample = sfx->sample[id];
   // SDL_ClearQueuedAudio(sfx->dev);
   // SDL_QueueAudio(sfx->dev, sample->raw, sample->byte_count);
 

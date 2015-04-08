@@ -32,5 +32,5 @@ typedef struct {
 } sfx_t;
 
 sfx_t *sfx_init();
-void sfx_play(sfx_t *sfx, char id);
+void sfx_play(sfx_t *sfx, int id);
 void sfx_cleanup(sfx_t *sfx);
