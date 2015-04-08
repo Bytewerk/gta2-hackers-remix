@@ -1,8 +1,8 @@
 #pragma once
 #include "internal.h"
 
-// TODO: add a control that is a textfield and a list at the same time
-// (for editing the player name)
+// Editing player name:
+// TK_LIST, onclick -> change to textfield - or something like that
 
 // onclick func gets executed before onclick_screen
 // both may be set to NULL
@@ -10,6 +10,7 @@
 typedef struct {
   void *onclick_func;
   tk_screen_t *onclick_screen;
+  char disabled;
 } TK_BUTTON_DATA_t;
 
 #define TK_BOOLEAN 0x01
