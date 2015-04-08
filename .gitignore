@@ -5,6 +5,10 @@
 *.sdt
 *.wav
 
+
+# Converted some TGAs with imagemagick
+*.jpg
+
 # Logs, eg. from std2wav
 *.log
 

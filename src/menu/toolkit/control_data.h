@@ -1,6 +1,9 @@
 #pragma once
 #include "internal.h"
 
+// TODO: add a control that is a textfield and a list at the same time
+// (for editing the player name)
+
 // onclick func gets executed before onclick_screen
 // both may be set to NULL
 #define TK_BUTTON 0x00

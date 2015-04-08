@@ -13,12 +13,20 @@ ui_t *ui_init(tk_t *tk) {
   ui->credits = tk_screen_create(tk, (void *)ui, CREDITS, NULL, &ui_quit);
   tk_screen_setbg(tk, ui->credits, "credits", NULL, NULL);
 
+  // Play screen
+  ui->play = tk_screen_create(tk, (void *)ui, NORMAL, NULL, NULL);
+
+  tk_control_t *name;
+  tk_control_add(ui->play, name, "PLAYER 0", TK_BUTTON, NULL);
+  tk_control_setbg(tk, name, NULL, "2_name", "2");
+
   // Main menu (TODO: save the version number as #define somewhere)
   ui->main = tk_screen_create(tk, (void *)ui, BOTTOM_RIGHT, ui->credits, NULL);
   ui->main->bottom_text_low = "G2HR V0.4";
 
   tk_control_t *play;
-  tk_control_add(ui->main, play, UI_TEXT_PLAY, TK_BUTTON, NULL);
+  tk_control_add(ui->main, play, UI_TEXT_PLAY, TK_BUTTON,
+                 data->onclick_screen = ui->play);
   tk_control_setbg(tk, play, NULL, "1_play", "1");
 
   tk_control_t *options;
@@ -29,6 +37,9 @@ ui_t *ui_init(tk_t *tk) {
   tk_control_add(ui->main, quit, UI_TEXT_QUIT, TK_BUTTON,
                  data->onclick_screen = ui->credits);
   tk_control_setbg(tk, quit, NULL, "1_quit", "1");
+
+  // Now that the main menu has been created, set 'back' links
+  ui->play->back = ui->main;
 
   // Default screen is Main Menu
   tk->screen = ui->main;

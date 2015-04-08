@@ -7,8 +7,10 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
-  const char *tgas[] = {"1",      "1_play",   "1_options",
-                        "1_quit", "3_tables", "credits" /* ... */};
+  const char *tgas[] = {"1",        "1_play", "1_options",
+                        "1_quit",   "2",      "2_name",
+
+                        "3_tables", "credits"};
 
   // Initialize everything
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
