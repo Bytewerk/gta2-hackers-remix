@@ -13,6 +13,7 @@ tk_t *tk_init(sty_t *fsty, sfx_t *sfx, const char *title) {
   tk->sfx = sfx;
   tk->screen = NULL;
   tk->textures = NULL;
+  tk->quit = 0;
 
   // create the SDL window
   tk->window =
@@ -40,7 +41,8 @@ tk_texture_t *tk_texture_get(tk_t *tk, const char *name) {
   }
 
   printf("ERROR: tried to access not loaded texture: %s\n", name);
-  exit(1);
+  tk->quit = 1;
+  return NULL;
 }
 
 void tk_cleanup(tk_t *tk) {

@@ -94,9 +94,8 @@ void tk_screen_cleanup(tk_screen_t *screen) {
 }
 
 void tk_screen_back(tk_t *tk) {
-  // TODO: clean up everything!
-  if (!tk->screen || !tk->screen->back)
-    exit(0);
-
-  tk->screen = tk->screen->back;
+  if (tk->screen && tk->screen->back)
+    tk->screen = tk->screen->back;
+  else
+    tk->quit = 1;
 }

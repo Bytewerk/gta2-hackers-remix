@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 
   ui_t *ui = ui_init(tk);
 
-  while (1) {
+  while (!tk->quit) {
     SDL_Event event;
     SDL_WaitEvent(&event);
     if (event.type == SDL_QUIT)
@@ -47,6 +47,6 @@ int main(int argc, char *argv[]) {
   sfx_cleanup(sfx);
   SDL_Quit();
 
-  printf("Cleaned up!\n");
+  printf("cleaned up!\n");
   return 0;
 }

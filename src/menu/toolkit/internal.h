@@ -51,6 +51,7 @@ typedef struct {
   tk_screen_t *screen;
   sfx_t *sfx;
   sty_t *fsty;
+  char quit;
 } tk_t;
 
 void tk_screen_draw(tk_t *tk);

@@ -1,10 +1,7 @@
 #include "../toolkit/toolkit.h"
 #include "interface.h"
 
-void ui_quit(tk_t *tk, ui_t *ui) {
-  printf("ui_quit()\n");
-  exit(0); // TODO: cleanup!
-}
+void ui_quit(tk_t *tk, ui_t *ui) { tk->quit = 1; }
 
 ui_t *ui_init(tk_t *tk) {
   ui_t *ui = malloc(sizeof(ui_t));
