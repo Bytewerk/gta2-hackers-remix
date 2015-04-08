@@ -19,6 +19,8 @@ ui_t *ui_init(tk_t *tk) {
   tk_control_t *name;
   tk_control_add(ui->play, name, "PLAYER 0", TK_BUTTON, NULL);
   tk_control_setbg(tk, name, NULL, "2_name", "2");
+  name->bottom_text_high = "ENTER:  EDIT NAME";
+  name->bottom_text_low = "DELETE:  DELETE PLAYER";
 
   // Main menu (TODO: save the version number as #define somewhere)
   ui->main = tk_screen_create(tk, (void *)ui, BOTTOM_RIGHT, ui->credits, NULL);

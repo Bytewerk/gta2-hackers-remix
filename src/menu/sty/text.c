@@ -30,11 +30,15 @@ void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, SDL_Rect dest,
   for (; *text != '\0'; text++) {
     char letter = *text;
 
-    // There is no space 'letter' in the font, so just use half
-    // the width of the 'A' character. Inspired by Black_Phoenix'
-    // blog post: http://brain.wireos.com/?p=1647
+    // some letters are switched
+    if (letter == ';')
+      letter = ':';
+    if (letter == ':')
+      letter = ';';
+
     if (letter == ' ') {
-      dest.x += sty->sprite_index.entries['A' + base].width / 2;
+      // Pixel perfect for GTA2_FONT_FSTYLE_WHITE_BLACK_TINY
+      dest.x += 8;
       continue;
     }
 
