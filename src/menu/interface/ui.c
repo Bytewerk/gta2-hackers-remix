@@ -22,6 +22,18 @@ ui_t *ui_init(tk_t *tk) {
   name->bottom_text_high = "ENTER:  EDIT NAME";
   name->bottom_text_low = "DELETE:  DELETE PLAYER";
 
+  tk_control_t *resume;
+  tk_control_add(ui->play, resume, "RESUME SAVED STATUS", TK_BUTTON,
+                 data->disabled = 1);
+
+  tk_control_t *scores;
+  tk_control_add(ui->play, scores, "VIEW HIGH SCORES", TK_BUTTON, NULL);
+  tk_control_setbg(tk, scores, NULL, "2_league", "2");
+
+  tk_control_t *start;
+  tk_control_add(ui->play, start, "START PLAY IN AREA", TK_NUMBER, NULL);
+  tk_control_setbg(tk, start, NULL, "2_level1", "2");
+
   // Main menu (TODO: save the version number as #define somewhere)
   ui->main = tk_screen_create(tk, (void *)ui, BOTTOM_RIGHT, ui->credits, NULL);
   ui->main->bottom_text_low = "G2HR V0.4";

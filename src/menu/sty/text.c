@@ -3,8 +3,9 @@
 
 /*
         TODO:
-                - resize the letters, according to the resolution
+                - add color/opacity parameter wrapper?
                 - add automatic line breaks (incl. max_width parameter)?
+                        (only if we ever need multiline text)
                 - cache whole font sets as textures before using them?
                         (not sure if this has any benefit)
 
