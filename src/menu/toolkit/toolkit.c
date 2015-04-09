@@ -62,33 +62,39 @@ void tk_cleanup(tk_t *tk) {
   free(tk);
 }
 
-void tk_frame(tk_t *tk, SDL_Event *event) {
-  SDL_RenderClear(tk->renderer);
+void tk_frame(tk_t *tk, SDL_Event *event, char /*bool*/ force_redraw) {
+  char /*bool*/ force_sleep = 0;
+  if (!tk->screen)
+    return;
 
-  // switch to the next background, if it has changed
-  // TODO: rewrite event loop, draw with a fixed frame rate
-  // on mouse movement, just register that it has moved and wait
-  // for the next frame before redrawing.
+  if (event->type == SDL_MOUSEMOTION) {
+    tk_control_mouse(tk, event->motion.x, event->motion.y, 0);
+  } else if (event->type == SDL_MOUSEBUTTONUP &&
+             event->button.button == SDL_BUTTON_LEFT) {
+    tk_control_mouse(tk, event->button.x, event->button.y, 1);
+  } else if (event->type == SDL_KEYDOWN) {
+    SDL_Keycode key = event->key.keysym.sym;
+    if (key == SDLK_UP)
+      tk_control_up(tk->screen);
+    if (key == SDLK_DOWN)
+      tk_control_down(tk->screen);
+    if (key == SDLK_ESCAPE || key == SDLK_BACKSPACE)
+      tk_screen_back(tk);
+    if (key == SDLK_RETURN)
+      tk_control_onclick(tk);
 
-  if (tk->screen) {
-    if (event->type == SDL_MOUSEMOTION) {
-      tk_control_mouse(tk, event->motion.x, event->motion.y, 0);
-    } else if (event->type == SDL_MOUSEBUTTONUP &&
-               event->button.button == SDL_BUTTON_LEFT) {
-      tk_control_mouse(tk, event->button.x, event->button.y, 1);
-    } else if (event->type == SDL_KEYDOWN) {
-      SDL_Keycode key = event->key.keysym.sym;
-      if (key == SDLK_UP)
-        tk_control_up(tk->screen);
-      if (key == SDLK_DOWN)
-        tk_control_down(tk->screen);
-      if (key == SDLK_ESCAPE || key == SDLK_BACKSPACE)
-        tk_screen_back(tk);
-      if (key == SDLK_RETURN)
-        tk_control_onclick(tk);
-    }
-    tk_screen_draw(tk);
+    force_sleep = 1;
   }
 
-  SDL_RenderPresent(tk->renderer);
+  if (event->type == SDL_WINDOWEVENT || force_redraw || force_sleep) {
+    SDL_RenderClear(tk->renderer);
+    tk_screen_draw(tk);
+    SDL_RenderPresent(tk->renderer);
+  }
+
+  if (force_sleep) {
+    SDL_Delay(100);
+    SDL_PumpEvents();
+    SDL_FlushEvent(SDL_KEYDOWN);
+  }
 }

@@ -13,7 +13,7 @@ tk_screen_t *tk_screen_create(tk_t *tk, void *ui_data,
                               tk_screen_layout_t layout, tk_screen_t *back,
                               void *event_func);
 
-void tk_frame(tk_t *tk, SDL_Event *event);
+void tk_frame(tk_t *tk, SDL_Event *event, char /*bool*/ force_redraw);
 
 void tk_screen_cleanup(tk_screen_t *screen);
 void tk_cleanup(tk_t *tk);

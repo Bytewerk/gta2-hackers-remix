@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define G2HR_FPS 30
+
 int main(int argc, char *argv[]) {
   const char *tgas[] = {"1",        "1_play", "1_options", "1_quit",
                         "2",        "2_name", "2_league",  "2_level1",
@@ -35,10 +37,10 @@ int main(int argc, char *argv[]) {
 
   while (!tk->quit) {
     SDL_Event event;
-    SDL_WaitEvent(&event);
+    char force_redraw = !SDL_WaitEventTimeout(&event, 1000 / G2HR_FPS);
     if (event.type == SDL_QUIT)
       break;
-    tk_frame(tk, &event);
+    tk_frame(tk, &event, force_redraw);
   }
 
   ui_cleanup(tk, ui);
