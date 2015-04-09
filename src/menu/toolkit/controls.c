@@ -43,6 +43,13 @@ tk_control_t *tk_control_cleanup(tk_control_t *ctrl) {
   return todo;
 }
 
+int tk_control_get_width(SDL_Renderer *renderer, sty_t *sty,
+                         tk_control_t *ctrl) {
+  // TODO: make this depend on type!
+  return sty_text_width(renderer, sty, GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
+                        ctrl->title);
+}
+
 int tk_control_get_height(tk_control_t *ctrl) {
   switch (ctrl->type) {
   case TK_BUTTON:
@@ -101,14 +108,27 @@ void tk_control_down(tk_screen_t *screen) {
     tk_control_down(screen);
 }
 
-void tk_control_mouse(tk_screen_t *screen, int x, int y, char /*bool*/ click) {
-  tk_control_t *listpos = screen->first_control;
-  int offset_y = 0; // set to screen's control y-offset
+void tk_control_mouse(tk_t *tk, int x, int y, char /*bool*/ click) {
+  tk_control_t *listpos = tk->screen->first_control;
+
+  // fixme: combine this with screen.c
+  int offset_y = tk->screen->layout == BOTTOM_RIGHT ? 250 : 210;
+  int offset_x = 300;
+
   while (listpos) {
-    /*
-            check if x,y inside of control area
-            otherwise offset_y+= control height;
-    */
+    int w = tk_control_get_width(tk->renderer, tk->fsty, listpos);
+    int h = tk_control_get_height(listpos);
+
+    if (!listpos->disabled && x >= offset_x && x <= offset_x + w &&
+        y >= offset_y && y <= offset_y + h) {
+      tk->screen->selected_control = listpos;
+
+      if (click)
+        tk_control_onclick(tk);
+      break;
+    }
+
+    offset_y += h + tk_control_get_vpadding(listpos);
     listpos = listpos->next;
   }
 }

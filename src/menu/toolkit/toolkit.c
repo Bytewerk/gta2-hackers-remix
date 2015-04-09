@@ -66,13 +66,16 @@ void tk_frame(tk_t *tk, SDL_Event *event) {
   SDL_RenderClear(tk->renderer);
 
   // switch to the next background, if it has changed
-  // TODO: also handle mouse input!
-  // TODO: rename tk_control* functions here to tk_action_* ?
-  // TODO: rename _enter to _onclick
+  // TODO: rewrite event loop, draw with a fixed frame rate
+  // on mouse movement, just register that it has moved and wait
+  // for the next frame before redrawing.
 
   if (tk->screen) {
     if (event->type == SDL_MOUSEMOTION) {
-      tk_control_mouse(tk->screen, event->motion.x, event->motion.y, 0);
+      tk_control_mouse(tk, event->motion.x, event->motion.y, 0);
+    } else if (event->type == SDL_MOUSEBUTTONUP &&
+               event->button.button == SDL_BUTTON_LEFT) {
+      tk_control_mouse(tk, event->button.x, event->button.y, 1);
     } else if (event->type == SDL_KEYDOWN) {
       SDL_Keycode key = event->key.keysym.sym;
       if (key == SDLK_UP)

@@ -29,6 +29,9 @@ typedef struct tk_control_t {
   const char *bottom_text_high;
   const char *bottom_text_low;
   char disabled;
+  int width;
+  int height;
+  int vpadding;
 } tk_control_t;
 
 typedef enum { BOTTOM_RIGHT, NORMAL, CREDITS } tk_screen_layout_t;
@@ -68,7 +71,9 @@ tk_control_t *tk_control_cleanup(tk_control_t *ctrl);
 void tk_control_up(tk_screen_t *screen);
 void tk_control_down(tk_screen_t *screen);
 void tk_control_onclick(tk_t *tk);
-void tk_control_mouse(tk_screen_t *screen, int x, int y, char /*bool*/ click);
+void tk_control_mouse(tk_t *tk, int x, int y, char /*bool*/ click);
 
+int tk_control_get_width(SDL_Renderer *renderer, sty_t *sty,
+                         tk_control_t *ctrl);
 int tk_control_get_height(tk_control_t *ctrl);
 int tk_control_get_vpadding(tk_control_t *ctrl);

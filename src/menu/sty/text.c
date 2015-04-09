@@ -35,6 +35,32 @@ char sty_font_spacing(int font_id) {
   return 0;
 }
 
+// some letters are switched
+char sty_letter_switch(char letter) {
+  if (letter == ';')
+    return ':';
+  if (letter == ':')
+    return ';';
+  return letter;
+}
+
+// just calculate the width, without actually rendering
+int sty_text_width(SDL_Renderer *renderer, sty_t *sty, int font_id,
+                   const char *text) {
+  int base = sty->sprite_base.font + sty->font_base.base[font_id] -
+             GTA2_FONT_FIRST_CHAR;
+
+  int width = 0;
+  for (; *text != '\0'; text++) {
+    char letter = sty_letter_switch(*text);
+    if (letter == ' ')
+      width += sty_font_spacing(font_id);
+    else
+      width += sty->sprite_index.entries[letter + base].width;
+  }
+  return width;
+}
+
 void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
               SDL_Rect dest, const char *text) {
   int base = sty->sprite_base.font + sty->font_base.base[font_id] -
@@ -47,13 +73,7 @@ void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
   }
 
   for (; *text != '\0'; text++) {
-    char letter = *text;
-
-    // some letters are switched
-    if (letter == ';')
-      letter = ':';
-    if (letter == ':')
-      letter = ';';
+    char letter = sty_letter_switch(*text);
 
     if (letter == ' ') {
       dest.x += sty_font_spacing(font_id);
