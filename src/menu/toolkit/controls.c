@@ -101,6 +101,18 @@ void tk_control_down(tk_screen_t *screen) {
     tk_control_down(screen);
 }
 
+void tk_control_mouse(tk_screen_t *screen, int x, int y, char /*bool*/ click) {
+  tk_control_t *listpos = screen->first_control;
+  int offset_y = 0; // set to screen's control y-offset
+  while (listpos) {
+    /*
+            check if x,y inside of control area
+            otherwise offset_y+= control height;
+    */
+    listpos = listpos->next;
+  }
+}
+
 void tk_control_onclick(tk_t *tk) {
   if (!tk->screen)
     return;

@@ -68,6 +68,7 @@ tk_control_t *tk_control_cleanup(tk_control_t *ctrl);
 void tk_control_up(tk_screen_t *screen);
 void tk_control_down(tk_screen_t *screen);
 void tk_control_onclick(tk_t *tk);
+void tk_control_mouse(tk_screen_t *screen, int x, int y, char /*bool*/ click);
 
 int tk_control_get_height(tk_control_t *ctrl);
 int tk_control_get_vpadding(tk_control_t *ctrl);

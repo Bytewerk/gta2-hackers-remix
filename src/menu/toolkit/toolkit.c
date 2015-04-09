@@ -71,7 +71,9 @@ void tk_frame(tk_t *tk, SDL_Event *event) {
   // TODO: rename _enter to _onclick
 
   if (tk->screen) {
-    if (event->type == SDL_KEYDOWN) {
+    if (event->type == SDL_MOUSEMOTION) {
+      tk_control_mouse(tk->screen, event->motion.x, event->motion.y, 0);
+    } else if (event->type == SDL_KEYDOWN) {
       SDL_Keycode key = event->key.keysym.sym;
       if (key == SDLK_UP)
         tk_control_up(tk->screen);
