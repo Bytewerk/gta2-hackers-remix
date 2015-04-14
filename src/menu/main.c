@@ -1,7 +1,8 @@
-#include "interface/interface.h"
+#include "bg/background.h"
 #include "sfx/sfx.h"
 #include "sty/sty.h"
-#include "toolkit/toolkit.h"
+#include "tk/toolkit.h"
+#include "ui/interface.h"
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,31 +21,23 @@ int main(int argc, char *argv[]) {
 
   sty_t *fsty = sty_load("data/fstyle.sty");
 
+  // FIXME: needs SDL 2.0.4
   sfx_t *sfx = sfx_init();
-
-  // FIXME:
-  // We'll have to wait for SDL 2.0.4 for this
-  // or change the code, so it doesn't use
-  // SDL_QueueAudio in order to get this
-  // working.
-  // sfx_play(sfx, SFX_FSTYLE_RETURN);
-
-  tk_t *tk = tk_init(fsty, sfx, "G2HR");
-  for (int i = 0; i < sizeof(tgas) / sizeof(char *); i++)
-    tk_init_gta2_background(tk, tgas[i]);
-
+  bg_t *bg = bg_init(tgas);
+  tk_t *tk = tk_init(fsty, sfx, bg, "G2HR");
   ui_t *ui = ui_init(tk);
 
   while (!tk->quit) {
     SDL_Event event;
-    char force_redraw = !SDL_WaitEventTimeout(&event, 1000 / G2HR_FPS);
+    SDL_WaitEventTimeout(&event, 1000 / G2HR_FPS);
     if (event.type == SDL_QUIT)
       break;
-    tk_frame(tk, &event, force_redraw);
+    // tk_frame(tk, &event, force_redraw);
   }
 
   ui_cleanup(tk, ui);
   tk_cleanup(tk);
+  bg_cleanup(bg);
   sty_cleanup(fsty);
   sfx_cleanup(sfx);
   SDL_Quit();

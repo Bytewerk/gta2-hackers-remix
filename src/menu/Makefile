@@ -34,22 +34,20 @@ obj/sfx.o: $(call DEPS,sfx/sfx.c)
 
 
 # UI
-obj/ui.o: $(call DEPS,interface/ui.c)
+obj/ui.o: $(call DEPS,ui/interface.c)
 	$(CC) -c -o $@ $<
 
+# BG
+obj/bg.o: $(call DEPS,bg/background.c)
+	$(CC) -c -o $@ $<
 
 # TK
-obj/tk_ctrl.o: $(call DEPS,toolkit/controls.c)
-	$(CC) -c -o $@ $<
-
-obj/tk_bg.o: $(call DEPS,toolkit/background.c)
-	$(CC) -c -o $@ $<
-
-obj/tk_screen.o: $(call DEPS,toolkit/screen.c)
+obj/tk_el.o: $(call DEPS,tk/elements.c)
 	$(CC) -c -o $@ $<
 	
-obj/tk.o: $(call DEPS,toolkit/toolkit.c)
+obj/tk.o: $(call DEPS,tk/toolkit.c)
 	$(CC) -c -o $@ $<
+
 
 
 # Other
