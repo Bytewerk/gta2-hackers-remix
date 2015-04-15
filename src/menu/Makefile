@@ -42,6 +42,9 @@ obj/bg.o: $(call DEPS,bg/background.c)
 obj/tk_el.o: $(call DEPS,tk/elements.c)
 	$(CC) -c -o $@ $<
 
+obj/tk_captions.o: $(call DEPS,tk/captions.c)
+	$(CC) -c -o $@ $<
+
 obj/tk_ctrl.o: $(call DEPS,tk/controls.c)
 	$(CC) -c -o $@ $<
 

@@ -37,3 +37,5 @@ void tk_screen_draw(tk_t *tk);
     TK_PARENT->type = STACK;                                                   \
     UICODE;                                                                    \
   }
+
+void captions_draw_buttom_text(tk_t *tk);
