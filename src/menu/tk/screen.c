@@ -19,8 +19,9 @@ tk_screen_t *tk_screen(tk_t *tk) {
 }
 
 void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
-                    int offset_y) {
+                    int offset_y, char all_selected) {
   while (el) {
+    char is_selected = all_selected || (el == el_selected);
     int width = 0;
     int height = 0;
 
@@ -28,15 +29,17 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
     offset_y += el->padding_top;
 
     if (el->type == LABEL) {
-      width = sty_text(tk->renderer, tk->fsty,
-                       GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, // FIXME: selected?
-                       0xffffffff, offset_x, offset_y, el->text);
+      char font = is_selected ? GTA2_FONT_FSTYLE_RED_BLACK_NORMAL
+                              : GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL;
+      width = sty_text(tk->renderer, tk->fsty, font, 0xffffffff, offset_x,
+                       offset_y, el->text);
       height = 8;
     }
     if (el->type == SPRITE) {
+      // TODO!
     }
     if (el->sub) {
-      recursive_draw(tk, el_selected, el->sub, offset_x, offset_y);
+      recursive_draw(tk, el_selected, el->sub, offset_x, offset_y, is_selected);
     }
 
     if (el->parent->type == STACK)
@@ -57,5 +60,5 @@ void tk_screen_draw(tk_t *tk) {
 
   // draw all elements (and therefore controls)
   recursive_draw(tk, screen->el_selected, screen->el.sub,
-                 screen->el.padding_left, screen->el.padding_top);
+                 screen->el.padding_left, screen->el.padding_top, 0);
 }
