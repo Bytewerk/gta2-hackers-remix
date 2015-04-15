@@ -37,7 +37,10 @@ tk_action_t convert(tk_t *tk, SDL_Event *e) {
 }
 
 void actions_element(tk_t *tk, tk_el_t *el, tk_action_t action) {
-  // STUB
+  void (*actionfunc)(tk_t *, tk_el_t *, tk_action_t) = el->actionfunc;
+  if (!actionfunc)
+    return;
+  actionfunc(tk, el, action);
 }
 
 void actions_recursive(tk_t *tk, tk_el_t *el, tk_action_t action) {
