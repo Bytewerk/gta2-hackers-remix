@@ -1,4 +1,5 @@
 #include "toolkit.h"
+#include "actions.h"
 
 tk_t *tk_init(sty_t *fsty, sfx_t *sfx, bg_t *bg, char *title) {
   tk_t *tk = calloc(1, sizeof(tk_t));
@@ -23,6 +24,7 @@ tk_t *tk_init(sty_t *fsty, sfx_t *sfx, bg_t *bg, char *title) {
 }
 
 void tk_frame(tk_t *tk, SDL_Event *event) {
+  tk_action(tk, event);
   SDL_RenderClear(tk->renderer);
   tk_screen_draw(tk);
   SDL_RenderPresent(tk->renderer);

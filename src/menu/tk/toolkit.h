@@ -39,3 +39,5 @@ void tk_screen_draw(tk_t *tk);
   }
 
 void captions_draw_buttom_text(tk_t *tk);
+
+void tk_action(tk_t *tk, SDL_Event *event);

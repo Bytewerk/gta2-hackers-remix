@@ -50,6 +50,9 @@ obj/tk_ctrl.o: $(call DEPS,tk/controls.c)
 
 obj/tk_screen.o: $(call DEPS,tk/screen.c)
 	$(CC) -c -o $@ $<
+
+obj/tk_actions.o: $(call DEPS,tk/actions.c)
+	$(CC) -c -o $@ $<
 	
 obj/tk.o: $(call DEPS,tk/toolkit.c)
 	$(CC) -c -o $@ $<
