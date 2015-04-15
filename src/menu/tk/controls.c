@@ -7,8 +7,15 @@ typedef struct {
   tk_screen_t *onclick_screen;
 } ud_button_t;
 
-void action_button() {
-  // if action == onclick ...
+void actionfunc(tk_t *tk, tk_el_t *el, tk_action_t action) {
+  if (action != TK_ACTION_ENTER)
+    return;
+
+  ud_button_t *ud = (ud_button_t *)el->userdata;
+  // if(ud->onclick_func) - TODO
+
+  if (ud->onclick_screen)
+    tk->screen_active = ud->onclick_screen;
 }
 
 void tk_ctrl_button(tk_el_t *TK_PARENT, char *text, bg_mashup_t *bg_mashup,
@@ -20,5 +27,5 @@ void tk_ctrl_button(tk_el_t *TK_PARENT, char *text, bg_mashup_t *bg_mashup,
   ud->onclick_func = onclick_func;
   label->bg_mashup = bg_mashup;
   label->userdata = (void *)ud;
-  label->actionfunc = (void *)action_button;
+  label->actionfunc = (void *)actionfunc;
 }
