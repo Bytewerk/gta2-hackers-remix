@@ -70,6 +70,7 @@ bg_mashup_t *bg_mashup(bg_t *bg, const char *full, const char *left,
 void bg_cleanup(bg_t *bg) {
   bg_t *next = bg;
   while (next) {
+    bg = next;
     next = bg->next;
     SDL_FreeSurface(bg->surface);
     free(bg);
