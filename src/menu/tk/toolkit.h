@@ -2,6 +2,7 @@
 #include "../bg/background.h"
 #include "../sfx/sfx.h"
 #include "../sty/sty.h"
+#include "controls.h"
 #include "elements.h"
 #include <SDL2/SDL.h>
 #include <stdint.h>

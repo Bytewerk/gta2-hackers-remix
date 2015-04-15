@@ -13,7 +13,6 @@ out/menu.bin: $(OBJS)
 obj/menu.o: $(call DEPS,main.c)
 	$(CC) -c -o $@ $<
 
-
 # STY
 obj/sty_circle.o: $(call DEPS,sty/circle.c)
 	$(CC) -c -o $@ $<
@@ -27,11 +26,9 @@ obj/sty_text.o: $(call DEPS,sty/text.c)
 obj/sty.o: $(call DEPS,sty/sty.c)
 	$(CC) -c -o $@ $<
 
-
 # SFX
 obj/sfx.o: $(call DEPS,sfx/sfx.c)
 	$(CC) -c -o $@ $<
-
 
 # UI
 obj/ui.o: $(call DEPS,ui/interface.c)
@@ -44,10 +41,12 @@ obj/bg.o: $(call DEPS,bg/background.c)
 # TK
 obj/tk_el.o: $(call DEPS,tk/elements.c)
 	$(CC) -c -o $@ $<
+
+obj/tk_ctrl.o: $(call DEPS,tk/controls.c)
+	$(CC) -c -o $@ $<
 	
 obj/tk.o: $(call DEPS,tk/toolkit.c)
 	$(CC) -c -o $@ $<
-
 
 
 # Other
