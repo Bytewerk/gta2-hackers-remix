@@ -74,4 +74,7 @@ void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
               SDL_Rect dest, const char *text);
 int sty_text_width(SDL_Renderer *renderer, sty_t *sty, int font_id,
                    const char *text);
+
+// FIXME: this will probably not be necessary anymore with the new
+// TK code
 void sty_circle(SDL_Renderer *renderer, sty_t *sty, SDL_Rect dest, char value);
