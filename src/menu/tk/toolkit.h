@@ -6,8 +6,9 @@
 #include <SDL2/SDL.h>
 #include <stdint.h>
 
-typedef struct tk_screen_t {
-  tk_el_t screen_el;
+typedef struct tk_screen_t // extends tk_el_t
+{
+  tk_el_t el;
   tk_el_t *selected_el;
   tk_el_t *first_el;
   struct tk_screen_t *back;

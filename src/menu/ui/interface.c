@@ -5,6 +5,8 @@ ui_t *ui_init(tk_t *tk) {
   ui_t *ui = malloc(sizeof(ui_t));
   ui->tk = tk;
 
+  // main menu screen
+
   /*
   // Credits screen (TODO: actually display credits ;) )
   ui->credits = tk_screen_create(tk, (void*) ui, CREDITS,
