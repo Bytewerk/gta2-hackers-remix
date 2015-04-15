@@ -56,9 +56,14 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
 void tk_screen_draw(tk_t *tk) {
   tk_screen_t *screen = tk->screen_active;
 
+  // make sure, that there's a control selected
+  if (!screen->el_selected)
+    screen->el_selected = screen->el.sub;
+
   // draw background
 
   // draw all elements (and therefore controls)
+
   recursive_draw(tk, screen->el_selected, screen->el.sub,
                  screen->el.padding_left, screen->el.padding_top, 0);
 }
