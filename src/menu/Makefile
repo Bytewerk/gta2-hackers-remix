@@ -44,6 +44,9 @@ obj/tk_el.o: $(call DEPS,tk/elements.c)
 
 obj/tk_ctrl.o: $(call DEPS,tk/controls.c)
 	$(CC) -c -o $@ $<
+
+obj/tk_screen.o: $(call DEPS,tk/screen.c)
+	$(CC) -c -o $@ $<
 	
 obj/tk.o: $(call DEPS,tk/toolkit.c)
 	$(CC) -c -o $@ $<
