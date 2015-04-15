@@ -1,5 +1,6 @@
 #include "background.h"
 #include <SDL2/SDL_image.h>
+#include <string.h>
 
 bg_t *bg_load_single(const char *name) {
   bg_t *bg = malloc(sizeof(bg));
@@ -46,7 +47,10 @@ bg_t *bg_init(const char **tgas, int count) {
 }
 
 bg_t *bg_cached(bg_t *bg, const char *name) {
-  while (bg->name != name) {
+  if (!name)
+    return NULL;
+
+  while (strcmp(bg->name, name)) {
     bg = bg->next;
     if (bg)
       continue;
