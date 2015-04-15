@@ -44,10 +44,12 @@ void actions_element(tk_t *tk, tk_el_t *el, tk_action_t action) {
 }
 
 void actions_recursive(tk_t *tk, tk_el_t *el, tk_action_t action) {
-  if (!el)
-    return;
-
-  // STUB
+  while (el) {
+    if (el->sub)
+      actions_recursive(tk, el->sub, action);
+    actions_element(tk, el, action);
+    el = el->next;
+  }
 }
 
 void tk_action(tk_t *tk, SDL_Event *event) {
