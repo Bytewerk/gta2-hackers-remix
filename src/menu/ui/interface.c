@@ -30,7 +30,7 @@ ui_t *ui_init(tk_t *tk) {
 
   TK_STACK_SCREEN(
       main_menu, tk_el_padding(TK_PARENT, 300, 250, 0, 0);
-      TK_PARENT->bottom_text_high = "G2HR V0.4";
+      TK_PARENT->bottom_text_low = "G2HR V0.4";
 
       tk_ctrl_button(TK_PARENT, "PLAY",
                      bg_mashup(tk->bg, NULL, "1_play", "1", NULL), play, NULL);
