@@ -31,7 +31,7 @@ typedef struct tk_el_t {
   char sprite_id;
 
   // set these directly
-  void *actionfunc; // (tk_t*, tk_el_t*, tk_action_t)
+  void *actionfunc; // (tk, el, el_selected, action)
   void *userdata;
   bg_mashup_t *bg_mashup;
   const char *bottom_text_high;

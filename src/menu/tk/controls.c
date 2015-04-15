@@ -7,9 +7,8 @@ typedef struct {
   tk_screen_t *onclick_screen;
 } ud_button_t;
 
-// TODO: add selected element as parameter to actionfunc!
-void actionfunc(tk_t *tk, tk_el_t *el, tk_action_t action) {
-  tk_el_t *el_selected = tk->screen_active->el_selected;
+void actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
+                tk_action_t action) {
   if (action != TK_ACTION_ENTER || el != el_selected)
     return;
 

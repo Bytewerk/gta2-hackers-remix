@@ -43,4 +43,5 @@ void captions_draw_buttom_text(tk_t *tk);
 
 void tk_action(tk_t *tk, SDL_Event *event);
 
-void tk_screen_actionfunc(tk_t *, tk_el_t *, tk_action_t);
+void tk_screen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
+                          tk_action_t action);

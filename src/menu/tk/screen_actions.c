@@ -25,15 +25,15 @@ void down(tk_screen_t *screen, tk_el_t *selected, tk_el_t *first) {
     down(screen, selected, first);
 }
 
-void tk_screen_actionfunc(tk_t *tk, tk_el_t *el, tk_action_t action) {
+void tk_screen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
+                          tk_action_t action) {
   tk_screen_t *screen = tk->screen_active;
-  tk_el_t *selected = screen->el_selected;
   tk_el_t *first = screen->el.sub;
 
-  if (selected) {
+  if (el_selected) {
     if (action == TK_ACTION_UP)
-      up(screen, selected, first);
+      up(screen, el_selected, first);
     if (action == TK_ACTION_DOWN)
-      down(screen, selected, first);
+      down(screen, el_selected, first);
   }
 }

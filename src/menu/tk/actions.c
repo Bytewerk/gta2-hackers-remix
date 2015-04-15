@@ -36,28 +36,32 @@ tk_action_t convert(tk_t *tk, SDL_Event *e) {
   return TK_ACTION_NONE;
 }
 
-void actions_element(tk_t *tk, tk_el_t *el, tk_action_t action) {
-  void (*actionfunc)(tk_t *, tk_el_t *, tk_action_t) = el->actionfunc;
+void actions_element(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
+                     tk_action_t action) {
+  void (*actionfunc)(tk_t *, tk_el_t *, tk_el_t *, tk_action_t) =
+      el->actionfunc;
   if (!actionfunc)
     return;
-  actionfunc(tk, el, action);
+  actionfunc(tk, el, el_selected, action);
 }
 
-void actions_recursive(tk_t *tk, tk_el_t *el, tk_action_t action) {
+void actions_recursive(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
+                       tk_action_t action) {
   while (el) {
     if (el->sub)
-      actions_recursive(tk, el->sub, action);
-    actions_element(tk, el, action);
+      actions_recursive(tk, el->sub, el_selected, action);
+    actions_element(tk, el, el_selected, action);
     el = el->next;
   }
 }
 
 void tk_action(tk_t *tk, SDL_Event *event) {
   tk_action_t action = convert(tk, event);
+  tk_el_t *el_selected = tk->screen_active->el_selected;
 
   // single action for the active screen
-  actions_element(tk, &(tk->screen_active->el), action);
+  actions_element(tk, &(tk->screen_active->el), el_selected, action);
 
   // action for all selected elements, recursively
-  actions_recursive(tk, tk->screen_active->el_selected, action);
+  actions_recursive(tk, tk->screen_active->el_selected, el_selected, action);
 }
