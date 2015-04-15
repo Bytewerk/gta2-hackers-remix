@@ -2,6 +2,7 @@
 #include "../bg/background.h"
 #include "../sfx/sfx.h"
 #include "../sty/sty.h"
+#include "actions.h"
 #include "elements.h"
 #include <SDL2/SDL.h>
 #include <stdint.h>
@@ -41,3 +42,5 @@ void tk_screen_draw(tk_t *tk);
 void captions_draw_buttom_text(tk_t *tk);
 
 void tk_action(tk_t *tk, SDL_Event *event);
+
+void tk_screen_actionfunc(tk_t *, tk_el_t *, tk_action_t);
