@@ -33,7 +33,7 @@ typedef struct tk_el_t {
   // set these directly
   void *actionfunc;
   void *userdata;
-  bg_mashup_t *bg;
+  bg_mashup_t *bg_mashup;
   const char *bottom_text_high;
   const char *bottom_text_low;
 

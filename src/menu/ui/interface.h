@@ -1,6 +1,5 @@
 #pragma once
 #include "../tk/toolkit.h"
-#include "ui_text.h"
 
 typedef struct {
   tk_t *tk;
