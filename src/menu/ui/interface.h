@@ -3,6 +3,7 @@
 #include "ui_text.h"
 
 typedef struct {
+  tk_t *tk;
   tk_screen_t *main;
   tk_screen_t *credits;
   tk_screen_t *play;
@@ -10,4 +11,4 @@ typedef struct {
 } ui_t;
 
 ui_t *ui_init(tk_t *tk);
-void ui_cleanup(tk_t *tk, ui_t *ui);
+void ui_cleanup(ui_t *ui);

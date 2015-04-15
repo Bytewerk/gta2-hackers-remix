@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
     // tk_frame(tk, &event, force_redraw);
   }
 
-  ui_cleanup(tk, ui);
+  ui_cleanup(ui);
   tk_cleanup(tk);
   bg_cleanup(bg);
   sty_cleanup(fsty);

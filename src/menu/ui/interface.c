@@ -1,10 +1,9 @@
 #include "interface.h"
 #include "../tk/toolkit.h"
 
-void ui_quit(tk_t *tk, ui_t *ui) { tk->quit = 1; }
-
 ui_t *ui_init(tk_t *tk) {
   ui_t *ui = malloc(sizeof(ui_t));
+  ui->tk = tk;
 
   /*
   // Credits screen (TODO: actually display credits ;) )
@@ -70,7 +69,10 @@ tk->screen = ui->main;
   return ui;
 }
 
-void ui_cleanup(tk_t *tk, ui_t *ui) {
+void ui_cleanup(ui_t *ui) {
+  // STUB
+  free(ui);
+
   /*
   tk_screen_cleanup(ui->play);
   tk_screen_cleanup(ui->main);
