@@ -64,6 +64,7 @@ tk_el_t *tk_sprite(tk_el_t *parent, uint16_t sprite_id) {
 tk_el_t *tk_label(tk_el_t *parent, char *text) {
   tk_el_t *el = calloc(1, sizeof(tk_el_t));
   tk_el_attach(el, parent, LABEL);
+  tk_el_padding(el, 0, 0, 0, 12);
   el->text = text;
   tk_el_geocalc(el, 0, 0);
   return el;
