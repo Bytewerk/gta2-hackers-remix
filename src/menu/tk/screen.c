@@ -20,14 +20,12 @@ tk_screen_t *tk_screen(tk_t *tk) {
 void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
                     int offset_y) {
   while (el) {
-    if (el->type == LABEL) {
-      // FIXME: change sty_text, so that it accepts offsets instead
-      // of SDL_Rect
+    int width = 0;
 
-      SDL_Rect dest = {offset_x, offset_y};
-      sty_text(tk->renderer, tk->fsty,
-               GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, // FIXME: selected?
-               0xffffffff, dest, el->text);
+    if (el->type == LABEL) {
+      width = sty_text(tk->renderer, tk->fsty,
+                       GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, // FIXME: selected?
+                       0xffffffff, offset_x, offset_y, el->text);
     }
     if (el->type == SPRITE) {
     }
@@ -37,6 +35,7 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
 
     // TODO: increase offset - depending on whether
     // the parent is a STACK or FLOW
+    printf("%i\n", width);
 
     el = el->next;
   }

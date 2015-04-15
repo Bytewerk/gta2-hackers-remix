@@ -45,8 +45,7 @@ char sty_letter_switch(char letter) {
 }
 
 // just calculate the width, without actually rendering
-int sty_text_width(SDL_Renderer *renderer, sty_t *sty, int font_id,
-                   const char *text) {
+int sty_text_width(sty_t *sty, int font_id, const char *text) {
   int base = sty->sprite_base.font + sty->font_base.base[font_id] -
              GTA2_FONT_FIRST_CHAR;
 
@@ -61,30 +60,33 @@ int sty_text_width(SDL_Renderer *renderer, sty_t *sty, int font_id,
   return width;
 }
 
-void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
-              SDL_Rect dest, const char *text) {
+// returns the text width after rendering
+int sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
+             int offset_x, int offset_y, const char *text) {
   int base = sty->sprite_base.font + sty->font_base.base[font_id] -
              GTA2_FONT_FIRST_CHAR;
+  int width = 0;
 
   if (font_id >= sty->font_base.font_count) {
     printf("WARNING: Can't draw font_id %i (max: %i, text: %s)!\n", font_id,
            sty->font_base.font_count - 1, text);
-    return;
+    return 0;
   }
 
   for (; *text != '\0'; text++) {
     char letter = sty_letter_switch(*text);
 
     if (letter == ' ') {
-      dest.x += sty_font_spacing(font_id);
+      width += sty_font_spacing(font_id);
       continue;
     }
 
-    int width, height;
+    int width_letter, height_letter;
 
     SDL_Texture *sprite = sty_sprite(renderer, sty, 0, letter + base);
-    SDL_QueryTexture(sprite, NULL, NULL, &width, &height);
-    SDL_Rect letter_dest = {dest.x, dest.y, width, height};
+    SDL_QueryTexture(sprite, NULL, NULL, &width_letter, &height_letter);
+    SDL_Rect letter_dest = {offset_x + width, offset_y, width_letter,
+                            height_letter};
 
     // set alpha and color modifications
     SDL_SetTextureAlphaMod(sprite, (uint8_t)(argb >> 24));
@@ -94,6 +96,7 @@ void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
     SDL_RenderCopy(renderer, sprite, NULL, &letter_dest);
     SDL_DestroyTexture(sprite);
 
-    dest.x += width;
+    width += width_letter;
   }
+  return width;
 }
