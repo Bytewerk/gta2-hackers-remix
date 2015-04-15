@@ -6,6 +6,9 @@ ui_t *ui_init(tk_t *tk) {
   ui->tk = tk;
 
   // main menu screen
+  tk_screen_t *main_menu = tk_screen(tk);
+
+  TK_STACK_SCREEN(main_menu, TK_FLOW(); TK_FLOW(); TK_FLOW(););
 
   /*
   // Credits screen (TODO: actually display credits ;) )
