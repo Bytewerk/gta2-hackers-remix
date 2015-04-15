@@ -5,10 +5,17 @@ ui_t *ui_init(tk_t *tk) {
   ui_t *ui = malloc(sizeof(ui_t));
   ui->tk = tk;
 
-  // main menu screen
+  // MAIN MENU
   tk_screen_t *main_menu = tk_screen(tk);
 
-  TK_STACK_SCREEN(main_menu, TK_FLOW(); TK_FLOW(); TK_FLOW(););
+  TK_STACK_SCREEN(main_menu, tk_el_padding(TK_PARENT, 300, 250, 0, 0);
+
+                  );
+
+  // PLAY
+  tk_screen_t *play = tk_screen(tk);
+
+  TK_STACK_SCREEN(play, tk_el_padding(TK_PARENT, 300, 210, 0, 0););
 
   /*
   // Credits screen (TODO: actually display credits ;) )
@@ -74,14 +81,4 @@ tk->screen = ui->main;
   return ui;
 }
 
-void ui_cleanup(ui_t *ui) {
-  // STUB
-  free(ui);
-
-  /*
-  tk_screen_cleanup(ui->play);
-  tk_screen_cleanup(ui->main);
-  tk_screen_cleanup(ui->credits);
-  tk->screen = NULL;
-  */
-}
+void ui_cleanup(ui_t *ui) { free(ui); }
