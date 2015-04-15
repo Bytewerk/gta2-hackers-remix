@@ -22,6 +22,10 @@ tk_t *tk_init(sty_t *fsty, sfx_t *sfx, bg_t *bg, char *title) {
   return tk;
 }
 
+void tk_frame(tk_t *tk, SDL_Event *event) {
+  // TODO
+}
+
 void tk_cleanup(tk_t *tk) {
   // TODO: free all screens and screen elements, when there are some!
   free(tk);

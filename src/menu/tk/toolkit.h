@@ -25,5 +25,5 @@ typedef struct {
 } tk_t;
 
 tk_t *tk_init(sty_t *fsty, sfx_t *sfx, bg_t *bg, char *title);
-
+void tk_frame(tk_t *tk, SDL_Event *event);
 void tk_cleanup(tk_t *tk);
