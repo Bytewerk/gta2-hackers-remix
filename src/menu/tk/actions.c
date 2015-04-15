@@ -54,7 +54,6 @@ void actions_recursive(tk_t *tk, tk_el_t *el, tk_action_t action) {
 
 void tk_action(tk_t *tk, SDL_Event *event) {
   tk_action_t action = convert(tk, event);
-  printf("action id: %i\n", action);
 
   // single action for the active screen
   actions_element(tk, &(tk->screen_active->el), action);
