@@ -36,7 +36,24 @@ tk_action_t convert(tk_t *tk, SDL_Event *e) {
   return TK_ACTION_NONE;
 }
 
+void actions_element(tk_t *tk, tk_el_t *el, tk_action_t action) {
+  // STUB
+}
+
+void actions_recursive(tk_t *tk, tk_el_t *el, tk_action_t action) {
+  if (!el)
+    return;
+
+  // STUB
+}
+
 void tk_action(tk_t *tk, SDL_Event *event) {
   tk_action_t action = convert(tk, event);
   printf("action id: %i\n", action);
+
+  // single action for the active screen
+  actions_element(tk, &(tk->screen_active->el), action);
+
+  // action for all selected elements, recursively
+  actions_recursive(tk, tk->screen_active->el_selected, action);
 }
