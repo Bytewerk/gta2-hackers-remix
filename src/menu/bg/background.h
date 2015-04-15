@@ -23,7 +23,7 @@ typedef struct {
   bg_t *custom;
 } bg_mashup_t;
 
-bg_t *bg_init(const char **tgas);
+bg_t *bg_init(const char **tgas, int count);
 
 bg_mashup_t *bg_mashup(bg_t *bg, const char *full, const char *left,
                        const char *right, const char *custom);

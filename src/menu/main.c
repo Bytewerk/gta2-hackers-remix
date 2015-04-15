@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 
   // FIXME: needs SDL 2.0.4
   sfx_t *sfx = sfx_init();
-  bg_t *bg = bg_init(tgas);
+  bg_t *bg = bg_init(tgas, sizeof(tgas) / sizeof(char *));
   tk_t *tk = tk_init(fsty, sfx, bg, "G2HR");
   ui_t *ui = ui_init(tk);
 

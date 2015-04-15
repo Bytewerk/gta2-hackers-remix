@@ -30,11 +30,11 @@ bg_t *bg_load_single(const char *name) {
   return bg;
 }
 
-bg_t *bg_init(const char **tgas) {
+bg_t *bg_init(const char **tgas, int count) {
   bg_t *first = NULL;
   bg_t *last = NULL;
 
-  for (int i = 0; i < sizeof(tgas) / sizeof(char *); i++) {
+  for (int i = 0; i < count; i++) {
     bg_t *new = bg_load_single(tgas[i]);
     if (!first)
       first = new;
