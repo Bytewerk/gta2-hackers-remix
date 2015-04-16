@@ -13,6 +13,9 @@ void ui_credits_action(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 }
 
 ui_t *ui_init(tk_t *tk) {
+  // TODO: add all important controls to the ui struct, so we can
+  // change their properties outside of this function
+
   ui_t *ui = malloc(sizeof(ui_t));
   ui->tk = tk;
 
@@ -35,6 +38,15 @@ ui_t *ui_init(tk_t *tk) {
       tk_el_t *resume =
           tk_ctrl_button(TK_PARENT, "RESUME SAVED STATUS", NULL, NULL, NULL);
       tk_el_disabled(resume);
+
+      tk_ctrl_button(TK_PARENT, "VIEW HIGH SCORES",
+                     bg_mashup(tk->bg, NULL, "2_league", "2", NULL), NULL,
+                     NULL);
+
+      // FIXME: not a button either
+      tk_ctrl_button(TK_PARENT, "START PLAY IN AREA",
+                     bg_mashup(tk->bg, NULL, "2_level1", "2", NULL), NULL,
+                     NULL);
 
       );
 
