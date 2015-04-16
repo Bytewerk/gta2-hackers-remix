@@ -55,7 +55,7 @@ tk_el_t *tk_ctrl_arrow(tk_el_t *TK_PARENT, char is_left, void *actionfunc) {
 void circle_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                        tk_action_t action) {}
 typedef struct {
-  char value;
+  char value_str[2]; // value, \0
   char min;
   char max;
   tk_el_t *button;
@@ -72,7 +72,8 @@ tk_el_t *tk_ctrl_circle(tk_el_t *TK_PARENT, char *text, bg_mashup_t *bg_mashup,
   ud->actionfunc = actionfunc;
   ud->min = min;
   ud->max = max;
-  ud->value = value;
+  ud->value_str[0] = value;
+  ud->value_str[1] = '\0';
 
   tk_el_t *ret;
   TK_STACK(
@@ -90,6 +91,9 @@ tk_el_t *tk_ctrl_circle(tk_el_t *TK_PARENT, char *text, bg_mashup_t *bg_mashup,
               ud->circle_sprite->width = 32; ud->circle_sprite->height = 32;
 
               // circle text (TODO)
+              ud->circle_text = tk_label(TK_PARENT, ud->value_str);
+              tk_el_padding(ud->circle_text, -20, 4, 0, 0);
+              tk_el_width(ud->circle_text, 20);
 
               ud->right =
                   tk_ctrl_arrow(TK_PARENT, 0, (void *)circle_actionfunc););
