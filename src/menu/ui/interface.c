@@ -8,6 +8,8 @@ void ui_credits_action(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   if (action == TK_ACTION_BACK || action == TK_ACTION_ENTER) {
     tk->quit = 1;
   }
+  // TODO: scroll credits on every frame (define frame action)
+  // also maybe add controls to pause and manually scroll?
 }
 
 ui_t *ui_init(tk_t *tk) {
@@ -18,14 +20,7 @@ ui_t *ui_init(tk_t *tk) {
   tk_screen_t *credits = tk_screen(tk, NULL, (void *)ui_credits_action);
 
   TK_STACK_SCREEN(credits, TK_PARENT->bg_mashup =
-                               bg_mashup(tk->bg, "credits", NULL, NULL, NULL);
-
-                  // TODO: scroll credits automagically,
-                  // make sure that the actionfunc gets called every
-                  // frame. Action func must also exit the program
-                  // on ESC keypress.
-                  // TK_PARENT->actionfunc = credits_action ...
-                  );
+                               bg_mashup(tk->bg, "credits", NULL, NULL, NULL););
 
   // PLAY
   tk_screen_t *play = tk_screen(tk, NULL, NULL);
