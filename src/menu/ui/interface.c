@@ -43,10 +43,9 @@ ui_t *ui_init(tk_t *tk) {
                      bg_mashup(tk->bg, NULL, "2_league", "2", NULL), NULL,
                      NULL);
 
-      // FIXME: not a button either
-      tk_ctrl_button(TK_PARENT, "START PLAY IN AREA",
-                     bg_mashup(tk->bg, NULL, "2_level1", "2", NULL), NULL,
-                     NULL);
+      tk_ctrl_circle(TK_PARENT, "START PLAY IN AREA",
+                     bg_mashup(tk->bg, NULL, "2_level1", "2", NULL), '1', '3',
+                     '1', NULL);
 
       );
 
@@ -64,8 +63,7 @@ ui_t *ui_init(tk_t *tk) {
                      NULL);
       tk_ctrl_button(TK_PARENT, "QUIT",
                      bg_mashup(tk->bg, NULL, "1_quit", "1", NULL), credits,
-                     NULL);
-      tk_ctrl_arrow(TK_PARENT, 1, NULL););
+                     NULL););
 
   // now that we have the main menu, set the back links
   play->back = main_menu;
