@@ -43,4 +43,11 @@ void tk_screen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     if (action == TK_ACTION_BACK)
       back(tk, screen);
   }
+
+  if (screen->actionfunc) {
+    void (*actionfunc)(tk_t *, tk_el_t *, tk_el_t *, tk_action_t) =
+        screen->actionfunc;
+    if (actionfunc)
+      actionfunc(tk, el, el_selected, action);
+  }
 }

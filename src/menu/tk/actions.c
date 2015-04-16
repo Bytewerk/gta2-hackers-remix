@@ -40,9 +40,8 @@ void actions_element(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                      tk_action_t action) {
   void (*actionfunc)(tk_t *, tk_el_t *, tk_el_t *, tk_action_t) =
       el->actionfunc;
-  if (!actionfunc)
-    return;
-  actionfunc(tk, el, el_selected, action);
+  if (actionfunc)
+    actionfunc(tk, el, el_selected, action);
 }
 
 void actions_recursive(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,

@@ -3,12 +3,19 @@
 #include "../tk/toolkit.h"
 #include "ui_text.h"
 
+void ui_credits_action(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
+                       tk_action_t action) {
+  if (action == TK_ACTION_BACK || action == TK_ACTION_ENTER) {
+    tk->quit = 1;
+  }
+}
+
 ui_t *ui_init(tk_t *tk) {
   ui_t *ui = malloc(sizeof(ui_t));
   ui->tk = tk;
 
   // CREDITS
-  tk_screen_t *credits = tk_screen(tk, NULL);
+  tk_screen_t *credits = tk_screen(tk, NULL, (void *)ui_credits_action);
 
   TK_STACK_SCREEN(credits, TK_PARENT->bg_mashup =
                                bg_mashup(tk->bg, "credits", NULL, NULL, NULL);
@@ -21,7 +28,7 @@ ui_t *ui_init(tk_t *tk) {
                   );
 
   // PLAY
-  tk_screen_t *play = tk_screen(tk, NULL);
+  tk_screen_t *play = tk_screen(tk, NULL, NULL);
 
   TK_STACK_SCREEN(
       play, tk_el_padding(TK_PARENT, 300, 210, 0, 0);
@@ -37,7 +44,7 @@ ui_t *ui_init(tk_t *tk) {
       );
 
   // MAIN MENU
-  tk_screen_t *main_menu = tk_screen(tk, credits);
+  tk_screen_t *main_menu = tk_screen(tk, credits, NULL);
 
   TK_STACK_SCREEN(
       main_menu, tk_el_padding(TK_PARENT, 300, 250, 0, 0);

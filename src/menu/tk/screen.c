@@ -28,11 +28,12 @@ void tk_screen_draw_bg(tk_t *tk) {
 }
 #undef DRAW_BG
 
-tk_screen_t *tk_screen(tk_t *tk, tk_screen_t *back) {
+tk_screen_t *tk_screen(tk_t *tk, tk_screen_t *back, void *actionfunc) {
   tk_screen_t *screen = calloc(1, sizeof(tk_screen_t));
   screen->el.type = STACK;
   screen->el.actionfunc = (void *)tk_screen_actionfunc;
   screen->back = back;
+  screen->actionfunc = actionfunc;
 
   // attach it to the tk for easy cleanup
   tk_el_t *listpos = (tk_el_t *)tk->screen_first;
