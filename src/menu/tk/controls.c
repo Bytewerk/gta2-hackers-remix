@@ -36,10 +36,10 @@ tk_el_t *tk_ctrl_button(tk_el_t *TK_PARENT, char *text, bg_mashup_t *bg_mashup,
 
 // ARROW
 tk_el_t *tk_ctrl_arrow(tk_el_t *TK_PARENT, char is_left, void *actionfunc) {
-  tk_el_t *sprite = tk_sprite(
-      TK_PARENT,
-      is_left ? GTA2_SPRITE_ARROW_LEFT_WHITE : GTA2_SPRITE_ARROW_RIGHT_WHITE,
-      is_left ? GTA2_SPRITE_ARROW_LEFT_RED : GTA2_SPRITE_ARROW_RIGHT_RED);
+  tk_el_t *sprite =
+      tk_sprite(TK_PARENT, is_left ? GTA2_SPRITE_ARROW_LEFT_WHITE
+                                   : GTA2_SPRITE_ARROW_RIGHT_WHITE,
+                0xffff0000);
   sprite->actionfunc = actionfunc;
   sprite->width = 16;
   sprite->height = 16;

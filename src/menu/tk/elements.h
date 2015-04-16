@@ -29,10 +29,11 @@ typedef struct tk_el_t {
   // extended type specific
   char *text;
   char sprite_id;
-  char sprite_id_selected;
 
   // set these directly
-  void *actionfunc; // (tk, el, el_selected, action)
+  uint32_t argb_selected; // 0x00000000: not used
+  uint32_t argb_disabled; // 0x00000000: not used
+  void *actionfunc;       // (tk, el, el_selected, action)
   void *userdata;
   bg_mashup_t *bg_mashup;
   const char *bottom_text_high;
@@ -54,7 +55,7 @@ void tk_el_clean(tk_el_t *el);
 void tk_el_geocalc(tk_el_t *el, char /*bool*/ down, char /*bool*/ up);
 
 // extended elements
-tk_el_t *tk_sprite(tk_el_t *parent, char sprite_id, char sprite_id_selected);
+tk_el_t *tk_sprite(tk_el_t *parent, char sprite_id, uint32_t argb_selected);
 tk_el_t *tk_label(tk_el_t *parent, char *text);
 
 /*

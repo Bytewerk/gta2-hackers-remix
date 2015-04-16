@@ -58,8 +58,15 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
     offset_x += el->padding_left;
     offset_y += el->padding_top;
 
+    // alpha and RGB overrides
+    uint32_t argb = 0xffffffff;
+    if (is_disabled && el->argb_disabled)
+      argb = el->argb_disabled;
+    if (is_selected && el->argb_selected)
+      argb = el->argb_selected;
+
     if (el->type == LABEL) {
-      uint32_t argb = is_disabled ? 0x9cffffff : 0xffffffff;
+
       char font = is_selected ? GTA2_FONT_FSTYLE_RED_BLACK_NORMAL
                               : GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL;
       width = sty_text(tk->renderer, tk->fsty, font, argb, offset_x, offset_y,
@@ -69,8 +76,7 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
     if (el->type == SPRITE) {
       SDL_Rect dest = {offset_x, offset_y, el->width, el->height};
       SDL_Texture *sprite =
-          sty_sprite(tk->renderer, tk->fsty, 0,
-                     is_selected ? el->sprite_id_selected : el->sprite_id);
+          sty_sprite(tk->renderer, tk->fsty, 0, el->sprite_id);
       SDL_RenderCopy(tk->renderer, sprite, NULL, &dest);
       SDL_DestroyTexture(sprite);
     }
