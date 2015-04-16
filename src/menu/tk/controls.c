@@ -52,12 +52,11 @@ tk_el_t *tk_ctrl_arrow(tk_el_t *TK_PARENT, char is_left, void *actionfunc) {
 }
 
 // CIRCLE
-void circle_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
-                       tk_action_t action) {}
 typedef struct {
   char value_str[2]; // value, \0
   char min;
   char max;
+  tk_el_t *container;
   tk_el_t *button;
   tk_el_t *left;
   tk_el_t *right;
@@ -65,6 +64,35 @@ typedef struct {
   tk_el_t *circle_text;
   void *actionfunc;
 } ud_circle_t;
+
+void circle_arrow_visibility(ud_circle_t *ud) {
+  char value = ud->value_str[0];
+  if (value == ud->min)
+    tk_el_invisible(ud->left);
+  else
+    tk_el_visible(ud->left);
+
+  if (value == ud->max)
+    tk_el_invisible(ud->right);
+  else
+    tk_el_visible(ud->right);
+}
+
+void circle_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
+                       tk_action_t action) {
+  ud_circle_t *ud = (ud_circle_t *)el->userdata;
+  if (el_selected != ud->container)
+    return;
+
+  char value = ud->value_str[0];
+  if (action == TK_ACTION_LEFT && value - 1 >= ud->min)
+    ud->value_str[0]--;
+
+  if (action == TK_ACTION_RIGHT && value + 1 <= ud->max)
+    ud->value_str[0]++;
+
+  circle_arrow_visibility(ud);
+}
 
 tk_el_t *tk_ctrl_circle(tk_el_t *TK_PARENT, char *text, bg_mashup_t *bg_mashup,
                         char min, char max, char value, void *actionfunc) {
@@ -75,30 +103,34 @@ tk_el_t *tk_ctrl_circle(tk_el_t *TK_PARENT, char *text, bg_mashup_t *bg_mashup,
   ud->value_str[0] = value;
   ud->value_str[1] = '\0';
 
-  tk_el_t *ret;
   TK_STACK(
-      ret = TK_PARENT; TK_PARENT->userdata = (void *)ud;
+      ud->container = TK_PARENT; TK_PARENT->userdata = (void *)ud;
       TK_PARENT->bg_mashup = bg_mashup;
 
-      tk_ctrl_button(TK_PARENT, text, NULL, NULL, (void *)circle_actionfunc);
+      ud->button = tk_ctrl_button(TK_PARENT, text, NULL, NULL,
+                                  (void *)circle_actionfunc);
+      ud->button->userdata = ud;
 
       TK_FLOW(tk_el_padding(TK_PARENT, 130, 0, 0, 0);
 
               ud->left = tk_ctrl_arrow(TK_PARENT, 1, (void *)circle_actionfunc);
+              ud->left->userdata = ud;
 
               // circle sprite
               ud->circle_sprite = tk_sprite(TK_PARENT, GTA2_SPRITE_CIRCLE, 0);
               ud->circle_sprite->width = 32; ud->circle_sprite->height = 32;
 
-              // circle text (TODO)
+              // circle text
               ud->circle_text = tk_label(TK_PARENT, ud->value_str);
               tk_el_padding(ud->circle_text, -20, 4, 0, 0);
               tk_el_width(ud->circle_text, 20);
 
               ud->right =
-                  tk_ctrl_arrow(TK_PARENT, 0, (void *)circle_actionfunc););
+                  tk_ctrl_arrow(TK_PARENT, 0, (void *)circle_actionfunc);
+              ud->right->userdata = ud;);
 
       );
 
-  return ret;
+  circle_arrow_visibility(ud);
+  return ud->container;
 }

@@ -65,23 +65,30 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
     if (is_selected && el->argb_selected)
       argb = el->argb_selected;
 
-    if (el->type == LABEL) {
-      char font = is_selected ? GTA2_FONT_FSTYLE_RED_BLACK_NORMAL
-                              : GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL;
-      sty_text(tk->renderer, tk->fsty, font, argb, offset_x, offset_y,
-               el->text);
-
-      sty_text_measure(tk->fsty, &width, &height, font, el->text);
-    }
-    if (el->type == SPRITE) {
-      sty_sprite_draw(tk->renderer, tk->fsty, el->sprite_id,
-                      offset_x + el->padding_left, offset_y + el->padding_top,
-                      el->width, el->height, argb);
+    if (el->flags & TK_EL_FLAG_INVISIBLE) {
+      // FIXME: w/h should always be set like this
       width = el->width;
       height = el->height;
-    }
-    if (el->sub) {
-      recursive_draw(tk, el_selected, el->sub, offset_x, offset_y, is_selected);
+    } else {
+      if (el->type == LABEL) {
+        char font = is_selected ? GTA2_FONT_FSTYLE_RED_BLACK_NORMAL
+                                : GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL;
+        sty_text(tk->renderer, tk->fsty, font, argb, offset_x, offset_y,
+                 el->text);
+
+        sty_text_measure(tk->fsty, &width, &height, font, el->text);
+      }
+      if (el->type == SPRITE) {
+        sty_sprite_draw(tk->renderer, tk->fsty, el->sprite_id,
+                        offset_x + el->padding_left, offset_y + el->padding_top,
+                        el->width, el->height, argb);
+        width = el->width;
+        height = el->height;
+      }
+      if (el->sub) {
+        recursive_draw(tk, el_selected, el->sub, offset_x, offset_y,
+                       is_selected);
+      }
     }
 
     if (el->parent->type == STACK)
