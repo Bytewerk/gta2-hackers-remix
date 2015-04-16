@@ -70,14 +70,13 @@ sty_t *sty_load(char *filename);
 
 void sty_cleanup(sty_t *sty);
 
-SDL_Texture *sty_sprite(SDL_Renderer *renderer, sty_t *sty, char silent,
-                        int sprite_id);
+void sty_sprite_measure(sty_t *sty, int *width, int *height, int sprite_id);
+
+void sty_sprite_draw(SDL_Renderer *renderer, sty_t *sty, int sprite_id,
+                     int offset_x, int offset_y, int width, int height,
+                     uint32_t argb);
 
 int sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
              int offset_x, int offset_y, const char *text);
 
 int sty_text_width(sty_t *sty, int font_id, const char *text);
-
-// FIXME: this will probably not be necessary anymore with the new
-// TK code
-void sty_circle(SDL_Renderer *renderer, sty_t *sty, SDL_Rect dest, char value);

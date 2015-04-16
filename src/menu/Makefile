@@ -14,9 +14,6 @@ obj/menu.o: $(call DEPS,main.c)
 	$(CC) -c -o $@ $<
 
 # STY
-obj/sty_circle.o: $(call DEPS,sty/circle.c)
-	$(CC) -c -o $@ $<
-
 obj/sty_sprite.o: $(call DEPS,sty/sprite.c)
 	$(CC) -c -o $@ $<
 

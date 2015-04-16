@@ -8,8 +8,8 @@
                 https://wiki.libsdl.org/MigrationGuide
 */
 
-SDL_Texture *sty_sprite(SDL_Renderer *renderer, sty_t *sty, char silent,
-                        int sprite_id) {
+SDL_Texture *sprite_to_texture(SDL_Renderer *renderer, sty_t *sty, char silent,
+                               int sprite_id) {
   // red 'E' for ERROR :)
   uint32_t error_pixels[] = {
       0xFFFF0000, 0xFFFF0000, 0xFFFF0000, 0xFFFF0000, 0xFFFF0000,
@@ -75,4 +75,25 @@ SDL_Texture *sty_sprite(SDL_Renderer *renderer, sty_t *sty, char silent,
   if (!draw_error)
     free(pixels);
   return tex;
+}
+
+void sty_sprite_measure(sty_t *sty, int *width, int *height, int sprite_id) {
+  sprite_meta_t meta = sty->sprite_index.entries[sprite_id];
+  *width = meta.width;
+  *height = meta.height;
+}
+
+void sty_sprite_draw(SDL_Renderer *renderer, sty_t *sty, int sprite_id,
+                     int offset_x, int offset_y, int width, int height,
+                     uint32_t argb) {
+  SDL_Texture *sprite = sprite_to_texture(renderer, sty, 0, sprite_id);
+  SDL_Rect dest = {offset_x, offset_y, width, height};
+
+  // set alpha and color modifications
+  SDL_SetTextureAlphaMod(sprite, (uint8_t)(argb >> 24));
+  SDL_SetTextureColorMod(sprite, (uint8_t)(argb >> 16), (uint8_t)(argb >> 8),
+                         (uint8_t)(argb));
+
+  SDL_RenderCopy(renderer, sprite, NULL, &dest);
+  SDL_DestroyTexture(sprite);
 }

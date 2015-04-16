@@ -82,19 +82,11 @@ int sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
     }
 
     int width_letter, height_letter;
+    int sprite_id = letter + base;
+    sty_sprite_measure(sty, &width_letter, &height_letter, sprite_id);
 
-    SDL_Texture *sprite = sty_sprite(renderer, sty, 0, letter + base);
-    SDL_QueryTexture(sprite, NULL, NULL, &width_letter, &height_letter);
-    SDL_Rect letter_dest = {offset_x + width, offset_y, width_letter,
-                            height_letter};
-
-    // set alpha and color modifications
-    SDL_SetTextureAlphaMod(sprite, (uint8_t)(argb >> 24));
-    SDL_SetTextureColorMod(sprite, (uint8_t)(argb >> 16), (uint8_t)(argb >> 8),
-                           (uint8_t)(argb));
-
-    SDL_RenderCopy(renderer, sprite, NULL, &letter_dest);
-    SDL_DestroyTexture(sprite);
+    sty_sprite_draw(renderer, sty, sprite_id, offset_x + width, offset_y,
+                    width_letter, height_letter, argb);
 
     width += width_letter;
   }
