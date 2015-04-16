@@ -44,8 +44,9 @@ tk_el_t *tk_ctrl_arrow(tk_el_t *TK_PARENT, char is_left, void *actionfunc) {
   sprite->actionfunc = actionfunc;
   sprite->width = 16;
   sprite->height = 16;
-  tk_el_padding(sprite, (is_left ? -16 : 0), ARROW_PADDING_TOP,
-                (is_left ? 0 : 16), 0);
+  tk_el_padding(sprite,
+                /*(is_left ? -16 : 0) */ 0, ARROW_PADDING_TOP,
+                /*(is_left ? 0 : 16) */ 0, 0);
 
   return sprite;
 }
