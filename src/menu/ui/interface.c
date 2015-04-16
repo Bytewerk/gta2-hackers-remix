@@ -8,7 +8,7 @@ ui_t *ui_init(tk_t *tk) {
   ui->tk = tk;
 
   // CREDITS
-  tk_screen_t *credits = tk_screen(tk);
+  tk_screen_t *credits = tk_screen(tk, NULL);
 
   TK_STACK_SCREEN(credits, TK_PARENT->bg_mashup =
                                bg_mashup(tk->bg, "credits", NULL, NULL, NULL);
@@ -21,12 +21,23 @@ ui_t *ui_init(tk_t *tk) {
                   );
 
   // PLAY
-  tk_screen_t *play = tk_screen(tk);
+  tk_screen_t *play = tk_screen(tk, NULL);
 
-  TK_STACK_SCREEN(play, tk_el_padding(TK_PARENT, 300, 210, 0, 0););
+  TK_STACK_SCREEN(
+      play, tk_el_padding(TK_PARENT, 300, 210, 0, 0);
+
+      // FIXME: this isn't a button, implement text fields!
+      tk_ctrl_button(TK_PARENT, "PLAYER 0",
+                     bg_mashup(tk->bg, NULL, "2_name", "2", NULL), NULL, NULL);
+
+      tk_el_t *resume =
+          tk_ctrl_button(TK_PARENT, "RESUME SAVED STATUS", NULL, NULL, NULL);
+      tk_el_disabled(resume);
+
+      );
 
   // MAIN MENU
-  tk_screen_t *main_menu = tk_screen(tk);
+  tk_screen_t *main_menu = tk_screen(tk, credits);
 
   TK_STACK_SCREEN(
       main_menu, tk_el_padding(TK_PARENT, 300, 250, 0, 0);
@@ -40,6 +51,9 @@ ui_t *ui_init(tk_t *tk) {
       tk_ctrl_button(TK_PARENT, "QUIT",
                      bg_mashup(tk->bg, NULL, "1_quit", "1", NULL), credits,
                      NULL););
+
+  // now that we have the main menu, set the back links
+  play->back = main_menu;
 
   tk->screen_active = main_menu;
   return ui;

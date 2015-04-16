@@ -25,6 +25,11 @@ void down(tk_screen_t *screen, tk_el_t *selected, tk_el_t *first) {
     down(screen, selected, first);
 }
 
+void back(tk_t *tk, tk_screen_t *screen) {
+  if (screen->back)
+    tk->screen_active = screen->back;
+}
+
 void tk_screen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                           tk_action_t action) {
   tk_screen_t *screen = tk->screen_active;
@@ -35,5 +40,7 @@ void tk_screen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
       up(screen, el_selected, first);
     if (action == TK_ACTION_DOWN)
       down(screen, el_selected, first);
+    if (action == TK_ACTION_BACK)
+      back(tk, screen);
   }
 }

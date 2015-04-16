@@ -19,8 +19,8 @@ void actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     tk->screen_active = ud->onclick_screen;
 }
 
-void tk_ctrl_button(tk_el_t *TK_PARENT, char *text, bg_mashup_t *bg_mashup,
-                    tk_screen_t *onclick_screen, void *onclick_func) {
+tk_el_t *tk_ctrl_button(tk_el_t *TK_PARENT, char *text, bg_mashup_t *bg_mashup,
+                        tk_screen_t *onclick_screen, void *onclick_func) {
   tk_el_t *label = tk_label(TK_PARENT, text);
 
   ud_button_t *ud = malloc(sizeof(ud_button_t));
@@ -29,4 +29,6 @@ void tk_ctrl_button(tk_el_t *TK_PARENT, char *text, bg_mashup_t *bg_mashup,
   label->bg_mashup = bg_mashup;
   label->userdata = (void *)ud;
   label->actionfunc = (void *)actionfunc;
+
+  return label;
 }
