@@ -29,6 +29,7 @@ typedef struct tk_el_t {
   // extended type specific
   char *text;
   char sprite_id;
+  char sprite_id_selected;
 
   // set these directly
   void *actionfunc; // (tk, el, el_selected, action)
@@ -53,7 +54,7 @@ void tk_el_clean(tk_el_t *el);
 void tk_el_geocalc(tk_el_t *el, char /*bool*/ down, char /*bool*/ up);
 
 // extended elements
-tk_el_t *tk_sprite(tk_el_t *parent, uint16_t sprite_id);
+tk_el_t *tk_sprite(tk_el_t *parent, char sprite_id, char sprite_id_selected);
 tk_el_t *tk_label(tk_el_t *parent, char *text);
 
 /*

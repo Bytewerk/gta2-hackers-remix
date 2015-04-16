@@ -53,10 +53,11 @@ void tk_el_geocalc(tk_el_t *el, char /*bool*/ down, char /*bool*/ up) {
         Extended elements
 */
 
-tk_el_t *tk_sprite(tk_el_t *parent, uint16_t sprite_id) {
+tk_el_t *tk_sprite(tk_el_t *parent, char sprite_id, char sprite_id_selected) {
   tk_el_t *el = calloc(1, sizeof(tk_el_t));
   tk_el_attach(el, parent, SPRITE);
   el->sprite_id = sprite_id;
+  el->sprite_id_selected = sprite_id_selected;
   tk_el_geocalc(el, 0, 0);
   return el;
 }
