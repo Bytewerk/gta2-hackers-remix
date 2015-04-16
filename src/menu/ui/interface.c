@@ -64,7 +64,8 @@ ui_t *ui_init(tk_t *tk) {
                      NULL);
       tk_ctrl_button(TK_PARENT, "QUIT",
                      bg_mashup(tk->bg, NULL, "1_quit", "1", NULL), credits,
-                     NULL););
+                     NULL);
+      tk_ctrl_arrow(TK_PARENT, 1, NULL););
 
   // now that we have the main menu, set the back links
   play->back = main_menu;

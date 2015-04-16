@@ -67,7 +67,11 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
       height = 8;
     }
     if (el->type == SPRITE) {
-      // TODO!
+      SDL_Rect dest = {offset_x, offset_y, el->width, el->height};
+      SDL_Texture *sprite =
+          sty_sprite(tk->renderer, tk->fsty, 0, el->sprite_id);
+      SDL_RenderCopy(tk->renderer, sprite, NULL, &dest);
+      SDL_DestroyTexture(sprite);
     }
     if (el->sub) {
       recursive_draw(tk, el_selected, el->sub, offset_x, offset_y, is_selected);

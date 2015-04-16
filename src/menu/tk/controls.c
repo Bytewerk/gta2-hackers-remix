@@ -1,4 +1,5 @@
 #include "controls.h"
+#include "../sty/sprites.h"
 #include "toolkit.h"
 
 // BUTTON
@@ -7,8 +8,8 @@ typedef struct {
   tk_screen_t *onclick_screen;
 } ud_button_t;
 
-void actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
-                tk_action_t action) {
+void button_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
+                       tk_action_t action) {
   if (action != TK_ACTION_ENTER || el != el_selected)
     return;
 
@@ -28,7 +29,19 @@ tk_el_t *tk_ctrl_button(tk_el_t *TK_PARENT, char *text, bg_mashup_t *bg_mashup,
   ud->onclick_screen = onclick_screen;
   label->bg_mashup = bg_mashup;
   label->userdata = (void *)ud;
-  label->actionfunc = (void *)actionfunc;
+  label->actionfunc = (void *)button_actionfunc;
 
   return label;
+}
+
+// ARROW
+tk_el_t *tk_ctrl_arrow(tk_el_t *TK_PARENT, char is_left, void *actionfunc) {
+  tk_el_t *sprite = tk_sprite(TK_PARENT, is_left ? GTA2_SPRITE_ARROW_LEFT
+                                                 : GTA2_SPRITE_ARROW_RIGHT);
+  sprite->actionfunc = actionfunc;
+  sprite->width = 32;
+  sprite->height = 32;
+  tk_el_padding(sprite, is_left ? -32 : 0, 0, is_left ? 0 : 32, 0);
+
+  return sprite;
 }
