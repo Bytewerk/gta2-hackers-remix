@@ -44,25 +44,26 @@ char sty_letter_switch(char letter) {
   return letter;
 }
 
-// just calculate the width, without actually rendering
-int sty_text_width(sty_t *sty, int font_id, const char *text) {
+// just calculate the width and height without actually rendering
+void sty_text_measure(sty_t *sty, int *width, int *height, int font_id,
+                      const char *text) {
   int base = sty->sprite_base.font + sty->font_base.base[font_id] -
              GTA2_FONT_FIRST_CHAR;
 
-  int width = 0;
+  *height = sty->sprite_index.entries[base + GTA2_FONT_FIRST_CHAR].height;
+  *width = 0;
   for (; *text != '\0'; text++) {
     char letter = sty_letter_switch(*text);
     if (letter == ' ')
-      width += sty_font_spacing(font_id);
+      *width += sty_font_spacing(font_id);
     else
-      width += sty->sprite_index.entries[letter + base].width;
+      *width += sty->sprite_index.entries[letter + base].width;
   }
-  return width;
 }
 
 // returns the text width after rendering
-int sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
-             int offset_x, int offset_y, const char *text) {
+void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
+              int offset_x, int offset_y, const char *text) {
   int base = sty->sprite_base.font + sty->font_base.base[font_id] -
              GTA2_FONT_FIRST_CHAR;
   int width = 0;
@@ -70,7 +71,7 @@ int sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
   if (font_id >= sty->font_base.font_count) {
     printf("WARNING: Can't draw font_id %i (max: %i, text: %s)!\n", font_id,
            sty->font_base.font_count - 1, text);
-    return 0;
+    return;
   }
 
   for (; *text != '\0'; text++) {
@@ -90,5 +91,4 @@ int sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
 
     width += width_letter;
   }
-  return width;
 }

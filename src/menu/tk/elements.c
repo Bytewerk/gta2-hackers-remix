@@ -65,7 +65,6 @@ tk_el_t *tk_sprite(tk_el_t *parent, char sprite_id, uint32_t argb_selected) {
 tk_el_t *tk_label(tk_el_t *parent, char *text) {
   tk_el_t *el = calloc(1, sizeof(tk_el_t));
   tk_el_attach(el, parent, LABEL);
-  tk_el_padding(el, 0, 0, 0, 12);
   el->text = text;
   el->argb_disabled = 0x9cffffff;
   tk_el_geocalc(el, 0, 0);

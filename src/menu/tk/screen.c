@@ -68,9 +68,10 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
     if (el->type == LABEL) {
       char font = is_selected ? GTA2_FONT_FSTYLE_RED_BLACK_NORMAL
                               : GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL;
-      width = sty_text(tk->renderer, tk->fsty, font, argb, offset_x, offset_y,
-                       el->text);
-      height = 8;
+      sty_text(tk->renderer, tk->fsty, font, argb, offset_x, offset_y,
+               el->text);
+
+      sty_text_measure(tk->fsty, &width, &height, font, el->text);
     }
     if (el->type == SPRITE) {
       sty_sprite_draw(tk->renderer, tk->fsty, el->sprite_id, offset_x, offset_y,
