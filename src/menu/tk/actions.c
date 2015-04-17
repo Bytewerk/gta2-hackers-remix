@@ -56,6 +56,15 @@ void actions_recursive(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 
 void tk_action(tk_t *tk, SDL_Event *event) {
   tk_action_t action = convert(tk, event);
+
+  // action limit rate, when necessary
+  if (action < TK_ACTION_LAST_LIMITED) {
+    uint32_t current_time = SDL_GetTicks();
+    if (current_time - tk->action_time[action] < ACTION_LIMIT_RATE)
+      return;
+    tk->action_time[action] = current_time;
+  }
+
   tk_el_t *el_selected = tk->screen_active->el_selected;
 
   // single action for the active screen
