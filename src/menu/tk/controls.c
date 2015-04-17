@@ -2,6 +2,7 @@
 #include "../sty/font.h"
 #include "../sty/sprites.h"
 #include "toolkit.h"
+#include <string.h>
 
 //
 // BUTTON
@@ -204,8 +205,8 @@ void arrowtext_style(tk_t *tk, ud_arrowtext_t *ud) {
   ud->container->bottom_text_low =
       is_editing ? ud->bottom_text_low_editing : ud->bottom_text_low;
 
-  // label text
-  if (ud->text->text != ud->entries[ud->entry_selected]) {
+  // label text (comparing pointers here!)
+  if (!is_editing && ud->text->text != ud->entries[ud->entry_selected]) {
     ud->text->text = ud->entries[ud->entry_selected];
     tk_el_geocalc(tk, ud->text, 0, 1);
   }
@@ -218,15 +219,33 @@ void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 
   if (el == ud->container) {
     if (is_editing) {
-      // FIXME: restore name on ESC
-      if (action == TK_ACTION_ENTER || action == TK_ACTION_ESC)
+      if (action == TK_ACTION_ESC)
         tk->exclusive_action_element = NULL;
-      if (action == TK_ACTION_BACKSPACE)
-        printf("BACKSPACE :O!\n");
+      if (action == TK_ACTION_ENTER) {
+        strncpy(ud->entries[ud->entry_selected], ud->text->text,
+                ud->entry_length + 1);
+        tk->exclusive_action_element = NULL;
+      }
+      if (action == TK_ACTION_BACKSPACE) {
+        char *text = ud->text->text;
+        int length = strlen(text);
+        if (!length)
+          return;
+        text[length - 1] = '\0';
+
+        tk_el_geocalc(tk, ud->text, 0, 1);
+      }
     } else // not editing
     {
-      if (!ud->editing_disabled && action == TK_ACTION_ENTER)
+      if (!ud->editing_disabled && action == TK_ACTION_ENTER) {
         tk->exclusive_action_element = ud->container;
+
+        // copy the string to the text element,
+        // so we can restore it if necessary
+        ud->text->text = malloc(ud->entry_length + 1);
+        strncpy(ud->text->text, ud->entries[ud->entry_selected],
+                ud->entry_length + 1);
+      }
     }
   }
 
