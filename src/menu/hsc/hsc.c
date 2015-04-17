@@ -30,8 +30,7 @@ hsc_t *hsc_load(hsc_t *hsc, const char *filename) {
     exit(printf("Read error!"));
   fclose(handle);
 
-  for (int i = 0; i < 1; i++) // levels FIXME
-  {
+  for (int i = 0; i < GTA2_LEVEL_COUNT; i++) {
     for (int j = 0; j < 5; j++) // entries
     {
       // player name
@@ -40,10 +39,11 @@ hsc_t *hsc_load(hsc_t *hsc, const char *filename) {
 
       // score, TODO
       hsc->level[i].entry[j].score =
-          ((uint8_t)buffer[j * 24 + 20]) * 1000 / 8 * 5;
+          ((uint8_t)buffer[i * 24 * 5 + j * 24 + 20]) * 1000 / 8 * 5;
     }
   }
 
+  free(buffer);
   return hsc;
 }
 

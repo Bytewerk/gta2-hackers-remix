@@ -1,6 +1,9 @@
 #pragma once
 #include <stdint.h>
 
+// right value is 12, but it currently segfaults there
+#define GTA2_LEVEL_COUNT 10
+
 typedef struct {
   char name[9];
   uint32_t score;
