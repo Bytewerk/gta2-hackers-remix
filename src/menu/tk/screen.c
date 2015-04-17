@@ -53,9 +53,6 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
     char is_selected = all_selected || (el == el_selected);
     char is_disabled = el->flags & TK_EL_FLAG_DISABLED;
 
-    offset_x += el->padding_left;
-    offset_y += el->padding_top;
-
     // alpha and RGB overrides
     uint32_t argb = 0xffffffff;
     if (is_disabled && el->argb_disabled)
@@ -67,7 +64,8 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
       if (el->type == LABEL) {
         char font = is_selected ? GTA2_FONT_FSTYLE_RED_BLACK_NORMAL
                                 : GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL;
-        sty_text(tk->renderer, tk->fsty, font, argb, offset_x, offset_y,
+        sty_text(tk->renderer, tk->fsty, font, argb,
+                 offset_x + el->padding_left, offset_y + el->padding_right,
                  el->text);
       }
       if (el->type == SPRITE) {
@@ -82,9 +80,9 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
     }
 
     if (el->parent->type == STACK)
-      offset_y += el->padding_bottom + el->height;
+      offset_y += el->padding_top + el->height + el->padding_bottom;
     else if (el->parent->type == FLOW)
-      offset_x += el->padding_right + el->width;
+      offset_x += el->padding_left + el->width + el->padding_right;
     else
       printf("ERROR in recursive_draw: Not in a FLOW or STACK!");
 

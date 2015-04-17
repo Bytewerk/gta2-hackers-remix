@@ -121,7 +121,7 @@ tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
 
           // circle text
           ud->circle_text = tk_label(tk, TK_PARENT, ud->value_str);
-          tk_el_padding(ud->circle_text, -20, 4, 0, 0);
+          tk_el_padding(ud->circle_text, -22, 0, 3, 0);
           tk_el_width(ud->circle_text, 20);
 
           ud->right =
