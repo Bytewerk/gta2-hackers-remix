@@ -218,8 +218,11 @@ void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 
   if (el == ud->container) {
     if (is_editing) {
-      if (action == TK_ACTION_ENTER)
+      // FIXME: restore name on ESC
+      if (action == TK_ACTION_ENTER || action == TK_ACTION_ESC)
         tk->exclusive_action_element = NULL;
+      if (action == TK_ACTION_BACKSPACE)
+        printf("BACKSPACE :O!\n");
     } else // not editing
     {
       if (!ud->editing_disabled && action == TK_ACTION_ENTER)

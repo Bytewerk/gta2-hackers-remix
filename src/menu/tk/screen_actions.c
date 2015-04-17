@@ -40,7 +40,7 @@ void tk_screen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
       up(screen, el_selected, first);
     if (action == TK_ACTION_DOWN)
       down(screen, el_selected, first);
-    if (action == TK_ACTION_BACK)
+    if (action == TK_ACTION_BACKSPACE || action == TK_ACTION_ESC)
       back(tk, screen);
   }
 

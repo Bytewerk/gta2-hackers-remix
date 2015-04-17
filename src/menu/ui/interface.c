@@ -5,7 +5,8 @@
 
 void ui_credits_action(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                        tk_action_t action) {
-  if (action == TK_ACTION_BACK || action == TK_ACTION_ENTER) {
+  if (action == TK_ACTION_BACKSPACE || action == TK_ACTION_ESC ||
+      action == TK_ACTION_ENTER) {
     tk->quit = 1;
   }
   // TODO: scroll credits on every frame (define frame action)

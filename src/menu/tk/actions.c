@@ -27,8 +27,10 @@ tk_action_t convert(tk_t *tk, SDL_Event *e) {
       return TK_ACTION_LEFT;
     if (key == SDLK_RIGHT)
       return TK_ACTION_RIGHT;
-    if (key == SDLK_ESCAPE || key == SDLK_BACKSPACE)
-      return TK_ACTION_BACK;
+    if (key == SDLK_ESCAPE)
+      return TK_ACTION_ESC;
+    if (key == SDLK_BACKSPACE)
+      return TK_ACTION_BACKSPACE;
     if (key == SDLK_RETURN)
       return TK_ACTION_ENTER;
   }
