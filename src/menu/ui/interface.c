@@ -16,7 +16,7 @@ ui_t *ui_init(tk_t *tk) {
   ui_t *ui = malloc(sizeof(ui_t));
   ui->tk = tk;
 
-  // player names - TODO: free!
+  // player names
   ui->player_names = malloc(sizeof(char *) * GTA2_SAVEGAME_COUNT);
   for (int i = 0; i < GTA2_SAVEGAME_COUNT; i++) {
     ui->player_names[i] = calloc(1, GTA2_PLAYERNAME_MAXLEN + 1);
@@ -86,4 +86,10 @@ ui_t *ui_init(tk_t *tk) {
   return ui;
 }
 
-void ui_cleanup(ui_t *ui) { free(ui); }
+void ui_cleanup(ui_t *ui) {
+  for (int i = 0; i < GTA2_SAVEGAME_COUNT; i++)
+    free(ui->player_names[i]);
+  free(ui->player_names);
+
+  free(ui);
+}
