@@ -1,4 +1,5 @@
 #include "controls.h"
+#include "../sty/font.h"
 #include "../sty/sprites.h"
 #include "toolkit.h"
 
@@ -31,6 +32,8 @@ tk_el_t *tk_ctrl_button(tk_t *tk, tk_el_t *TK_PARENT, char *text,
   label->bg_mashup = bg_mashup;
   label->userdata = (void *)ud;
   label->actionfunc = (void *)button_actionfunc;
+  label->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL;
+  label->font_id_selected = GTA2_FONT_FSTYLE_RED_BLACK_NORMAL;
 
   return label;
 }
@@ -39,12 +42,15 @@ tk_el_t *tk_ctrl_button(tk_t *tk, tk_el_t *TK_PARENT, char *text,
 tk_el_t *tk_ctrl_arrow(tk_t *tk, tk_el_t *TK_PARENT, char is_left,
                        void *actionfunc) {
   tk_el_t *sprite =
-      tk_sprite(tk, TK_PARENT, is_left ? GTA2_SPRITE_ARROW_LEFT_WHITE
-                                       : GTA2_SPRITE_ARROW_RIGHT_WHITE,
-                0xffff0000);
+      tk_sprite(tk, TK_PARENT, is_left ? GTA2_SPRITE_ARROW_LEFT_RED
+                                       : GTA2_SPRITE_ARROW_RIGHT_RED);
   sprite->actionfunc = actionfunc;
   sprite->width = 16;
   sprite->height = 16;
+
+  // only display, when selected
+  sprite->argb_normal = 0x00ffffff;
+  sprite->argb_selected = 0xffffffff;
   return sprite;
 }
 
@@ -111,29 +117,30 @@ tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
                                   (void *)circle_actionfunc);
       ud->button->userdata = ud;
 
-      TK_FLOW(
-          tk_el_padding(TK_PARENT, 100, 0, 0, 0);
+      TK_FLOW(tk_el_padding(TK_PARENT, 100, 0, 0, 0);
 
-          ud->left = tk_ctrl_arrow(tk, TK_PARENT, 1, (void *)circle_actionfunc);
-          ud->left->userdata = ud;
+              ud->left =
+                  tk_ctrl_arrow(tk, TK_PARENT, 1, (void *)circle_actionfunc);
+              ud->left->userdata = ud;
 
-          // circle sprite
-          ud->circle_sprite = tk_sprite(tk, TK_PARENT, GTA2_SPRITE_CIRCLE, 0);
-          ud->circle_sprite->width = 32; ud->circle_sprite->height = 32;
+              // circle sprite
+              ud->circle_sprite = tk_sprite(tk, TK_PARENT, GTA2_SPRITE_CIRCLE);
+              ud->circle_sprite->width = 32; ud->circle_sprite->height = 32;
 
-          // circle text
-          ud->circle_text = tk_label(tk, TK_PARENT, ud->value_str);
-          tk_el_padding(ud->circle_text, -23, 0, 4, 0);
-          tk_el_width(ud->circle_text, -1 * ud->circle_text->padding_left);
+              // circle text
+              ud->circle_text = tk_label(tk, TK_PARENT, ud->value_str);
+              ud->circle_text->font_id = GTA2_FONT_FSTYLE_WHITE_RED_NORMAL;
+              tk_el_padding(ud->circle_text, -23, 0, 4, 0);
+              tk_el_width(ud->circle_text, -1 * ud->circle_text->padding_left);
 
-          ud->right =
-              tk_ctrl_arrow(tk, TK_PARENT, 0, (void *)circle_actionfunc);
-          ud->right->userdata = ud;
+              ud->right =
+                  tk_ctrl_arrow(tk, TK_PARENT, 0, (void *)circle_actionfunc);
+              ud->right->userdata = ud;
 
-          tk_el_padding(ud->left, 10, 8, 10, 0);
-          tk_el_padding(ud->right, 10, 8, 10, 0);
+              tk_el_padding(ud->left, 10, 8, 10, 0);
+              tk_el_padding(ud->right, 10, 8, 10, 0);
 
-          ););
+              ););
 
   circle_arrow_visibility(ud);
   return ud->container;

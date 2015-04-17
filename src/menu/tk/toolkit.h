@@ -53,6 +53,5 @@ void tk_el_clean(tk_el_t *el);
 void tk_el_geocalc(tk_t *tk, tk_el_t *el, char /*bool*/ down, char /*bool*/ up);
 
 // extended elements
-tk_el_t *tk_sprite(tk_t *tk, tk_el_t *parent, char sprite_id,
-                   uint32_t argb_selected);
+tk_el_t *tk_sprite(tk_t *tk, tk_el_t *parent, char sprite_id);
 tk_el_t *tk_label(tk_t *tk, tk_el_t *parent, char *text);

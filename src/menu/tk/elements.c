@@ -92,12 +92,10 @@ void tk_el_geocalc(tk_t *tk, tk_el_t *el, char /*bool*/ down,
         Extended elements
 */
 
-tk_el_t *tk_sprite(tk_t *tk, tk_el_t *parent, char sprite_id,
-                   uint32_t argb_selected) {
+tk_el_t *tk_sprite(tk_t *tk, tk_el_t *parent, char sprite_id) {
   tk_el_t *el = calloc(1, sizeof(tk_el_t));
   tk_el_attach(el, parent, SPRITE);
   el->sprite_id = sprite_id;
-  el->argb_selected = argb_selected;
   tk_el_geocalc(tk, el, 0, 0);
   return el;
 }

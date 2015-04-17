@@ -55,6 +55,8 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
 
     // alpha and RGB overrides
     uint32_t argb = 0xffffffff;
+    if (el->argb_normal)
+      argb = el->argb_normal;
     if (is_disabled && el->argb_disabled)
       argb = el->argb_disabled;
     if (is_selected && el->argb_selected)
@@ -62,8 +64,9 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
 
     if (!(el->flags & TK_EL_FLAG_INVISIBLE)) {
       if (el->type == LABEL) {
-        char font = is_selected ? GTA2_FONT_FSTYLE_RED_BLACK_NORMAL
-                                : GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL;
+        char font = el->font_id;
+        if (is_selected && el->font_id_selected)
+          font = el->font_id_selected;
         sty_text(tk->renderer, tk->fsty, font, argb,
                  offset_x + el->padding_left, offset_y + el->padding_right,
                  el->text);

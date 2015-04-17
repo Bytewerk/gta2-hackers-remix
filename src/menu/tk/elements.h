@@ -27,10 +27,13 @@ typedef struct tk_el_t {
   tk_el_type_t type;
 
   // extended type specific
-  char *text;
   char sprite_id;
+  char *text;
+  char font_id;
+  char font_id_selected;
 
   // set these directly
+  uint32_t argb_normal;   // 0x00000000: not used
   uint32_t argb_selected; // 0x00000000: not used
   uint32_t argb_disabled; // 0x00000000: not used
   void *actionfunc;       // (tk, el, el_selected, action)
