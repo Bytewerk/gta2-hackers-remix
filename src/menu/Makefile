@@ -55,16 +55,16 @@ obj/tk.o: $(call DEPS,tk/toolkit.c)
 	$(CC) -c -o $@ $<
 
 # CTRL
-obj/ctrl_arrow.o:  $(call DEPS,tk/ctrl/arrow.c)
+obj/ctrl_arrow.o: $(call DEPS,tk/ctrl/arrow.c)
 	$(CC) -c -o $@ $<
 
-obj/ctrl_arrowtext.o:  $(call DEPS,tk/ctrl/arrowtext.c)
+obj/ctrl_arrowtext.o: $(call DEPS,tk/ctrl/arrowtext.c)
 	$(CC) -c -o $@ $<
 	
-obj/ctrl_button.o:  $(call DEPS,tk/ctrl/button.c)
+obj/ctrl_button.o: $(call DEPS,tk/ctrl/button.c)
 	$(CC) -c -o $@ $<
 
-obj/ctrl_circle.o:  $(call DEPS,tk/ctrl/circle.c)
+obj/ctrl_circle.o: $(call DEPS,tk/ctrl/circle.c)
 	$(CC) -c -o $@ $<
 
 
