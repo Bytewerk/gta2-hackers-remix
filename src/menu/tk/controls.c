@@ -45,8 +45,6 @@ tk_el_t *tk_ctrl_arrow(tk_t *tk, tk_el_t *TK_PARENT, char is_left,
       tk_sprite(tk, TK_PARENT, is_left ? GTA2_SPRITE_ARROW_LEFT_RED
                                        : GTA2_SPRITE_ARROW_RIGHT_RED);
   sprite->actionfunc = actionfunc;
-  sprite->width = 16;
-  sprite->height = 16;
 
   // only display, when selected
   sprite->argb_normal = 0x00ffffff;
@@ -117,7 +115,7 @@ tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
                                   (void *)circle_actionfunc);
       ud->button->userdata = ud;
 
-      TK_FLOW(tk_el_padding(TK_PARENT, 100, 0, 0, 0);
+      TK_FLOW(tk_el_padding(TK_PARENT, 78, 2, 0, 0);
 
               ud->left =
                   tk_ctrl_arrow(tk, TK_PARENT, 1, (void *)circle_actionfunc);
@@ -137,8 +135,8 @@ tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
                   tk_ctrl_arrow(tk, TK_PARENT, 0, (void *)circle_actionfunc);
               ud->right->userdata = ud;
 
-              tk_el_padding(ud->left, 10, 8, 10, 0);
-              tk_el_padding(ud->right, 10, 8, 10, 0);
+              tk_el_padding(ud->left, 18, 8, 18, 0);
+              tk_el_padding(ud->right, 18, 8, 18, 0);
 
               ););
 
