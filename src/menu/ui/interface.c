@@ -31,6 +31,26 @@ ui_t *ui_init(tk_t *tk) {
     ui->player_names[i][7] = '0' + i;
   }
 
+  // HIGH SCORES
+  tk_screen_t *scores = tk_screen(tk, NULL, NULL);
+  TK_STACK_SCREEN(
+      scores,
+      TK_PARENT->bg_mashup = bg_mashup(tk->bg, "3_tables", NULL, NULL, NULL);
+      tk_el_padding(TK_PARENT, 300, 161, 0, 0);
+
+      tk_ctrl_circle(tk, TK_PARENT, "HIGH SCORES FOR AREA",
+                     bg_mashup(tk->bg, NULL, "2_level1", "2", NULL), '1', 'I',
+                     '2', NULL);
+
+      for (int i = 0; i < 5; i++) {
+        TK_FLOW(tk_el_t *name = tk_label(tk, TK_PARENT, "ROBOTANARCHY");
+                tk_el_width(name, 248);
+                name->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_SMALL;
+
+                tk_el_t *score = tk_label(tk, TK_PARENT, "50000");
+                score->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_SMALL;)
+      });
+
   // CREDITS
   tk_screen_t *credits = tk_screen(tk, NULL, (void *)ui_credits_action);
 
@@ -56,7 +76,7 @@ ui_t *ui_init(tk_t *tk) {
       tk_el_disabled(resume);
 
       tk_ctrl_button(tk, TK_PARENT, "VIEW HIGH SCORES",
-                     bg_mashup(tk->bg, NULL, "2_league", "2", NULL), NULL,
+                     bg_mashup(tk->bg, NULL, "2_league", "2", NULL), scores,
                      NULL);
 
       tk_ctrl_circle(tk, TK_PARENT, "START PLAY IN AREA",
@@ -83,6 +103,7 @@ ui_t *ui_init(tk_t *tk) {
 
   // now that we have the main menu, set the back links
   play->back = main_menu;
+  scores->back = play;
 
   tk->screen_active = main_menu;
   return ui;
