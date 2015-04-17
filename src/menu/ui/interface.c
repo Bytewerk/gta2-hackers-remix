@@ -1,5 +1,5 @@
 #include "interface.h"
-#include "../tk/controls.h"
+#include "../tk/ctrl/controls.h"
 #include "../tk/toolkit.h"
 #include "ui_text.h"
 

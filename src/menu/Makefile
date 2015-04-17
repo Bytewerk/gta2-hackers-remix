@@ -42,9 +42,6 @@ obj/tk_el.o: $(call DEPS,tk/elements.c)
 obj/tk_captions.o: $(call DEPS,tk/captions.c)
 	$(CC) -c -o $@ $<
 
-obj/tk_ctrl.o: $(call DEPS,tk/controls.c)
-	$(CC) -c -o $@ $<
-
 obj/tk_screen.o: $(call DEPS,tk/screen.c)
 	$(CC) -c -o $@ $<
 
@@ -56,6 +53,20 @@ obj/tk_screen_actions.o: $(call DEPS,tk/screen_actions.c)
 
 obj/tk.o: $(call DEPS,tk/toolkit.c)
 	$(CC) -c -o $@ $<
+
+# CTRL
+obj/ctrl_arrow.o:  $(call DEPS,tk/ctrl/arrow.c)
+	$(CC) -c -o $@ $<
+
+obj/ctrl_arrowtext.o:  $(call DEPS,tk/ctrl/arrowtext.c)
+	$(CC) -c -o $@ $<
+	
+obj/ctrl_button.o:  $(call DEPS,tk/ctrl/button.c)
+	$(CC) -c -o $@ $<
+
+obj/ctrl_circle.o:  $(call DEPS,tk/ctrl/circle.c)
+	$(CC) -c -o $@ $<
+
 
 
 # Other
