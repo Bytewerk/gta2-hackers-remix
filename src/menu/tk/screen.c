@@ -74,8 +74,8 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
                         el->width, el->height, argb);
       }
       if (el->sub) {
-        recursive_draw(tk, el_selected, el->sub, offset_x, offset_y,
-                       is_selected);
+        recursive_draw(tk, el_selected, el->sub, offset_x + el->padding_left,
+                       offset_y + el->padding_right, is_selected);
       }
     }
 

@@ -113,7 +113,7 @@ tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
           tk_el_padding(TK_PARENT, 100, 0, 0, 0);
 
           ud->left = tk_ctrl_arrow(tk, TK_PARENT, 1, (void *)circle_actionfunc);
-          ud->left->userdata = ud; tk_el_padding(ud->left, 20, 8, 20, 0);
+          ud->left->userdata = ud;
 
           // circle sprite
           ud->circle_sprite = tk_sprite(tk, TK_PARENT, GTA2_SPRITE_CIRCLE, 0);
@@ -126,7 +126,10 @@ tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
 
           ud->right =
               tk_ctrl_arrow(tk, TK_PARENT, 0, (void *)circle_actionfunc);
-          ud->right->userdata = ud; tk_el_padding(ud->right, 20, 8, 20, 0);
+          ud->right->userdata = ud;
+
+          tk_el_padding(ud->left, 10, 8, 10, 0);
+          tk_el_padding(ud->right, 10, 8, 10, 0);
 
           ););
 
