@@ -111,7 +111,7 @@ void circle_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
                         bg_mashup_t *bg_mashup, char min, char max, char value,
                         void *actionfunc) {
-  ud_circle_t *ud = malloc(sizeof(ud_circle_t));
+  ud_circle_t *ud = calloc(1, sizeof(ud_circle_t));
   ud->actionfunc = actionfunc;
   ud->min = min;
   ud->max = max;
@@ -162,27 +162,74 @@ typedef struct {
   uint16_t entry_selected;
   char entry_length;
   char **entries;
+  void *actionfunc;
+  char editing_disabled;
+  char *bottom_text_high;
+  char *bottom_text_low;
+  char *bottom_text_high_editing;
+  char *bottom_text_low_editing;
   tk_el_t *container;
   tk_el_t *left;
   tk_el_t *text;
   tk_el_t *right;
-  void *actionfunc;
 } ud_arrowtext_t;
 
+void arrowtext_style(tk_t *tk, ud_arrowtext_t *ud) {
+  char is_editing = (tk->exclusive_action_element == ud->container);
+
+  if (is_editing || ud->entry_selected == 0)
+    tk_el_invisible(ud->left);
+  else
+    tk_el_visible(ud->left);
+
+  if (is_editing || ud->entry_selected == ud->entry_count - 1)
+    tk_el_invisible(ud->right);
+  else
+    tk_el_visible(ud->right);
+
+  ud->container->bottom_text_high =
+      is_editing ? ud->bottom_text_high_editing : ud->bottom_text_high;
+
+  ud->container->bottom_text_low =
+      is_editing ? ud->bottom_text_low_editing : ud->bottom_text_low;
+}
+
 void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
-                          tk_action_t action) {}
+                          tk_action_t action) {
+  ud_arrowtext_t *ud = (ud_arrowtext_t *)el->userdata;
+
+  if (tk->exclusive_action_element == ud->container) // edit mode
+  {
+    if (action == TK_ACTION_ENTER)
+      tk->exclusive_action_element = NULL;
+  } else // not in edit mode
+  {
+    if (action == TK_ACTION_ENTER)
+      tk->exclusive_action_element = ud->container;
+  }
+  arrowtext_style(tk, el->userdata);
+}
 
 tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
                            char **entries, uint16_t entry_count,
                            uint16_t entry_selected, char entry_length,
-                           void *actionfunc) {
-  ud_arrowtext_t *ud = malloc(sizeof(ud_arrowtext_t));
+                           void *actionfunc, char editing_disabled,
+                           char *bottom_text_high, char *bottom_text_low,
+                           char *bottom_text_high_editing,
+                           char *bottom_text_low_editing) {
+  ud_arrowtext_t *ud = calloc(1, sizeof(ud_arrowtext_t));
   ud->actionfunc = actionfunc;
   ud->entries = entries;
   ud->entry_length = entry_length;
   ud->entry_count = entry_count;
   ud->entry_selected = entry_selected;
   ud->actionfunc = actionfunc;
+  ud->editing_disabled = editing_disabled;
+
+  ud->bottom_text_high = bottom_text_high;
+  ud->bottom_text_low = bottom_text_low;
+  ud->bottom_text_high_editing = bottom_text_high_editing;
+  ud->bottom_text_low_editing = bottom_text_low_editing;
 
   TK_FLOW(ud->container = TK_PARENT; ud->container->bg_mashup = bg_mashup;
 
@@ -202,5 +249,6 @@ tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
                                  ud->left->padding_right),
               0, 0, 0););
 
+  arrowtext_style(tk, ud);
   return ud->container;
 }

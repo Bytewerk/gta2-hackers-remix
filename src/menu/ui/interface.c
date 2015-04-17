@@ -44,10 +44,11 @@ ui_t *ui_init(tk_t *tk) {
 
       // FIXME: this isn't a button, implement text fields!
 
-      tk_ctrl_arrowtext(tk, TK_PARENT,
-                        bg_mashup(tk->bg, NULL, "2_name", "2", NULL),
-                        ui->player_names, GTA2_SAVEGAME_COUNT, 0,
-                        GTA2_PLAYERNAME_MAXLEN, NULL);
+      tk_ctrl_arrowtext(
+          tk, TK_PARENT, bg_mashup(tk->bg, NULL, "2_name", "2", NULL),
+          ui->player_names, GTA2_SAVEGAME_COUNT, 0, GTA2_PLAYERNAME_MAXLEN,
+          NULL, 0, "ENTER:  EDIT NAME", "DELETE:  DELETE PLAYER",
+          "ENTER:  ENTER NAME", "BACKSPACE:  DELETE LETTER");
 
       tk_el_t *resume = tk_ctrl_button(tk, TK_PARENT, "RESUME SAVED STATUS",
                                        NULL, NULL, NULL);

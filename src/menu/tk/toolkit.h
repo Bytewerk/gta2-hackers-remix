@@ -24,6 +24,7 @@ typedef struct {
   sty_t *fsty;
   bg_t *bg;
   char quit;
+  tk_el_t *exclusive_action_element;
   uint32_t action_time[TK_ACTION_LAST_LIMITED - 1];
 } tk_t;
 

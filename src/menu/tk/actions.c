@@ -67,6 +67,11 @@ void tk_action(tk_t *tk, SDL_Event *event) {
 
   tk_el_t *el_selected = tk->screen_active->el_selected;
 
+  if (tk->exclusive_action_element) {
+    actions_element(tk, tk->exclusive_action_element, el_selected, action);
+    return;
+  }
+
   // single action for the active screen
   actions_element(tk, &(tk->screen_active->el), el_selected, action);
 
