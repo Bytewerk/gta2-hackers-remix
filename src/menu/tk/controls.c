@@ -14,10 +14,9 @@ typedef struct {
 } ud_button_t;
 
 void button_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
-                       tk_action_t action) {
+                       tk_action_t action, SDL_Keycode key) {
   if (action != TK_ACTION_ENTER || el != el_selected)
     return;
-  // TODO: or action is mouse click...
 
   ud_button_t *ud = (ud_button_t *)el->userdata;
   // if(ud->onclick_func) - TODO
@@ -92,7 +91,7 @@ void circle_arrow_visibility(ud_circle_t *ud) {
 }
 
 void circle_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
-                       tk_action_t action) {
+                       tk_action_t action, SDL_Keycode key) {
   ud_circle_t *ud = (ud_circle_t *)el->userdata;
   if (el_selected != ud->container)
     return;
@@ -213,7 +212,7 @@ void arrowtext_style(tk_t *tk, ud_arrowtext_t *ud) {
 }
 
 void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
-                          tk_action_t action) {
+                          tk_action_t action, SDL_Keycode key) {
   ud_arrowtext_t *ud = (ud_arrowtext_t *)el->userdata;
   char is_editing = (tk->exclusive_action_element == ud->container);
 

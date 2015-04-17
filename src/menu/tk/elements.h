@@ -36,7 +36,7 @@ typedef struct tk_el_t {
   uint32_t argb_normal;   // 0x00000000: not used
   uint32_t argb_selected; // 0x00000000: not used
   uint32_t argb_disabled; // 0x00000000: not used
-  void *actionfunc;       // (tk, el, el_selected, action)
+  void *actionfunc;       // (tk, el, el_selected, action, key)
   void *userdata;
   bg_mashup_t *bg_mashup;
   const char *bottom_text_high;

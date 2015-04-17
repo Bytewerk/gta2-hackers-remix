@@ -12,7 +12,7 @@ typedef struct tk_screen_t {
   tk_el_t el;
   tk_el_t *el_selected;
   struct tk_screen_t *back;
-  void *actionfunc; // (tk, el, el_selected, action)
+  void *actionfunc; // (tk, el, el_selected, action, key)
 } tk_screen_t;
 
 typedef struct {
@@ -35,7 +35,7 @@ void tk_cleanup(tk_t *tk);
 tk_screen_t *tk_screen(tk_t *tk, tk_screen_t *back, void *actionfunc);
 void tk_screen_draw(tk_t *tk);
 void tk_screen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
-                          tk_action_t action);
+                          tk_action_t action, SDL_Keycode key);
 
 #define TK_STACK_SCREEN(SCREEN, UICODE)                                        \
   {                                                                            \

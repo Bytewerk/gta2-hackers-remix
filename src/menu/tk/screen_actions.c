@@ -31,7 +31,7 @@ void back(tk_t *tk, tk_screen_t *screen) {
 }
 
 void tk_screen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
-                          tk_action_t action) {
+                          tk_action_t action, SDL_Keycode key) {
   tk_screen_t *screen = tk->screen_active;
   tk_el_t *first = screen->el.sub;
 
@@ -45,9 +45,9 @@ void tk_screen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   }
 
   if (screen->actionfunc) {
-    void (*actionfunc)(tk_t *, tk_el_t *, tk_el_t *, tk_action_t) =
-        screen->actionfunc;
+    void (*actionfunc)(tk_t *, tk_el_t *, tk_el_t *, tk_action_t,
+                       SDL_Keycode key) = screen->actionfunc;
     if (actionfunc)
-      actionfunc(tk, el, el_selected, action);
+      actionfunc(tk, el, el_selected, action, key);
   }
 }
