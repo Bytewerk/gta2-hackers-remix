@@ -36,7 +36,6 @@ tk_el_t *tk_ctrl_button(tk_t *tk, tk_el_t *TK_PARENT, char *text,
 }
 
 // ARROW
-#define ARROW_PADDING_TOP 5
 tk_el_t *tk_ctrl_arrow(tk_t *tk, tk_el_t *TK_PARENT, char is_left,
                        void *actionfunc) {
   tk_el_t *sprite =
@@ -46,10 +45,6 @@ tk_el_t *tk_ctrl_arrow(tk_t *tk, tk_el_t *TK_PARENT, char is_left,
   sprite->actionfunc = actionfunc;
   sprite->width = 16;
   sprite->height = 16;
-  tk_el_padding(sprite,
-                /*(is_left ? -16 : 0) */ 0, ARROW_PADDING_TOP,
-                /*(is_left ? 0 : 16) */ 0, 0);
-
   return sprite;
 }
 
@@ -115,10 +110,10 @@ tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
       ud->button->userdata = ud;
 
       TK_FLOW(
-          tk_el_padding(TK_PARENT, 130, 0, 0, 0);
+          tk_el_padding(TK_PARENT, 100, 0, 0, 0);
 
           ud->left = tk_ctrl_arrow(tk, TK_PARENT, 1, (void *)circle_actionfunc);
-          ud->left->userdata = ud;
+          ud->left->userdata = ud; tk_el_padding(ud->left, 20, 8, 20, 0);
 
           // circle sprite
           ud->circle_sprite = tk_sprite(tk, TK_PARENT, GTA2_SPRITE_CIRCLE, 0);
@@ -131,9 +126,9 @@ tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
 
           ud->right =
               tk_ctrl_arrow(tk, TK_PARENT, 0, (void *)circle_actionfunc);
-          ud->right->userdata = ud;);
+          ud->right->userdata = ud; tk_el_padding(ud->right, 20, 8, 20, 0);
 
-      );
+          ););
 
   circle_arrow_visibility(ud);
   return ud->container;

@@ -45,7 +45,7 @@ ui_t *ui_init(tk_t *tk) {
 
       tk_ctrl_circle(tk, TK_PARENT, "START PLAY IN AREA",
                      bg_mashup(tk->bg, NULL, "2_level1", "2", NULL), '1', '3',
-                     '1', NULL);
+                     '2', NULL);
 
       );
 

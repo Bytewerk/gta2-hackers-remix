@@ -60,12 +60,14 @@ void tk_el_geocalc(tk_t *tk, tk_el_t *el, char /*bool*/ down,
       tk_el_t *sub = el->sub;
       while (sub) {
         if (el->type == STACK) {
-          width = width > sub->width ? width : sub->width;
+          int el_width = sub->width + sub->padding_left + sub->padding_right;
+          width = width > el_width ? width : el_width;
           height += sub->height;
         } else // FLOW
         {
+          int el_height = sub->height + sub->padding_top + sub->padding_bottom;
           width += sub->width;
-          height = height > sub->height ? height : sub->height;
+          height = height > el_height ? height : el_height;
         }
         sub = sub->next;
       }
