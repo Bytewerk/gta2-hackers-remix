@@ -82,10 +82,12 @@ void circle_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     return;
 
   char value = ud->value_str[0];
-  if (action == TK_ACTION_LEFT && value - 1 >= ud->min)
+  if (el == ud->left && value - 1 >= ud->min &&
+      (action == TK_ACTION_LEFT || action == TK_ACTION_MOUSEDOWN))
     ud->value_str[0]--;
 
-  if (action == TK_ACTION_RIGHT && value + 1 <= ud->max)
+  if (el == ud->right && value + 1 <= ud->max &&
+      (action == TK_ACTION_RIGHT || action == TK_ACTION_MOUSEDOWN))
     ud->value_str[0]++;
 
   circle_arrow_visibility(ud);
