@@ -20,9 +20,10 @@ void button_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     tk->screen_active = ud->onclick_screen;
 }
 
-tk_el_t *tk_ctrl_button(tk_el_t *TK_PARENT, char *text, bg_mashup_t *bg_mashup,
-                        tk_screen_t *onclick_screen, void *onclick_func) {
-  tk_el_t *label = tk_label(TK_PARENT, text);
+tk_el_t *tk_ctrl_button(tk_t *tk, tk_el_t *TK_PARENT, char *text,
+                        bg_mashup_t *bg_mashup, tk_screen_t *onclick_screen,
+                        void *onclick_func) {
+  tk_el_t *label = tk_label(tk, TK_PARENT, text);
 
   ud_button_t *ud = malloc(sizeof(ud_button_t));
   ud->onclick_func = onclick_func;
@@ -36,10 +37,11 @@ tk_el_t *tk_ctrl_button(tk_el_t *TK_PARENT, char *text, bg_mashup_t *bg_mashup,
 
 // ARROW
 #define ARROW_PADDING_TOP 5
-tk_el_t *tk_ctrl_arrow(tk_el_t *TK_PARENT, char is_left, void *actionfunc) {
+tk_el_t *tk_ctrl_arrow(tk_t *tk, tk_el_t *TK_PARENT, char is_left,
+                       void *actionfunc) {
   tk_el_t *sprite =
-      tk_sprite(TK_PARENT, is_left ? GTA2_SPRITE_ARROW_LEFT_WHITE
-                                   : GTA2_SPRITE_ARROW_RIGHT_WHITE,
+      tk_sprite(tk, TK_PARENT, is_left ? GTA2_SPRITE_ARROW_LEFT_WHITE
+                                       : GTA2_SPRITE_ARROW_RIGHT_WHITE,
                 0xffff0000);
   sprite->actionfunc = actionfunc;
   sprite->width = 16;
@@ -94,8 +96,9 @@ void circle_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   circle_arrow_visibility(ud);
 }
 
-tk_el_t *tk_ctrl_circle(tk_el_t *TK_PARENT, char *text, bg_mashup_t *bg_mashup,
-                        char min, char max, char value, void *actionfunc) {
+tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
+                        bg_mashup_t *bg_mashup, char min, char max, char value,
+                        void *actionfunc) {
   ud_circle_t *ud = malloc(sizeof(ud_circle_t));
   ud->actionfunc = actionfunc;
   ud->min = min;
@@ -107,27 +110,28 @@ tk_el_t *tk_ctrl_circle(tk_el_t *TK_PARENT, char *text, bg_mashup_t *bg_mashup,
       ud->container = TK_PARENT; TK_PARENT->userdata = (void *)ud;
       TK_PARENT->bg_mashup = bg_mashup;
 
-      ud->button = tk_ctrl_button(TK_PARENT, text, NULL, NULL,
+      ud->button = tk_ctrl_button(tk, TK_PARENT, text, NULL, NULL,
                                   (void *)circle_actionfunc);
       ud->button->userdata = ud;
 
-      TK_FLOW(tk_el_padding(TK_PARENT, 130, 0, 0, 0);
+      TK_FLOW(
+          tk_el_padding(TK_PARENT, 130, 0, 0, 0);
 
-              ud->left = tk_ctrl_arrow(TK_PARENT, 1, (void *)circle_actionfunc);
-              ud->left->userdata = ud;
+          ud->left = tk_ctrl_arrow(tk, TK_PARENT, 1, (void *)circle_actionfunc);
+          ud->left->userdata = ud;
 
-              // circle sprite
-              ud->circle_sprite = tk_sprite(TK_PARENT, GTA2_SPRITE_CIRCLE, 0);
-              ud->circle_sprite->width = 32; ud->circle_sprite->height = 32;
+          // circle sprite
+          ud->circle_sprite = tk_sprite(tk, TK_PARENT, GTA2_SPRITE_CIRCLE, 0);
+          ud->circle_sprite->width = 32; ud->circle_sprite->height = 32;
 
-              // circle text
-              ud->circle_text = tk_label(TK_PARENT, ud->value_str);
-              tk_el_padding(ud->circle_text, -20, 4, 0, 0);
-              tk_el_width(ud->circle_text, 20);
+          // circle text
+          ud->circle_text = tk_label(tk, TK_PARENT, ud->value_str);
+          tk_el_padding(ud->circle_text, -20, 4, 0, 0);
+          tk_el_width(ud->circle_text, 20);
 
-              ud->right =
-                  tk_ctrl_arrow(TK_PARENT, 0, (void *)circle_actionfunc);
-              ud->right->userdata = ud;);
+          ud->right =
+              tk_ctrl_arrow(tk, TK_PARENT, 0, (void *)circle_actionfunc);
+          ud->right->userdata = ud;);
 
       );
 

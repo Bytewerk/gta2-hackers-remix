@@ -32,18 +32,18 @@ ui_t *ui_init(tk_t *tk) {
       play, tk_el_padding(TK_PARENT, 300, 210, 0, 0);
 
       // FIXME: this isn't a button, implement text fields!
-      tk_ctrl_button(TK_PARENT, "PLAYER 0",
+      tk_ctrl_button(tk, TK_PARENT, "PLAYER 0",
                      bg_mashup(tk->bg, NULL, "2_name", "2", NULL), NULL, NULL);
 
-      tk_el_t *resume =
-          tk_ctrl_button(TK_PARENT, "RESUME SAVED STATUS", NULL, NULL, NULL);
+      tk_el_t *resume = tk_ctrl_button(tk, TK_PARENT, "RESUME SAVED STATUS",
+                                       NULL, NULL, NULL);
       tk_el_disabled(resume);
 
-      tk_ctrl_button(TK_PARENT, "VIEW HIGH SCORES",
+      tk_ctrl_button(tk, TK_PARENT, "VIEW HIGH SCORES",
                      bg_mashup(tk->bg, NULL, "2_league", "2", NULL), NULL,
                      NULL);
 
-      tk_ctrl_circle(TK_PARENT, "START PLAY IN AREA",
+      tk_ctrl_circle(tk, TK_PARENT, "START PLAY IN AREA",
                      bg_mashup(tk->bg, NULL, "2_level1", "2", NULL), '1', '3',
                      '1', NULL);
 
@@ -56,12 +56,12 @@ ui_t *ui_init(tk_t *tk) {
       main_menu, tk_el_padding(TK_PARENT, 300, 250, 0, 0);
       TK_PARENT->bottom_text_low = "G2HR V0.4";
 
-      tk_ctrl_button(TK_PARENT, "PLAY",
+      tk_ctrl_button(tk, TK_PARENT, "PLAY",
                      bg_mashup(tk->bg, NULL, "1_play", "1", NULL), play, NULL);
-      tk_ctrl_button(TK_PARENT, "OPTIONS",
+      tk_ctrl_button(tk, TK_PARENT, "OPTIONS",
                      bg_mashup(tk->bg, NULL, "1_options", "1", NULL), NULL,
                      NULL);
-      tk_ctrl_button(TK_PARENT, "QUIT",
+      tk_ctrl_button(tk, TK_PARENT, "QUIT",
                      bg_mashup(tk->bg, NULL, "1_quit", "1", NULL), credits,
                      NULL););
 

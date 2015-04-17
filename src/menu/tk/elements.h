@@ -49,21 +49,13 @@ typedef struct tk_el_t {
   int16_t padding_bottom;
 } tk_el_t;
 
-// common functions
-tk_el_t *tk_el_attach(tk_el_t *el, tk_el_t *parent, tk_el_type_t type);
-void tk_el_clean(tk_el_t *el);
-void tk_el_geocalc(tk_el_t *el, char /*bool*/ down, char /*bool*/ up);
-
-// extended elements
-tk_el_t *tk_sprite(tk_el_t *parent, char sprite_id, uint32_t argb_selected);
-tk_el_t *tk_label(tk_el_t *parent, char *text);
-
 /*
         STACKS 'n' FLOWS - idea from the "Shoes" UI Framework
 
         These are implemented as macros, so they can be nested easily.
-        Always define TK_PARENT before using them. Example:
+        Always define TK_PARENT and 'tk' before using them! Example:
 
+                tk_t* tk = tk_init();
                 tk_el_t* TK_PARENT = calloc(1,sizeof(tk_el_t));
 
                 TK_STACK
@@ -94,7 +86,7 @@ tk_el_t *tk_label(tk_el_t *parent, char *text);
       TK_PARENT =                                                              \
           tk_el_attach(calloc(1, sizeof(tk_el_t)), TK_PARENT_OLD, STACK);      \
       UICODE;                                                                  \
-      tk_el_geocalc(TK_PARENT, 0, 0);                                          \
+      tk_el_geocalc(tk, TK_PARENT, 0, 0);                                      \
       TK_PARENT = TK_PARENT_OLD;                                               \
     }                                                                          \
   }
@@ -105,7 +97,7 @@ tk_el_t *tk_label(tk_el_t *parent, char *text);
       TK_PARENT =                                                              \
           tk_el_attach(calloc(1, sizeof(tk_el_t)), TK_PARENT_OLD, FLOW);       \
       UICODE;                                                                  \
-      tk_el_geocalc(TK_PARENT, 0, 0);                                          \
+      tk_el_geocalc(tk, TK_PARENT, 0, 0);                                      \
       TK_PARENT = TK_PARENT_OLD;                                               \
     }                                                                          \
   }
