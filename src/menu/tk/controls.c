@@ -3,7 +3,10 @@
 #include "../sty/sprites.h"
 #include "toolkit.h"
 
+//
 // BUTTON
+//
+
 typedef struct {
   void *onclick_func;
   tk_screen_t *onclick_screen;
@@ -13,6 +16,7 @@ void button_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                        tk_action_t action) {
   if (action != TK_ACTION_ENTER || el != el_selected)
     return;
+  // TODO: or action is mouse click...
 
   ud_button_t *ud = (ud_button_t *)el->userdata;
   // if(ud->onclick_func) - TODO
@@ -38,13 +42,17 @@ tk_el_t *tk_ctrl_button(tk_t *tk, tk_el_t *TK_PARENT, char *text,
   return label;
 }
 
+//
 // ARROW
+//
+
 tk_el_t *tk_ctrl_arrow(tk_t *tk, tk_el_t *TK_PARENT, char is_left,
-                       void *actionfunc) {
+                       void *actionfunc, void *userdata) {
   tk_el_t *sprite =
       tk_sprite(tk, TK_PARENT, is_left ? GTA2_SPRITE_ARROW_LEFT_RED
                                        : GTA2_SPRITE_ARROW_RIGHT_RED);
   sprite->actionfunc = actionfunc;
+  sprite->userdata = userdata;
 
   // only display, when selected
   sprite->argb_normal = 0x00ffffff;
@@ -52,7 +60,10 @@ tk_el_t *tk_ctrl_arrow(tk_t *tk, tk_el_t *TK_PARENT, char is_left,
   return sprite;
 }
 
+//
 // CIRCLE
+//
+
 typedef struct {
   char value_str[2]; // value, \0
   char min;
@@ -117,9 +128,8 @@ tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
 
       TK_FLOW(tk_el_padding(TK_PARENT, 78, 2, 0, 0);
 
-              ud->left =
-                  tk_ctrl_arrow(tk, TK_PARENT, 1, (void *)circle_actionfunc);
-              ud->left->userdata = ud;
+              ud->left = tk_ctrl_arrow(tk, TK_PARENT, 1,
+                                       (void *)circle_actionfunc, (void *)ud);
 
               // circle sprite
               ud->circle_sprite = tk_sprite(tk, TK_PARENT, GTA2_SPRITE_CIRCLE);
@@ -131,9 +141,8 @@ tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
               tk_el_padding(ud->circle_text, -23, 0, 4, 0);
               tk_el_width(ud->circle_text, -1 * ud->circle_text->padding_left);
 
-              ud->right =
-                  tk_ctrl_arrow(tk, TK_PARENT, 0, (void *)circle_actionfunc);
-              ud->right->userdata = ud;
+              ud->right = tk_ctrl_arrow(tk, TK_PARENT, 0,
+                                        (void *)circle_actionfunc, (void *)ud);
 
               tk_el_padding(ud->left, 18, 8, 18, 0);
               tk_el_padding(ud->right, 18, 8, 18, 0);
@@ -141,5 +150,57 @@ tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
               ););
 
   circle_arrow_visibility(ud);
+  return ud->container;
+}
+
+//
+// ARROWTEXT
+//
+
+typedef struct {
+  uint16_t entry_count;
+  uint16_t entry_selected;
+  char entry_length;
+  char **entries;
+  tk_el_t *container;
+  tk_el_t *left;
+  tk_el_t *text;
+  tk_el_t *right;
+  void *actionfunc;
+} ud_arrowtext_t;
+
+void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
+                          tk_action_t action) {}
+
+tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
+                           char **entries, uint16_t entry_count,
+                           uint16_t entry_selected, char entry_length,
+                           void *actionfunc) {
+  ud_arrowtext_t *ud = malloc(sizeof(ud_arrowtext_t));
+  ud->actionfunc = actionfunc;
+  ud->entries = entries;
+  ud->entry_length = entry_length;
+  ud->entry_count = entry_count;
+  ud->entry_selected = entry_selected;
+  ud->actionfunc = actionfunc;
+
+  TK_FLOW(ud->container = TK_PARENT; ud->container->bg_mashup = bg_mashup;
+
+          ud->left = tk_ctrl_arrow(tk, TK_PARENT, 1,
+                                   (void *)arrowtext_actionfunc, (void *)ud);
+
+          ud->text = tk_label(tk, TK_PARENT, entries[entry_selected]);
+          ud->text->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL;
+          ud->text->font_id_selected = GTA2_FONT_FSTYLE_RED_BLACK_NORMAL;
+
+          ud->right = tk_ctrl_arrow(tk, TK_PARENT, 0,
+                                    (void *)arrowtext_actionfunc, (void *)ud);
+
+          tk_el_padding(ud->left, 5, 4, 5, 0);
+          tk_el_padding(ud->right, 5, 4, 5, 0); tk_el_padding(
+              TK_PARENT, (-1) * (ud->left->width + ud->left->padding_left +
+                                 ud->left->padding_right),
+              0, 0, 0););
+
   return ud->container;
 }

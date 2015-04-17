@@ -13,11 +13,22 @@ void ui_credits_action(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 }
 
 ui_t *ui_init(tk_t *tk) {
-  // TODO: add all important controls to the ui struct, so we can
-  // change their properties outside of this function
-
   ui_t *ui = malloc(sizeof(ui_t));
   ui->tk = tk;
+
+  // player names - TODO: free!
+  ui->player_names = malloc(sizeof(char *) * GTA2_SAVEGAME_COUNT);
+  for (int i = 0; i < GTA2_SAVEGAME_COUNT; i++) {
+    ui->player_names[i] = calloc(1, GTA2_PLAYERNAME_MAXLEN + 1);
+    ui->player_names[i][0] = 'P';
+    ui->player_names[i][1] = 'L';
+    ui->player_names[i][2] = 'A';
+    ui->player_names[i][3] = 'Y';
+    ui->player_names[i][4] = 'E';
+    ui->player_names[i][5] = 'R';
+    ui->player_names[i][6] = ' ';
+    ui->player_names[i][7] = '0' + i;
+  }
 
   // CREDITS
   tk_screen_t *credits = tk_screen(tk, NULL, (void *)ui_credits_action);
@@ -32,8 +43,11 @@ ui_t *ui_init(tk_t *tk) {
       play, tk_el_padding(TK_PARENT, 300, 210, 0, 0);
 
       // FIXME: this isn't a button, implement text fields!
-      tk_ctrl_button(tk, TK_PARENT, "PLAYER 0",
-                     bg_mashup(tk->bg, NULL, "2_name", "2", NULL), NULL, NULL);
+
+      tk_ctrl_arrowtext(tk, TK_PARENT,
+                        bg_mashup(tk->bg, NULL, "2_name", "2", NULL),
+                        ui->player_names, GTA2_SAVEGAME_COUNT, 0,
+                        GTA2_PLAYERNAME_MAXLEN, NULL);
 
       tk_el_t *resume = tk_ctrl_button(tk, TK_PARENT, "RESUME SAVED STATUS",
                                        NULL, NULL, NULL);

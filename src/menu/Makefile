@@ -1,5 +1,5 @@
 # Automatic C dependency detection (just gcc, no make recursion etc)
-CC:=gcc -std=c99 -Wall -g -Werror
+CC:=LANG=C gcc -std=c99 -Wall -g -Werror
 DEPS=$(shell $(CC) -MM $(1) | cut -d ':' -f 2 | tr -d '\n\\')
 OBJS=$(shell grep obj/ Makefile | grep 'call DEPS' | grep -v OBJS | cut -d':' -f 1 | tr '\n' ' ')
 
