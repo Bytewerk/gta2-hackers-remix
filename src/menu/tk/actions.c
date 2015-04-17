@@ -33,6 +33,10 @@ tk_action_t convert(tk_t *tk, SDL_Event *e) {
       return TK_ACTION_BACKSPACE;
     if (key == SDLK_RETURN)
       return TK_ACTION_ENTER;
+
+    // http://wiki.libsdl.org/SDLKeycodeLookup
+    if (key >= SDLK_SPACE && key <= SDLK_z)
+      return TK_ACTION_TYPING;
   }
 
   return TK_ACTION_NONE;

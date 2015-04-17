@@ -234,6 +234,26 @@ void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 
         tk_el_geocalc(tk, ud->text, 0, 1);
       }
+      if (action == TK_ACTION_TYPING) {
+        char *text = ud->text->text;
+        int length = strlen(text);
+        if (length >= ud->entry_length)
+          return;
+        char letter = 0x00;
+
+        // http://wiki.libsdl.org/SDL_Keycode
+        if (key >= SDLK_SPACE && key <= SDLK_UNDERSCORE)
+          letter = key - SDLK_SPACE + ' ';
+        if (key >= SDLK_a && key <= SDLK_z)
+          letter = key - SDLK_a + 'A';
+
+        if (letter) {
+          text[length] = letter;
+          text[length + 1] = '\0';
+        }
+
+        tk_el_geocalc(tk, ud->text, 0, 1);
+      }
     } else // not editing
     {
       if (!ud->editing_disabled && action == TK_ACTION_ENTER) {
