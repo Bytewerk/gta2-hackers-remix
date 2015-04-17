@@ -21,7 +21,6 @@
   EL->padding_right = RIGHT;                                                   \
   EL->padding_bottom = BOTTOM;
 
-// TODO: also add inverted macros!
 #define tk_el_selectable(EL) EL->flags |= TK_EL_FLAG_SELECTABLE
 
 #define tk_el_disabled(EL) EL->flags |= TK_EL_FLAG_DISABLED

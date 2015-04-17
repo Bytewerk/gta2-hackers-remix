@@ -171,41 +171,72 @@ typedef struct {
   tk_el_t *container;
   tk_el_t *left;
   tk_el_t *text;
+  tk_el_t *underscore;
   tk_el_t *right;
 } ud_arrowtext_t;
 
 void arrowtext_style(tk_t *tk, ud_arrowtext_t *ud) {
   char is_editing = (tk->exclusive_action_element == ud->container);
 
+  // left arrow visibility
   if (is_editing || ud->entry_selected == 0)
     tk_el_invisible(ud->left);
   else
     tk_el_visible(ud->left);
 
+  // right arrow visibility
   if (is_editing || ud->entry_selected == ud->entry_count - 1)
     tk_el_invisible(ud->right);
   else
     tk_el_visible(ud->right);
 
+  // underscore visibility
+  if (is_editing)
+    tk_el_visible(ud->underscore);
+  else
+    tk_el_invisible(ud->underscore);
+
+  // bottom text high
   ud->container->bottom_text_high =
       is_editing ? ud->bottom_text_high_editing : ud->bottom_text_high;
 
+  // bottom text low
   ud->container->bottom_text_low =
       is_editing ? ud->bottom_text_low_editing : ud->bottom_text_low;
+
+  // label text
+  if (ud->text->text != ud->entries[ud->entry_selected]) {
+    ud->text->text = ud->entries[ud->entry_selected];
+    tk_el_geocalc(tk, ud->text, 0, 1);
+  }
 }
 
 void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                           tk_action_t action) {
   ud_arrowtext_t *ud = (ud_arrowtext_t *)el->userdata;
+  char is_editing = (tk->exclusive_action_element == ud->container);
 
-  if (tk->exclusive_action_element == ud->container) // edit mode
-  {
-    if (action == TK_ACTION_ENTER)
-      tk->exclusive_action_element = NULL;
-  } else // not in edit mode
-  {
-    if (action == TK_ACTION_ENTER)
-      tk->exclusive_action_element = ud->container;
+  if (el == ud->container) {
+    if (is_editing) {
+      if (action == TK_ACTION_ENTER)
+        tk->exclusive_action_element = NULL;
+    } else // not editing
+    {
+      if (!ud->editing_disabled && action == TK_ACTION_ENTER)
+        tk->exclusive_action_element = ud->container;
+    }
+  }
+
+  if (!is_editing) {
+    // right arrow
+    if (el == ud->right && ud->entry_selected < ud->entry_count - 1 &&
+        (action == TK_ACTION_RIGHT || action == TK_ACTION_MOUSEDOWN))
+      ud->entry_selected++;
+
+    // left arrow
+    if (el == ud->left && ud->entry_selected > 0 &&
+        (action == TK_ACTION_LEFT || action == TK_ACTION_MOUSEDOWN))
+      ud->entry_selected--;
   }
   arrowtext_style(tk, el->userdata);
 }
@@ -232,6 +263,8 @@ tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
   ud->bottom_text_low_editing = bottom_text_low_editing;
 
   TK_FLOW(ud->container = TK_PARENT; ud->container->bg_mashup = bg_mashup;
+          ud->container->actionfunc = (void *)arrowtext_actionfunc;
+          ud->container->userdata = ud;
 
           ud->left = tk_ctrl_arrow(tk, TK_PARENT, 1,
                                    (void *)arrowtext_actionfunc, (void *)ud);
@@ -240,14 +273,18 @@ tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
           ud->text->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL;
           ud->text->font_id_selected = GTA2_FONT_FSTYLE_RED_BLACK_NORMAL;
 
+          ud->underscore = tk_label(tk, TK_PARENT, "_");
+          ud->underscore->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL;
+
           ud->right = tk_ctrl_arrow(tk, TK_PARENT, 0,
                                     (void *)arrowtext_actionfunc, (void *)ud);
 
           tk_el_padding(ud->left, 5, 4, 5, 0);
-          tk_el_padding(ud->right, 5, 4, 5, 0); tk_el_padding(
-              TK_PARENT, (-1) * (ud->left->width + ud->left->padding_left +
-                                 ud->left->padding_right),
-              0, 0, 0););
+          tk_el_padding(ud->right, 5 - ud->underscore->width, 4, 5, 0);
+          tk_el_padding(TK_PARENT,
+                        (-1) * (ud->left->width + ud->left->padding_left +
+                                ud->left->padding_right),
+                        0, 0, 0););
 
   arrowtext_style(tk, ud);
   return ud->container;
