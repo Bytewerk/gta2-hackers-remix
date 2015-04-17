@@ -1,3 +1,5 @@
+#pragma once
+
 tk_el_t *tk_ctrl_arrow(tk_t *tk, tk_el_t *TK_PARENT, char is_left,
                        void *actionfunc, void *userdata);
 
