@@ -21,12 +21,12 @@
   EL->padding_right = RIGHT;                                                   \
   EL->padding_bottom = BOTTOM;
 
+// change flags:
 #define tk_el_selectable(EL) EL->flags |= TK_EL_FLAG_SELECTABLE
-
 #define tk_el_disabled(EL) EL->flags |= TK_EL_FLAG_DISABLED
-
-#define tk_el_enabled(EL) EL->flags &= ~((char)TK_EL_FLAG_DISABLED)
-
 #define tk_el_invisible(EL) EL->flags |= TK_EL_FLAG_INVISIBLE
 
+// reset to default:
+#define tk_el_unselectable(EL) EL->flags &= ~((char)TK_EL_FLAG_SELECTABLE)
+#define tk_el_enabled(EL) EL->flags &= ~((char)TK_EL_FLAG_DISABLED)
 #define tk_el_visible(EL) EL->flags &= ~((char)TK_EL_FLAG_INVISIBLE)
