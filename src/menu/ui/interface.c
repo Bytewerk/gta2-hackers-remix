@@ -24,10 +24,13 @@ ui_t *ui_init(tk_t *tk) {
   tk_screen_t *credits = ui_screen_credits(tk, ui);
   tk_screen_t *scores = ui_screen_scores(tk, ui);
   tk_screen_t *play = ui_screen_play(tk, ui, scores, credits);
-  tk_screen_t *main_menu = ui_screen_main_menu(tk, ui, play, credits);
+  tk_screen_t *splitscreen = ui_screen_splitscreen(tk, ui);
+  tk_screen_t *main_menu =
+      ui_screen_main_menu(tk, ui, play, splitscreen, credits);
 
   // back links
   play->back = main_menu;
+  splitscreen->back = main_menu;
   scores->back = play;
 
   tk->screen_active = main_menu;
