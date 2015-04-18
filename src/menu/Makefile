@@ -27,10 +27,6 @@ obj/sty.o: $(call DEPS,sty/sty.c)
 obj/sfx.o: $(call DEPS,sfx/sfx.c)
 	$(CC) -c -o $@ $<
 
-# UI
-obj/ui.o: $(call DEPS,ui/interface.c)
-	$(CC) -c -o $@ $<
-
 # BG
 obj/bg.o: $(call DEPS,bg/background.c)
 	$(CC) -c -o $@ $<
@@ -67,7 +63,22 @@ obj/ctrl_button.o: $(call DEPS,tk/ctrl/button.c)
 obj/ctrl_circle.o: $(call DEPS,tk/ctrl/circle.c)
 	$(CC) -c -o $@ $<
 
+# UI
+obj/ui.o: $(call DEPS,ui/interface.c)
+	$(CC) -c -o $@ $<
+	
+# SCREENS
+obj/screen_main.o: $(call DEPS,ui/screens/main_menu.c)
+	$(CC) -c -o $@ $<
 
+obj/screen_play.o: $(call DEPS,ui/screens/play.c)
+	$(CC) -c -o $@ $<
+
+obj/screen_credits.o: $(call DEPS,ui/screens/credits.c)
+	$(CC) -c -o $@ $<
+
+obj/scores.o: $(call DEPS,ui/screens/scores.c)
+	$(CC) -c -o $@ $<
 
 # Other
 obj out:

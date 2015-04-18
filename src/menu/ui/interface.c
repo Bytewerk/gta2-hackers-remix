@@ -1,17 +1,6 @@
 #include "interface.h"
-#include "../tk/ctrl/controls.h"
 #include "../tk/toolkit.h"
 #include "ui_text.h"
-
-void ui_credits_action(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
-                       tk_action_t action) {
-  if (action == TK_ACTION_BACKSPACE || action == TK_ACTION_ESC ||
-      action == TK_ACTION_ENTER) {
-    tk->quit = 1;
-  }
-  // TODO: scroll credits on every frame (define frame action)
-  // also maybe add controls to pause and manually scroll?
-}
 
 ui_t *ui_init(tk_t *tk) {
   ui_t *ui = malloc(sizeof(ui_t));
@@ -31,77 +20,13 @@ ui_t *ui_init(tk_t *tk) {
     ui->player_names[i][7] = '0' + i;
   }
 
-  // HIGH SCORES
-  tk_screen_t *scores = tk_screen(tk, NULL, NULL);
-  TK_STACK_SCREEN(
-      scores,
-      TK_PARENT->bg_mashup = bg_mashup(tk->bg, "3_tables", NULL, NULL, NULL);
-      tk_el_padding(TK_PARENT, 300, 161, 0, 0);
+  // screens
+  tk_screen_t *credits = ui_screen_credits(tk, ui);
+  tk_screen_t *scores = ui_screen_scores(tk, ui);
+  tk_screen_t *play = ui_screen_play(tk, ui, scores, credits);
+  tk_screen_t *main_menu = ui_screen_main_menu(tk, ui, play, credits);
 
-      tk_ctrl_circle(tk, TK_PARENT, "HIGH SCORES FOR AREA",
-                     bg_mashup(tk->bg, NULL, "2_level1", "2", NULL), '1', 'I',
-                     '2', NULL);
-
-      for (int i = 0; i < 5; i++) {
-        TK_FLOW(tk_el_t *name = tk_label(tk, TK_PARENT, "ROBOTANARCHY");
-                tk_el_width(name, 248);
-                name->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_SMALL;
-
-                tk_el_t *score = tk_label(tk, TK_PARENT, "50000");
-                score->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_SMALL;)
-      });
-
-  // CREDITS
-  tk_screen_t *credits = tk_screen(tk, NULL, (void *)ui_credits_action);
-
-  TK_STACK_SCREEN(credits, TK_PARENT->bg_mashup =
-                               bg_mashup(tk->bg, "credits", NULL, NULL, NULL););
-
-  // PLAY
-  tk_screen_t *play = tk_screen(tk, NULL, NULL);
-
-  TK_STACK_SCREEN(
-      play, tk_el_padding(TK_PARENT, 300, 210, 0, 0);
-
-      // FIXME: this isn't a button, implement text fields!
-
-      tk_ctrl_arrowtext(
-          tk, TK_PARENT, bg_mashup(tk->bg, NULL, "2_name", "2", NULL),
-          ui->player_names, GTA2_SAVEGAME_COUNT, 0, GTA2_PLAYERNAME_MAXLEN,
-          NULL, 0, "ENTER:  EDIT NAME", "DELETE:  DELETE PLAYER",
-          "ENTER:  ENTER NAME", "BACKSPACE:  DELETE LETTER");
-
-      tk_el_t *resume = tk_ctrl_button(tk, TK_PARENT, "RESUME SAVED STATUS",
-                                       NULL, NULL, NULL);
-      tk_el_disabled(resume);
-
-      tk_ctrl_button(tk, TK_PARENT, "VIEW HIGH SCORES",
-                     bg_mashup(tk->bg, NULL, "2_league", "2", NULL), scores,
-                     NULL);
-
-      tk_ctrl_circle(tk, TK_PARENT, "START PLAY IN AREA",
-                     bg_mashup(tk->bg, NULL, "2_level1", "2", NULL), '1', '3',
-                     '2', NULL);
-
-      );
-
-  // MAIN MENU
-  tk_screen_t *main_menu = tk_screen(tk, credits, NULL);
-
-  TK_STACK_SCREEN(
-      main_menu, tk_el_padding(TK_PARENT, 300, 250, 0, 0);
-      TK_PARENT->bottom_text_low = "G2HR V0.4";
-
-      tk_ctrl_button(tk, TK_PARENT, "PLAY",
-                     bg_mashup(tk->bg, NULL, "1_play", "1", NULL), play, NULL);
-      tk_ctrl_button(tk, TK_PARENT, "OPTIONS",
-                     bg_mashup(tk->bg, NULL, "1_options", "1", NULL), NULL,
-                     NULL);
-      tk_ctrl_button(tk, TK_PARENT, "QUIT",
-                     bg_mashup(tk->bg, NULL, "1_quit", "1", NULL), credits,
-                     NULL););
-
-  // now that we have the main menu, set the back links
+  // back links
   play->back = main_menu;
   scores->back = play;
 
