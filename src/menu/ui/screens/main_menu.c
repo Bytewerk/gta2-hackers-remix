@@ -14,9 +14,10 @@ tk_screen_t *ui_screen_main_menu(tk_t *tk, ui_t *ui, tk_screen_t *play,
 
       tk_ctrl_button(tk, TK_PARENT, "CAMPAIGN",
                      bg_mashup(tk->bg, NULL, "1_play", "1", NULL), play, NULL);
-      tk_ctrl_button(tk, TK_PARENT, "SPLITSCREEN",
-                     bg_mashup(tk->bg, NULL, "1_play", "1", NULL), splitscreen,
-                     NULL);
+      tk_ctrl_button(
+          tk, TK_PARENT, "SPLITSCREEN",
+          bg_mashup(tk->bg, NULL, "1_options", "1", "g2hr_splitscreen"),
+          splitscreen, NULL);
       tk_ctrl_button(tk, TK_PARENT, "OPTIONS",
                      bg_mashup(tk->bg, NULL, "1_options", "1", NULL), NULL,
                      NULL);

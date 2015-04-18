@@ -25,6 +25,7 @@ void tk_screen_draw_bg(tk_t *tk) {
   DRAW_BG(full, 000, 000, 640, 480);
   DRAW_BG(left, 000, 000, 278, 480);
   DRAW_BG(right, 278, 000, 362, 480);
+  DRAW_BG(custom, 000, 000, 640, 480);
 }
 #undef DRAW_BG
 

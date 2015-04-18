@@ -7,25 +7,35 @@ bg_t *bg_load_single(const char *name) {
   bg->name = name;
   bg->next = NULL;
 
-  char fullpath[100];
-  snprintf(fullpath, sizeof(fullpath), "data/frontend/%s.tga", name);
-  printf("loading %s...\n", fullpath);
+  // custom backgrounds are PNGs and have a 'g2hr' prefix
+  char *ext =
+      (name[0] == 'g' && name[1] == '2' && name[2] == 'h' && name[3] == 'r')
+          ? "png"
+          : "tga";
 
-  SDL_Surface *surface = IMG_Load(fullpath);
+  // generate the full file path
+  char path_buffer[100];
+  snprintf(path_buffer, sizeof(path_buffer), "data/frontend/%s.%s", name, ext);
+  printf("loading %s...\n", path_buffer);
+
+  // actually load the file
+  SDL_Surface *surface = IMG_Load(path_buffer);
   if (!surface)
     exit(printf("File read error!\n"));
 
-  // Workaround for upstream bug:
+  // Workaround for upstream TGA bug:
   //		https://bugzilla.libsdl.org/show_bug.cgi?id=2840
-  char *pixels = surface->pixels;
-  for (int y = 0; y < surface->h; y++)
-    for (int x = 0; x < surface->w; x++) {
-      int left_byte_addr = y * surface->w * 2 + x * 2;
-      char left_old = pixels[left_byte_addr];
+  if (!strcmp(ext, "tga")) {
+    char *pixels = surface->pixels;
+    for (int y = 0; y < surface->h; y++)
+      for (int x = 0; x < surface->w; x++) {
+        int left_byte_addr = y * surface->w * 2 + x * 2;
+        char left_old = pixels[left_byte_addr];
 
-      pixels[left_byte_addr + 0] = pixels[left_byte_addr + 1];
-      pixels[left_byte_addr + 1] = left_old;
-    }
+        pixels[left_byte_addr + 0] = pixels[left_byte_addr + 1];
+        pixels[left_byte_addr + 1] = left_old;
+      }
+  }
 
   bg->surface = surface;
   return bg;
