@@ -14,14 +14,16 @@ void up(tk_screen_t *screen, tk_el_t *selected, tk_el_t *first) {
 
   screen->el_selected = listpos;
 
-  if (screen->el_selected->flags & TK_EL_FLAG_DISABLED)
+  if (screen->el_selected->flags & TK_EL_FLAG_DISABLED ||
+      !(screen->el_selected->flags & TK_EL_FLAG_SELECTABLE))
     up(screen, screen->el_selected, first);
 }
 
 void down(tk_screen_t *screen, tk_el_t *selected, tk_el_t *first) {
   screen->el_selected = selected->next ? selected->next : first;
 
-  if (screen->el_selected->flags & TK_EL_FLAG_DISABLED)
+  if (screen->el_selected->flags & TK_EL_FLAG_DISABLED ||
+      !(screen->el_selected->flags & TK_EL_FLAG_SELECTABLE))
     down(screen, screen->el_selected, first);
 }
 

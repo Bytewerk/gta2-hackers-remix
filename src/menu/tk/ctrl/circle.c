@@ -58,8 +58,8 @@ tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
   ud->value_str[1] = '\0';
 
   TK_STACK(
-      ud->container = TK_PARENT; TK_PARENT->userdata = (void *)ud;
-      TK_PARENT->bg_mashup = bg_mashup;
+      ud->container = TK_PARENT; ud->container->userdata = (void *)ud;
+      ud->container->bg_mashup = bg_mashup; tk_el_selectable(ud->container);
 
       ud->button = tk_ctrl_button(tk, TK_PARENT, text, NULL, NULL,
                                   (void *)circle_actionfunc);

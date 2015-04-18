@@ -10,9 +10,9 @@ tk_screen_t *ui_screen_scores(tk_t *tk, ui_t *ui) {
       TK_PARENT->bg_mashup = bg_mashup(tk->bg, "3_tables", NULL, NULL, NULL);
       tk_el_padding(TK_PARENT, 300, 161, 0, 0);
 
-      tk_ctrl_circle(tk, TK_PARENT, "HIGH SCORES FOR AREA",
-                     bg_mashup(tk->bg, NULL, "2_level1", "2", NULL), '1', 'I',
-                     '2', NULL);
+      // FIXME: in the original, it only shows 1-3, A-I
+      tk_ctrl_circle(tk, TK_PARENT, "HIGH SCORES FOR AREA", NULL, '1', 'I', '2',
+                     NULL);
 
       for (int i = 0; i < 5; i++) {
         TK_FLOW(tk_el_t *name = tk_label(tk, TK_PARENT, "ROBOTANARCHY");

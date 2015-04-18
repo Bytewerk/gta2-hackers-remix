@@ -151,7 +151,7 @@ tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
 
   TK_FLOW(ud->container = TK_PARENT; ud->container->bg_mashup = bg_mashup;
           ud->container->actionfunc = (void *)arrowtext_actionfunc;
-          ud->container->userdata = ud;
+          ud->container->userdata = ud; tk_el_selectable(ud->container);
 
           ud->left = tk_ctrl_arrow(tk, TK_PARENT, 1,
                                    (void *)arrowtext_actionfunc, (void *)ud);
