@@ -35,7 +35,9 @@ void back(tk_t *tk, tk_screen_t *screen) {
 void tk_screen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                           tk_action_t action, SDL_Keycode key) {
   tk_screen_t *screen = tk->screen_active;
-  tk_el_t *first = screen->el.sub;
+  tk_el_t *first = screen->el_content_container
+                       ? screen->el_content_container->sub
+                       : screen->el.sub;
 
   if (el_selected) {
     if (action == TK_ACTION_UP)

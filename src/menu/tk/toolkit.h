@@ -7,10 +7,17 @@
 #include <SDL2/SDL.h>
 #include <stdint.h>
 
-// extends tk_el_t, el.actionfunc calls actionfunc
+/*
+        extends tk_el_t, el.actionfunc calls actionfunc
+
+        define el_content_container, if the parent of the selectable
+        entries is different from the first element defined (eg.
+        if you have a title bar like on the high scores screen).
+*/
 typedef struct tk_screen_t {
   tk_el_t el;
   tk_el_t *el_selected;
+  tk_el_t *el_content_container;
   struct tk_screen_t *back;
   void *actionfunc; // (tk, el, el_selected, action, key)
 } tk_screen_t;
