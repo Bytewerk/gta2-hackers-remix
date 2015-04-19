@@ -93,7 +93,7 @@ out/minimal.bin: minimal.c $(OBJS)
 	mv obj/menu.o_ obj/menu.o
 
 valgrind: out/minimal.bin
-	valgrind out/minimal.bin
+	valgrind --leak-check=full --show-leak-kinds=all out/minimal.bin
 
 obj out:
 	mkdir -p $@

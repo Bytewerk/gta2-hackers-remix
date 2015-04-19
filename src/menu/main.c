@@ -4,6 +4,7 @@
 #include "tk/toolkit.h"
 #include "ui/interface.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -16,6 +17,7 @@ int main(int argc, char *argv[]) {
   // Initialize everything
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
     exit(printf("SDL_ERROR: %s\n", SDL_GetError()));
+  IMG_Init(IMG_INIT_PNG);
 
   sty_t *fsty = sty_load("data/fstyle.sty");
 
@@ -38,6 +40,7 @@ int main(int argc, char *argv[]) {
   bg_cleanup(bg);
   sty_cleanup(fsty);
   sfx_cleanup(sfx);
+  IMG_Quit();
   SDL_Quit();
 
   printf("cleaned up!\n");
