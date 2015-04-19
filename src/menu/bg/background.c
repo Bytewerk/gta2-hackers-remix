@@ -3,7 +3,7 @@
 #include <string.h>
 
 bg_t *bg_load_single(const char *name) {
-  bg_t *bg = malloc(sizeof(bg));
+  bg_t *bg = malloc(sizeof(bg_t));
   bg->name = name;
   bg->next = NULL;
 

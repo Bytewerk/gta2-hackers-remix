@@ -11,8 +11,16 @@
 // make valgrind.
 
 int main(int argc, char *argv[]) {
+  // one TGA, one PNG is enough
+  const char *tgas[] = {"1", "g2hr_splitscreen"};
+
   sty_t *fsty = sty_load("data/fstyle.sty");
+  bg_t *bg = bg_init(tgas, sizeof(tgas) / sizeof(char *));
+
   sty_cleanup(fsty);
+  bg_cleanup(bg);
+
+  SDL_Quit();
   printf("cleaned up!\n");
   return 0;
 }
