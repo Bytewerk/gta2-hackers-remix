@@ -87,6 +87,14 @@ obj/sfx.o: $(call DEPS,sfx/sfx.c)
 
 
 # Other
+out/minimal.bin: minimal.c $(OBJS)
+	mv obj/menu.o obj/menu.o_
+	$(CC) `pkg-config --cflags --libs sdl2 SDL2_image SDL2_net` -o $@ obj/*.o $<
+	mv obj/menu.o_ obj/menu.o
+
+valgrind: out/minimal.bin
+	valgrind out/minimal.bin
+
 obj out:
 	mkdir -p $@
 clean:

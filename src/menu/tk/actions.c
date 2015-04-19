@@ -14,7 +14,7 @@ tk_action_t convert(tk_t *tk, SDL_Event *e) {
   if (e->type == SDL_MOUSEMOTION)
     return TK_ACTION_MOUSEMOVE;
 
-  if (e->type == SDL_MOUSEBUTTONUP && e->button.button == SDL_BUTTON_LEFT)
+  if (e->type == SDL_MOUSEBUTTONDOWN && e->button.button == SDL_BUTTON_LEFT)
     return TK_ACTION_MOUSEDOWN;
 
   if (e->type == SDL_KEYDOWN) {
