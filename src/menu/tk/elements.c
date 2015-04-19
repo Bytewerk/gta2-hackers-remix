@@ -37,11 +37,13 @@ void tk_el_clean(tk_el_t *el) {
 
 void tk_el_geocalc(tk_t *tk, tk_el_t *el, char /*bool*/ down,
                    char /*bool*/ up) {
-  if (down && el->sub) {
-    tk_el_geocalc(tk, el->sub, 1, 0);
-    return;
-  } else
-    up = 1;
+  if (down) {
+    if (el->sub) {
+      tk_el_geocalc(tk, el->sub, 1, 0);
+      return;
+    } else
+      up = 1;
+  }
 
   // actually caluclate the geometry here, depending on type
   if (!(el->flags & TK_EL_FLAG_FORCE_WIDTH) ||
