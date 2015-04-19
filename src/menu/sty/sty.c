@@ -102,7 +102,7 @@ void sty_parser_read_SPRB(sty_t *sty, char *buffer_pos, uint32_t length) {
 uint32_t sty_parser_read_next_chunk(sty_t *sty, char *buffer, uint32_t offset,
                                     uint32_t sty_size) {
   // read the chunk type and size
-  char type[5];
+  char type[5] = "";
   for (int i = 0; i < 4; i++)
     type[i] = buffer[offset + i];
   type[5] = '\0';
