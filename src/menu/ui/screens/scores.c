@@ -13,27 +13,28 @@ tk_screen_t *ui_screen_scores(tk_t *tk, ui_t *ui) {
       // title bar
       tk_el_t *titlebar = tk_label(tk, TK_PARENT, "VIEW HIGH SCORES");
       titlebar->font_id = GTA2_FONT_FSTYLE_WHITE_RED_NORMAL;
-      tk_el_padding(titlebar, 350, 12, 0, 0);
+      tk_el_padding(titlebar, 340, 12, 0, 0);
 
       // content
-      TK_STACK(scores->el_content_container = TK_PARENT;
-               tk_el_padding(TK_PARENT, 300, 131, 0, 0);
+      TK_STACK(
+          scores->el_content_container = TK_PARENT;
+          tk_el_padding(TK_PARENT, 300, 123, 0, 0);
 
-               // FIXME: in the original, it only shows 1-3, A-I
-               tk_ctrl_circle(tk, TK_PARENT, "HIGH SCORES FOR AREA", NULL, '1',
-                              'I', '2', NULL);
+          // FIXME: in the original, it only shows 1-3, A-I
+          tk_el_t *circle = tk_ctrl_circle(
+              tk, TK_PARENT, "HIGH SCORES FOR AREA", NULL, '1', 'I', '2', NULL);
+          tk_el_padding(circle, 0, 0, 0, 30);
 
-               for (int i = 0; i < 5; i++) {
-                 TK_FLOW(tk_el_t *name =
-                             tk_label(tk, TK_PARENT, "ROBOTANARCHY");
-                         tk_el_width(name, 248);
-                         name->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_SMALL;
+          for (int i = 0; i < 5; i++) {
+            TK_FLOW(tk_el_t *name = tk_label(tk, TK_PARENT, "ROBOTANARCHY");
+                    tk_el_width(name, 248);
+                    name->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_SMALL;
 
-                         tk_el_t *score = tk_label(tk, TK_PARENT, "50000");
-                         score->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_SMALL;)
-               }
+                    tk_el_t *score = tk_label(tk, TK_PARENT, "50000");
+                    score->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_SMALL;)
+          }
 
-               );
+          );
 
       );
   return scores;

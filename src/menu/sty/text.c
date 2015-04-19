@@ -26,11 +26,11 @@ char sty_font_spacing(int font_id) {
   case GTA2_FONT_FSTYLE_WHITE_BLACK_TINY:
     return 8;
   case GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL:
-    return 11;
+    return 13;
   case GTA2_FONT_FSTYLE_RED_BLACK_NORMAL:
-    return 11;
+    return 13;
   case GTA2_FONT_FSTYLE_WHITE_RED_NORMAL:
-    return 11;
+    return 13;
   }
   return 0;
 }
