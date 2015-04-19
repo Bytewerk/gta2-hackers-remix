@@ -50,6 +50,9 @@ void sfx_load_fstyle(sfx_t *sfx) {
     sample->byte_count = size;
     sfx->sample[i] = sample;
   }
+
+  fclose(raw);
+  fclose(sdt);
 }
 
 sfx_t *sfx_init() {
@@ -93,5 +96,6 @@ void sfx_cleanup(sfx_t *sfx) {
     free(sfx->sample[i]);
   }
 
+  SDL_CloseAudioDevice(sfx->dev);
   free(sfx);
 }
