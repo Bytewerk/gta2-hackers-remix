@@ -28,8 +28,9 @@ void down(tk_screen_t *screen, tk_el_t *selected, tk_el_t *first) {
 }
 
 void back(tk_t *tk, tk_screen_t *screen) {
-  if (screen->back)
-    tk->screen_active = screen->back;
+  if (!screen->back)
+    return;
+  tk->screen_active = screen->back;
 }
 
 void tk_screen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,

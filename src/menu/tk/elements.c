@@ -42,6 +42,7 @@ void tk_el_clean(tk_t *tk, tk_el_t *el) {
 
 void tk_el_geocalc(tk_t *tk, tk_el_t *el, char /*bool*/ down,
                    char /*bool*/ up) {
+  tk->redraw_needed = 1;
   if (down) {
     if (el->sub) {
       tk_el_geocalc(tk, el->sub, 1, 0);

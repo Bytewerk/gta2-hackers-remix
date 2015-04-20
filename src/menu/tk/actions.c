@@ -8,6 +8,9 @@
    and gamepad (over tcp).
 */
 tk_action_t convert(tk_t *tk, SDL_Event *e) {
+  if (!e)
+    return TK_ACTION_FRAMETIME;
+
   if (e->type == SDL_WINDOWEVENT)
     return TK_ACTION_REDRAW;
 
@@ -60,6 +63,8 @@ void actions_recursive(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   }
 }
 
+// event is NULL when if the timelimit for the next
+// frame has been reached
 void tk_action(tk_t *tk, SDL_Event *event) {
   tk_action_t action = convert(tk, event);
 
@@ -71,8 +76,11 @@ void tk_action(tk_t *tk, SDL_Event *event) {
     tk->action_time[action] = current_time;
   }
 
+  if (action == TK_ACTION_REDRAW || (event && event->type == SDL_KEYDOWN))
+    tk->redraw_needed = 1;
+
   tk_el_t *el_selected = tk->screen_active->el_selected;
-  SDL_Keycode key = event->key.keysym.sym;
+  SDL_Keycode key = event ? event->key.keysym.sym : SDLK_UNKNOWN;
 
   if (tk->exclusive_action_element) {
     tk_actions_element(tk, tk->exclusive_action_element, el_selected, action,

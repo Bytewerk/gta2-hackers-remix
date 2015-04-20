@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define G2HR_MENU_FPS 20
+
 int main(int argc, char *argv[]) {
   const char *pics[] = {"1",        "1_play",  "1_options",       "1_quit",
                         "2",        "2_name",  "2_league",        "2_level1",
@@ -24,13 +26,22 @@ int main(int argc, char *argv[]) {
   tk_t *tk = tk_init(fsty, sfx, bg, "G2HR");
   ui_t *ui = ui_init(tk);
 
+  uint32_t previous = 0;
+
   // main loop
   while (!tk->quit) {
     SDL_Event event;
-    SDL_WaitEvent(&event);
-    if (event.type == SDL_QUIT)
-      break;
-    tk_frame(tk, &event);
+    if (SDL_WaitEventTimeout(&event, 100 / G2HR_MENU_FPS)) {
+      if (event.type == SDL_QUIT)
+        break;
+      tk_frame(tk, &event);
+    } else {
+      uint32_t now = SDL_GetTicks();
+      if (now - previous >= 1000 / G2HR_MENU_FPS) {
+        previous = now;
+        tk_frame(tk, NULL);
+      }
+    }
   }
 
   // cleanup all

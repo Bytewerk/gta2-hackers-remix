@@ -33,6 +33,7 @@ typedef struct {
   char quit;
   tk_el_t *exclusive_action_element;
   uint32_t action_time[TK_ACTION_LAST_LIMITED - 1];
+  char redraw_needed;
 } tk_t;
 
 tk_t *tk_init(sty_t *fsty, sfx_t *sfx, bg_t *bg, char *title);

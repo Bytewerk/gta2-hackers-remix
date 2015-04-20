@@ -23,11 +23,16 @@ tk_t *tk_init(sty_t *fsty, sfx_t *sfx, bg_t *bg, char *title) {
   return tk;
 }
 
+// event is NULL when if the timelimit for the next
+// frame has been reached
 void tk_frame(tk_t *tk, SDL_Event *event) {
   tk_action(tk, event);
-  SDL_RenderClear(tk->renderer);
-  tk_screen_draw(tk);
-  SDL_RenderPresent(tk->renderer);
+  if (tk->redraw_needed) {
+    tk->redraw_needed = 0;
+    SDL_RenderClear(tk->renderer);
+    tk_screen_draw(tk);
+    SDL_RenderPresent(tk->renderer);
+  }
 }
 
 void tk_cleanup(tk_t *tk) {
