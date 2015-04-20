@@ -31,6 +31,7 @@ void tk_frame(tk_t *tk, SDL_Event *event) {
 }
 
 void tk_cleanup(tk_t *tk) {
+  tk_el_clean(&(tk->screen_first->el));
 
   SDL_DestroyRenderer(tk->renderer);
   SDL_DestroyWindow(tk->window);

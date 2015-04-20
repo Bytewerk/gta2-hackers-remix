@@ -88,7 +88,7 @@ obj/sfx.o: $(call DEPS,sfx/sfx.c)
 
 # VALGRIND: automatically create a rule for SDL2 init
 valgrind: obj out out/valgrind.sup out/menu.bin
-	valgrind --leak-check=full --show-leak-kinds=all --suppressions=out/valgrind.sup out/menu.bin
+	valgrind --suppressions=out/valgrind.sup out/menu.bin
 
 out/valgrind.sup: out/minimal_init.bin
 	valgrind --gen-suppressions=all --quiet $< 2>&1 >/dev/null | grep "==" -v > $@
