@@ -51,6 +51,7 @@ tk_screen_t *tk_screen(tk_t *tk, tk_screen_t *back, void *actionfunc) {
 void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
                     int offset_y, char all_selected) {
   while (el) {
+    int offset_x_old = offset_x;
     char is_selected = all_selected || (el == el_selected);
     char is_disabled = el->flags & TK_EL_FLAG_DISABLED;
 
@@ -64,6 +65,10 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
       argb = el->argb_selected;
 
     if (!(el->flags & TK_EL_FLAG_INVISIBLE)) {
+
+      if (el->flags & TK_EL_FLAG_H_CENTER)
+        offset_x += el->parent->width / 2 - el->width;
+
       if (el->type == LABEL) {
         char font = el->font_id;
         if (is_selected && el->font_id_selected)
@@ -82,6 +87,8 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
                        offset_y + el->padding_top, is_selected);
       }
     }
+
+    offset_x = offset_x_old;
 
     if (el->parent->type == STACK)
       offset_y += el->padding_top + el->height + el->padding_bottom;

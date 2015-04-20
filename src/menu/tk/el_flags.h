@@ -1,11 +1,19 @@
 #pragma once
 
+/*
+        H_CENTER:
+                This only works, when the parent element exists and has a forced
+                width!
+*/
+
 #define TK_EL_FLAG_NONE 0
 #define TK_EL_FLAG_FORCE_WIDTH 2
 #define TK_EL_FLAG_FORCE_HEIGHT 4
 #define TK_EL_FLAG_SELECTABLE 8
 #define TK_EL_FLAG_DISABLED 16
 #define TK_EL_FLAG_INVISIBLE 32
+#define TK_EL_FLAG_H_CENTER 64
+#define TK_EL_FLAG_SCROLLABLE 128
 
 #define tk_el_width(EL, VALUE)                                                 \
   EL->width = VALUE;                                                           \
@@ -25,8 +33,12 @@
 #define tk_el_selectable(EL) EL->flags |= TK_EL_FLAG_SELECTABLE
 #define tk_el_disabled(EL) EL->flags |= TK_EL_FLAG_DISABLED
 #define tk_el_invisible(EL) EL->flags |= TK_EL_FLAG_INVISIBLE
+#define tk_el_center(EL) EL->flags |= TK_EL_FLAG_H_CENTER
+#define tk_el_scrollable(EL) EL->flags |= TK_EL_FLAG_SCROLLABLE
 
 // reset to default:
 #define tk_el_unselectable(EL) EL->flags &= ~((char)TK_EL_FLAG_SELECTABLE)
 #define tk_el_enabled(EL) EL->flags &= ~((char)TK_EL_FLAG_DISABLED)
 #define tk_el_visible(EL) EL->flags &= ~((char)TK_EL_FLAG_INVISIBLE)
+#define tk_el_left_aligned(EL) EL->flags &= ~((char)TK_EL_FLAG_H_CENTER)
+#define tk_el_fixed(EL) EL->flags &= ~((char)TK_EL_FLAG_SCROLLABLE)
