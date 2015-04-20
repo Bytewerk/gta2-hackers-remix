@@ -25,12 +25,17 @@ tk_el_t *tk_el_attach(tk_el_t *el, tk_el_t *parent, tk_el_type_t type) {
   return el;
 };
 
-void tk_el_clean(tk_el_t *el) {
+void tk_el_clean(tk_t *tk, tk_el_t *el) {
   while (el) {
     if (el->sub)
-      tk_el_clean(el->sub);
+      tk_el_clean(tk, el->sub);
     tk_el_t *el_old = el;
     el = el->next;
+
+    // call clean up action
+    if (el_old->actionfunc && el_old->userdata)
+      tk_actions_element(tk, el_old, NULL, TK_ACTION_CLEANUP, SDLK_UNKNOWN);
+
     free(el_old);
   }
 }

@@ -25,13 +25,14 @@ void arrowtext_style(tk_t *tk, ud_arrowtext_t *ud) {
   char is_editing = (tk->exclusive_action_element == ud->container);
 
   // left arrow visibility
-  if (is_editing || ud->entry_selected == 0)
+  if (is_editing || (ud->entry_selected == 0 && ud->entry_count != 2))
     tk_el_invisible(ud->left);
   else
     tk_el_visible(ud->left);
 
   // right arrow visibility
-  if (is_editing || ud->entry_selected == ud->entry_count - 1)
+  if (is_editing ||
+      (ud->entry_selected == ud->entry_count - 1 && ud->entry_count != 2))
     tk_el_invisible(ud->right);
   else
     tk_el_visible(ud->right);
@@ -62,6 +63,8 @@ void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   ud_arrowtext_t *ud = (ud_arrowtext_t *)el->userdata;
   char is_editing = (tk->exclusive_action_element == ud->container);
 
+  if (action == TK_ACTION_CLEANUP)
+    return;
   if (el == ud->container) {
     if (is_editing) {
       if (action == TK_ACTION_ESC)
@@ -102,29 +105,45 @@ void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
       }
     } else // not editing
     {
-      if (!ud->editing_disabled && action == TK_ACTION_ENTER) {
-        tk->exclusive_action_element = ud->container;
+      if (action == TK_ACTION_ENTER) {
+        if (!ud->editing_disabled) {
+          tk->exclusive_action_element = ud->container;
 
-        // copy the string to the text element,
-        // so we can restore it if necessary
-        ud->text->text = malloc(ud->entry_length + 1);
-        strncpy(ud->text->text, ud->entries[ud->entry_selected],
-                ud->entry_length + 1);
+          // copy the string to the text element,
+          // so we can restore it if necessary
+          ud->text->text = malloc(ud->entry_length + 1);
+          strncpy(ud->text->text, ud->entries[ud->entry_selected],
+                  ud->entry_length + 1);
+        }
+
+        // two elements: toggle!
+        else if (ud->entry_count == 2)
+          ud->entry_selected = !ud->entry_selected;
       }
     }
   }
 
   if (!is_editing) {
+
     // right arrow
-    if (el == ud->right && ud->entry_selected < ud->entry_count - 1 &&
-        (action == TK_ACTION_RIGHT || action == TK_ACTION_MOUSEDOWN))
-      ud->entry_selected++;
+    if (el == ud->right &&
+        (action == TK_ACTION_RIGHT || action == TK_ACTION_MOUSEDOWN)) {
+      if (ud->entry_selected < ud->entry_count - 1)
+        ud->entry_selected++;
+      else if (ud->entry_count == 2) // toggle
+        ud->entry_selected = 0;
+    }
 
     // left arrow
-    if (el == ud->left && ud->entry_selected > 0 &&
-        (action == TK_ACTION_LEFT || action == TK_ACTION_MOUSEDOWN))
-      ud->entry_selected--;
+    if (el == ud->left &&
+        (action == TK_ACTION_LEFT || action == TK_ACTION_MOUSEDOWN)) {
+      if (ud->entry_selected > 0)
+        ud->entry_selected--;
+      else if (ud->entry_count == 2) // toggle
+        ud->entry_selected = 1;
+    }
   }
+
   arrowtext_style(tk, el->userdata);
 }
 

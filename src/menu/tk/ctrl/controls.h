@@ -1,5 +1,7 @@
 #pragma once
 
+// controls directly modeled after GTA2
+
 tk_el_t *tk_ctrl_arrow(tk_t *tk, tk_el_t *TK_PARENT, char is_left,
                        void *actionfunc, void *userdata);
 
@@ -18,3 +20,8 @@ tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
                            char *bottom_text_high, char *bottom_text_low,
                            char *bottom_text_high_editing,
                            char *bottom_text_low_editing);
+
+// own creations
+
+tk_el_t *tk_ctrl_boolean(tk_t *tk, tk_el_t *TK_PARENT, const char *text,
+                         bg_mashup_t *bg_mashup, char value);

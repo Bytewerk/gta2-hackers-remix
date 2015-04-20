@@ -21,5 +21,6 @@ typedef enum {
 
   TK_ACTION_TYPING,
   TK_ACTION_REDRAW,
+  TK_ACTION_CLEANUP
 
 } tk_action_t;

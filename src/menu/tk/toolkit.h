@@ -54,10 +54,12 @@ void tk_screen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 void captions_draw_buttom_text(tk_t *tk);
 
 void tk_action(tk_t *tk, SDL_Event *event);
+void tk_actions_element(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
+                        tk_action_t action, SDL_Keycode key);
 
 // elements: common functions
 tk_el_t *tk_el_attach(tk_el_t *el, tk_el_t *parent, tk_el_type_t type);
-void tk_el_clean(tk_el_t *el);
+void tk_el_clean(tk_t *tk, tk_el_t *el);
 void tk_el_geocalc(tk_t *tk, tk_el_t *el, char /*bool*/ down, char /*bool*/ up);
 
 // extended elements

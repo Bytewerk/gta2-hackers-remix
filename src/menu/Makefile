@@ -47,6 +47,9 @@ obj/ctrl_button.o: $(call DEPS,tk/ctrl/button.c)
 obj/ctrl_circle.o: $(call DEPS,tk/ctrl/circle.c)
 	$(CC) -c -o $@ $<
 
+obj/ctrl_boolean.o: $(call DEPS,tk/ctrl/boolean.c)
+	$(CC) -c -o $@ $<
+
 # TK
 obj/tk_el.o: $(call DEPS,tk/elements.c)
 	$(CC) -c -o $@ $<

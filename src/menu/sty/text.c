@@ -9,10 +9,7 @@
                 - cache whole font sets as textures before using them?
                         (not sure if this has any benefit)
 
-        FIXME: dest.w, dest.h gets ignored
-
         This function draws a text string directly to the renderer.
-
 
         text: must be \0-terminated!
 
@@ -36,11 +33,13 @@ char sty_font_spacing(int font_id) {
 }
 
 // some letters are switched
-char sty_letter_switch(char letter) {
-  if (letter == ';')
-    return ':';
-  if (letter == ':')
-    return ';';
+char sty_letter_switch(char letter, int font_id) {
+  if (font_id == GTA2_FONT_FSTYLE_WHITE_BLACK_TINY) {
+    if (letter == ';')
+      return ':';
+    if (letter == ':')
+      return ';';
+  }
   return letter;
 }
 
@@ -53,7 +52,7 @@ void sty_text_measure(sty_t *sty, int *width, int *height, int font_id,
   *height = sty->sprite_index.entries[base + GTA2_FONT_FIRST_CHAR].height;
   *width = 0;
   for (; *text != '\0'; text++) {
-    char letter = sty_letter_switch(*text);
+    char letter = sty_letter_switch(*text, font_id);
     if (letter == ' ')
       *width += sty_font_spacing(font_id);
     else
@@ -75,7 +74,7 @@ void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
   }
 
   for (; *text != '\0'; text++) {
-    char letter = sty_letter_switch(*text);
+    char letter = sty_letter_switch(*text, font_id);
 
     if (letter == ' ') {
       width += sty_font_spacing(font_id);
