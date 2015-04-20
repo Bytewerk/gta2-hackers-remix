@@ -32,6 +32,7 @@ void tk_frame(tk_t *tk, SDL_Event *event) {
 
 void tk_cleanup(tk_t *tk) {
 
-  // TODO: free all screens and screen elements, when there are some!
+  SDL_DestroyRenderer(tk->renderer);
+  SDL_DestroyWindow(tk->window);
   free(tk);
 }

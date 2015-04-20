@@ -86,14 +86,23 @@ obj/sfx.o: $(call DEPS,sfx/sfx.c)
 
 
 
+# VALGRIND: automatically create a rule for SDL2 init
+valgrind: obj out out/valgrind.sup out/menu.bin
+	valgrind --leak-check=full --show-leak-kinds=all --suppressions=out/valgrind.sup out/menu.bin
+
+out/valgrind.sup: out/minimal_init.bin
+	valgrind --gen-suppressions=all --quiet $< 2>&1 >/dev/null | grep "==" -v > $@
+	sed -i -e 's/<insert_a_suppression_name_here>/SDL2 init/' $@
+
+out/minimal_init.bin: minimal_init.c
+	$(CC) `pkg-config --cflags --libs sdl2 SDL2_image SDL2_net` -o $@ $<
+
+
 # Other
 out/minimal.bin: minimal.c $(OBJS)
 	mv obj/menu.o obj/menu.o_
 	$(CC) `pkg-config --cflags --libs sdl2 SDL2_image SDL2_net` -o $@ obj/*.o $<
 	mv obj/menu.o_ obj/menu.o
-
-valgrind: out/minimal.bin
-	valgrind --leak-check=full --show-leak-kinds=all out/minimal.bin
 
 obj out:
 	mkdir -p $@

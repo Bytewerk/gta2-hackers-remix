@@ -68,3 +68,7 @@ ipch/
 *.filters
 *.user
 *.def
+
+
+# Valgrind SDL2 init rule (make valgrind)
+*.sup
