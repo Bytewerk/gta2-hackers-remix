@@ -19,7 +19,6 @@ tk_screen_t *ui_screen_scores(tk_t *tk, ui_t *ui) {
       TK_STACK(scores->el_content_container = TK_PARENT;
                tk_el_padding(TK_PARENT, 300, 123, 0, 0);
 
-               // FIXME: in the original, it only shows 1-3, A-I
                tk_el_t *circle =
                    tk_ctrl_circle(tk, TK_PARENT, "HIGH SCORES FOR AREA", NULL,
                                   '1', '3', 'A', 'I', '2', NULL);

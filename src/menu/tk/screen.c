@@ -100,7 +100,7 @@ void tk_screen_draw(tk_t *tk) {
   // make sure, that there's a control selected
   if (!screen->el_selected)
     screen->el_selected = screen->el_content_container
-                              ? screen->el_content_container
+                              ? screen->el_content_container->sub
                               : screen->el.sub;
 
   // draw background
