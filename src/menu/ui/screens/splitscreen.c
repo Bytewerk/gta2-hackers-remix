@@ -17,17 +17,17 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
       tk_el_padding(titlebar, 315, 12, 0, 0);
 
       // content
-      TK_STACK(
-          splitscreen->el_content_container = TK_PARENT;
-          tk_el_padding(TK_PARENT, 300, 123, 0, 0);
+      TK_STACK(splitscreen->el_content_container = TK_PARENT;
+               tk_el_padding(TK_PARENT, 300, 123, 0, 0);
 
-          tk_el_t *circle = tk_ctrl_circle(tk, TK_PARENT, "SCREEN LAYOUT", NULL,
-                                           '1', '4', 0, 0, '3', NULL);
-          tk_el_padding(circle, 0, 0, 0, 30);
+               tk_ctrl_boolean(tk, TK_PARENT, "COPS", NULL, 1);
 
-          /*tk_el_t* cops =*/tk_ctrl_boolean(tk, TK_PARENT, "COPS", NULL, 1);
+               tk_el_t *circle =
+                   tk_ctrl_circle(tk, TK_PARENT, "SCREEN LAYOUT", NULL, '1',
+                                  '4', 0, 0, '3', NULL);
+               tk_el_padding(circle, 0, 0, 0, 30);
 
-          );
+               );
 
       );
   return splitscreen;
