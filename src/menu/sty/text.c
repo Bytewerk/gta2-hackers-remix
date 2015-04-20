@@ -29,7 +29,7 @@ char sty_font_spacing(int font_id) {
   case GTA2_FONT_FSTYLE_WHITE_RED_NORMAL:
     return 13;
   }
-  return 0;
+  return 10;
 }
 
 // some letters are switched
