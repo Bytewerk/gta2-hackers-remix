@@ -9,7 +9,7 @@ void up(tk_screen_t *screen, tk_el_t *selected, tk_el_t *first) {
     while (listpos->next)
       listpos = listpos->next;
   else
-    while (listpos && listpos->next != selected)
+    while (listpos && listpos->next && listpos->next != selected)
       listpos = listpos->next;
 
   screen->el_selected = listpos;
