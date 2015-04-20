@@ -28,7 +28,7 @@ tk_screen_t *ui_screen_play(tk_t *tk, ui_t *ui, tk_screen_t *scores,
 
       tk_ctrl_circle(tk, TK_PARENT, "START PLAY IN AREA",
                      bg_mashup(tk->bg, NULL, "2_level1", "2", NULL), '1', '3',
-                     '2', NULL);
+                     0, 0, '2', NULL);
 
       );
 

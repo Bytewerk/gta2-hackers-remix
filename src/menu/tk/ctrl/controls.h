@@ -8,8 +8,8 @@ tk_el_t *tk_ctrl_button(tk_t *tk, tk_el_t *TK_PARENT, char *text,
                         void *onclick_func);
 
 tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
-                        bg_mashup_t *bg_mashup, char min, char max, char value,
-                        void *actionfunc);
+                        bg_mashup_t *bg_mashup, char min, char max, char min2,
+                        char max2, char value, void *actionfunc);
 
 tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
                            char **entries, uint16_t entry_count,

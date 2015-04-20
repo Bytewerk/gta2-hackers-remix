@@ -4,9 +4,11 @@
 #include "controls.h"
 
 typedef struct {
-  char value_str[2]; // value, \0
+  char value_str[2]; // {value, '\0'}
   char min;
   char max;
+  char min2;
+  char max2;
   tk_el_t *container;
   tk_el_t *button;
   tk_el_t *left;
@@ -23,7 +25,7 @@ void circle_arrow_visibility(ud_circle_t *ud) {
   else
     tk_el_visible(ud->left);
 
-  if (value == ud->max)
+  if ((!ud->max2 && value == ud->max) || (ud->max2 && value == ud->max2))
     tk_el_invisible(ud->right);
   else
     tk_el_visible(ud->right);
@@ -36,24 +38,48 @@ void circle_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     return;
 
   char value = ud->value_str[0];
-  if (el == ud->left && value - 1 >= ud->min &&
-      (action == TK_ACTION_LEFT || action == TK_ACTION_MOUSEDOWN))
-    ud->value_str[0]--;
 
-  if (el == ud->right && value + 1 <= ud->max &&
-      (action == TK_ACTION_RIGHT || action == TK_ACTION_MOUSEDOWN))
-    ud->value_str[0]++;
+  // left arrow
+  if ((action == TK_ACTION_LEFT || action == TK_ACTION_MOUSEDOWN) &&
+      el == ud->left) {
+    if (value > ud->min2 && ud->min2)
+      ud->value_str[0]--;
+    else if (value == ud->min2 && ud->min2)
+      ud->value_str[0] = ud->max;
+    else if (value > ud->min)
+      ud->value_str[0]--;
+  }
 
+  // right arrow
+  if ((action == TK_ACTION_RIGHT || action == TK_ACTION_MOUSEDOWN) &&
+      el == ud->right) {
+    if (value < ud->max)
+      ud->value_str[0]++;
+    else if (value == ud->max && ud->min2)
+      ud->value_str[0] = ud->min2;
+    else if (value < ud->max2 && ud->min2)
+      ud->value_str[0]++;
+  }
   circle_arrow_visibility(ud);
 }
 
+/*
+        Define the range of possible characters with min, max, min2, max2.
+        If min2 and max2 are not used, set them to 0.
+
+        Example call:
+                tk_ctrl_circle(tk, TK_PARENT, "CHOOSE A LETTER", NULL,
+                        '1', '9', 'A', 'Z', '0', NULL)
+*/
 tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
-                        bg_mashup_t *bg_mashup, char min, char max, char value,
-                        void *actionfunc) {
+                        bg_mashup_t *bg_mashup, char min, char max, char min2,
+                        char max2, char value, void *actionfunc) {
   ud_circle_t *ud = calloc(1, sizeof(ud_circle_t));
   ud->actionfunc = actionfunc;
   ud->min = min;
   ud->max = max;
+  ud->min2 = min2;
+  ud->max2 = max2;
   ud->value_str[0] = value;
   ud->value_str[1] = '\0';
 
