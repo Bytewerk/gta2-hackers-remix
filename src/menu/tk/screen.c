@@ -49,7 +49,7 @@ tk_screen_t *tk_screen(tk_t *tk, tk_screen_t *back, void *actionfunc) {
 }
 
 void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
-                    int offset_y, char all_selected) {
+                    int offset_y, int cutoff_y, char all_selected) {
   while (el) {
     int offset_x_old = offset_x;
     char is_selected = all_selected || (el == el_selected);
@@ -74,29 +74,54 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
         if (is_selected && el->font_id_selected)
           font = el->font_id_selected;
         sty_text(tk->renderer, tk->fsty, font, argb,
-                 offset_x + el->padding_left, offset_y + el->padding_top, 0,
-                 el->text);
+                 offset_x + el->padding_left, offset_y + el->padding_top,
+                 cutoff_y - el->padding_top, el->text);
       }
       if (el->type == SPRITE) {
         sty_sprite_draw(tk->renderer, tk->fsty, el->sprite_id,
                         offset_x + el->padding_left, offset_y + el->padding_top,
-                        0, el->width, el->height, argb);
+                        cutoff_y - el->padding_top, el->width, el->height,
+                        argb);
       }
       if (el->sub) {
-        recursive_draw(tk, el_selected, el->sub, offset_x + el->padding_left,
-                       offset_y + el->padding_top, is_selected);
+        tk_el_t *sub = el->sub;
+        int sub_offset_y = offset_y + el->padding_top;
+        int sub_cutoff_y = 0;
+
+        if (el->type == STACK && el->scroll_top) {
+          // skip all elements that were scrolled off screen
+          int skipped_height = 0;
+          while (sub && sub->height + skipped_height <= el->scroll_top) {
+            skipped_height += sub->height;
+            sub = sub->next;
+          }
+
+          // calculate new offset and remaining cutoff value
+          // sub_offset_y += skipped_height;
+          sub_cutoff_y = el->scroll_top - skipped_height;
+        }
+
+        if (sub) {
+          recursive_draw(tk, el_selected, sub, offset_x + el->padding_left,
+                         sub_offset_y, sub_cutoff_y, is_selected);
+        }
       }
     }
 
     offset_x = offset_x_old;
 
-    if (el->parent->type == STACK)
-      offset_y += el->padding_top + el->height + el->padding_bottom;
-    else if (el->parent->type == FLOW)
-      offset_x += el->padding_left + el->width + el->padding_right;
-    else
-      printf("ERROR in recursive_draw: Not in a FLOW or STACK!");
+    if (el->parent) {
+      if (el->parent->type == STACK)
+        offset_y +=
+            el->padding_top + el->height + el->padding_bottom - cutoff_y;
+      else if (el->parent->type == FLOW)
+        offset_x += el->padding_left + el->width + el->padding_right;
+      else
+        printf("ERROR in recursive_draw: Not in a FLOW or STACK!");
+    } else
+      break; // must be a screen. only draw one screen at once!
 
+    cutoff_y = 0;
     el = el->next;
   }
 }
@@ -114,8 +139,7 @@ void tk_screen_draw(tk_t *tk) {
   tk_screen_draw_bg(tk);
 
   // draw all elements (and therefore controls)
-  recursive_draw(tk, screen->el_selected, screen->el.sub,
-                 screen->el.padding_left, screen->el.padding_top, 0);
+  recursive_draw(tk, screen->el_selected, &(screen->el), 0, 0, 0, 0);
 
   // draw bottom text
   captions_draw_buttom_text(tk);

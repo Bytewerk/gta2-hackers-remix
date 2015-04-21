@@ -21,10 +21,14 @@ typedef enum {
         width, height gets calculated automatically for stacks and flows.
 */
 typedef struct tk_el_t {
+  // list head
   struct tk_el_t *next;
   struct tk_el_t *sub;
   struct tk_el_t *parent;
   tk_el_type_t type;
+
+  // stack specific
+  uint16_t scroll_top;
 
   // extended type specific
   char sprite_id;

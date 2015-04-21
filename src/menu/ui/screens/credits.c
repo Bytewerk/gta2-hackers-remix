@@ -3,6 +3,8 @@
 #include "../interface.h"
 #include "../ui_text.h"
 
+// TODO: Quit at the end of the credits!
+// TODO: support manually scrolling through credits
 void actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                 tk_action_t action) {
   if (action == TK_ACTION_BACKSPACE || action == TK_ACTION_ESC ||
@@ -11,7 +13,7 @@ void actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   }
 
   if (action == TK_ACTION_FRAMETIME) {
-    el->padding_top -= 1;
+    el->scroll_top += 1;
     tk->redraw_needed = 1;
   }
 }
