@@ -62,7 +62,7 @@ void sty_text_measure(sty_t *sty, int *width, int *height, int font_id,
 
 // returns the text width after rendering
 void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
-              int offset_x, int offset_y, const char *text) {
+              int offset_x, int offset_y, uint16_t cutoff_y, const char *text) {
   int base = sty->sprite_base.font + sty->font_base.base[font_id] -
              GTA2_FONT_FIRST_CHAR;
   int width = 0;
@@ -86,7 +86,7 @@ void sty_text(SDL_Renderer *renderer, sty_t *sty, int font_id, uint32_t argb,
     sty_sprite_measure(sty, &width_letter, &height_letter, sprite_id);
 
     sty_sprite_draw(renderer, sty, sprite_id, offset_x + width, offset_y,
-                    width_letter, height_letter, argb);
+                    cutoff_y, width_letter, height_letter, argb);
 
     width += width_letter;
   }

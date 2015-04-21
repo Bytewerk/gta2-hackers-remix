@@ -84,16 +84,17 @@ void sty_sprite_measure(sty_t *sty, int *width, int *height, int sprite_id) {
 }
 
 void sty_sprite_draw(SDL_Renderer *renderer, sty_t *sty, int sprite_id,
-                     int offset_x, int offset_y, int width, int height,
-                     uint32_t argb) {
+                     int offset_x, int offset_y, uint16_t cutoff_y, int width,
+                     int height, uint32_t argb) {
   SDL_Texture *sprite = sprite_to_texture(renderer, sty, 0, sprite_id);
-  SDL_Rect dest = {offset_x, offset_y, width, height};
+  SDL_Rect rect_dest = {offset_x, offset_y, width, height - cutoff_y};
+  SDL_Rect rect_src = {0, cutoff_y, width, height};
 
   // set alpha and color modifications
   SDL_SetTextureAlphaMod(sprite, (uint8_t)(argb >> 24));
   SDL_SetTextureColorMod(sprite, (uint8_t)(argb >> 16), (uint8_t)(argb >> 8),
                          (uint8_t)(argb));
 
-  SDL_RenderCopy(renderer, sprite, NULL, &dest);
+  SDL_RenderCopy(renderer, sprite, &rect_src, &rect_dest);
   SDL_DestroyTexture(sprite);
 }

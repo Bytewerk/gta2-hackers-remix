@@ -11,6 +11,6 @@ void captions_draw_buttom_text(tk_t *tk) {
     if (!text)
       continue;
     sty_text(tk->renderer, tk->fsty, GTA2_FONT_FSTYLE_WHITE_BLACK_TINY,
-             0xffffffff, 300, 440 + is_low * 20, text);
+             0xffffffff, 300, 440 + is_low * 20, 0, text);
   }
 }

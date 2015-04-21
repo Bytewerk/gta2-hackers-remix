@@ -74,13 +74,13 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
         if (is_selected && el->font_id_selected)
           font = el->font_id_selected;
         sty_text(tk->renderer, tk->fsty, font, argb,
-                 offset_x + el->padding_left, offset_y + el->padding_top,
+                 offset_x + el->padding_left, offset_y + el->padding_top, 0,
                  el->text);
       }
       if (el->type == SPRITE) {
         sty_sprite_draw(tk->renderer, tk->fsty, el->sprite_id,
                         offset_x + el->padding_left, offset_y + el->padding_top,
-                        el->width, el->height, argb);
+                        0, el->width, el->height, argb);
       }
       if (el->sub) {
         recursive_draw(tk, el_selected, el->sub, offset_x + el->padding_left,
