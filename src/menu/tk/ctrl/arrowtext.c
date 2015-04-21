@@ -3,11 +3,16 @@
 #include "controls.h"
 #include <string.h>
 
+// toggle visibility of the underscore (cursor) ever
+// n frames while editing
+#define UNDERSCORE_BLINK_FRAMES 5
+
 typedef struct {
   uint16_t entry_count;
   uint16_t entry_selected;
   char entry_length;
   char **entries;
+  char underscore_frame_count;
   void *actionfunc;
   char editing_disabled;
   char *bottom_text_high;
@@ -65,7 +70,19 @@ void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 
   if (action == TK_ACTION_CLEANUP)
     return;
+
   if (el == ud->container) {
+    if (action == TK_ACTION_FRAMETIME) {
+      ud->underscore_frame_count++;
+      if (ud->underscore_frame_count == UNDERSCORE_BLINK_FRAMES - 1) {
+        ud->underscore_frame_count = 0;
+        ud->underscore->argb_selected =
+            (ud->underscore->argb_selected == 0x00ffffff) ? 0xffffffff
+                                                          : 0x00ffffff;
+        tk->redraw_needed = 1;
+      }
+    }
+
     if (is_editing) {
       if (action == TK_ACTION_ESC)
         tk->exclusive_action_element = NULL;
@@ -181,6 +198,8 @@ tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
 
           ud->underscore = tk_label(tk, TK_PARENT, "_");
           ud->underscore->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL;
+          ud->underscore->actionfunc = (void *)arrowtext_actionfunc;
+          ud->underscore->userdata = ud;
 
           ud->right = tk_ctrl_arrow(tk, TK_PARENT, 0,
                                     (void *)arrowtext_actionfunc, (void *)ud);
