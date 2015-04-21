@@ -3,29 +3,6 @@
 #include "controls.h"
 #include <string.h>
 
-// toggle visibility of the underscore (cursor) ever
-// n frames while editing
-#define UNDERSCORE_BLINK_FRAMES 5
-
-typedef struct {
-  uint16_t entry_count;
-  uint16_t entry_selected;
-  char entry_length;
-  char **entries;
-  char underscore_frame_count;
-  void *actionfunc;
-  char editing_disabled;
-  char *bottom_text_high;
-  char *bottom_text_low;
-  char *bottom_text_high_editing;
-  char *bottom_text_low_editing;
-  tk_el_t *container;
-  tk_el_t *left;
-  tk_el_t *text;
-  tk_el_t *underscore;
-  tk_el_t *right;
-} ud_arrowtext_t;
-
 void arrowtext_style(tk_t *tk, ud_arrowtext_t *ud) {
   char is_editing = (tk->exclusive_action_element == ud->container);
 

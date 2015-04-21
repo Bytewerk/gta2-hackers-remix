@@ -2,11 +2,6 @@
 #include "../toolkit.h"
 #include "controls.h"
 
-typedef struct {
-  void *onclick_func;
-  tk_screen_t *onclick_screen;
-} ud_button_t;
-
 void button_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                        tk_action_t action, SDL_Keycode key) {
   if (action != TK_ACTION_ENTER || el != el_selected)

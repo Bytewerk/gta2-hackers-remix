@@ -3,14 +3,9 @@
 #include "../toolkit.h"
 #include "controls.h"
 
-typedef struct {
-  char **entries;
-  tk_el_t *arrowtext;
-} userdata_t;
-
 void bool_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                      tk_action_t action, SDL_Keycode key) {
-  userdata_t *ud = (userdata_t *)el->userdata;
+  ud_boolean_t *ud = (ud_boolean_t *)el->userdata;
 
   if (action == TK_ACTION_CLEANUP) {
     for (int i = 0; i < 2; i++)
@@ -23,7 +18,7 @@ void bool_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 tk_el_t *tk_ctrl_boolean(tk_t *tk, tk_el_t *TK_PARENT, const char *text,
                          bg_mashup_t *bg_mashup, char value) {
 
-  userdata_t *ud = malloc(sizeof(userdata_t));
+  ud_boolean_t *ud = malloc(sizeof(ud_boolean_t));
   ud->entries = malloc(sizeof(char *) * 2);
 
   // Yes, this is a bit messy :p

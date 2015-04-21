@@ -3,21 +3,6 @@
 #include "../toolkit.h"
 #include "controls.h"
 
-typedef struct {
-  char value_str[2]; // {value, '\0'}
-  char min;
-  char max;
-  char min2;
-  char max2;
-  tk_el_t *container;
-  tk_el_t *button;
-  tk_el_t *left;
-  tk_el_t *right;
-  tk_el_t *circle_sprite;
-  tk_el_t *circle_text;
-  void *actionfunc;
-} ud_circle_t;
-
 void circle_arrow_visibility(ud_circle_t *ud) {
   char value = ud->value_str[0];
   if (value == ud->min)
