@@ -151,6 +151,7 @@ void gxt_cleanup(gxt_t *gxt) {
     next = next->next;
     free(old->id);
     free(old->text);
+    free(old);
   }
   free(gxt);
 }
