@@ -1,4 +1,5 @@
 #include "bg/background.h"
+#include "gxt/gxt.h"
 #include "sfx/sfx.h"
 #include "sty/sty.h"
 #include "tk/toolkit.h"
@@ -20,10 +21,11 @@ int main(int argc, char *argv[]) {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
     exit(printf("SDL_ERROR: %s\n", SDL_GetError()));
   IMG_Init(IMG_INIT_PNG);
+  gxt_t *gxt = gxt_load("data/e.gxt");
   sty_t *fsty = sty_load("data/fstyle.sty");
   sfx_t *sfx = sfx_init();
   bg_t *bg = bg_init(pics, sizeof(pics) / sizeof(char *));
-  tk_t *tk = tk_init(fsty, sfx, bg, "G2HR");
+  tk_t *tk = tk_init(gxt, fsty, sfx, bg, "G2HR");
   ui_t *ui = ui_init(tk);
 
   uint32_t previous = 0;
@@ -50,6 +52,7 @@ int main(int argc, char *argv[]) {
   bg_cleanup(bg);
   sfx_cleanup(sfx);
   sty_cleanup(fsty);
+  gxt_cleanup(gxt);
   IMG_Quit();
   SDL_Quit();
 

@@ -90,6 +90,10 @@ obj/sty.o: $(call DEPS,sty/sty.c)
 obj/sfx.o: $(call DEPS,sfx/sfx.c)
 	$(CC) -c -o $@ $<
 
+# GXT
+obj/gxt.o: $(call DEPS,gxt/gxt.c)
+	$(CC) -c -o $@ $<
+
 
 
 # VALGRIND: automatically create a rule for SDL2 init

@@ -1,5 +1,6 @@
 #pragma once
 #include "../bg/background.h"
+#include "../gxt/gxt.h"
 #include "../sfx/sfx.h"
 #include "../sty/sty.h"
 #include "actions.h"
@@ -27,6 +28,7 @@ typedef struct {
   SDL_Renderer *renderer;
   tk_screen_t *screen_first;
   tk_screen_t *screen_active;
+  gxt_t *gxt;
   sfx_t *sfx;
   sty_t *fsty;
   bg_t *bg;
@@ -36,7 +38,7 @@ typedef struct {
   char redraw_needed;
 } tk_t;
 
-tk_t *tk_init(sty_t *fsty, sfx_t *sfx, bg_t *bg, char *title);
+tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *title);
 void tk_frame(tk_t *tk, SDL_Event *event);
 void tk_cleanup(tk_t *tk);
 
