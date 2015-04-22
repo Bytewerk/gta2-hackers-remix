@@ -78,7 +78,7 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
           font = el->font_id_selected;
         sty_text(tk->renderer, tk->fsty, font, argb,
                  offset_x + el->padding_left, offset_y + el->padding_top,
-                 cutoff_y - el->padding_top, el->text);
+                 cutoff_y, el->text);
       }
       if (el->type == SPRITE) {
         sty_sprite_draw(tk->renderer, tk->fsty, el->sprite_id,
