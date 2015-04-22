@@ -63,6 +63,10 @@ tk_el_t *tk_el_attach(tk_el_t *el, tk_el_t *parent, tk_el_type_t type);
 void tk_el_clean(tk_t *tk, tk_el_t *el);
 void tk_el_geocalc(tk_t *tk, tk_el_t *el, char /*bool*/ down, char /*bool*/ up);
 
+// returns 1 if el_selection is el or a parent of el
+char tk_is_selected_recursive(tk_el_t *el, tk_el_t *el_selected,
+                              char recursing /*set to 0*/);
+
 // extended elements
 tk_el_t *tk_sprite(tk_t *tk, tk_el_t *parent, char sprite_id);
 tk_el_t *tk_label(tk_t *tk, tk_el_t *parent, char *text);

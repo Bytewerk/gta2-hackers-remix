@@ -96,6 +96,23 @@ void tk_el_geocalc(tk_t *tk, tk_el_t *el, char /*bool*/ down,
     tk_el_geocalc(tk, el->parent, 0, 1);
 }
 
+// returns 1 if it is selected, 0 if not
+// set recursing to 0!
+char tk_is_selected_recursive(tk_el_t *el, tk_el_t *el_selected,
+                              char recursing) {
+  while (el_selected) {
+    if (el_selected == el)
+      return 1;
+    if (el_selected->sub && tk_is_selected_recursive(el, el_selected->sub, 1))
+      return 1;
+
+    if (!recursing)
+      break;
+    el_selected = el_selected->next;
+  }
+  return 0;
+}
+
 /*
         Extended elements
 */

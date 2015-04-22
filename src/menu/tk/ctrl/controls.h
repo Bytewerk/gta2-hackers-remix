@@ -104,4 +104,5 @@ typedef struct {
 typedef struct {
   char **entries;
   tk_el_t *arrowtext;
+  void *actionfunc_arrowtext;
 } ud_boolean_t;

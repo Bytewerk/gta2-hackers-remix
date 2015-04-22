@@ -99,7 +99,8 @@ void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
       }
     } else // not editing
     {
-      if (action == TK_ACTION_ENTER) {
+      if (action == TK_ACTION_ENTER &&
+          tk_is_selected_recursive(el, el_selected, 0)) {
         if (!ud->editing_disabled) {
           tk->exclusive_action_element = ud->container;
 
@@ -117,8 +118,7 @@ void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     }
   }
 
-  if (!is_editing) {
-
+  if (!is_editing && tk_is_selected_recursive(el, el_selected, 0)) {
     // right arrow
     if (el == ud->right &&
         (action == TK_ACTION_RIGHT || action == TK_ACTION_MOUSEDOWN)) {
