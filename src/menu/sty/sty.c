@@ -6,12 +6,9 @@
 
 /*
         TODO:
-                - create font code, that can draw strings and measure how large
-   they will be
                 - find out, if memory copy functions are more effective
 
-        This parser can currently handle the following chunks (we only want to
-   draw the fonts):
+        This parser can currently handle the following chunks:
                 FONB, SPRX, SPRG, PALX, PPAL, PALB, SPRB
 */
 
