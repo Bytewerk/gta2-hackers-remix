@@ -14,6 +14,7 @@
 #define TK_EL_FLAG_INVISIBLE 32
 #define TK_EL_FLAG_H_CENTER 64
 #define TK_EL_FLAG_SCROLLABLE 128
+#define TK_EL_FLAG_FREE_TEXT 256
 
 #define tk_el_width(EL, VALUE)                                                 \
   EL->width = VALUE;                                                           \
@@ -35,10 +36,11 @@
 #define tk_el_invisible(EL) EL->flags |= TK_EL_FLAG_INVISIBLE
 #define tk_el_center(EL) EL->flags |= TK_EL_FLAG_H_CENTER
 #define tk_el_scrollable(EL) EL->flags |= TK_EL_FLAG_SCROLLABLE
+#define tk_el_free_text(EL) EL->flags |= TK_EL_FLAG_FREE_TEXT
 
 // reset to default:
-#define tk_el_unselectable(EL) EL->flags &= ~((char)TK_EL_FLAG_SELECTABLE)
-#define tk_el_enabled(EL) EL->flags &= ~((char)TK_EL_FLAG_DISABLED)
-#define tk_el_visible(EL) EL->flags &= ~((char)TK_EL_FLAG_INVISIBLE)
-#define tk_el_left_aligned(EL) EL->flags &= ~((char)TK_EL_FLAG_H_CENTER)
-#define tk_el_fixed(EL) EL->flags &= ~((char)TK_EL_FLAG_SCROLLABLE)
+#define tk_el_unselectable(EL) EL->flags &= ~((uint16_t)TK_EL_FLAG_SELECTABLE)
+#define tk_el_enabled(EL) EL->flags &= ~((uint16_t)TK_EL_FLAG_DISABLED)
+#define tk_el_visible(EL) EL->flags &= ~((uint16_t)TK_EL_FLAG_INVISIBLE)
+#define tk_el_left_aligned(EL) EL->flags &= ~((uint16_t)TK_EL_FLAG_H_CENTER)
+#define tk_el_fixed(EL) EL->flags &= ~((uint16_t)TK_EL_FLAG_SCROLLABLE)

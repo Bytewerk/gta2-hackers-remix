@@ -1,3 +1,4 @@
+#include "../../gxt/gxt.h"
 #include "../../tk/ctrl/controls.h"
 #include "../../tk/toolkit.h"
 #include "../interface.h"
@@ -27,10 +28,25 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
       tk_el_padding(TK_PARENT, 120, 150, 0, 120); tk_el_width(TK_PARENT, 400);
       tk_el_scrollable(TK_PARENT); TK_PARENT->actionfunc = (void *)actionfunc;
 
-      for (int i = 0; i < 100; i++) {
-        tk_el_t *hello = tk_label(tk, TK_PARENT, "Hello World!",
-                                  GTA2_FONT_FSTYLE_GRADIENT_BLACK_NORMAL, 0);
-        tk_el_center(hello);
+      char *original = gxt_get(tk->gxt, "credits");
+      uint16_t original_length = strlen(original); uint16_t line_start = 0;
+
+      for (int i = 0; i < original_length; i++) {
+        char c = original[i];
+        if (c == '#') {
+          char *line = malloc(i - line_start + 1);
+          strncpy(line, original + line_start, i - line_start);
+          line[i - line_start] = '\0';
+
+          tk_el_t *el = tk_label(tk, TK_PARENT, line,
+                                 GTA2_FONT_FSTYLE_GRADIENT_BLACK_NORMAL, 0);
+          tk_el_center(el);
+          tk_el_free_text(el);
+
+          // skip # and color
+          line_start = i + 2;
+        }
+
       });
 
   return credits;

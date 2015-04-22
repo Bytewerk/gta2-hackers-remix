@@ -47,7 +47,7 @@ typedef struct tk_el_t {
   const char *bottom_text_low;
 
   // set these with the macros in el_flags.h
-  char flags;
+  uint16_t flags;
   uint16_t width;
   uint16_t height;
   int16_t padding_left;

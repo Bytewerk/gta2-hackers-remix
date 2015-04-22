@@ -32,6 +32,9 @@ void tk_el_clean(tk_t *tk, tk_el_t *el) {
     tk_el_t *el_old = el;
     el = el->next;
 
+    if (el_old->flags & TK_EL_FLAG_FREE_TEXT)
+      free(el_old->text);
+
     // call clean up action
     if (el_old->actionfunc && el_old->userdata)
       tk_actions_element(tk, el_old, NULL, TK_ACTION_CLEANUP, SDLK_UNKNOWN);
