@@ -39,7 +39,7 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
           line[i - line_start] = '\0';
 
           tk_el_t *el = tk_label(tk, TK_PARENT, line,
-                                 GTA2_FONT_FSTYLE_GRADIENT_BLACK_NORMAL, 0);
+                                 GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0);
           tk_el_center(el);
           tk_el_free_text(el);
 
