@@ -26,6 +26,13 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
                tk_ctrl_circle(tk, TK_PARENT, "SCREEN LAYOUT", NULL, 'A', 'C', 0,
                               0, 'B', NULL);
 
+               // STUB: this doesn't get free'd!
+               char **entries = malloc(sizeof(char *) * 3);
+               entries[0] = "FRAGS"; entries[1] = "POINTS"; entries[2] = "TAG";
+
+               tk_ctrl_listbutton(tk, TK_PARENT, NULL, entries, 3, 1, 0,
+                                  "GAME TYPE", 1, NULL, NULL, NULL, NULL);
+
                tk_ctrl_boolean(tk, TK_PARENT, "COPS", NULL, 1);
 
                );
