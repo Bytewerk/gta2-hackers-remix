@@ -6,6 +6,7 @@
 *.wav
 *.hsc
 *.dat
+*.gxt
 
 # Converted some TGAs with imagemagick
 *.jpg
