@@ -127,11 +127,14 @@ tk_el_t *tk_sprite(tk_t *tk, tk_el_t *parent, char sprite_id) {
   return el;
 }
 
-tk_el_t *tk_label(tk_t *tk, tk_el_t *parent, char *text) {
+tk_el_t *tk_label(tk_t *tk, tk_el_t *parent, char *text, char font_id,
+                  char font_id_selected) {
   tk_el_t *el = calloc(1, sizeof(tk_el_t));
   tk_el_attach(el, parent, LABEL);
   el->text = text;
   el->argb_disabled = 0x9cffffff;
+  el->font_id = font_id;
+  el->font_id_selected = font_id_selected;
   tk_el_geocalc(tk, el, 0, 0);
   return el;
 }

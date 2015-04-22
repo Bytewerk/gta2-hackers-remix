@@ -11,8 +11,8 @@ tk_screen_t *ui_screen_scores(tk_t *tk, ui_t *ui) {
       TK_PARENT->bg_mashup = bg_mashup(tk->bg, "3_tables", NULL, NULL, NULL);
 
       // title bar
-      tk_el_t *titlebar = tk_label(tk, TK_PARENT, "VIEW HIGH SCORES");
-      titlebar->font_id = GTA2_FONT_FSTYLE_WHITE_RED_NORMAL;
+      tk_el_t *titlebar = tk_label(tk, TK_PARENT, "VIEW HIGH SCORES",
+                                   GTA2_FONT_FSTYLE_WHITE_RED_NORMAL, 0);
       tk_el_padding(titlebar, 340, 12, 0, 0);
 
       // content
@@ -26,12 +26,12 @@ tk_screen_t *ui_screen_scores(tk_t *tk, ui_t *ui) {
 
                for (int i = 0; i < 5; i++) {
                  TK_FLOW(tk_el_t *name =
-                             tk_label(tk, TK_PARENT, "ROBOTANARCHY");
+                             tk_label(tk, TK_PARENT, "ROBOTANARCHY",
+                                      GTA2_FONT_FSTYLE_WHITE_BLACK_SMALL, 0);
                          tk_el_width(name, 248);
-                         name->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_SMALL;
 
-                         tk_el_t *score = tk_label(tk, TK_PARENT, "50000");
-                         score->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_SMALL;)
+                         tk_label(tk, TK_PARENT, "50000",
+                                  GTA2_FONT_FSTYLE_WHITE_BLACK_SMALL, 0);)
                }
 
                );

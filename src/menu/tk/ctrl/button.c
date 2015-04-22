@@ -21,12 +21,12 @@ tk_el_t *tk_ctrl_button(tk_t *tk, tk_el_t *TK_PARENT, char *text,
   ud->onclick_func = onclick_func;
   ud->onclick_screen = onclick_screen;
 
-  tk_el_t *label = tk_label(tk, TK_PARENT, text);
+  tk_el_t *label =
+      tk_label(tk, TK_PARENT, text, GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
+               GTA2_FONT_FSTYLE_RED_BLACK_NORMAL);
   label->bg_mashup = bg_mashup;
   label->userdata = (void *)ud;
   label->actionfunc = (void *)button_actionfunc;
-  label->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL;
-  label->font_id_selected = GTA2_FONT_FSTYLE_RED_BLACK_NORMAL;
   tk_el_selectable(label);
 
   return label;

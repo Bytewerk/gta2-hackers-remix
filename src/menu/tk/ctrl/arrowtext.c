@@ -169,12 +169,12 @@ tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
           ud->left = tk_ctrl_arrow(tk, TK_PARENT, 1,
                                    (void *)arrowtext_actionfunc, (void *)ud);
 
-          ud->text = tk_label(tk, TK_PARENT, entries[entry_selected]);
-          ud->text->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL;
-          ud->text->font_id_selected = GTA2_FONT_FSTYLE_RED_BLACK_NORMAL;
+          ud->text = tk_label(tk, TK_PARENT, entries[entry_selected],
+                              GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
+                              GTA2_FONT_FSTYLE_RED_BLACK_NORMAL);
 
-          ud->underscore = tk_label(tk, TK_PARENT, "_");
-          ud->underscore->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL;
+          ud->underscore = tk_label(tk, TK_PARENT, "_",
+                                    GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0);
           ud->underscore->actionfunc = (void *)arrowtext_actionfunc;
           ud->underscore->userdata = ud;
 

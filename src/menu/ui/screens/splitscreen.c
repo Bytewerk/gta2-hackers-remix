@@ -12,8 +12,8 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
           bg_mashup(tk->bg, "3_tables", NULL, NULL, "g2hr_splitscreen");
 
       // title bar
-      tk_el_t *titlebar = tk_label(tk, TK_PARENT, "4 CONTROLLERS FOUND");
-      titlebar->font_id = GTA2_FONT_FSTYLE_WHITE_RED_NORMAL;
+      tk_el_t *titlebar = tk_label(tk, TK_PARENT, "4 CONTROLLERS FOUND",
+                                   GTA2_FONT_FSTYLE_WHITE_RED_NORMAL, 0);
       tk_el_padding(titlebar, 315, 12, 0, 0);
 
       // content

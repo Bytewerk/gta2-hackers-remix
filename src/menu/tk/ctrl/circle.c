@@ -87,8 +87,8 @@ tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
               ud->circle_sprite->width = 32; ud->circle_sprite->height = 32;
 
               // circle text
-              ud->circle_text = tk_label(tk, TK_PARENT, ud->value_str);
-              ud->circle_text->font_id = GTA2_FONT_FSTYLE_WHITE_RED_NORMAL;
+              ud->circle_text = tk_label(tk, TK_PARENT, ud->value_str,
+                                         GTA2_FONT_FSTYLE_WHITE_RED_NORMAL, 0);
               tk_el_padding(ud->circle_text, -23, 4, 0, 0);
               tk_el_width(ud->circle_text, -1 * ud->circle_text->padding_left);
 

@@ -16,9 +16,8 @@ tk_el_t *tk_ctrl_listbutton(tk_t *tk, tk_el_t *TK_PARENT,
       container = TK_PARENT; container->bg_mashup = bg_mashup;
       tk_el_selectable(container);
 
-      tk_el_t *label = tk_label(tk, TK_PARENT, title);
-      label->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL;
-      label->font_id_selected = GTA2_FONT_FSTYLE_RED_BLACK_NORMAL;
+      tk_label(tk, TK_PARENT, title, GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
+               GTA2_FONT_FSTYLE_RED_BLACK_NORMAL);
 
       tk_el_t *arrowtext = tk_ctrl_arrowtext(
           tk, TK_PARENT, NULL, entries, entry_count, entry_selected,

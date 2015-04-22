@@ -69,4 +69,5 @@ char tk_is_selected_recursive(tk_el_t *el, tk_el_t *el_selected,
 
 // extended elements
 tk_el_t *tk_sprite(tk_t *tk, tk_el_t *parent, char sprite_id);
-tk_el_t *tk_label(tk_t *tk, tk_el_t *parent, char *text);
+tk_el_t *tk_label(tk_t *tk, tk_el_t *parent, char *text, char font_id,
+                  char font_id_selected);
