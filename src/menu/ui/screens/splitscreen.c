@@ -20,12 +20,13 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
       TK_STACK(splitscreen->el_content_container = TK_PARENT;
                tk_el_padding(TK_PARENT, 300, 123, 0, 0);
 
-               tk_ctrl_boolean(tk, TK_PARENT, "COPS", NULL, 1);
+               tk_ctrl_circle(tk, TK_PARENT, "PLAYER COUNT", NULL, '1', '4', 0,
+                              0, '3', NULL);
 
-               tk_el_t *circle =
-                   tk_ctrl_circle(tk, TK_PARENT, "SCREEN LAYOUT", NULL, '1',
-                                  '4', 0, 0, '3', NULL);
-               tk_el_padding(circle, 0, 0, 0, 30);
+               tk_ctrl_circle(tk, TK_PARENT, "SCREEN LAYOUT", NULL, 'A', 'C', 0,
+                              0, 'B', NULL);
+
+               tk_ctrl_boolean(tk, TK_PARENT, "COPS", NULL, 1);
 
                );
 

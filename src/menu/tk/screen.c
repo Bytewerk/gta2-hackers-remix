@@ -83,8 +83,7 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
       if (el->type == SPRITE) {
         sty_sprite_draw(tk->renderer, tk->fsty, el->sprite_id,
                         offset_x + el->padding_left, offset_y + el->padding_top,
-                        cutoff_y - el->padding_top, el->width, el->height,
-                        argb);
+                        cutoff_y, el->width, el->height, argb);
       }
       if (el->sub) {
         tk_el_t *sub = el->sub;
