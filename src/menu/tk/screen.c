@@ -73,12 +73,27 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
         offset_x += el->parent->width / 2 - el->width / 2;
 
       if (el->type == LABEL) {
+        int padding_top_cutoff = el->padding_top - cutoff_y;
+        if (padding_top_cutoff < 0)
+          padding_top_cutoff = 0;
+
+        int cutoff_y_rest = cutoff_y - el->padding_top;
+        if (cutoff_y_rest < 0)
+          cutoff_y_rest = 0;
+
+        /*if(cutoff_y)
+        {
+                printf("cutoff_y: %i, el->padding_top: %i, padding_top_cutoff:
+        %i, cutoff_y_rest: %i, offset_y: %i, text: %s\n", cutoff_y,
+        el->padding_top, padding_top_cutoff, cutoff_y_rest, offset_y, el->text);
+        }*/
+
         char font = el->font_id;
         if (is_selected && el->font_id_selected)
           font = el->font_id_selected;
         sty_text(tk->renderer, tk->fsty, font, argb,
-                 offset_x + el->padding_left, offset_y + el->padding_top,
-                 cutoff_y, el->text);
+                 offset_x + el->padding_left, offset_y + padding_top_cutoff,
+                 cutoff_y_rest, el->text);
       }
       if (el->type == SPRITE) {
         sty_sprite_draw(tk->renderer, tk->fsty, el->sprite_id,
@@ -97,7 +112,9 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
                  sub->padding_top + sub->height + sub->padding_bottom +
                          skipped_height <=
                      el->scroll_top) {
-            skipped_height += sub->height;
+
+            skipped_height +=
+                sub->padding_top + sub->height + sub->padding_bottom;
             sub = sub->next;
           }
 
