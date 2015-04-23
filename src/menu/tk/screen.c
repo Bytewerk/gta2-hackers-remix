@@ -112,7 +112,6 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
                  sub->padding_top + sub->height + sub->padding_bottom +
                          skipped_height <=
                      el->scroll_top) {
-
             skipped_height +=
                 sub->padding_top + sub->height + sub->padding_bottom;
             sub = sub->next;
