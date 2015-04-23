@@ -63,8 +63,7 @@ void tk_el_geocalc(tk_t *tk, tk_el_t *el, char /*bool*/ down,
     if (el->type == SPRITE)
       sty_sprite_measure(tk->fsty, &width, &height, el->sprite_id);
     else if (el->type == LABEL)
-      sty_text_measure(tk->fsty, &width, &height,
-                       GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, el->text);
+      sty_text_measure(tk->fsty, &width, &height, el->font_id, el->text);
     else if (el->type == STACK || el->type == FLOW) {
       width = 0;
       height = 0;
