@@ -19,7 +19,10 @@ int main(int argc, const char **argv) {
   }
   */
 
-  printf("%s\n", gxt_get(gxt, "credits"));
+  char *credits = gxt_get(gxt, "credits");
+  credits[100] = '\0'; // hack hack
+
+  printf("%s\n", credits);
 
   gxt_cleanup(gxt);
   printf("cleaned up!\n");

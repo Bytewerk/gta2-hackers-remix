@@ -70,7 +70,7 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
     if (!(el->flags & TK_EL_FLAG_INVISIBLE)) {
 
       if (el->flags & TK_EL_FLAG_H_CENTER)
-        offset_x += el->parent->width / 2 - el->width;
+        offset_x += el->parent->width / 2 - el->width / 2;
 
       if (el->type == LABEL) {
         char font = el->font_id;
@@ -93,7 +93,10 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
         if (el->type == STACK && el->scroll_top) {
           // skip all elements that were scrolled off screen
           int skipped_height = 0;
-          while (sub && sub->height + skipped_height <= el->scroll_top) {
+          while (sub &&
+                 sub->padding_top + sub->height + sub->padding_bottom +
+                         skipped_height <=
+                     el->scroll_top) {
             skipped_height += sub->height;
             sub = sub->next;
           }
