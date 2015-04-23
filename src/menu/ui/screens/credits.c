@@ -9,12 +9,13 @@
 uint32_t credits_argb(char color) {
   switch (color) {
   case 'W':
-    return 0x00000000; // white
+    return 0xffffffff; // white
   case 'C':
     return 0xffffee00; // yellow
   case 'B':
     return 0xff52ceff; // cyan
-                       // case 'G': return ;
+  case 'G':
+    return 0xff52ce00; // green
   }
 
   printf("credits - unknown color char: %c\n", color);
