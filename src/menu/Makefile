@@ -1,15 +1,19 @@
-# Automatic C dependency detection (just gcc, no make recursion etc)
-# High level at the top
+# Build environment (see also env_win)
 CC:=LANG=C gcc -std=c99 -Wall -g -Werror
+PKGCONFIG:=pkg-config
+LIBS:=sdl2 SDL2_image SDL2_net
+
+# Automatic C dependency detection (just gcc, no make recursion etc)
 DEPS=$(shell $(CC) -MM $(1) | cut -d ':' -f 2 | tr -d '\n\\')
 OBJS=$(shell grep obj/ Makefile | grep 'call DEPS' | grep -v OBJS | cut -d':' -f 1 | tr '\n' ' ')
 
-all: obj out out/menu.bin
 
+# High level stuff at the top
+all: obj out out/menu.bin
 
 # MENU
 out/menu.bin: $(OBJS)
-	$(CC) `pkg-config --cflags --libs sdl2 SDL2_image SDL2_net` -o $@ obj/*.o
+	$(CC) -o $@ obj/*.o `$(PKGCONFIG) --cflags --libs $(LIBS)`
 
 obj/menu.o: $(call DEPS,main.c)
 	$(CC) -c -o $@ $<
@@ -95,6 +99,18 @@ obj/gxt.o: $(call DEPS,gxt/gxt.c)
 	$(CC) -c -o $@ $<
 
 
+# WINDOWS (don't mix Windows/Linux objects, run make clean!)
+# kind of hackish currently, we should build statically, so we don't
+# need all these DLLs. Works on Arch Linux, install these packages from
+# the AUR: mingw-w64-{sdl2,sdl2_image,libpng,zlib}
+win: env_win all
+	cp /usr/i686-w64-mingw32/bin/*.dll out/
+env_win:
+	$(eval CC = $(shell echo "$(CC)" | sed 's/gcc/i686-w64-mingw32-gcc/'))
+	$(eval PKGCONFIG = i686-w64-mingw32-pkg-config)
+	$(eval LIBS = sdl2 SDL2_image)
+
+
 
 # VALGRIND: automatically create a rule for SDL2 init
 valgrind: obj out out/valgrind.sup out/menu.bin
@@ -107,15 +123,14 @@ out/valgrind.sup: out/minimal_init.bin
 out/minimal_init.bin: minimal_init.c
 	$(CC) `pkg-config --cflags --libs sdl2 SDL2_image SDL2_net` -o $@ $<
 
-
 # Other
 out/minimal.bin: minimal.c $(OBJS)
 	mv obj/menu.o obj/menu.o_
-	$(CC) `pkg-config --cflags --libs sdl2 SDL2_image SDL2_net` -o $@ obj/*.o $<
+	$(CC) `pkg-config --cflags --libs $(LIBS)` -o $@ obj/*.o $<
 	mv obj/menu.o_ obj/menu.o
 
 obj out:
 	mkdir -p $@
 clean:
 	rm -r out obj || true
-.PHONY: all clean
+.PHONY: all clean win env_win
