@@ -6,6 +6,7 @@
 #include "ui/interface.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_net.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -19,7 +20,9 @@ int main(int argc, char *argv[]) {
 
   // init all
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
-    exit(printf("SDL_ERROR: %s\n", SDL_GetError()));
+    exit(printf("SDL ERROR: %s\n", SDL_GetError()));
+  if (SDLNet_Init() == -1)
+    exit(printf("SDLNet ERROR: %s\n", SDLNet_GetError()));
   IMG_Init(IMG_INIT_PNG);
   gxt_t *gxt = gxt_load("GTA2/data/e.gxt");
   sty_t *fsty = sty_load("GTA2/data/fstyle.sty");
@@ -54,6 +57,7 @@ int main(int argc, char *argv[]) {
   sty_cleanup(fsty);
   gxt_cleanup(gxt);
   IMG_Quit();
+  SDLNet_Quit();
   SDL_Quit();
 
   printf("cleaned up!\n");

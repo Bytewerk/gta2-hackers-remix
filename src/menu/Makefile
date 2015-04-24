@@ -112,7 +112,7 @@ win: ../../bin/menu.exe
 env_win:
 	$(eval CC = $(shell echo "$(CC)" | sed 's/gcc/i686-w64-mingw32-gcc $(MINGWFLAGS)/'))
 	$(eval PKGCONFIG = i686-w64-mingw32-pkg-config)
-	$(eval LIBS = sdl2 SDL2_image libpng zlib)
+	$(eval LIBS = sdl2 SDL2_image SDL2_net libpng zlib)
 
 
 
@@ -128,6 +128,10 @@ out/minimal_init.bin: minimal_init.c
 	$(CC) `pkg-config --cflags --libs sdl2 SDL2_image SDL2_net` -o $@ $<
 
 # Other
+run: all
+	cd "../../" && src/menu/out/menu.bin
+
+
 out/minimal.bin: minimal.c $(OBJS)
 	mv obj/menu.o obj/menu.o_
 	$(CC) `pkg-config --cflags --libs $(LIBS)` -o $@ obj/*.o $<
@@ -137,4 +141,4 @@ obj out:
 	mkdir -p $@
 clean:
 	rm -r out obj || true
-.PHONY: all clean win env_win
+.PHONY: all clean win env_win run
