@@ -1,3 +1,11 @@
+# PKGBUILDs
+PKGBUILDs/*/pkg
+PKGBUILDs/*/src
+PKGBUILDs/*/*.xz
+PKGBUILDs/*/*.gz
+PKGBUILDs/*/*.part
+
+
 # GTA2 files
 GTA2/*
 !GTA2/README.md
