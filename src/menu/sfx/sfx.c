@@ -9,9 +9,9 @@
 void sfx_load_fstyle(sfx_t *sfx) {
   // open both files (the bigger 'raw' file contains the real
   // audio, the 'sdt' contains meta data)
-  printf("loading data/fstyle.sdt...\n");
-  FILE *raw = fopen("data/fstyle.raw", "rb");
-  FILE *sdt = fopen("data/fstyle.sdt", "rb");
+  printf("loading GTA2/data/audio/fstyle.sdt...\n");
+  FILE *raw = fopen("GTA2/data/audio/fstyle.raw", "rb");
+  FILE *sdt = fopen("GTA2/data/audio/fstyle.sdt", "rb");
   if ((!raw) || (!sdt))
     exit(printf("File read error!\n"));
 

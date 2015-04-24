@@ -1,4 +1,6 @@
-# GTA2 files copied to the code tree for testing
+# GTA2 files
+GTA2/*
+!GTA2/README.md
 *.sty
 *.tga
 *.raw

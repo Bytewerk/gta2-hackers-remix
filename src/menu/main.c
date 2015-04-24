@@ -21,8 +21,8 @@ int main(int argc, char *argv[]) {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
     exit(printf("SDL_ERROR: %s\n", SDL_GetError()));
   IMG_Init(IMG_INIT_PNG);
-  gxt_t *gxt = gxt_load("data/e.gxt");
-  sty_t *fsty = sty_load("data/fstyle.sty");
+  gxt_t *gxt = gxt_load("GTA2/data/e.gxt");
+  sty_t *fsty = sty_load("GTA2/data/fstyle.sty");
   sfx_t *sfx = sfx_init();
   bg_t *bg = bg_init(pics, sizeof(pics) / sizeof(char *));
   tk_t *tk = tk_init(gxt, fsty, sfx, bg, "G2HR");

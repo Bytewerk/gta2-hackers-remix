@@ -1,3 +1,6 @@
-##### Compile and put in this folder:
-- SDL2.dll, SDL2_net.dll (Get them from the SDL website)
-... (incomplete list, just created this branch)
+Once compiled, this folder should contain the following files:
+
+* native.bin (Linux)
+* native.exe (Windows)
+* menu.exe
+* meta.exe

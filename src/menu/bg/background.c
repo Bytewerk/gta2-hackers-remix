@@ -7,25 +7,27 @@ bg_t *bg_load_single(const char *name) {
   bg->name = name;
   bg->next = NULL;
 
-  // custom backgrounds are PNGs and have a 'g2hr' prefix
-  char *ext =
-      (name[0] == 'g' && name[1] == '2' && name[2] == 'h' && name[3] == 'r')
-          ? "png"
-          : "tga";
+  // Custom backgrounds have a "g2hr_" prefix
+  char is_custom =
+      (name[0] == 'g' && name[1] == '2' && name[2] == 'h' && name[3] == 'r');
 
-  // generate the full file path
+  // Generate the full file path.
   char path_buffer[100];
-  snprintf(path_buffer, sizeof(path_buffer), "data/frontend/%s.%s", name, ext);
-  printf("loading %s...\n", path_buffer);
+  if (is_custom)
+    snprintf(path_buffer, sizeof(path_buffer), "data/frontend/%s.png", name);
+  else
+    snprintf(path_buffer, sizeof(path_buffer), "GTA2/data/frontend/%s.tga",
+             name);
 
   // actually load the file
+  printf("loading %s...\n", path_buffer);
   SDL_Surface *surface = IMG_Load(path_buffer);
   if (!surface)
     exit(printf("File read error!\n"));
 
   // Workaround for upstream TGA bug:
   //		https://bugzilla.libsdl.org/show_bug.cgi?id=2840
-  if (!strcmp(ext, "tga")) {
+  if (!is_custom) {
     char *pixels = surface->pixels;
     for (int y = 0; y < surface->h; y++)
       for (int x = 0; x < surface->w; x++) {

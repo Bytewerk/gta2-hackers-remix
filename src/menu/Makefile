@@ -106,8 +106,9 @@ obj/gxt.o: $(call DEPS,gxt/gxt.c)
 # kind of hackish currently, we should build statically, so we don't
 # need all these DLLs. Works on Arch Linux, install these packages from
 # the AUR: mingw-w64-{sdl2,sdl2_image,libpng,zlib}
-win: env_win all
-
+win: ../../bin/menu.exe
+../../bin/menu.exe: env_win all
+	cp out/menu.bin $@
 env_win:
 	$(eval CC = $(shell echo "$(CC)" | sed 's/gcc/i686-w64-mingw32-gcc $(MINGWFLAGS)/'))
 	$(eval PKGCONFIG = i686-w64-mingw32-pkg-config)
