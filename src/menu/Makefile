@@ -102,6 +102,10 @@ obj/gxt.o: $(call DEPS,gxt/gxt.c)
 	$(CC) -c -o $@ $<
 
 
+# Server
+obj/server.o: $(call DEPS,server/server.c)
+	$(CC) -c -o $@ $<
+
 # WINDOWS (don't mix Windows/Linux objects, run make clean!)
 # kind of hackish currently, we should build statically, so we don't
 # need all these DLLs. Works on Arch Linux, install these packages from

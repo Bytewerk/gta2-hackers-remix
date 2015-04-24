@@ -1,5 +1,6 @@
 #include "bg/background.h"
 #include "gxt/gxt.h"
+#include "server/server.h"
 #include "sfx/sfx.h"
 #include "sty/sty.h"
 #include "tk/toolkit.h"
@@ -24,6 +25,7 @@ int main(int argc, char *argv[]) {
   if (SDLNet_Init() == -1)
     exit(printf("SDLNet ERROR: %s\n", SDLNet_GetError()));
   IMG_Init(IMG_INIT_PNG);
+  server_t *server = server_init();
   gxt_t *gxt = gxt_load("GTA2/data/e.gxt");
   sty_t *fsty = sty_load("GTA2/data/fstyle.sty");
   sfx_t *sfx = sfx_init();
@@ -47,6 +49,8 @@ int main(int argc, char *argv[]) {
         tk_frame(tk, NULL);
       }
     }
+
+    server_frame(server);
   }
 
   // cleanup all
@@ -56,6 +60,7 @@ int main(int argc, char *argv[]) {
   sfx_cleanup(sfx);
   sty_cleanup(fsty);
   gxt_cleanup(gxt);
+  server_cleanup(server);
   IMG_Quit();
   SDLNet_Quit();
   SDL_Quit();
