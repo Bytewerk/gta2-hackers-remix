@@ -1,3 +1,4 @@
+#NoTrayIcon
 #include "cmds/singleplayer.au3"
 
 Func OnAutoItExit()
@@ -20,7 +21,7 @@ While Not $exit
 	If StringLen($data) > 0 Then
 		ConsoleWrite("[menu] " & $data & "" & @CRLF)
 		
-		$cmd = StringSplit($data," ")
+		$cmd = StringSplit($data," ",2)
 		Switch $cmd[0]
 			Case "CLEANUP"
 				$exit = 1

@@ -34,7 +34,7 @@ void server_accept_localhost_only(server_t *server) {
     return;
   }
 
-  printf("connected to: meta\n");
+  printf("connected to meta\n");
 }
 
 void server_frame(server_t *server) {

@@ -33,9 +33,11 @@ int main(int argc, char *argv[]) {
   tk_t *tk = tk_init(gxt, fsty, sfx, bg, "G2HR");
   ui_t *ui = ui_init(tk);
 
-  uint32_t previous = 0;
+  // start the meta component (this will simply fail on Linux)
+  system("start bin/meta.exe");
 
   // main loop
+  uint32_t previous = 0;
   while (!tk->quit) {
     SDL_Event event;
     if (SDL_WaitEventTimeout(&event, 100 / G2HR_MENU_FPS)) {
