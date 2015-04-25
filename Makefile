@@ -2,7 +2,7 @@ all: bin/menu.exe bin/meta.exe
 
 
 bin/menu.exe:
-	$(MAKE) -C src/menu/ win
+	$(MAKE) -C src/menu/ Windows
 
 bin/meta.exe:
 	$(MAKE) -C src/meta
