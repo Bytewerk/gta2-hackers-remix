@@ -15,6 +15,9 @@ OBJS=$(shell grep obj/ Makefile | grep 'call DEPS' | grep -v OBJS | cut -d':' -f
 all: obj out out/menu.bin
 
 # MENU
+../../bin/menu.exe: env_win obj $(OBJS)
+	$(CC) -o $@ obj/*.o `$(PKGCONFIG) --cflags --libs $(LIBS)` -lws2_32 -liphlpapi
+	
 out/menu.bin: $(OBJS)
 	$(CC) -o $@ obj/*.o `$(PKGCONFIG) --cflags --libs $(LIBS)`
 
@@ -107,12 +110,9 @@ obj/server.o: $(call DEPS,server/server.c)
 	$(CC) -c -o $@ $<
 
 # WINDOWS (don't mix Windows/Linux objects, run make clean!)
-# kind of hackish currently, we should build statically, so we don't
-# need all these DLLs. Works on Arch Linux, install these packages from
+# Works on Arch Linux, install these packages from
 # the AUR: mingw-w64-{sdl2,sdl2_image,libpng,zlib}
 win: ../../bin/menu.exe
-../../bin/menu.exe: env_win all
-	cp out/menu.bin $@
 env_win:
 	$(eval CC = $(shell echo "$(CC)" | sed 's/gcc/i686-w64-mingw32-gcc $(MINGWFLAGS)/'))
 	$(eval PKGCONFIG = i686-w64-mingw32-pkg-config)
