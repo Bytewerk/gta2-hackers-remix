@@ -1,10 +1,15 @@
+all: bin/menu.exe bin/meta.exe
+
+
 bin/menu.exe:
 	$(MAKE) -C src/menu/ win
 
+bin/meta.exe:
+	$(MAKE) -C src/meta
 
 clean:
 	rm bin/*.exe bin/*.bin || true
 	$(MAKE) -C src/menu clean
 
 
-.PHONY: clean
+.PHONY: clean all

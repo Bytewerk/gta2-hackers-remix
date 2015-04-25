@@ -1,3 +1,5 @@
+#include "cmds/singleplayer.au3"
+
 Func OnAutoItExit()
    TCPShutdown()
 EndFunc
@@ -23,7 +25,7 @@ While Not $exit
 			Case "CLEANUP"
 				$exit = 1
 			Case "SINGLEPLAYER"
-				
+				cmd_singleplayer($cmd)
 				
 				
 		EndSwitch
