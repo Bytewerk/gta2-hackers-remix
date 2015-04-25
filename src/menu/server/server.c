@@ -43,12 +43,19 @@ void server_frame(server_t *server) {
     return;
 }
 
+void server_send(server_t *server, char *message, char do_free) {
+  printf("[menu => meta%s]: %s\n", server->sock ? "" : " (disconnected)",
+         message);
+
+  if (server->sock)
+    SDLNet_TCP_Send(server->sock, message, strlen(message));
+
+  if (do_free)
+    free(message);
+}
+
 void server_cleanup(server_t *server) {
-  if (server->sock) {
-    SDLNet_TCP_Send(server->sock, G2HR_MENU_META_CLEANUP,
-                    sizeof(G2HR_MENU_META_CLEANUP));
-    SDLNet_TCP_Close(server->sock);
-  }
+  server_send(server, G2HR_MENU_META_CLEANUP, 0);
   SDLNet_TCP_Close(server->sock_server);
   free(server);
 }

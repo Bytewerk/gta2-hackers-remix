@@ -13,3 +13,4 @@ typedef struct {
 server_t *server_init();
 void server_cleanup(server_t *server);
 void server_frame(server_t *server);
+void server_send(server_t *server, char *message, char do_free);

@@ -17,7 +17,7 @@ ConsoleWrite("[meta] connected to the menu" & @CRLF)
 ; 	COMMAND_NAME [PARAMETER1 [PARAMETER2] ... ]
 $exit = 0
 While Not $exit
-	$data = BinaryToString(TCPRecv($sock,10,1))
+	$data = BinaryToString(TCPRecv($sock,100,1))
 	If StringLen($data) > 0 Then
 		ConsoleWrite("[menu] " & $data & "" & @CRLF)
 		
@@ -30,9 +30,7 @@ While Not $exit
 				
 				
 		EndSwitch
-		
 	EndIf
-
 	sleep(100) ; TCPRecv is non-blocking!
 WEnd
 

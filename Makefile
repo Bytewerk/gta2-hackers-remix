@@ -3,13 +3,13 @@ all: bin/menu.exe bin/meta.exe
 
 run: bin/menu.exe bin/meta.exe
 	WINEDEBUG=-all wine bin/menu.exe
-	wineboot -e -f
+	sleep 1 && wineboot -e -f
 
 bin/menu.exe:
-	$(MAKE) -s -C src/menu/ Windows
+	$(MAKE) -C src/menu/ Windows
 
 bin/meta.exe:
-	$(MAKE) -s -C src/meta
+	$(MAKE) -C src/meta
 
 clean:
 	rm bin/*.exe bin/*.bin || true
