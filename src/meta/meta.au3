@@ -3,24 +3,35 @@ Func OnAutoItExit()
 EndFunc
 
 ; Connect to the menu
-TCPStartup() ;
+TCPStartup()
 OnAutoItExitRegister("OnAutoItExit")
 $sock = TCPConnect("127.0.0.1", 19990)
-If @error Then Exit ConsoleWrite("Connection refused" & @CRLF)
+If @ERROR Then Exit ConsoleWrite("[meta] connection refused" & @CRLF)
 ConsoleWrite("[meta] connected to the menu" & @CRLF)
 
+
+; Handle incoming commands. Format:
+; 	COMMAND_NAME [PARAMETER1 [PARAMETER2] ... ]
 $exit = 0
 While Not $exit
-   $data = BinaryToString(TCPRecv($sock,10,1))
-   If StringLen($data) > 0 Then ConsoleWrite("[menu] "&$data&""&@CRLF)
+	$data = BinaryToString(TCPRecv($sock,10,1))
+	If StringLen($data) > 0 Then
+		ConsoleWrite("[menu] " & $data & "" & @CRLF)
+		
+		$cmd = StringSplit($data," ")
+		Switch $cmd[0]
+			Case "CLEANUP"
+				$exit = 1
+			Case "SINGLEPLAYER"
+				
+				
+				
+		EndSwitch
+		
+	EndIf
 
-   Switch $data
-	  Case "CLEANUP"
-		 $exit = 1
-	  ; ...
-   EndSwitch
-
-   sleep(100) ; TCPRecv is non-blocking!
+	sleep(100) ; TCPRecv is non-blocking!
 WEnd
 
+; Clean up
 TCPCloseSocket($sock)
