@@ -10,12 +10,15 @@ Func cmd_singleplayer($cmd)
 	$reg_base = "HKEY_CURRENT_USER\Software\DMA Design Ltd\GTA2\Debug"
 	
 	; Skip the menu, start the first map
-	RegWrite($reg_base, "skip_frontend", "REG_BINARY", 1)
+	RegWrite($reg_base, "do_blood", 	"REG_DWORD",	1)
+	RegWrite($reg_base, "mapname", 		"REG_SZ",		"wil.gmp")
+	RegWrite($reg_base, "replaynum", 	"REG_DWORD",	2)
+	RegWrite($reg_base, "savename",		"REG_DWORD",	0)
+	RegWrite($reg_base, "scriptname",	"REG_SZ",		"wil.scr")
+	RegWrite($reg_base, "skip_frontend","REG_BINARY",	1)
+	RegWrite($reg_base, "stylename",	"REG_SZ",		"wil.sty")
 	
-	RegWrite($reg_base, "savename", "REG_DWORD", "")
-	RegWrite($reg_base, "mapname", "REG_DWORD", "data\wil.gmp")
-	RegWrite($reg_base, "scriptname", "REG_DWORD", "data\wil.scr")
-	RegWrite($reg_base, "stylename", "REG_DWORD", "data\wil.sty")
+	
 	
 	
 	Run("GTA2/gta2.exe", "GTA2")
