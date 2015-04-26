@@ -24,39 +24,48 @@ Func cmd_singleplayer($cmd)
 		If $type == "NORMAL" Then
 			If $id == "1" Then ; Downtown
 				$sty = "wil"
-				$gmp = "wil"
-				$scr = "wil"
 			Elseif $id == "2" Then ; Residential
 				$sty = "ste"
-				$gmp = "ste"
-				$scr = "ste"
 			Elseif $id == "3" Then ; Industrial
 				$sty = "bil"
-				$gmp = "bil"
-				$scr = "bil"
 			Endif
 		Elseif $type == "BONUS" Then
 			If $id == "A" Then
 				$sty = "wil"
 				$gmp = "lorne2e"
-				$scr = "lorne2e"
 			Elseif $id == "B" Then
 				$sty = "wil"
 				$gmp = "lorne2m"
-				$scr = "lorne2m"
 			Elseif $id == "C" Then
 				$sty = "wil"
 				$gmp = "lorne2h"
-				$scr = "lorne2h"
+			Elseif $id == "D" Then
+				$sty = "ste"
+				$gmp = "mike1e"
+			Elseif $id == "E" Then
+				$sty = "ste"
+				$gmp = "mike1m"
+			Elseif $id == "F" Then
+				$sty = "ste"
+				$gmp = "mike1h"
+			Elseif $id == "G" Then
+				$sty = "bil"
+				$gmp = "mike2e"
+			Elseif $id == "H" Then
+				$sty = "bil"
+				$gmp = "mike2m"
+			Elseif $id == "I" Then
+				$sty = "bil"
+				$gmp = "mike2h"
 			Endif
 		Endif
 	Endif
 	
-	if $gmp == "" Or $scr == "" Or $sty == "" Then
-		Msgbox(16,"G2HR", "level not yet implemented:" & @crlf _
+	if $sty == "" Then _
+		Return Msgbox(16,"G2HR", "level not yet implemented:" & @crlf _
 			& $levelpack & " " & $type & " " & $id)
-		Return
-	Endif
+	If $gmp == "" Then $gmp = $sty
+	If $scr == "" Then $scr = $gmp
 	
 	; Write everything to the registry
 	RegWrite($reg_base, "skip_frontend","REG_BINARY",	1)

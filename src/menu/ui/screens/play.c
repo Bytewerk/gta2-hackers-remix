@@ -8,16 +8,19 @@
 typedef struct {
   ui_t *ui;
   tk_el_t *start;
+  tk_el_t *bonus;
 
 } ud_play_t;
 
 void play_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                      tk_action_t action) {
   ud_play_t *ud = (ud_play_t *)el->userdata;
-  if (el_selected == ud->start && action == TK_ACTION_ENTER) {
+  if (action == TK_ACTION_ENTER &&
+      (el_selected == ud->start || el_selected == ud->bonus)) {
     char *buffer = malloc(100);
-    snprintf(buffer, 100, "SINGLEPLAYER GTA2 NORMAL %c",
-             ((ud_circle_t *)ud->start->userdata)->value_str[0]);
+    snprintf(buffer, 100, "SINGLEPLAYER GTA2 %s %c",
+             (el_selected == ud->start) ? "NORMAL" : "BONUS",
+             ((ud_circle_t *)el_selected->userdata)->value_str[0]);
     server_send(ud->ui->server, buffer, 1);
   }
 }
@@ -48,7 +51,11 @@ tk_screen_t *ui_screen_play(tk_t *tk, ui_t *ui, tk_screen_t *scores,
 
       ud->start = tk_ctrl_circle(tk, TK_PARENT, "START PLAY IN AREA",
                                  bg_mashup(tk->bg, NULL, "2_level1", "2", NULL),
-                                 '1', '3', 0, 0, '2', NULL);
+                                 '1', '3', 0, 0, '1', NULL);
+
+      ud->bonus = tk_ctrl_circle(tk, TK_PARENT, "BONUS STAGE",
+                                 bg_mashup(tk->bg, NULL, "2_bonus1", "2", NULL),
+                                 'A', 'I', 0, 0, 'A', NULL);
 
       // FIXME: we can't attach an actionfunc to the screen,
       // because screens already have one. maybe we can make this
