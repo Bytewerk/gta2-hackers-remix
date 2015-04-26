@@ -36,7 +36,10 @@ int main(int argc, char *argv[]) {
   ui_t *ui = ui_init(tk, server);
 
   // start the meta component (this will simply fail on Linux)
-  system("start bin/meta.exe");
+  char *buffer = malloc(100);
+  snprintf(buffer, 100, "start bin/meta.exe %i", server->port);
+  system(buffer);
+  free(buffer);
 
   // main loop
   uint32_t previous = 0;

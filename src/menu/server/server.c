@@ -9,12 +9,19 @@ server_t *server_init() {
   server_t *server = malloc(sizeof(server_t));
   server->sock = 0;
 
-  SDLNet_ResolveHost(&(server->ip), NULL, G2HR_MENU_SERVER_PORT);
-  server->sock_server = SDLNet_TCP_Open(&(server->ip));
+  for (server->port = G2HR_MENU_SERVER_PORT_START;
+       server->port < G2HR_MENU_SERVER_PORT_START + 10; server->port++) {
+    SDLNet_ResolveHost(&(server->ip), NULL, server->port);
+    server->sock_server = SDLNet_TCP_Open(&(server->ip));
+    if (server->sock_server)
+      break;
+  }
+
   if (!server->sock_server)
     exit(printf("SDL_net ERROR while starting menu server: %s\n",
                 SDLNet_GetError()));
 
+  printf("started menu server on port %i\n", server->port);
   return server;
 }
 

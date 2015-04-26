@@ -5,10 +5,13 @@ Func OnAutoItExit()
    TCPShutdown()
 EndFunc
 
+If $CmdLine[0] < 1 Then _
+	Exit Msgbox(16,"G2HR","Syntax: meta.exe menu_server_port")
+
 ; Connect to the menu
 TCPStartup()
 OnAutoItExitRegister("OnAutoItExit")
-$sock = TCPConnect("127.0.0.1", 19990)
+$sock = TCPConnect("127.0.0.1", $CmdLine[1])
 If @ERROR Then Exit ConsoleWrite("[meta] connection refused" & @CRLF)
 ConsoleWrite("[meta] connected to the menu" & @CRLF)
 
