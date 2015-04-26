@@ -11,11 +11,11 @@ Func cmd_singleplayer($cmd)
 	
 	; Skip the menu, start the first map
 	RegWrite($reg_base, "skip_frontend", "REG_BINARY", 1)
-	RegWrite($reg_base, "mapname", "REG_DWORD", "gta2\data\wil.gmp")
-	RegWrite($reg_base, "scriptname", "REG_DWORD", "gta2\data\wil.scr")
-	RegWrite($reg_base, "stylename", "REG_DWORD", "gta2\data\wil.sty")
 	
-	; savename - probably used to resume a savegame! :D
+	RegWrite($reg_base, "savename", "REG_DWORD", "")
+	RegWrite($reg_base, "mapname", "REG_DWORD", "data\wil.gmp")
+	RegWrite($reg_base, "scriptname", "REG_DWORD", "data\wil.scr")
+	RegWrite($reg_base, "stylename", "REG_DWORD", "data\wil.sty")
 	
 	
 	Run("GTA2/gta2.exe", "GTA2")

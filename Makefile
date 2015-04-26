@@ -2,8 +2,8 @@ all: bin/menu.exe bin/meta.exe
 
 
 run: bin/menu.exe bin/meta.exe
-	WINEDEBUG=-all wine bin/menu.exe
-	sleep 1 && wineboot -e -f
+	WINEDEBUG=-all wine explorer /desktop=G2HR,640x480 bin/menu.exe
+	wineboot -e -f
 
 bin/menu.exe:
 	$(MAKE) -C src/menu/ Windows
