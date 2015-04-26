@@ -1,5 +1,4 @@
 #include "server.h"
-#include "menu_meta_protocol.h"
 #include <SDL2/SDL_net.h>
 
 // listen on all addresses. Better would be localhost only, but SDL2_net
@@ -41,7 +40,9 @@ void server_accept_localhost_only(server_t *server) {
     return;
   }
 
+  // drop the server socket, we only want one connection anyway!
   printf("connected to meta\n");
+  SDLNet_TCP_Close(server->sock_server);
 }
 
 void server_frame(server_t *server) {
@@ -62,7 +63,10 @@ void server_send(server_t *server, char *message, char do_free) {
 }
 
 void server_cleanup(server_t *server) {
-  server_send(server, G2HR_MENU_META_CLEANUP, 0);
-  SDLNet_TCP_Close(server->sock_server);
+  server_send(server, "CLEANUP", 0);
+  if (server->sock_server)
+    SDLNet_TCP_Close(server->sock_server);
+  if (server->sock)
+    SDLNet_TCP_Close(server->sock);
   free(server);
 }

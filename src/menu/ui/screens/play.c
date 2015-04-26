@@ -1,4 +1,3 @@
-#include "../../server/menu_meta_protocol.h"
 #include "../../server/server.h"
 #include "../../tk/ctrl/controls.h"
 #include "../../tk/toolkit.h"
