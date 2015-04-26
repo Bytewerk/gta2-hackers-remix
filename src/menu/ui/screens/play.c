@@ -15,8 +15,10 @@ void play_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                      tk_action_t action) {
   ud_play_t *ud = (ud_play_t *)el->userdata;
   if (el_selected == ud->start && action == TK_ACTION_ENTER) {
-    printf("starting the game here!\n");
-    server_send(ud->ui->server, G2HR_MENU_META_SINGLEPLAYER, 0);
+    char *buffer = malloc(100);
+    snprintf(buffer, 100, "SINGLEPLAYER GTA2 NORMAL %c",
+             ((ud_circle_t *)ud->start->userdata)->value_str[0]);
+    server_send(ud->ui->server, buffer, 1);
   }
 }
 

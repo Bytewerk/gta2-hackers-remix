@@ -1,5 +1,6 @@
 #NoTrayIcon
 #include "cmds/singleplayer.au3"
+#include <Array.au3>
 
 Func OnAutoItExit()
    TCPShutdown()
