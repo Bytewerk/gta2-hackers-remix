@@ -2,11 +2,11 @@
 build/wineprefix
 
 # PKGBUILDs
-PKGBUILDs/*/pkg
-PKGBUILDs/*/src
-PKGBUILDs/*/*.xz
-PKGBUILDs/*/*.gz
-PKGBUILDs/*/*.part
+build/PKGBUILDs/*/pkg
+build/PKGBUILDs/*/src
+build/PKGBUILDs/*/*.xz
+build/PKGBUILDs/*/*.gz
+build/PKGBUILDs/*/*.part
 
 
 # GTA2 files
