@@ -73,8 +73,6 @@ mmp_key_t *mmp_parse(char *buffer, int size) {
       section = malloc(section_length + 1);
       strncpy(section, buffer + start_brackets, section_length);
       section[section_length] = '\0';
-
-      printf("in section (%i): %s\n", section_length, section);
     } else if (c == '\n' || c == '\r') {
       if (start_key != -1 && !ignore_line) {
         int key_length = start_key - start_line - 1;
@@ -99,8 +97,7 @@ mmp_key_t *mmp_parse(char *buffer, int size) {
         new->value[value_length] = '\0';
         new->value = trim(new->value, 0);
 
-        printf("key: '%s' : '%s'\n", new->key, new->value);
-
+        // add it to the list
         if (last)
           last->next = new;
         else
@@ -123,13 +120,12 @@ mmp_key_t *mmp_parse(char *buffer, int size) {
 
 mmp_t *mmp_load(char *filename) {
   mmp_t *mmp = malloc(sizeof(mmp_t));
-  printf("loading %s...\n", filename);
   mmp->source = filename;
   mmp->next = NULL;
 
   FILE *handle = fopen(filename, "rb");
   if (!handle)
-    exit(printf("ERROR: Couldn't read file!"));
+    exit(printf("ERROR: Couldn't read '%s'!", filename));
 
   // calculate file size
   int size;
@@ -141,7 +137,7 @@ mmp_t *mmp_load(char *filename) {
   rewind(handle);
   buffer = (char *)malloc(size);
   if (fread(buffer, 1, size, handle) != size)
-    exit(printf("Read error!"));
+    exit(printf("Read error while reading '%s'!", filename));
   fclose(handle);
 
   mmp->data = mmp_parse(buffer, size);
@@ -153,13 +149,13 @@ mmp_t *mmp_load(char *filename) {
 mmp_t *mmp_init(const char *path) {
   printf("loading %s/*.mmp...\n", path);
 
-  mmp_t *first = NULL;
-  // mmp_t* last = NULL;
-
   DIR *dir = opendir(path);
   if (!dir)
     exit(printf("Couldn't find path '%s'!\n", path));
 
+  mmp_t *first = NULL;
+  mmp_t *last = NULL;
+  size_t len_path = strlen(path);
   while (1) {
     struct dirent *entry = readdir(dir);
     if (!entry)
@@ -174,7 +170,17 @@ mmp_t *mmp_init(const char *path) {
         (name[len - 1] != 'p' && name[len - 1] != 'P'))
       continue;
 
-    printf("%s\n", name);
+    // load the file
+    char *fullpath = malloc(len_path + len + 2);
+    snprintf(fullpath, len_path + len + 2, "%s/%s", path, name);
+    mmp_t *new = mmp_load(fullpath);
+
+    // add it to the list
+    if (first)
+      last->next = new;
+    else
+      first = new;
+    last = new;
   }
   closedir(dir);
 
@@ -206,6 +212,7 @@ void mmp_cleanup(mmp_t *mmp) {
     // free the mmp struct itself
     mmp_t *old = mmp;
     mmp = mmp->next;
+    free(old->source);
     free(old);
   }
 }
