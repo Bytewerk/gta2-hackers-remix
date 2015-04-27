@@ -20,7 +20,7 @@ typedef struct mmp_key_t {
 
 typedef struct mmp_t {
   struct mmp_t *next;
-  mmp_key_t *keys;
+  mmp_key_t *data;
   char *source;
 } mmp_t;
 
