@@ -1,5 +1,6 @@
 # INPUT_FILE := "../../../GTA2/data/mp1-6p.mmp"
-INPUT_FILE := "test.mmp"
+# INPUT_FILE := "test.mmp"
+INPUT_FILE := "../../../GTA2/data"
 
 
 run: ../out/mmp_test.bin

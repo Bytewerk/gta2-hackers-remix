@@ -1,14 +1,13 @@
 #include "mmp.h"
 #include <ctype.h>
+#include <dirent.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
 
-mmp_t *mmp_init() {
-  // TODO: read all mmp files in data folder
-  return NULL;
-}
-
+// little helping function that removes whitespaces around a string,
+// for example: ' hello world!  ' becomes 'hello world!'
 char *trim(char *str, int from) {
   // find whitespace positions, that we'll rip off the string
   int len = strlen(str);
@@ -148,6 +147,38 @@ mmp_t *mmp_load(char *filename) {
   mmp->data = mmp_parse(buffer, size);
   free(buffer);
   return mmp;
+}
+
+// load all files in the data/ folder
+mmp_t *mmp_init(const char *path) {
+  printf("loading %s/*.mmp...\n", path);
+
+  mmp_t *first = NULL;
+  // mmp_t* last = NULL;
+
+  DIR *dir = opendir(path);
+  if (!dir)
+    exit(printf("Couldn't find path '%s'!\n", path));
+
+  while (1) {
+    struct dirent *entry = readdir(dir);
+    if (!entry)
+      break;
+
+    // skip non-.mmp-files
+    char *name = entry->d_name;
+    size_t len = strlen(name);
+    if (len < 4 || name[len - 4] != '.' ||
+        (name[len - 3] != 'm' && name[len - 3] != 'M') ||
+        (name[len - 2] != 'm' && name[len - 2] != 'M') ||
+        (name[len - 1] != 'p' && name[len - 1] != 'P'))
+      continue;
+
+    printf("%s\n", name);
+  }
+  closedir(dir);
+
+  return first;
 }
 
 char *mmp_read(mmp_t *mmp, char *key) {

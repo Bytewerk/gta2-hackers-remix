@@ -24,7 +24,7 @@ typedef struct mmp_t {
   char *source;
 } mmp_t;
 
-mmp_t *mmp_init();
+mmp_t *mmp_init(const char *path);
 mmp_t *mmp_load(char *filename);
 char *mmp_read(mmp_t *mmp, char *key);
 void mmp_cleanup(mmp_t *mmp);
