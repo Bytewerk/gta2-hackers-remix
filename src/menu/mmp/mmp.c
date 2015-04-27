@@ -170,7 +170,7 @@ mmp_t *mmp_init(const char *path) {
         (name[len - 1] != 'p' && name[len - 1] != 'P'))
       continue;
 
-    // load the file
+    // load the file (the full path gets free'd on cleanup!)
     char *fullpath = malloc(len_path + len + 2);
     snprintf(fullpath, len_path + len + 2, "%s/%s", path, name);
     mmp_t *new = mmp_load(fullpath);
