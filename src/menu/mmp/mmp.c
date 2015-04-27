@@ -125,7 +125,7 @@ mmp_t *mmp_load(char *filename) {
 
   FILE *handle = fopen(filename, "rb");
   if (!handle)
-    exit(printf("ERROR: Couldn't read '%s'!", filename));
+    exit(printf("ERROR: Couldn't read '%s'!\n", filename));
 
   // calculate file size
   int size;
@@ -137,7 +137,7 @@ mmp_t *mmp_load(char *filename) {
   rewind(handle);
   buffer = (char *)malloc(size);
   if (fread(buffer, 1, size, handle) != size)
-    exit(printf("Read error while reading '%s'!", filename));
+    exit(printf("Read error while reading '%s'!\n", filename));
   fclose(handle);
 
   mmp->data = mmp_parse(buffer, size);
