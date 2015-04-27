@@ -150,7 +150,15 @@ mmp_t *mmp_load(char *filename) {
   return mmp;
 }
 
-char *mmp_read(mmp_t *mmp, char *key) { return "TODO"; }
+char *mmp_read(mmp_t *mmp, char *key) {
+  mmp_key_t *current = mmp->data;
+  while (current) {
+    if (!strcmp(current->key, key))
+      return current->value;
+    current = current->next;
+  }
+  return "";
+}
 
 void mmp_cleanup(mmp_t *mmp) {
   while (mmp) {
