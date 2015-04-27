@@ -7,9 +7,11 @@ AUT2EXE := "c:\Program Files\AutoIt3\Aut2Exe\Aut2exe.exe"
 WINEPREFIX := $(shell realpath ../../build/wineprefix)
 WINE := WINEPREFIX=$(WINEPREFIX) WINEDEBUG=-all wine
 
-../../bin/meta.exe: meta.au3 */*.au3 $(WINEPREFIX)
+../../bin/meta.exe: meta.au3 */*.au3
 	$(WINE) $(AUT2EXE) \
 		/in meta.au3 /out $@ /x86 /gui
+
+wineprefix: $(WINEPREFIX)
 
 $(WINEPREFIX):
 	cd ../../build/ && ./setup_wineprefix.sh
@@ -17,4 +19,4 @@ $(WINEPREFIX):
 clean:
 	rm ../../bin/meta.exe || true
 	
-.PHONY: clean
+.PHONY: clean wineprefix
