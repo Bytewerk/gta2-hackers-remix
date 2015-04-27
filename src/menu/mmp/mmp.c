@@ -9,14 +9,14 @@ mmp_t *mmp_init() {
   return NULL;
 }
 
-void trim(char *str, int from) {
+char *trim(char *str, int from) {
+  // find whitespace positions, that we'll rip off the string
   int len = strlen(str);
   int trimmed_start = 0;
   int trimmed_end = len;
   char non_space_found = 0;
   for (int i = from; i < len; i++) {
-    char c = str[i];
-    if (isspace(c)) {
+    if (isspace(str[i])) {
       if (!non_space_found && (!trimmed_start || trimmed_start == i))
         trimmed_start = i + 1;
       else if (non_space_found && trimmed_end == len)
@@ -39,6 +39,11 @@ void trim(char *str, int from) {
     }
     str[i] = str[i + offset_start];
   }
+
+  // trading a few bytes for additional CPU time. For G2HR this won't
+  // really matter anyway, except when you have a gazillion custom
+  // maps in your data folder.
+  return realloc(str, trimmed_end - offset_start + 1);
 }
 
 mmp_key_t *mmp_parse(char *buffer, int size) {
@@ -88,12 +93,12 @@ mmp_key_t *mmp_parse(char *buffer, int size) {
         strncpy(new->key + section_length + 1, buffer + start_line, key_length);
         new->key[section_length] = '/';
         new->key[key_section_length] = '\0';
-        trim(new->key, section_length + 1);
+        new->key = trim(new->key, section_length + 1);
 
         // create 'value' string
         strncpy(new->value, buffer + start_key, value_length);
         new->value[value_length] = '\0';
-        trim(new->value, 0);
+        new->value = trim(new->value, 0);
 
         printf("key: '%s' : '%s'\n", new->key, new->value);
 
