@@ -9,7 +9,8 @@ mmp_t *mmp_init() {
   return NULL;
 }
 
-void trim(char *str, int from) {
+void trim(char *str, int from) // FIXME
+{
   int len = strlen(str);
   int trimmed_start = 0;
   int trimmed_end = len;
@@ -45,15 +46,20 @@ mmp_key_t *mmp_parse(char *buffer, int size) {
   mmp_key_t *first = NULL;
   mmp_key_t *last = NULL;
 
+  char ignore_line = 0;
+
   int start_brackets = -1;
   int start_key = -1;
   int start_line = 0;
+
   char *section = NULL;
   int section_length = 0;
-  for (int i = 0; i < size; i++) {
-    char c = buffer[i];
+  for (int i = 0; i <= size; i++) {
+    char c = i < size ? buffer[i] : '\n'; // add an extra line end
     if (c == '[')
       start_brackets = i + 1;
+    else if (c == ';' && i == start_line)
+      ignore_line = 1;
     else if (c == ']') {
       if (start_brackets == -1)
         exit(printf("ERROR: unexpected ']' without '[' in the same line!"));
@@ -66,12 +72,12 @@ mmp_key_t *mmp_parse(char *buffer, int size) {
       section[section_length] = '\0';
 
       printf("in section (%i): %s\n", section_length, section);
-    } else if (c == '\n') {
-      if (start_key != -1) {
+    } else if (c == '\n' || c == '\r') {
+      if (start_key != -1 && !ignore_line) {
         int key_length = start_key - start_line - 1;
         int key_section_length = section_length + 1 /* slash */
                                  + key_length;
-        int value_length = i - start_line;
+        int value_length = i - start_key;
 
         mmp_key_t *new = malloc(sizeof(mmp_key_t));
         new->next = NULL;
@@ -86,8 +92,8 @@ mmp_key_t *mmp_parse(char *buffer, int size) {
         trim(new->key, section_length + 1);
 
         // create 'value' string
-        strncpy(new->value, buffer + start_key, key_length);
-        new->value[key_length] = '\0';
+        strncpy(new->value, buffer + start_key, value_length);
+        new->value[value_length] = '\0';
         trim(new->value, 0);
 
         printf("key: '%s' : '%s'\n", new->key, new->value);
@@ -98,6 +104,7 @@ mmp_key_t *mmp_parse(char *buffer, int size) {
           first = new;
         last = new;
       }
+      ignore_line = 0;
       start_brackets = -1;
       start_key = -1;
       start_line = i + 1;
