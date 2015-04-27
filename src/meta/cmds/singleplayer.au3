@@ -78,4 +78,6 @@ Func cmd_singleplayer($cmd)
 	
 	; Start the game
 	Run("GTA2/gta2.exe", "GTA2")
+	WinWait("GTA2")
+	WinActivate("GTA2")
 Endfunc

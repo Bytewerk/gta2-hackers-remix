@@ -8,10 +8,22 @@ tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *title) {
   tk->bg = bg;
   tk->gxt = gxt;
 
+  // currently, just use the fullscreen display (fake fullscreen at
+  // desktop resultion!)
+  // TODO:
+  //	- hide windows taskbar (in 'meta' component, while init)
+  //	- provide an option: run the mod in windowed mode
+  //	- provide as option: change display number
+  SDL_DisplayMode mode;
+  if (SDL_GetDesktopDisplayMode(0, &mode) != 0)
+    exit(printf("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError()));
+
+  printf("desktop resolution: %ix%i\n", mode.w, mode.h);
+
   // create the SDL window
-  tk->window =
-      SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                       640, 480, SDL_WINDOW_SHOWN);
+  tk->window = SDL_CreateWindow(title, 0, 0, mode.w, mode.h,
+                                SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS |
+                                    SDL_WINDOW_INPUT_GRABBED);
   if (!tk->window)
     exit(printf("SDL_ERROR: %s\n", SDL_GetError()));
 
