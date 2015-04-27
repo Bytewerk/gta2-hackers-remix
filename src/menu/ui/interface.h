@@ -1,4 +1,5 @@
 #pragma once
+#include "../mmp/mmp.h"
 #include "../server/server.h"
 #include "../tk/toolkit.h"
 
@@ -12,10 +13,11 @@ typedef struct {
   tk_screen_t *play;
   tk_screen_t *options;
   server_t *server;
+  mmp_t *mmp;
   char **player_names;
 } ui_t;
 
-ui_t *ui_init(tk_t *tk, server_t *server);
+ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server);
 void ui_cleanup(ui_t *ui);
 
 // screens

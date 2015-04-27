@@ -1,3 +1,4 @@
+#pragma once
 /*
         This should be following elypter's "The .mmp file standard" closely:
                 http://gtamp.com/forum/viewtopic.php?f=4&t=188

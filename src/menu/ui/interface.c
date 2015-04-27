@@ -2,10 +2,11 @@
 #include "../tk/toolkit.h"
 #include "ui_text.h"
 
-ui_t *ui_init(tk_t *tk, server_t *server) {
+ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server) {
   ui_t *ui = malloc(sizeof(ui_t));
   ui->tk = tk;
   ui->server = server;
+  ui->mmp = mmp;
 
   // player names
   ui->player_names = malloc(sizeof(char *) * GTA2_SAVEGAME_COUNT);

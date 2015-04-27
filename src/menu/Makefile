@@ -130,6 +130,9 @@ obj/sfx.o: $(call DEPS,sfx/sfx.c)
 obj/gxt.o: $(call DEPS,gxt/gxt.c)
 	$(CC) -c -o $@ $<
 
+# MMP
+obj/mmp.o: $(call DEPS,mmp/mmp.c)
+	$(CC) -c -o $@ $<
 
 # Server
 obj/server.o: $(call DEPS,server/server.c)

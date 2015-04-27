@@ -1,5 +1,6 @@
 #include "bg/background.h"
 #include "gxt/gxt.h"
+#include "mmp/mmp.h"
 #include "server/server.h"
 #include "sfx/sfx.h"
 #include "sty/sty.h"
@@ -33,9 +34,10 @@ int main(int argc, char *argv[]) {
   gxt_t *gxt = gxt_load("GTA2/data/e.gxt");
   sty_t *fsty = sty_load("GTA2/data/fstyle.sty");
   sfx_t *sfx = sfx_init();
+  mmp_t *mmp = mmp_init("GTA2/data");
   bg_t *bg = bg_init(pics, sizeof(pics) / sizeof(char *));
   tk_t *tk = tk_init(gxt, fsty, sfx, bg, "G2HR");
-  ui_t *ui = ui_init(tk, server);
+  ui_t *ui = ui_init(tk, mmp, server);
 
   // start the meta component (this will simply fail on Linux)
   char *buffer = malloc(100);
@@ -65,6 +67,7 @@ int main(int argc, char *argv[]) {
   // cleanup all
   ui_cleanup(ui);
   tk_cleanup(tk);
+  mmp_cleanup(mmp);
   bg_cleanup(bg);
   sfx_cleanup(sfx);
   sty_cleanup(fsty);
