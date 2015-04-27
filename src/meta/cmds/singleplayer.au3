@@ -61,7 +61,7 @@ Func cmd_singleplayer($cmd)
 		Endif
 	Endif
 	
-	if $sty == "" Then _
+	If $sty == "" Then _
 		Return Msgbox(16,"G2HR", "level not yet implemented:" & @crlf _
 			& $levelpack & " " & $type & " " & $id)
 	If $gmp == "" Then $gmp = $sty
