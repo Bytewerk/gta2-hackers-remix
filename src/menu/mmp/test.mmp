@@ -9,5 +9,5 @@ Description = This is a test file!
 broken line without equals sign
 
 [OtherSection]
-Custom=hey Look, a custom value!
+Custom=hey look, a custom value!
   Custom Two   =  lots of padding, trim me away !!     

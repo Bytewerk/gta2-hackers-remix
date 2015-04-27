@@ -9,8 +9,7 @@ mmp_t *mmp_init() {
   return NULL;
 }
 
-void trim(char *str, int from) // FIXME
-{
+void trim(char *str, int from) {
   int len = strlen(str);
   int trimmed_start = 0;
   int trimmed_end = len;
@@ -18,9 +17,9 @@ void trim(char *str, int from) // FIXME
   for (int i = from; i < len; i++) {
     char c = str[i];
     if (isspace(c)) {
-      if (!non_space_found && (!trimmed_start || trimmed_start == i - 2))
+      if (!non_space_found && (!trimmed_start || trimmed_start == i))
         trimmed_start = i + 1;
-      else if (trimmed_end == len || trimmed_end < i - 1)
+      else if (non_space_found && trimmed_end == len)
         trimmed_end = i;
     } else {
       non_space_found = 1;
