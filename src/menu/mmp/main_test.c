@@ -10,7 +10,7 @@ int main(int argc, const char **argv) {
   mmp_t *current = mmp;
   while (current) {
     printf("%2i: %s (%s)\n", i, mmp_read(current, "MapFiles/Description"),
-           mmp->source);
+           current->source);
     i++;
     current = current->next;
   }
