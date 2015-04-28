@@ -20,10 +20,13 @@ tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *title) {
 
   printf("desktop resolution: %ix%i\n", mode.w, mode.h);
 
+  // DEBUG
+  mode.w = 640;
+  mode.h = 480;
+
   // create the SDL window
   tk->window = SDL_CreateWindow(title, 0, 0, mode.w, mode.h,
-                                SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS |
-                                    SDL_WINDOW_INPUT_GRABBED);
+                                SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS);
   if (!tk->window)
     exit(printf("SDL_ERROR: %s\n", SDL_GetError()));
 
