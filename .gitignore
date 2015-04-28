@@ -23,7 +23,6 @@ GTA2/*
 
 # Converted some TGAs with imagemagick
 *.jpg
-*.png
 
 # Logs, eg. from std2wav
 *.log
