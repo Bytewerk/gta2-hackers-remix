@@ -12,6 +12,8 @@
                 - make the filters usable
                 - change background, based on the selected levels
                 - add a function to each button, to put it back somehow
+                - add F5 action, that reloads the mmp files and redraws the
+                        screen
 */
 
 tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui) {
