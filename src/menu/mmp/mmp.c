@@ -6,6 +6,30 @@
 #include <string.h>
 #include <sys/types.h>
 
+char *mmp_read(mmp_file_t *file, char *key) {
+  mmp_key_t *current = file->data;
+  while (current) {
+    if (!strcmp(current->key, key))
+      return current->value;
+    current = current->next;
+  }
+  return "";
+}
+
+// qsort_r isn't in C99, so we'll just store the sorting key
+// globally.
+char *GLOBAL_SORT_KEY = G2HR_MMP_DEFAULT_SORT_KEY;
+
+int mmp_comparator(const void *a, const void *b) {
+  return strcmp(mmp_read((mmp_file_t *)a, GLOBAL_SORT_KEY),
+                mmp_read((mmp_file_t *)b, GLOBAL_SORT_KEY));
+}
+
+void mmp_sort(mmp_t *mmp, char *key) {
+  GLOBAL_SORT_KEY = key;
+  qsort(mmp->files, mmp->file_count, sizeof(mmp_file_t *), mmp_comparator);
+}
+
 // little helping function that removes whitespaces around a string,
 // for example: ' hello world!  ' becomes 'hello world!'
 char *trim(char *str, int from) {
@@ -144,25 +168,8 @@ mmp_file_t *mmp_load(char *filename) {
   return file;
 }
 
-char *mmp_read(mmp_file_t *file, char *key) {
-  mmp_key_t *current = file->data;
-  while (current) {
-    if (!strcmp(current->key, key))
-      return current->value;
-    current = current->next;
-  }
-  return "";
-}
-
-#define COMPARE_KEY "MapFiles/Description"
-int mmp_comparator(const void *a, const void *b) {
-  return strcmp(mmp_read((mmp_file_t *)a, COMPARE_KEY),
-                mmp_read((mmp_file_t *)b, COMPARE_KEY));
-}
-
-// load all files in the data/ folder
-// note: we can't use scandir here, because it's not available on
-// windows.
+// load all files in the data/ folder and sort them by the
+// description field (which is something like the display title).
 mmp_t *mmp_init(const char *path) {
   printf("loading %s/*.mmp...\n", path);
   DIR *dir = opendir(path);
@@ -220,7 +227,7 @@ mmp_t *mmp_init(const char *path) {
   }
 
   // sort the maps by the description field
-  qsort(mmp->files, mmp->file_count, sizeof(mmp_file_t *), mmp_comparator);
+  mmp_sort(mmp, G2HR_MMP_DEFAULT_SORT_KEY);
   return mmp;
 }
 
