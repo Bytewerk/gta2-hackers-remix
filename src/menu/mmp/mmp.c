@@ -118,10 +118,9 @@ mmp_key_t *mmp_parse(char *buffer, int size) {
   return first;
 }
 
-mmp_t *mmp_load(char *filename) {
-  mmp_t *mmp = malloc(sizeof(mmp_t));
-  mmp->source = filename;
-  mmp->next = NULL;
+mmp_file_t *mmp_load(char *filename) {
+  mmp_file_t *file = malloc(sizeof(mmp_file_t));
+  file->source = filename;
 
   FILE *handle = fopen(filename, "rb");
   if (!handle)
@@ -140,21 +139,44 @@ mmp_t *mmp_load(char *filename) {
     exit(printf("Read error while reading '%s'!\n", filename));
   fclose(handle);
 
-  mmp->data = mmp_parse(buffer, size);
+  file->data = mmp_parse(buffer, size);
   free(buffer);
-  return mmp;
+  return file;
+}
+
+char *mmp_read(mmp_file_t *file, char *key) {
+  mmp_key_t *current = file->data;
+  while (current) {
+    if (!strcmp(current->key, key))
+      return current->value;
+    current = current->next;
+  }
+  return "";
+}
+
+#define COMPARE_KEY "MapFiles/Description"
+int mmp_comparator(const void *a, const void *b) {
+  return strcmp(mmp_read((mmp_file_t *)a, COMPARE_KEY),
+                mmp_read((mmp_file_t *)b, COMPARE_KEY));
 }
 
 // load all files in the data/ folder
+// note: we can't use scandir here, because it's not available on
+// windows.
 mmp_t *mmp_init(const char *path) {
   printf("loading %s/*.mmp...\n", path);
-
   DIR *dir = opendir(path);
   if (!dir)
     exit(printf("Couldn't find path '%s'!\n", path));
 
-  mmp_t *first = NULL;
-  mmp_t *last = NULL;
+  // struct that we'll return
+  mmp_t *mmp = malloc(sizeof(mmp_t));
+  mmp->file_count = 0;
+
+  // temporary list structs
+  mmp_list_t *first = NULL;
+  mmp_list_t *current = NULL;
+
   size_t len_path = strlen(path);
   while (1) {
     struct dirent *entry = readdir(dir);
@@ -173,46 +195,52 @@ mmp_t *mmp_init(const char *path) {
     // load the file (the full path gets free'd on cleanup!)
     char *fullpath = malloc(len_path + len + 2);
     snprintf(fullpath, len_path + len + 2, "%s/%s", path, name);
-    mmp_t *new = mmp_load(fullpath);
+    mmp_list_t *new = malloc(sizeof(mmp_list_t));
+    new->next = NULL;
+    new->file = mmp_load(fullpath);
 
-    // add it to the list
+    // add it to the temporary list
     if (first)
-      last->next = new;
+      current->next = new;
     else
       first = new;
-    last = new;
+    current = new;
+    mmp->file_count++;
   }
   closedir(dir);
 
-  return first;
-}
-
-char *mmp_read(mmp_t *mmp, char *key) {
-  mmp_key_t *current = mmp->data;
-  while (current) {
-    if (!strcmp(current->key, key))
-      return current->value;
-    current = current->next;
+  // transform the list into an array
+  mmp->files = malloc(sizeof(mmp_file_t *) * mmp->file_count);
+  current = first;
+  for (size_t i = 0; i < mmp->file_count; i++) {
+    first = current;
+    mmp->files[i] = first->file;
+    current = first->next;
+    free(first);
   }
-  return "";
+
+  // sort the maps by the description field
+  qsort(mmp->files, mmp->file_count, sizeof(mmp_file_t *), mmp_comparator);
+  return mmp;
 }
 
 void mmp_cleanup(mmp_t *mmp) {
-  while (mmp) {
-    // free all keys
-    mmp_key_t *data = mmp->data;
-    while (data) {
-      mmp_key_t *old = data;
-      data = data->next;
+  for (size_t i = 0; i < mmp->file_count; i++) {
+    mmp_file_t *file = mmp->files[i];
+
+    // free all key value pairs
+    mmp_key_t *current = file->data;
+    while (current) {
+      mmp_key_t *old = current;
+      current = current->next;
       free(old->key);
       free(old->value);
       free(old);
     }
 
-    // free the mmp struct itself
-    mmp_t *old = mmp;
-    mmp = mmp->next;
-    free(old->source);
-    free(old);
+    free(file->source);
+    free(file);
   }
+  free(mmp->files);
+  free(mmp);
 }

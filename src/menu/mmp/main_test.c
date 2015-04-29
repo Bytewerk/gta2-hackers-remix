@@ -6,13 +6,9 @@ int main(int argc, const char **argv) {
     return printf("Syntax: main_test mmp_folder\n");
   mmp_t *mmp = mmp_init(argv[1]);
 
-  int i = 0;
-  mmp_t *current = mmp;
-  while (current) {
-    printf("%2i: %s (%s)\n", i, mmp_read(current, "MapFiles/Description"),
-           current->source);
-    i++;
-    current = current->next;
+  for (size_t i = 0; i < mmp->file_count; i++) {
+    mmp_file_t *file = mmp->files[i];
+    printf("%s (%s)\n", mmp_read(file, "MapFiles/Description"), file->source);
   }
 
   mmp_cleanup(mmp);
