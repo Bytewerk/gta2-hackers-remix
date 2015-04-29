@@ -40,6 +40,13 @@ char sty_letter_switch(char letter, int font_id) {
     if (letter == ':')
       return ';';
   }
+
+  // almost all fonts don't have lowercase characters, so convert
+  // them to uppercase before drawing.
+  if (font_id != GTA2_FONT_FSTYLE_GRADIENT_BLACK_NORMAL && letter >= 'a' &&
+      letter <= 'z')
+    letter = letter + ('A' - 'a');
+
   return letter;
 }
 
