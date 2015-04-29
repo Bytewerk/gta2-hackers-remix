@@ -65,6 +65,9 @@ obj/screen_scores.o: $(call DEPS,ui/screens/scores.c)
 
 obj/screen_splitscreen.o: $(call DEPS,ui/screens/splitscreen.c)
 	$(CC) -c -o $@ $<
+
+obj/screen_levels.o: $(call DEPS,ui/screens/levelselect.c)
+	$(CC) -c -o $@ $<
 	
 # UI
 obj/ui.o: $(call DEPS,ui/interface.c)

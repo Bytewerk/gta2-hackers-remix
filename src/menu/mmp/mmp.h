@@ -14,7 +14,7 @@
         Reading MMP files:
                 mmp_t* mmp = mmp_init("GTA2/data");
                 for(size_t i=0; i < mmp->file_count; i++)
-                        mmp_read(mmp->files[i], "MapFiles/GMPFile");
+                        mmp_read(mmp->files[i], "MapFiles/Description");
                 mmp_cleanup(mmp);
 */
 

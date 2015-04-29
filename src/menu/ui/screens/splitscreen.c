@@ -10,7 +10,7 @@
                 - start button
 */
 
-tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
+tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui, tk_screen_t *levels) {
   tk_screen_t *splitscreen = tk_screen(tk, NULL, NULL);
   TK_STACK_SCREEN(
       splitscreen,
@@ -32,6 +32,10 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
 
                tk_ctrl_circle(tk, TK_PARENT, "SCREEN LAYOUT", NULL, 'A', 'C', 0,
                               0, 'B', NULL);
+
+               // FIXME
+               tk_ctrl_button(tk, TK_PARENT, "LEVEL SELECT DUMMY", NULL, levels,
+                              NULL);
 
                // STUB: this doesn't get free'd!
                char **entries = malloc(sizeof(char *) * 3);
