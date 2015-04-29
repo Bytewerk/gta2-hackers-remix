@@ -16,8 +16,7 @@ char *mmp_read(mmp_file_t *file, char *key) {
   return "";
 }
 
-// qsort_r isn't in C99, so we'll just store the sorting key
-// globally.
+// qsort_r isn't in C99, so we'll just store the sorting key globally.
 char *GLOBAL_SORT_KEY = G2HR_MMP_DEFAULT_SORT_KEY;
 
 int mmp_comparator(const void *a, const void *b) {
