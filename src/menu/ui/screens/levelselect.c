@@ -31,8 +31,8 @@ tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui) {
       // map list
       TK_STACK(levels->el_content_container = TK_PARENT;
 
-               tk_el_padding(TK_PARENT, 300, 123, 0, 0);
-               tk_el_height(TK_PARENT, 100);
+               tk_el_padding(TK_PARENT, 300, 123, 0, 30);
+               tk_el_height(TK_PARENT, 200);
 
                mmp_t *mmp = ui->mmp;
                for (size_t i = 0; i < mmp->file_count; i++) {
@@ -50,7 +50,7 @@ tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui) {
       TK_STACK(
           tk_el_padding(TK_PARENT, 300, 0, 0, 0);
 
-          tk_ctrl_button(tk, TK_PARENT, "DISPLAY: ALL", NULL, NULL, NULL);
+          tk_ctrl_button(tk, TK_PARENT, "TAGS: ALL", NULL, NULL, NULL);
           tk_ctrl_button(tk, TK_PARENT, "ORDER BY: TITLE", NULL, NULL, NULL);
           tk_ctrl_button(tk, TK_PARENT, "FILTER: NONE", NULL, NULL, NULL);)
 
