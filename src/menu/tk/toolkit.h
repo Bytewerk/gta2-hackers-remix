@@ -36,6 +36,7 @@ typedef struct {
   tk_el_t *exclusive_action_element;
   uint32_t action_time[TK_ACTION_LAST_LIMITED - 1];
   char redraw_needed;
+  char debug_draw;
 } tk_t;
 
 tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *title);

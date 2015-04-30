@@ -36,6 +36,8 @@ tk_action_t convert(tk_t *tk, SDL_Event *e) {
       return TK_ACTION_BACKSPACE;
     if (key == SDLK_RETURN)
       return TK_ACTION_ENTER;
+    if (key == SDLK_F12)
+      return TK_ACTION_DEBUGDRAW;
 
     // http://wiki.libsdl.org/SDLKeycodeLookup
     if (key >= SDLK_SPACE && key <= SDLK_z)
@@ -75,6 +77,9 @@ void tk_action(tk_t *tk, SDL_Event *event) {
       return;
     tk->action_time[action] = current_time;
   }
+
+  if (action == TK_ACTION_DEBUGDRAW)
+    tk->debug_draw = 1;
 
   if (action == TK_ACTION_REDRAW || (event && event->type == SDL_KEYDOWN))
     tk->redraw_needed = 1;

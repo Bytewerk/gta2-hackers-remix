@@ -49,10 +49,20 @@ tk_screen_t *tk_screen(tk_t *tk, tk_screen_t *back, void *actionfunc) {
 }
 
 void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
-                    int offset_y, int cutoff_y, char all_selected) {
+                    int offset_y, int cutoff_y, char all_selected,
+                    int max_height) {
   while (el) {
-    if (offset_y > 480)
-      break; // off screen!
+    if (tk->debug_draw && el->type == LABEL) {
+      printf("%s; max_height: %i, offset_y: %i\n", el->text, max_height,
+             offset_y);
+    }
+
+    // break when off-screen
+    if (offset_y > max_height) {
+      if (tk->debug_draw)
+        printf("Offset y > max_height: %i > %i\n", offset_y, max_height);
+      break;
+    }
 
     int offset_x_old = offset_x;
     char is_selected = all_selected || (el == el_selected);
@@ -68,7 +78,6 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
       argb = el->argb_selected;
 
     if (!(el->flags & TK_EL_FLAG_INVISIBLE)) {
-
       if (el->flags & TK_EL_FLAG_H_CENTER)
         offset_x += el->parent->width / 2 - el->width / 2;
 
@@ -123,8 +132,20 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
         }
 
         if (sub) {
+          // calculate the maximum height that should be drawn
+          if (el->flags & TK_EL_FLAG_FORCE_HEIGHT &&
+              (el->height + sub_offset_y) < max_height)
+            max_height = el->height + sub_offset_y;
+
+          if (tk->debug_draw)
+            printf("RECURSING! max_height: %i\n", max_height);
           recursive_draw(tk, el_selected, sub, offset_x + el->padding_left,
-                         sub_offset_y, sub_cutoff_y, is_selected);
+                         sub_offset_y, sub_cutoff_y, is_selected,
+                         /*
+                         el->height ? (el->height - sub_offset_y)
+                                 : max_height
+                         */
+                         max_height);
         }
       }
     }
@@ -151,6 +172,8 @@ void tk_screen_draw(tk_t *tk) {
   tk_screen_t *screen = tk->screen_active;
 
   // make sure, that there's a control selected
+  // the content container variable is, in other words,
+  // the active panel and this is its only purpose
   if (!screen->el_selected)
     screen->el_selected = screen->el_content_container
                               ? screen->el_content_container->sub
@@ -159,9 +182,15 @@ void tk_screen_draw(tk_t *tk) {
   // draw background
   tk_screen_draw_bg(tk);
 
+  if (tk->debug_draw)
+    printf("------------- REDRAW start, max_height: %i, el.height: %i "
+           "-------------\n",
+           480, screen->el.height);
+
   // draw all elements (and therefore controls)
-  recursive_draw(tk, screen->el_selected, &(screen->el), 0, 0, 0, 0);
+  recursive_draw(tk, screen->el_selected, &(screen->el), 0, 0, 0, 0, 480);
 
   // draw bottom text
   captions_draw_buttom_text(tk);
+  tk->debug_draw = 0;
 }

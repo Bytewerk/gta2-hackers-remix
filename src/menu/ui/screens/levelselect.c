@@ -30,11 +30,14 @@ tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui) {
 
       // map list
       TK_STACK(levels->el_content_container = TK_PARENT;
-               tk_el_padding(TK_PARENT, 300, 123, 0, 0);
-               TK_PARENT->height = 100;
 
-               mmp_t *mmp = ui->mmp; for (int n = 0; n < 5; n++) {
-                 for (size_t i = 0; i < mmp->file_count; i++) {
+               tk_el_padding(TK_PARENT, 300, 123, 0, 0);
+               tk_el_height(TK_PARENT, 100);
+
+               mmp_t *mmp = ui->mmp;
+               for (size_t i = 0; i < mmp->file_count; i++) {
+                 for (int n = 0; n < 4; n++) // debug: nore entries
+                 {
                    tk_el_t *el = tk_ctrl_button(
                        tk, TK_PARENT,
                        mmp_read(mmp->files[i], "MapFiles/Description"), NULL,
