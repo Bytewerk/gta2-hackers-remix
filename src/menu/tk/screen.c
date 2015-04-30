@@ -50,19 +50,36 @@ tk_screen_t *tk_screen(tk_t *tk, tk_screen_t *back, void *actionfunc) {
 
 void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
                     int offset_y, int cutoff_y, char all_selected,
-                    int max_height) {
+                    int max_height, int recursion) {
   while (el) {
-    if (tk->debug_draw && el->type == LABEL) {
-      printf("%s; max_height: %i, offset_y: %i\n", el->text, max_height,
-             offset_y);
+    if (tk->debug_draw) {
+      // print some sort of ID
+      int i = 0;
+      while (i < recursion)
+        i += printf(" ");
+      i += printf("'- ");
+      if (el->text)
+        i += printf("\"%.10s\"", el->text);
+      if (el->type == SPRITE)
+        i += printf("SPRITE %i", el->sprite_id);
+      if (el->type == STACK)
+        i += printf("STACK");
+      if (el->type == FLOW)
+        i += printf("FLOW");
+
+      // print the details
+      while (i < 20)
+        i += printf(" ");
+
+      printf("w,h: [%3i,%3i]; padding: [%3i,%3i,%3i,%3i]; max-h: %3i, "
+             "offset-y: %3i\n",
+             el->width, el->height, el->padding_left, el->padding_top,
+             el->padding_right, el->padding_bottom, max_height, offset_y);
     }
 
     // break when off-screen
-    if (offset_y > max_height) {
-      if (tk->debug_draw)
-        printf("Offset y > max_height: %i > %i\n", offset_y, max_height);
+    if (offset_y > max_height)
       break;
-    }
 
     int offset_x_old = offset_x;
     char is_selected = all_selected || (el == el_selected);
@@ -137,15 +154,13 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
               (el->height + sub_offset_y) < max_height)
             max_height = el->height + sub_offset_y;
 
-          if (tk->debug_draw)
-            printf("RECURSING! max_height: %i\n", max_height);
           recursive_draw(tk, el_selected, sub, offset_x + el->padding_left,
                          sub_offset_y, sub_cutoff_y, is_selected,
                          /*
                          el->height ? (el->height - sub_offset_y)
                                  : max_height
                          */
-                         max_height);
+                         max_height, recursion + 1);
         }
       }
     }
@@ -182,13 +197,10 @@ void tk_screen_draw(tk_t *tk) {
   // draw background
   tk_screen_draw_bg(tk);
 
-  if (tk->debug_draw)
-    printf("------------- REDRAW start, max_height: %i, el.height: %i "
-           "-------------\n",
-           480, screen->el.height);
-
   // draw all elements (and therefore controls)
-  recursive_draw(tk, screen->el_selected, &(screen->el), 0, 0, 0, 0, 480);
+  if (tk->debug_draw)
+    printf("======= REDRAW DEBUG OUTPUT =======\n");
+  recursive_draw(tk, screen->el_selected, &(screen->el), 0, 0, 0, 0, 480, 0);
 
   // draw bottom text
   captions_draw_buttom_text(tk);
