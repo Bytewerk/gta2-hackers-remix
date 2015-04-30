@@ -150,17 +150,14 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
 
         if (sub) {
           // calculate the maximum height that should be drawn
+          int sub_max_height = max_height;
           if (el->flags & TK_EL_FLAG_FORCE_HEIGHT &&
               (el->height + sub_offset_y) < max_height)
-            max_height = el->height + sub_offset_y;
+            sub_max_height = el->height + sub_offset_y;
 
           recursive_draw(tk, el_selected, sub, offset_x + el->padding_left,
                          sub_offset_y, sub_cutoff_y, is_selected,
-                         /*
-                         el->height ? (el->height - sub_offset_y)
-                                 : max_height
-                         */
-                         max_height, recursion + 1);
+                         sub_max_height, recursion + 1);
         }
       }
     }
