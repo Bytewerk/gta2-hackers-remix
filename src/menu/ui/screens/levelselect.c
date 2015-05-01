@@ -36,7 +36,7 @@ tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui) {
 
                mmp_t *mmp = ui->mmp;
                for (size_t i = 0; i < mmp->file_count; i++) {
-                 for (int n = 0; n < 4; n++) // debug: nore entries
+                 for (int n = 0; n < 4; n++) // debug: more entries to scroll
                  {
                    tk_el_t *el = tk_ctrl_button(
                        tk, TK_PARENT,

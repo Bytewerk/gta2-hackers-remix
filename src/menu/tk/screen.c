@@ -48,38 +48,49 @@ tk_screen_t *tk_screen(tk_t *tk, tk_screen_t *back, void *actionfunc) {
   return screen;
 }
 
+void print_el_draw_info(tk_el_t *el, int max_height, int offset_y,
+                        int recursion) {
+  // print some sort of ID
+  int i = 0;
+  while (i < recursion)
+    i += printf(" ");
+  i += printf("'- ");
+  if (el->text)
+    i += printf("\"%.10s\"", el->text);
+  if (el->type == SPRITE)
+    i += printf("SPRITE %i", el->sprite_id);
+  if (el->type == STACK)
+    i += printf("STACK");
+  if (el->type == FLOW)
+    i += printf("FLOW");
+
+  // print the details
+  while (i < 20)
+    i += printf(" ");
+
+  printf(
+      "w,h: [%3i,%3i]; padding: [%3i,%3i,%3i,%3i]; max-h: %3i, offset-y: %3i\n",
+      el->width, el->height, el->padding_left, el->padding_top,
+      el->padding_right, el->padding_bottom, max_height, offset_y);
+}
+
 void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
                     int offset_y, int cutoff_y, char all_selected,
                     int max_height, int recursion) {
   while (el) {
-    if (tk->debug_draw) {
-      // print some sort of ID
-      int i = 0;
-      while (i < recursion)
-        i += printf(" ");
-      i += printf("'- ");
-      if (el->text)
-        i += printf("\"%.10s\"", el->text);
-      if (el->type == SPRITE)
-        i += printf("SPRITE %i", el->sprite_id);
-      if (el->type == STACK)
-        i += printf("STACK");
-      if (el->type == FLOW)
-        i += printf("FLOW");
-
-      // print the details
-      while (i < 20)
-        i += printf(" ");
-
-      printf("w,h: [%3i,%3i]; padding: [%3i,%3i,%3i,%3i]; max-h: %3i, "
-             "offset-y: %3i\n",
-             el->width, el->height, el->padding_left, el->padding_top,
-             el->padding_right, el->padding_bottom, max_height, offset_y);
-    }
+    if (tk->debug_draw)
+      print_el_draw_info(el, max_height, offset_y, recursion);
 
     // break when off-screen
-    if (offset_y > max_height)
+    if (offset_y > max_height) {
+      if (!el->parent || !(el->parent->flags & TK_EL_FLAG_SCROLLABLE)) {
+        printf("ERROR: At least the following element has been cut off, but "
+               "its parent element doesn't have the scrolling flag set (use "
+               "tk_el_scrollable(EL) for that)! ");
+        print_el_draw_info(el, max_height, offset_y, recursion);
+      }
       break;
+    }
 
     int offset_x_old = offset_x;
     char is_selected = all_selected || (el == el_selected);
@@ -107,13 +118,6 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
         if (cutoff_y_rest < 0)
           cutoff_y_rest = 0;
 
-        /*if(cutoff_y)
-        {
-                printf("cutoff_y: %i, el->padding_top: %i, padding_top_cutoff:
-        %i, cutoff_y_rest: %i, offset_y: %i, text: %s\n", cutoff_y,
-        el->padding_top, padding_top_cutoff, cutoff_y_rest, offset_y, el->text);
-        }*/
-
         char font = el->font_id;
         if (is_selected && el->font_id_selected)
           font = el->font_id_selected;
@@ -132,7 +136,8 @@ void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,
         int sub_cutoff_y = 0;
 
         if (el->type == STACK && el->scroll_top) {
-          // skip all elements that were scrolled off screen
+          // skip all elements from the top, that were already
+          // scrolled off screen
           int skipped_height = 0;
           while (sub &&
                  sub->padding_top + sub->height + sub->padding_bottom +
