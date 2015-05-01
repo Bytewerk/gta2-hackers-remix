@@ -4,10 +4,7 @@
 #include "../ui_text.h"
 
 /*
-        TODO:
-                - level selection
-                - screen layout preview
-                - start button
+        TODO: replace all the buttons with functional controls
 */
 
 tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui, tk_screen_t *levels) {
@@ -24,29 +21,33 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui, tk_screen_t *levels) {
       tk_el_padding(titlebar, 315, 12, 0, 0);
 
       // content
-      TK_STACK(splitscreen->el_content_container = TK_PARENT;
-               tk_el_padding(TK_PARENT, 300, 123, 0, 0);
+      TK_STACK(
+          splitscreen->el_content_container = TK_PARENT;
+          tk_el_padding(TK_PARENT, 300, 170, 0, 0);
 
-               tk_ctrl_circle(tk, TK_PARENT, "PLAYER COUNT", NULL, '1', '4', 0,
-                              0, '3', NULL);
+          tk_ctrl_button(tk, TK_PARENT, "PLAYERS: 3", NULL, NULL, NULL);
 
-               tk_ctrl_circle(tk, TK_PARENT, "SCREEN LAYOUT", NULL, 'A', 'C', 0,
-                              0, 'B', NULL);
+          tk_ctrl_button(tk, TK_PARENT, "SCREEN LAYOUT: A", NULL, NULL, NULL);
 
-               // FIXME
-               tk_ctrl_button(tk, TK_PARENT, "LEVEL SELECT DUMMY", NULL, levels,
-                              NULL);
+          tk_ctrl_button(tk, TK_PARENT, "MAP: TINY TOWN", NULL, levels, NULL);
 
-               // STUB: this doesn't get free'd!
-               char **entries = malloc(sizeof(char *) * 3);
-               entries[0] = "FRAGS"; entries[1] = "POINTS"; entries[2] = "TAG";
+          tk_ctrl_button(tk, TK_PARENT, "GAME TYPE: FRAGS", NULL, NULL, NULL);
 
-               tk_ctrl_listbutton(tk, TK_PARENT, NULL, entries, 3, 1, 0,
-                                  "GAME TYPE", 1, NULL, NULL, NULL, NULL);
+          tk_ctrl_button(tk, TK_PARENT, "TIME: 5 MIN", NULL, NULL, NULL);
 
-               tk_ctrl_boolean(tk, TK_PARENT, "COPS", NULL, 1);
+          tk_ctrl_boolean(tk, TK_PARENT, "COPS", NULL, 1);
 
-               );
+          // big play button. We don't have the huge font in red
+          // for black backgrounds, but modifying argb_selected has
+          // the same effect :)
+
+          tk_el_t *play =
+              tk_ctrl_button(tk, TK_PARENT, "PLAY!", NULL, NULL, NULL);
+          play->font_id = GTA2_FONT_FSTYLE_WHITE_BLACK_HUGE;
+          play->font_id_selected = GTA2_FONT_FSTYLE_WHITE_BLACK_HUGE;
+          play->argb_selected = 0xffff0000; tk_el_padding(play, 0, 20, 0, 0);
+
+          );
 
       );
   return splitscreen;
