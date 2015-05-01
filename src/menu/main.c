@@ -39,11 +39,16 @@ int main(int argc, char *argv[]) {
   tk_t *tk = tk_init(gxt, fsty, sfx, bg, "G2HR");
   ui_t *ui = ui_init(tk, mmp, server);
 
-  // start the meta component (this will simply fail on Linux)
-  char *buffer = malloc(100);
-  snprintf(buffer, 100, "start bin/meta.exe %i", server->port);
-  system(buffer);
-  free(buffer);
+  // start the meta component
+  if (!strcmp(SDL_GetPlatform(), "Windows")) {
+    char *buffer = malloc(100);
+    snprintf(buffer, 100, "start bin/meta.exe %i", server->port);
+    system(buffer);
+    free(buffer);
+  } else
+    printf("NOTE: You have not compiled the menu for win32, so the 'meta' "
+           "component will not be started. The commands that *would* be sent "
+           "to the it are shown in the terminal anyway. Enjoy debugging :)\n");
 
   // main loop
   uint32_t previous = 0;
