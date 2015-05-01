@@ -23,8 +23,8 @@ uint32_t credits_argb(char color) {
 }
 
 // TODO: Quit at the end of the credits? or at least stop scrolling.
-void actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
-                tk_action_t action) {
+void credits_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
+                        tk_action_t action) {
   if (action == TK_ACTION_BACKSPACE || action == TK_ACTION_ESC ||
       action == TK_ACTION_ENTER) {
     tk->quit = 1;
@@ -101,7 +101,7 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
                                bg_mashup(tk->bg, "credits", NULL, NULL, NULL);
                   tk_el_padding(TK_PARENT, 120, 150, 0, 120);
                   tk_el_width(TK_PARENT, 400); tk_el_scrollable(TK_PARENT);
-                  TK_PARENT->actionfunc = (void *)actionfunc;
+                  TK_PARENT->actionfunc = (void *)credits_actionfunc;
 
                   ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_HUGE, 200, 0, "ORIGINAL");
                   ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_HUGE, 0, 20, "GTA2 CREDITS");

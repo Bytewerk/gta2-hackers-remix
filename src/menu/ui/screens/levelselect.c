@@ -16,6 +16,12 @@
                         screen
 */
 
+void levels_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
+                       tk_action_t action, SDL_Keycode key) {
+  // ud_levels_t* ud = (ud_levels_t*) el->userdata;
+  printf("trololo!\n");
+}
+
 tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui) {
   tk_screen_t *levels = tk_screen(tk, NULL, NULL);
 
@@ -29,10 +35,11 @@ tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui) {
       tk_el_padding(titlebar, 315, 12, 0, 0);
 
       // map list
-      TK_STACK(levels->el_content_container = TK_PARENT;
+      TK_STACK(TK_PARENT->actionfunc = (void *)levels_actionfunc;
 
+               levels->el_content_container = TK_PARENT;
                tk_el_padding(TK_PARENT, 300, 123, 0, 30);
-               tk_el_height(TK_PARENT, 200);
+               tk_el_height(TK_PARENT, 200); tk_el_scrollable(TK_PARENT);
 
                mmp_t *mmp = ui->mmp;
                for (size_t i = 0; i < mmp->file_count; i++) {

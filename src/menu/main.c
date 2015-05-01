@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
   } else
     printf("NOTE: You have not compiled the menu for win32, so the 'meta' "
            "component will not be started. The commands that *would* be sent "
-           "to the it are shown in the terminal anyway. Enjoy debugging :)\n");
+           "to it are shown in the terminal anyway. Enjoy debugging :)\n");
 
   // main loop
   uint32_t previous = 0;

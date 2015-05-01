@@ -61,6 +61,9 @@ void actions_recursive(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     if (el->sub)
       actions_recursive(tk, el->sub, el_selected, action, key);
     tk_actions_element(tk, el, el_selected, action, key);
+
+    if (!el->parent)
+      break; // must be a screen
     el = el->next;
   }
 }
@@ -93,10 +96,6 @@ void tk_action(tk_t *tk, SDL_Event *event) {
     return;
   }
 
-  // single action for the active screen
-  tk_actions_element(tk, &(tk->screen_active->el), el_selected, action, key);
-
-  // action for all selected elements, recursively
-  actions_recursive(tk, tk->screen_active->el_selected, el_selected, action,
-                    key);
+  // action for all elements on the screen, recursively
+  actions_recursive(tk, &(tk->screen_active->el), el_selected, action, key);
 }
