@@ -18,6 +18,7 @@
 
 typedef struct {
   int entries_count;
+  int index_last;
   tk_el_t *list;
 
 } ud_levels_t;
@@ -45,11 +46,18 @@ void levels_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                          el_selected->padding_bottom;
     int elements_per_page = ud->list->height / el_full_height;
 
-    // don't scroll when the very top elements are selected
     if (index <= elements_per_page / 2)
-      return;
+      ud->list->scroll_top = 0;
+    else if (index >= ud->entries_count - elements_per_page / 2)
+      ud->list->scroll_top =
+          (ud->entries_count - elements_per_page) * el_full_height;
+    else
+      ud->list->scroll_top = (index - elements_per_page / 2) * el_full_height;
 
-    ud->list->scroll_top = (index - elements_per_page / 2) * el_full_height;
+    // this also shouldn't be necessary!
+    if (index != ud->index_last)
+      tk->redraw_needed = 1;
+    ud->index_last = index;
   }
 }
 
@@ -57,6 +65,7 @@ tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui) {
   tk_screen_t *levels = tk_screen(tk, NULL, NULL);
   ud_levels_t *ud = malloc(sizeof(ud_levels_t));
   ud->entries_count = 0;
+  ud->index_last = 0;
 
   TK_STACK_SCREEN(
       levels,
