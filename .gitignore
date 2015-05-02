@@ -1,3 +1,6 @@
+# g2hr configs
+data/g2hr.cfg
+
 # wine prefix
 build/wineprefix
 
