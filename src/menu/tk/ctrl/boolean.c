@@ -8,8 +8,8 @@ void bool_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   ud_boolean_t *ud = (ud_boolean_t *)el->userdata;
 
   if (action == TK_ACTION_CLEANUP) {
-    for (int i = 0; i < 2; i++)
-      free(ud->entries[i]);
+    free(ud->entries[0]);
+    free(ud->entries[1]);
     free(ud->entries);
     free(ud);
   }

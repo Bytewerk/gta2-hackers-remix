@@ -95,8 +95,11 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
         ud->ui->multiplayer_time_values
             ->values[((ud_arrowtext_t *)(ud->time->userdata))->entry_selected];
 
+    int cops_enabled = tk_ctrl_bool_get(ud->cops);
+
     char *buffer = malloc(100);
-    snprintf(buffer, 100, "SPLITSCREEN %i %i %s", players, screen_layout, time);
+    snprintf(buffer, 100, "SPLITSCREEN %i %i %s %i", players, screen_layout,
+             time, cops_enabled);
     server_send(ud->ui->server, buffer, 1);
   }
 

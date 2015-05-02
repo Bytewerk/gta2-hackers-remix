@@ -41,11 +41,20 @@ tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
         BOOLEAN (simplifies ARROWTEXT):
                 < TEXT: DISABLED >
 
-        value:
-                ((ud_arrowtext_t*) ctrl->userdata)->entry_selected;
+        value: just use the macros below.
 */
 tk_el_t *tk_ctrl_boolean(tk_t *tk, tk_el_t *TK_PARENT, const char *text,
                          bg_mashup_t *bg_mashup, char value);
+
+#define tk_ctrl_bool_get(BOOLCTRL)                                             \
+  ((ud_arrowtext_t *)((ud_boolean_t *)BOOLCTRL->userdata)                      \
+       ->arrowtext->userdata)                                                  \
+      ->entry_selected;
+
+#define tk_ctrl_bool_set(BOOLCTRL, VALUE)                                      \
+  ((ud_arrowtext_t *)((ud_boolean_t *)BOOLCTRL->userdata)                      \
+       ->arrowtext->userdata)                                                  \
+      ->entry_selected = VALUE;
 
 /*
         LISTBUTTON (mix of ARROWTEXT and BUTTON):
