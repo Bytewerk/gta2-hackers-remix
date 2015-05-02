@@ -1,4 +1,5 @@
 #pragma once
+#include "../../common/cfg/cfg.h"
 #include "../mmp/mmp.h"
 #include "../server/server.h"
 #include "../tk/toolkit.h"
@@ -15,6 +16,9 @@ typedef struct {
   server_t *server;
   mmp_t *mmp;
   char **player_names;
+
+  cfg_t *g2hr_config;
+  cfg_split_t *multiplayer_time_values;
 } ui_t;
 
 ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server);

@@ -7,6 +7,9 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server) {
   ui->tk = tk;
   ui->server = server;
   ui->mmp = mmp;
+  ui->g2hr_config = cfg_load("data/g2hr.cfg", 0);
+  ui->multiplayer_time_values =
+      cfg_split_value(ui->g2hr_config, "multiplayer/time", ' ');
 
   // player names
   ui->player_names = malloc(sizeof(char *) * GTA2_SAVEGAME_COUNT);
@@ -45,6 +48,9 @@ void ui_cleanup(ui_t *ui) {
   for (int i = 0; i < GTA2_SAVEGAME_COUNT; i++)
     free(ui->player_names[i]);
   free(ui->player_names);
+
+  cfg_split_cleanup(ui->multiplayer_time_values);
+  cfg_cleanup(ui->g2hr_config);
 
   free(ui);
 }

@@ -43,11 +43,30 @@ char **screen_layout_values() {
   return ret;
 }
 
+#define GTA2_CTRL_TIME_PREFIX "TIME: "
+#define GTA2_CTRL_TIME_SUFFIX " MIN"
+char **screen_time_values(cfg_split_t *times) {
+  int count = times->count;
+  char **ret = malloc(sizeof(char *) * count);
+  size_t prefix_len = sizeof(GTA2_CTRL_TIME_PREFIX) - 1;
+  size_t suffix_len = sizeof(GTA2_CTRL_TIME_SUFFIX) - 1;
+  for (int i = 0; i < count; i++) {
+    char *time = times->values[i];
+    size_t len = strlen(time);
+    size_t total_length = prefix_len + len + suffix_len + 1;
+    ret[i] = malloc(total_length);
+    snprintf(ret[i], total_length, "%s%s%s", GTA2_CTRL_TIME_PREFIX, time,
+             GTA2_CTRL_TIME_SUFFIX);
+  }
+  return ret;
+}
+
 // USERDATA STRUCT
 typedef struct {
   ui_t *ui;
   char **players_values;
   char **screen_layout_values;
+  char **time_values;
 
   tk_el_t *titlebar;
   tk_el_t *players;
@@ -60,7 +79,6 @@ typedef struct {
 } ud_splitscreen_t;
 
 // ACTIONFUNC
-
 #define TODO_controllers_found 6
 
 void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
@@ -73,8 +91,12 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     int screen_layout =
         ((ud_arrowtext_t *)(ud->screen_layout->userdata))->entry_selected;
 
+    char *time =
+        ud->ui->multiplayer_time_values
+            ->values[((ud_arrowtext_t *)(ud->time->userdata))->entry_selected];
+
     char *buffer = malloc(100);
-    snprintf(buffer, 100, "SPLITSCREEN %i %i", players, screen_layout);
+    snprintf(buffer, 100, "SPLITSCREEN %i %i %s", players, screen_layout, time);
     server_send(ud->ui->server, buffer, 1);
   }
 
@@ -86,6 +108,10 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     for (int i = 0; i < TODO_screen_layout_max; i++)
       free(ud->screen_layout_values[i]);
     free(ud->screen_layout_values);
+
+    for (int i = 0; i < ud->ui->multiplayer_time_values->count; i++)
+      free(ud->time_values[i]);
+    free(ud->time_values);
   }
 }
 
@@ -100,6 +126,7 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui, tk_screen_t *levels) {
   // generate the control values
   ud->players_values = screen_players_values();
   ud->screen_layout_values = screen_layout_values();
+  ud->time_values = screen_time_values(ui->multiplayer_time_values);
 
   // create the screen layout
   TK_STACK_SCREEN(
@@ -129,17 +156,22 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui, tk_screen_t *levels) {
               tk, TK_PARENT, NULL /*bg*/, ud->screen_layout_values,
               TODO_screen_layout_max, 1, 0, NULL, 1, NULL, NULL, NULL, NULL);
 
+          // map (FIXME)
           ud->map = tk_ctrl_button(tk, TK_PARENT, "MAP: TINY TOWN", NULL,
                                    levels, NULL);
-
           ud->map->bottom_text_low = "ENTER: CHOOSE A MAP";
 
+          // game type
           ud->game_type = tk_ctrl_button(tk, TK_PARENT, "GAME TYPE: FRAGS",
                                          NULL, NULL, NULL);
 
+          // time
           ud->time =
-              tk_ctrl_button(tk, TK_PARENT, "TIME: 5 MIN", NULL, NULL, NULL);
+              tk_ctrl_arrowtext(tk, TK_PARENT, NULL /*bg*/, ud->time_values,
+                                ui->multiplayer_time_values->count, 1, 0, NULL,
+                                1, NULL, NULL, NULL, NULL);
 
+          // cops
           ud->cops = tk_ctrl_boolean(tk, TK_PARENT, "COPS", NULL, 1);
 
           // big play button. We don't have the huge font in red

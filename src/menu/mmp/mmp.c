@@ -23,7 +23,7 @@ void mmp_sort(mmp_t *mmp, char *key) {
 mmp_file_t *mmp_load(char *filename) {
   mmp_file_t *file = malloc(sizeof(mmp_file_t));
   file->source = filename;
-  file->data = cfg_load(filename);
+  file->data = cfg_load(filename, 1);
   return file;
 }
 

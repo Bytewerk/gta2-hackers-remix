@@ -4,7 +4,7 @@
 int main(int argc, const char **argv) {
   if (argc != 2)
     return printf("Syntax: main_test cfg_file\n");
-  cfg_t *cfg = cfg_load((char *)argv[1]);
+  cfg_t *cfg = cfg_load((char *)argv[1], 0);
 
   cfg_t *current = cfg;
   while (current) {

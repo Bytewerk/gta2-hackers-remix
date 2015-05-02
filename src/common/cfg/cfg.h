@@ -12,7 +12,7 @@ typedef struct {
   int count;
 } cfg_split_t;
 
-cfg_t *cfg_load(char *filename);
+cfg_t *cfg_load(char *filename, char quiet);
 char *cfg_read(cfg_t *cfg, char *key);
 void cfg_cleanup(cfg_t *cfg);
 

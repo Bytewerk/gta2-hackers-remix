@@ -126,7 +126,9 @@ cfg_t *cfg_parse(char *buffer, int size) {
   return first;
 }
 
-cfg_t *cfg_load(char *filename) {
+cfg_t *cfg_load(char *filename, char quiet) {
+  if (!quiet)
+    printf("loading %s...\n", filename);
   FILE *handle = fopen(filename, "rb");
   if (!handle)
     exit(printf("ERROR: Couldn't read '%s'!\n", filename));
