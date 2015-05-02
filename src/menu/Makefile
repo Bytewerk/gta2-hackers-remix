@@ -29,6 +29,8 @@ info:
 Linux: obj out out/menu.bin
 run: Linux
 	cd "../../" && src/menu/out/menu.bin
+gdb: Linux
+	cd "../../" && gdb src/menu/out/menu.bin
 
 # WINDOWS (don't mix Windows/Linux objects, run make clean!)
 # Works on Arch Linux, install these packages from
