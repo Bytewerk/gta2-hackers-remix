@@ -93,8 +93,8 @@ tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui) {
                  {
                    tk_el_t *el = tk_ctrl_button(
                        tk, TK_PARENT,
-                       mmp_read(mmp->files[i], "MapFiles/Description"), NULL,
-                       NULL, NULL);
+                       cfg_read(mmp->files[i]->data, "MapFiles/Description"),
+                       NULL, NULL, NULL);
                    el->userdata = (void *)mmp->files[i];
                    ud->entries_count++;
                  }

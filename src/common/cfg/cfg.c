@@ -17,7 +17,7 @@ char *cfg_read(cfg_t *cfg, char *key) {
 
 // little helping function that removes whitespaces around a string,
 // for example: ' hello world!  ' becomes 'hello world!'
-char *trim(char *str, int from) {
+char *cfg_trim(char *str, int from) {
   // find whitespace positions, that we'll rip off the string
   int len = strlen(str);
   int trimmed_start = 0;
@@ -99,12 +99,12 @@ cfg_t *cfg_parse(char *buffer, int size) {
         strncpy(new->key + section_length + 1, buffer + start_line, key_length);
         new->key[section_length] = '/';
         new->key[key_section_length] = '\0';
-        new->key = trim(new->key, section_length + 1);
+        new->key = cfg_trim(new->key, section_length + 1);
 
         // create 'value' string
         strncpy(new->value, buffer + start_key, value_length);
         new->value[value_length] = '\0';
-        new->value = trim(new->value, 0);
+        new->value = cfg_trim(new->value, 0);
 
         // add it to the list
         if (last)

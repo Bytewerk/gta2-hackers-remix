@@ -8,7 +8,8 @@ int main(int argc, const char **argv) {
 
   for (size_t i = 0; i < mmp->file_count; i++) {
     mmp_file_t *file = mmp->files[i];
-    printf("%s (%s)\n", mmp_read(file, "MapFiles/Description"), file->source);
+    printf("%s (%s)\n", cfg_read(file->data, "MapFiles/Description"),
+           file->source);
   }
 
   mmp_cleanup(mmp);

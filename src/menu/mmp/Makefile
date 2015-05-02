@@ -7,8 +7,8 @@ run: ../out/mmp_test.bin
 	../out/mmp_test.bin $(INPUT_FILE)
 
 
-../out/mmp_test.bin: *.c *.h
-	LANG=C gcc -std=c99 -Wall -g -Werror -o $@ *.c
+../out/mmp_test.bin: *.c *.h ../../common/cfg/cfg.h
+	LANG=C gcc -std=c99 -Wall -g -Werror -o $@ *.c ../../common/cfg/cfg.c
 
 
 valgrind: ../out/mmp_test.bin

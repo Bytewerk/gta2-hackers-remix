@@ -1,4 +1,5 @@
 #pragma once
+#include "../../common/cfg/cfg.h"
 #include <sys/types.h>
 
 /*
@@ -23,14 +24,8 @@
 // Pro-tip: don't change the sorting while iterating over the files.
 #define G2HR_MMP_DEFAULT_SORT_KEY "MapFiles/Description"
 
-typedef struct mmp_key_t {
-  struct mmp_key_t *next;
-  char *key;
-  char *value;
-} mmp_key_t;
-
 typedef struct mmp_file_t {
-  mmp_key_t *data;
+  cfg_t *data;
   char *source;
 } mmp_file_t;
 
@@ -49,5 +44,4 @@ typedef struct mmp_list_t {
 
 mmp_t *mmp_init(const char *path);
 void mmp_sort(mmp_t *mmp, char *key);
-char *mmp_read(mmp_file_t *file, char *key);
 void mmp_cleanup(mmp_t *mmp);
