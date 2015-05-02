@@ -10,6 +10,8 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server) {
   ui->g2hr_config = cfg_load("data/g2hr.cfg", 0);
   ui->multiplayer_time_values =
       cfg_split_value(ui->g2hr_config, "multiplayer/time", ' ');
+  ui->slotmachine_enabled =
+      !strcmp(cfg_read(ui->g2hr_config, "slotmachine/enabled"), "true");
 
   // player names
   ui->player_names = malloc(sizeof(char *) * GTA2_SAVEGAME_COUNT);

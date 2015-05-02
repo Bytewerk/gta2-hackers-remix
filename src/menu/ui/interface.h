@@ -19,6 +19,7 @@ typedef struct {
 
   cfg_t *g2hr_config;
   cfg_split_t *multiplayer_time_values;
+  char slotmachine_enabled;
 } ui_t;
 
 ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server);

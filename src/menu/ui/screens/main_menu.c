@@ -21,9 +21,22 @@ tk_screen_t *ui_screen_main_menu(tk_t *tk, ui_t *ui, tk_screen_t *play,
       tk_ctrl_button(tk, TK_PARENT, "OPTIONS",
                      bg_mashup(tk->bg, NULL, "1_options", "1", NULL), NULL,
                      NULL);
-      tk_ctrl_button(tk, TK_PARENT, "QUIT",
-                     bg_mashup(tk->bg, NULL, "1_quit", "1", NULL), credits,
-                     NULL););
+
+      if (ui->slotmachine_enabled) {
+        tk_el_t *credits_btn = tk_ctrl_button(
+            tk, TK_PARENT, "CREDITS",
+            bg_mashup(tk->bg, NULL, "1_quit", "1", NULL), credits, NULL);
+
+        tk_el_padding(credits_btn, 0, 20, 0, 0);
+
+        tk_ctrl_button(tk, TK_PARENT, "POWER OFF",
+                       bg_mashup(tk->bg, NULL, "1_quit", "1", NULL), credits,
+                       NULL);
+      } else {
+        tk_ctrl_button(tk, TK_PARENT, "QUIT",
+                       bg_mashup(tk->bg, NULL, "1_quit", "1", NULL), credits,
+                       NULL);
+      });
 
   return main_menu;
 }
