@@ -120,7 +120,7 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 
 // SCREEN INIT & LAYOUT
 
-tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui, tk_screen_t *levels) {
+tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
   ud_splitscreen_t *ud = malloc(sizeof(ud_splitscreen_t));
   ud->ui = ui;
 
@@ -161,7 +161,7 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui, tk_screen_t *levels) {
 
           // map (FIXME)
           ud->map = tk_ctrl_button(tk, TK_PARENT, "MAP: TINY TOWN", NULL,
-                                   levels, NULL);
+                                   ui->levels, NULL);
           ud->map->bottom_text_low = "ENTER: CHOOSE A MAP";
 
           // game type

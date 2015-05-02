@@ -24,8 +24,7 @@ void play_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   }
 }
 
-tk_screen_t *ui_screen_play(tk_t *tk, ui_t *ui, tk_screen_t *scores,
-                            tk_screen_t *credits) {
+tk_screen_t *ui_screen_play(tk_t *tk, ui_t *ui) {
   tk_screen_t *play = tk_screen(tk, NULL, NULL);
 
   ud_play_t *ud = malloc(sizeof(ud_play_t));
@@ -45,7 +44,7 @@ tk_screen_t *ui_screen_play(tk_t *tk, ui_t *ui, tk_screen_t *scores,
       tk_el_disabled(resume);
 
       tk_ctrl_button(tk, TK_PARENT, "VIEW HIGH SCORES",
-                     bg_mashup(tk->bg, NULL, "2_league", "2", NULL), scores,
+                     bg_mashup(tk->bg, NULL, "2_league", "2", NULL), ui->scores,
                      NULL);
 
       ud->start = tk_ctrl_circle(tk, TK_PARENT, "START PLAY IN AREA",

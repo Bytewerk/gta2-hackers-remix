@@ -28,21 +28,20 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server) {
   }
 
   // screens
-  tk_screen_t *levels = ui_screen_levels(tk, ui);
-  tk_screen_t *credits = ui_screen_credits(tk, ui);
-  tk_screen_t *scores = ui_screen_scores(tk, ui);
-  tk_screen_t *play = ui_screen_play(tk, ui, scores, credits);
-  tk_screen_t *splitscreen = ui_screen_splitscreen(tk, ui, levels);
-  tk_screen_t *main_menu =
-      ui_screen_main_menu(tk, ui, play, splitscreen, credits);
+  ui->levels = ui_screen_levels(tk, ui);
+  ui->credits = ui_screen_credits(tk, ui);
+  ui->scores = ui_screen_scores(tk, ui);
+  ui->play = ui_screen_play(tk, ui);
+  ui->splitscreen = ui_screen_splitscreen(tk, ui);
+  ui->main = ui_screen_main_menu(tk, ui);
 
   // back links
-  play->back = main_menu;
-  splitscreen->back = main_menu;
-  scores->back = play;
-  levels->back = splitscreen;
+  ui->play->back = ui->main;
+  ui->splitscreen->back = ui->main;
+  ui->scores->back = ui->play;
+  ui->levels->back = ui->splitscreen;
 
-  tk->screen_active = main_menu;
+  tk->screen_active = ui->main;
   return ui;
 }
 
