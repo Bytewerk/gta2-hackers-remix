@@ -57,12 +57,14 @@ void print_el_draw_info(tk_el_t *el, int max_height, int offset_y,
   i += printf("'- ");
   if (el->text)
     i += printf("\"%.10s\"", el->text);
-  if (el->type == SPRITE)
+  else if (el->type == SPRITE)
     i += printf("SPRITE %i", el->sprite_id);
-  if (el->type == STACK)
+  else if (el->type == STACK)
     i += printf("STACK");
-  if (el->type == FLOW)
+  else if (el->type == FLOW)
     i += printf("FLOW");
+  else if (el->type == HIDDEN)
+    i += printf("HIDDEN");
 
   // print the details
   while (i < 20)

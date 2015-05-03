@@ -70,6 +70,11 @@ void tk_el_geocalc(tk_t *tk, tk_el_t *el, char /*bool*/ down, char /*bool*/ up);
 char tk_is_selected_recursive(tk_el_t *el, tk_el_t *el_selected,
                               char recursing /*set to 0*/);
 
+// event: invisible element with an actionfunc. Only use this, if you
+// can't attach your actionfunc to another element (eg. if you would
+// override a screen/control actionfunc)
+tk_el_t *tk_event(tk_t *tk, tk_el_t *parent, void *actionfunc, void *userdata);
+
 // extended elements
 tk_el_t *tk_sprite(tk_t *tk, tk_el_t *parent, char sprite_id);
 tk_el_t *tk_label(tk_t *tk, tk_el_t *parent, char *text, char font_id,

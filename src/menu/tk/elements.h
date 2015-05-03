@@ -7,6 +7,7 @@ typedef enum {
   // basic
   STACK,
   FLOW,
+  HIDDEN,
 
   // extended (keep these to a minimum, implement all others
   // as controls on top of those!)

@@ -31,7 +31,7 @@ tk_screen_t *ui_screen_play(tk_t *tk, ui_t *ui) {
   ud->ui = ui;
 
   TK_STACK_SCREEN(
-      play, tk_el_padding(TK_PARENT, 300, 210, 0, 0);
+      play,
 
       tk_ctrl_arrowtext(
           tk, TK_PARENT, bg_mashup(tk->bg, NULL, "2_name", "2", NULL),
@@ -55,11 +55,8 @@ tk_screen_t *ui_screen_play(tk_t *tk, ui_t *ui) {
                                  bg_mashup(tk->bg, NULL, "2_bonus1", "2", NULL),
                                  'A', 'I', 0, 0, 'A', NULL);
 
-      // FIXME: we can't attach an actionfunc to the screen,
-      // because screens already have one. maybe we can make this
-      // more elegant (just pack it in a macro?)
-      TK_STACK(TK_PARENT->actionfunc = play_actionfunc;
-               TK_PARENT->userdata = ud;));
+      tk_el_padding(TK_PARENT, 300, 210, 0, 0);
+      tk_event(tk, TK_PARENT, play_actionfunc, ud););
 
   return play;
 }

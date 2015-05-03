@@ -55,8 +55,9 @@ void tk_el_geocalc(tk_t *tk, tk_el_t *el, char /*bool*/ down,
   }
 
   // actually caluclate the geometry here, depending on type
-  if (!(el->flags & TK_EL_FLAG_FORCE_WIDTH) ||
-      !(el->flags & TK_EL_FLAG_FORCE_HEIGHT)) {
+  if ((!(el->flags & TK_EL_FLAG_FORCE_WIDTH) ||
+       !(el->flags & TK_EL_FLAG_FORCE_HEIGHT)) &&
+      el->type != HIDDEN) {
     int width;
     int height;
 
@@ -138,5 +139,17 @@ tk_el_t *tk_label(tk_t *tk, tk_el_t *parent, char *text, char font_id,
   el->font_id = font_id;
   el->font_id_selected = font_id_selected;
   tk_el_geocalc(tk, el, 0, 0);
+  return el;
+}
+
+/*
+        Event: attach an actionfunc without any visible element
+*/
+
+tk_el_t *tk_event(tk_t *tk, tk_el_t *parent, void *actionfunc, void *userdata) {
+  tk_el_t *el = calloc(1, sizeof(tk_el_t));
+  tk_el_attach(el, parent, HIDDEN);
+  el->actionfunc = actionfunc;
+  el->userdata = userdata;
   return el;
 }
