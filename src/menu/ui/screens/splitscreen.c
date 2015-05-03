@@ -160,13 +160,13 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
               TODO_screen_layout_max, 1, 0, NULL, 1, NULL, NULL, NULL, NULL);
 
           // map (FIXME)
-          ud->map = tk_ctrl_button(tk, TK_PARENT, "MAP: TINY TOWN", NULL,
-                                   ui->levels, NULL);
+          ud->map =
+              tk_ctrl_button(tk, TK_PARENT, "MAP: TINY TOWN", NULL, ui->levels);
           ud->map->bottom_text_low = "ENTER: CHOOSE A MAP";
 
           // game type
-          ud->game_type = tk_ctrl_button(tk, TK_PARENT, "GAME TYPE: FRAGS",
-                                         NULL, NULL, NULL);
+          ud->game_type =
+              tk_ctrl_button(tk, TK_PARENT, "GAME TYPE: FRAGS", NULL, NULL);
 
           // time
           ud->time =
@@ -181,7 +181,7 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
           // for black backgrounds, but modifying argb_selected has
           // the same effect :)
 
-          ud->play = tk_ctrl_button(tk, TK_PARENT, "PLAY!", NULL, NULL, NULL);
+          ud->play = tk_ctrl_button(tk, TK_PARENT, "PLAY!", NULL, NULL);
           ud->play->font_id = ud->play->font_id_selected =
               GTA2_FONT_FSTYLE_WHITE_BLACK_HUGE;
           ud->play->argb_selected = 0xffff0000;

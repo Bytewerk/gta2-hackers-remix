@@ -94,7 +94,7 @@ tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui) {
                    tk_el_t *el = tk_ctrl_button(
                        tk, TK_PARENT,
                        cfg_read(mmp->files[i]->data, "MapFiles/Description"),
-                       NULL, NULL, NULL);
+                       NULL, NULL);
                    el->userdata = (void *)mmp->files[i];
                    ud->entries_count++;
                  }
@@ -109,12 +109,9 @@ tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui) {
       (
               tk_el_padding(TK_PARENT, 300, 0, 0, 0);
 
-              tk_ctrl_button(tk, TK_PARENT, "TAGS: ALL", NULL, NULL,
-                      NULL);
-              tk_ctrl_button(tk, TK_PARENT, "ORDER BY: TITLE", NULL, NULL,
-                      NULL);
-              tk_ctrl_button(tk, TK_PARENT, "FILTER: NONE", NULL, NULL,
-                      NULL);
+              tk_ctrl_button(tk, TK_PARENT, "TAGS: ALL", NULL, NULL);
+              tk_ctrl_button(tk, TK_PARENT, "ORDER BY: TITLE", NULL, NULL);
+              tk_ctrl_button(tk, TK_PARENT, "FILTER: NONE", NULL, NULL);
       )
       */
       );

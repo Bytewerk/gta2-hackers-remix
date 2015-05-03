@@ -5,8 +5,7 @@
                 goes to another screen or executes a function.
 */
 tk_el_t *tk_ctrl_button(tk_t *tk, tk_el_t *TK_PARENT, char *text,
-                        bg_mashup_t *bg_mashup, tk_screen_t *onclick_screen,
-                        void *onclick_func);
+                        bg_mashup_t *bg_mashup, tk_screen_t *onclick_screen);
 
 /*
         CIRCLE:
@@ -79,12 +78,6 @@ tk_el_t *tk_ctrl_listbutton(tk_t *tk, tk_el_t *TK_PARENT,
 // arrow
 tk_el_t *tk_ctrl_arrow(tk_t *tk, tk_el_t *TK_PARENT, char is_left,
                        void *actionfunc, void *userdata);
-
-// button
-typedef struct {
-  void *onclick_func;
-  tk_screen_t *onclick_screen;
-} ud_button_t;
 
 // circle
 typedef struct {

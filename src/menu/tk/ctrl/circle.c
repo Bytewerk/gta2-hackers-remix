@@ -73,9 +73,7 @@ tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
       ud->container->bg_mashup = bg_mashup; tk_el_selectable(ud->container);
       tk_el_padding(ud->container, 0, 0, 0, 10);
 
-      ud->button = tk_ctrl_button(tk, TK_PARENT, text, NULL, NULL,
-                                  (void *)circle_actionfunc);
-      ud->button->userdata = ud;
+      ud->button = tk_ctrl_button(tk, TK_PARENT, text, NULL, NULL);
 
       TK_FLOW(tk_el_padding(TK_PARENT, 78, 2, 0, 0);
 

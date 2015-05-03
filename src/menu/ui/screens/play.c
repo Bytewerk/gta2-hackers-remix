@@ -39,13 +39,13 @@ tk_screen_t *ui_screen_play(tk_t *tk, ui_t *ui) {
           NULL, 0, "ENTER:  EDIT NAME", "DELETE:  DELETE PLAYER",
           "ENTER:  ENTER NAME", "BACKSPACE:  DELETE LETTER");
 
-      tk_el_t *resume = tk_ctrl_button(tk, TK_PARENT, "RESUME SAVED STATUS",
-                                       NULL, NULL, NULL);
+      tk_el_t *resume =
+          tk_ctrl_button(tk, TK_PARENT, "RESUME SAVED STATUS", NULL, NULL);
       tk_el_disabled(resume);
 
       tk_ctrl_button(tk, TK_PARENT, "VIEW HIGH SCORES",
-                     bg_mashup(tk->bg, NULL, "2_league", "2", NULL), ui->scores,
-                     NULL);
+                     bg_mashup(tk->bg, NULL, "2_league", "2", NULL),
+                     ui->scores);
 
       ud->start = tk_ctrl_circle(tk, TK_PARENT, "START PLAY IN AREA",
                                  bg_mashup(tk->bg, NULL, "2_level1", "2", NULL),
