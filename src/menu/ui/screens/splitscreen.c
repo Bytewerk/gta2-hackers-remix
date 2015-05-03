@@ -38,26 +38,32 @@ typedef struct {
 void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                             tk_action_t action, SDL_Keycode key) {
   ud_splitscreen_t *ud = (ud_splitscreen_t *)el->userdata;
-  if (action == TK_ACTION_ENTER && el_selected == ud->play) {
-    int players =
-        1 + ((ud_arrowtext_t *)(ud->players->userdata))->entry_selected;
+  if (action == TK_ACTION_ENTER) {
+    if (el_selected == ud->play) {
+      int players =
+          1 + ((ud_arrowtext_t *)(ud->players->userdata))->entry_selected;
 
-    int screen_layout =
-        ((ud_arrowtext_t *)(ud->screen_layout->userdata))->entry_selected;
+      int screen_layout =
+          ((ud_arrowtext_t *)(ud->screen_layout->userdata))->entry_selected;
 
-    char *time =
-        ud->ui->multiplayer_time_values
-            ->values[((ud_arrowtext_t *)(ud->time->userdata))->entry_selected];
+      char *time = ud->ui->multiplayer_time_values
+                       ->values[((ud_arrowtext_t *)(ud->time->userdata))
+                                    ->entry_selected];
 
-    char game_type =
-        ((ud_arrowtext_t *)ud->game_type->userdata)->entry_selected;
+      char game_type =
+          ((ud_arrowtext_t *)ud->game_type->userdata)->entry_selected;
 
-    int cops_enabled = ((ud_arrowtext_t *)ud->cops->userdata)->entry_selected;
+      int cops_enabled = ((ud_arrowtext_t *)ud->cops->userdata)->entry_selected;
 
-    char *buffer = malloc(100);
-    snprintf(buffer, 100, "SPLITSCREEN %i %i %s %i %i", players, screen_layout,
-             time, game_type, cops_enabled);
-    server_send(ud->ui->server, buffer, 1);
+      char *buffer = malloc(100);
+      snprintf(buffer, 100, "SPLITSCREEN %i %i %s %i %i", players,
+               screen_layout, time, game_type, cops_enabled);
+      server_send(ud->ui->server, buffer, 1);
+    }
+    if (el_selected == ud->map) {
+      // TODO: select the map that we have selected here
+      tk->screen_active = ud->ui->levels;
+    }
   }
 }
 
@@ -99,10 +105,10 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
                                 TODO_screen_layout_max, "SCREEN LAYOUT: ", NULL,
                                 NULL, NULL, NULL, NULL /*bottom text*/);
 
-          // map (FIXME: change screen on enter)
+          // map
           ud->map = tk_ctrl_arrowtext(tk, TK_PARENT, NULL /*bg*/, 0, ui->maps,
-                                      ui->mmp->file_count, "MAP: ", NULL,
-                                      "ENTER: SHOW A LIST", NULL, NULL, NULL);
+                                      ui->mmp->file_count, "MAP: ", NULL, NULL,
+                                      "ENTER: CHOOSE FROM LIST", NULL, NULL);
 
           // game type
           ud->game_type =
