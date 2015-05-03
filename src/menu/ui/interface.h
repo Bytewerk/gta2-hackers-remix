@@ -6,6 +6,9 @@
 
 #define GTA2_SAVEGAME_COUNT 8
 #define GTA2_PLAYERNAME_MAXLEN 8
+#define G2HR_UI_LETTERS_COUNT ('Z' - 'A' + 1)
+#define G2HR_UI_NUMBERS_COUNT 10
+#define G2HR_UI_GAME_TYPES_COUNT 3
 
 typedef struct {
   tk_t *tk;
@@ -19,6 +22,14 @@ typedef struct {
 
   server_t *server;
   mmp_t *mmp;
+
+  // these are used with the arrowtext control and a prefix
+  char **letters;
+  char **numbers;
+  char **game_types;
+  char **maps; // count: ui->mmp->file_count
+
+  // used for the play screen
   char **player_names;
 
   cfg_t *g2hr_config;

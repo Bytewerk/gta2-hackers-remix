@@ -13,6 +13,33 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server) {
   ui->slotmachine_enabled =
       !strcmp(cfg_read(ui->g2hr_config, "slotmachine/enabled"), "true");
 
+  // letters
+  ui->letters = malloc(sizeof(char *) * G2HR_UI_LETTERS_COUNT);
+  for (int i = 0; i < G2HR_UI_LETTERS_COUNT; i++) {
+    ui->letters[i] = malloc(2);
+    ui->letters[i][0] = 'A' + i;
+    ui->letters[i][1] = '\0';
+  }
+
+  // numbers
+  ui->numbers = malloc(sizeof(char *) * G2HR_UI_NUMBERS_COUNT);
+  for (int i = 0; i < G2HR_UI_NUMBERS_COUNT; i++) {
+    ui->numbers[i] = malloc(2);
+    ui->numbers[i][0] = '1' + i;
+    ui->numbers[i][1] = '\0';
+  }
+
+  // game types
+  ui->game_types = malloc(sizeof(char *) * G2HR_UI_GAME_TYPES_COUNT);
+  ui->game_types[0] = "FRAGS";
+  ui->game_types[1] = "POINTS";
+  ui->game_types[2] = "TAG";
+
+  // maps
+  ui->maps = malloc(sizeof(char *) * mmp->file_count);
+  for (size_t i = 0; i < mmp->file_count; i++)
+    ui->maps[i] = cfg_read(mmp->files[i]->data, "MapFiles/Description");
+
   // player names
   ui->player_names = malloc(sizeof(char *) * GTA2_SAVEGAME_COUNT);
   for (int i = 0; i < GTA2_SAVEGAME_COUNT; i++) {
@@ -49,6 +76,17 @@ void ui_cleanup(ui_t *ui) {
   for (int i = 0; i < GTA2_SAVEGAME_COUNT; i++)
     free(ui->player_names[i]);
   free(ui->player_names);
+
+  for (int i = 0; i < G2HR_UI_LETTERS_COUNT; i++)
+    free(ui->letters[i]);
+  free(ui->letters);
+
+  for (int i = 0; i < G2HR_UI_NUMBERS_COUNT; i++)
+    free(ui->numbers[i]);
+  free(ui->numbers);
+
+  free(ui->maps);
+  free(ui->game_types);
 
   cfg_split_cleanup(ui->multiplayer_time_values);
   cfg_cleanup(ui->g2hr_config);

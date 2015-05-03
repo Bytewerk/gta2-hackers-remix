@@ -17,37 +17,12 @@
 // TODO: place this in a common.h or something like that
 #define GTA2_MP_MAX_PLAYERS 6
 
-// CONTROL VALUES
-#define GTA2_CTRL_PLAYERS_TEMPLATE "PLAYERS: N"
-char **screen_players_values() {
-  char **ret = malloc(sizeof(char *) * GTA2_MP_MAX_PLAYERS);
-  for (int i = 0; i < GTA2_MP_MAX_PLAYERS; i++) {
-    ret[i] = malloc(sizeof(GTA2_CTRL_PLAYERS_TEMPLATE));
-    strncpy(ret[i], GTA2_CTRL_PLAYERS_TEMPLATE,
-            sizeof(GTA2_CTRL_PLAYERS_TEMPLATE));
-    ret[i][9] = '1' + i;
-  }
-  return ret;
-}
-
+#define TODO_controllers_found 4
 #define TODO_screen_layout_max ('F' - 'A')
-#define GTA2_CTRL_SCREEN_LAYOUT_TEMPLATE "SCREEN LAYOUT: N"
-char **screen_layout_values() {
-  char **ret = malloc(sizeof(char *) * TODO_screen_layout_max);
-  for (int i = 0; i < TODO_screen_layout_max; i++) {
-    ret[i] = malloc(sizeof(GTA2_CTRL_SCREEN_LAYOUT_TEMPLATE));
-    strncpy(ret[i], GTA2_CTRL_SCREEN_LAYOUT_TEMPLATE,
-            sizeof(GTA2_CTRL_SCREEN_LAYOUT_TEMPLATE));
-    ret[i][sizeof(GTA2_CTRL_SCREEN_LAYOUT_TEMPLATE) - 2] = 'A' + i;
-  }
-  return ret;
-}
 
 // USERDATA STRUCT
 typedef struct {
   ui_t *ui;
-  char **players_values;
-  char **screen_layout_values;
 
   tk_el_t *titlebar;
   tk_el_t *players;
@@ -60,8 +35,6 @@ typedef struct {
 } ud_splitscreen_t;
 
 // ACTIONFUNC
-#define TODO_controllers_found 6
-
 void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                             tk_action_t action, SDL_Keycode key) {
   ud_splitscreen_t *ud = (ud_splitscreen_t *)el->userdata;
@@ -76,22 +49,15 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
         ud->ui->multiplayer_time_values
             ->values[((ud_arrowtext_t *)(ud->time->userdata))->entry_selected];
 
+    char game_type =
+        ((ud_arrowtext_t *)ud->game_type->userdata)->entry_selected;
+
     int cops_enabled = ((ud_arrowtext_t *)ud->cops->userdata)->entry_selected;
 
     char *buffer = malloc(100);
-    snprintf(buffer, 100, "SPLITSCREEN %i %i %s %i", players, screen_layout,
-             time, cops_enabled);
+    snprintf(buffer, 100, "SPLITSCREEN %i %i %s %i %i", players, screen_layout,
+             time, game_type, cops_enabled);
     server_send(ud->ui->server, buffer, 1);
-  }
-
-  if (action == TK_ACTION_CLEANUP) {
-    for (int i = 0; i < GTA2_MP_MAX_PLAYERS; i++)
-      free(ud->players_values[i]);
-    free(ud->players_values);
-
-    for (int i = 0; i < TODO_screen_layout_max; i++)
-      free(ud->screen_layout_values[i]);
-    free(ud->screen_layout_values);
   }
 }
 
@@ -102,10 +68,6 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
   ud->ui = ui;
 
   tk_screen_t *splitscreen = tk_screen(tk, NULL, NULL);
-
-  // generate the control values
-  ud->players_values = screen_players_values();
-  ud->screen_layout_values = screen_layout_values();
 
   // create the screen layout
   TK_STACK_SCREEN(
@@ -126,25 +88,27 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
           TK_PARENT->actionfunc = (void *)splitscreen_actionfunc;
 
           // players
-          ud->players = tk_ctrl_arrowtext(
-              tk, TK_PARENT, NULL /*bg*/, 0, ud->players_values,
-              TODO_controllers_found, NULL, NULL, /*prefix, suffix*/
-              NULL, NULL, NULL, NULL /*bottom text*/);
+          ud->players =
+              tk_ctrl_arrowtext(tk, TK_PARENT, NULL /*bg*/, 0, ui->numbers,
+                                TODO_controllers_found, "PLAYERS: ", NULL, NULL,
+                                NULL, NULL, NULL /*bottom text*/);
 
           // screen layout
-          ud->screen_layout = tk_ctrl_arrowtext(
-              tk, TK_PARENT, NULL /*bg*/, 0, ud->screen_layout_values,
-              TODO_screen_layout_max, NULL, NULL, /*prefix, suffix*/
-              NULL, NULL, NULL, NULL /*bottom text*/);
+          ud->screen_layout =
+              tk_ctrl_arrowtext(tk, TK_PARENT, NULL /*bg*/, 0, ui->letters,
+                                TODO_screen_layout_max, "SCREEN LAYOUT: ", NULL,
+                                NULL, NULL, NULL, NULL /*bottom text*/);
 
-          // map (FIXME)
-          ud->map =
-              tk_ctrl_button(tk, TK_PARENT, "MAP: TINY TOWN", NULL, ui->levels);
-          ud->map->bottom_text_low = "ENTER: CHOOSE A MAP";
+          // map (FIXME: change screen on enter)
+          ud->map = tk_ctrl_arrowtext(tk, TK_PARENT, NULL /*bg*/, 0, ui->maps,
+                                      ui->mmp->file_count, "MAP: ", NULL,
+                                      "ENTER: SHOW A LIST", NULL, NULL, NULL);
 
           // game type
           ud->game_type =
-              tk_ctrl_button(tk, TK_PARENT, "GAME TYPE: FRAGS", NULL, NULL);
+              tk_ctrl_arrowtext(tk, TK_PARENT, NULL /*bg*/, 0, ui->game_types,
+                                G2HR_UI_GAME_TYPES_COUNT, "GAME TYPE: ", NULL,
+                                NULL, NULL, NULL, NULL /*bottom text*/);
 
           // time
           ud->time =
