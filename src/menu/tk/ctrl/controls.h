@@ -16,7 +16,7 @@ tk_el_t *tk_ctrl_button(tk_t *tk, tk_el_t *TK_PARENT, char *text,
 */
 tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
                         bg_mashup_t *bg_mashup, char min, char max, char min2,
-                        char max2, char value, void *actionfunc);
+                        char max2, char value);
 
 /*
         ARROWTEXT:
@@ -92,7 +92,6 @@ typedef struct {
   tk_el_t *right;
   tk_el_t *circle_sprite;
   tk_el_t *circle_text;
-  void *actionfunc;
 } ud_circle_t;
 
 // arrowtext

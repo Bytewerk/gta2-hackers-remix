@@ -49,11 +49,11 @@ tk_screen_t *ui_screen_play(tk_t *tk, ui_t *ui) {
 
       ud->start = tk_ctrl_circle(tk, TK_PARENT, "START PLAY IN AREA",
                                  bg_mashup(tk->bg, NULL, "2_level1", "2", NULL),
-                                 '1', '3', 0, 0, '1', NULL);
+                                 '1', '3', 0, 0, '1');
 
       ud->bonus = tk_ctrl_circle(tk, TK_PARENT, "BONUS STAGE",
                                  bg_mashup(tk->bg, NULL, "2_bonus1", "2", NULL),
-                                 'A', 'I', 0, 0, 'A', NULL);
+                                 'A', 'I', 0, 0, 'A');
 
       tk_el_padding(TK_PARENT, 300, 210, 0, 0);
       tk_event(tk, TK_PARENT, play_actionfunc, ud););

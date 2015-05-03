@@ -58,9 +58,8 @@ void circle_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 */
 tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
                         bg_mashup_t *bg_mashup, char min, char max, char min2,
-                        char max2, char value, void *actionfunc) {
+                        char max2, char value) {
   ud_circle_t *ud = calloc(1, sizeof(ud_circle_t));
-  ud->actionfunc = actionfunc;
   ud->min = min;
   ud->max = max;
   ud->min2 = min2;

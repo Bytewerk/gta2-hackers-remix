@@ -21,7 +21,7 @@ tk_screen_t *ui_screen_scores(tk_t *tk, ui_t *ui) {
 
                tk_el_t *circle =
                    tk_ctrl_circle(tk, TK_PARENT, "HIGH SCORES FOR AREA", NULL,
-                                  '1', '3', 'A', 'I', '2', NULL);
+                                  '1', '3', 'A', 'I', '2');
                tk_el_padding(circle, 0, 0, 0, 30);
 
                for (int i = 0; i < 5; i++) {
