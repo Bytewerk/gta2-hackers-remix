@@ -56,20 +56,6 @@ tk_el_t *tk_ctrl_boolean(tk_t *tk, tk_el_t *TK_PARENT, const char *text,
       ->entry_selected = VALUE;
 
 /*
-        LISTBUTTON (mix of ARROWTEXT and BUTTON):
-                CHOOSE LEVEL
-                   < TINY TOWN >
-*/
-tk_el_t *tk_ctrl_listbutton(tk_t *tk, tk_el_t *TK_PARENT,
-                            bg_mashup_t *bg_mashup, char **entries,
-                            uint16_t entry_count, uint16_t entry_selected,
-                            char entry_length, char *title,
-                            char editing_disabled, char *bottom_text_high,
-                            char *bottom_text_low,
-                            char *bottom_text_high_editing,
-                            char *bottom_text_low_editing);
-
-/*
         Internal controls (used by other controls) and userdata.
         If you want to do fancy stuff, just cast 'n' access the userdata
         directly. No need for setters or getters here.

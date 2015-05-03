@@ -54,7 +54,7 @@ void circle_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 
         Example call:
                 tk_ctrl_circle(tk, TK_PARENT, "CHOOSE A LETTER", NULL,
-                        '1', '9', 'A', 'Z', '0', NULL)
+                        '1', '9', 'A', 'Z', '0')
 */
 tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
                         bg_mashup_t *bg_mashup, char min, char max, char min2,
