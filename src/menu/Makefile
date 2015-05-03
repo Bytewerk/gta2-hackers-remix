@@ -88,9 +88,6 @@ obj/ctrl_button.o: $(call DEPS,tk/ctrl/button.c)
 obj/ctrl_circle.o: $(call DEPS,tk/ctrl/circle.c)
 	$(CC) -c -o $@ $<
 
-obj/ctrl_boolean.o: $(call DEPS,tk/ctrl/boolean.c)
-	$(CC) -c -o $@ $<
-
 # TK
 obj/tk_el.o: $(call DEPS,tk/elements.c)
 	$(CC) -c -o $@ $<
@@ -146,7 +143,8 @@ obj/server.o: $(call DEPS,server/server.c)
 
 # VALGRIND: automatically create a rule for SDL2 init
 valgrind: obj out out/valgrind.sup out/menu.bin
-	valgrind --suppressions=out/valgrind.sup out/menu.bin
+	cd "../../" && valgrind --suppressions=src/menu/out/valgrind.sup \
+		src/menu/out/menu.bin
 
 out/valgrind.sup: out/minimal_init.bin
 	valgrind --gen-suppressions=all --quiet $< 2>&1 >/dev/null | grep "==" -v > $@

@@ -33,7 +33,7 @@ void arrowtext_style(tk_t *tk, ud_arrowtext_t *ud) {
   ud->container->bottom_text_low =
       is_editing ? ud->bottom_text_low_editing : ud->bottom_text_low;
 
-  // label text (comparing pointers here!)
+  // label text (comparing string pointers here!)
   if (!is_editing && ud->text->text != ud->entries[ud->entry_selected]) {
     ud->text->text = ud->entries[ud->entry_selected];
     tk_el_geocalc(tk, ud->text, 0, 1);
@@ -45,8 +45,13 @@ void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   ud_arrowtext_t *ud = (ud_arrowtext_t *)el->userdata;
   char is_editing = (tk->exclusive_action_element == ud->container);
 
-  if (action == TK_ACTION_CLEANUP)
+  if (action == TK_ACTION_CLEANUP) {
+    if (ud->free_bool_default_entries && ud->entries) {
+      free(ud->entries);
+      ud->entries = NULL;
+    }
     return;
+  }
 
   if (el == ud->container) {
     if (action == TK_ACTION_FRAMETIME) {
@@ -65,7 +70,7 @@ void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
         tk->exclusive_action_element = NULL;
       if (action == TK_ACTION_ENTER) {
         strncpy(ud->entries[ud->entry_selected], ud->text->text,
-                ud->entry_length + 1);
+                ud->editing_maxlen + 1);
         tk->exclusive_action_element = NULL;
       }
       if (action == TK_ACTION_BACKSPACE) {
@@ -80,7 +85,7 @@ void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
       if (action == TK_ACTION_TYPING) {
         char *text = ud->text->text;
         int length = strlen(text);
-        if (length >= ud->entry_length)
+        if (length >= ud->editing_maxlen)
           return;
         char letter = 0x00;
 
@@ -101,17 +106,17 @@ void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     {
       if (action == TK_ACTION_ENTER &&
           tk_is_selected_recursive(el, el_selected, 0)) {
-        if (!ud->editing_disabled) {
+        if (ud->editing_maxlen) {
           tk->exclusive_action_element = ud->container;
 
           // copy the string to the text element,
           // so we can restore it if necessary
-          ud->text->text = malloc(ud->entry_length + 1);
+          ud->text->text = malloc(ud->editing_maxlen + 1);
           strncpy(ud->text->text, ud->entries[ud->entry_selected],
-                  ud->entry_length + 1);
+                  ud->editing_maxlen + 1);
         }
 
-        // two elements: toggle!
+        // booleans: toggle!
         else if (ud->entry_count == 2)
           ud->entry_selected = !ud->entry_selected;
       }
@@ -141,52 +146,71 @@ void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   arrowtext_style(tk, el->userdata);
 }
 
+// Set entries to NULL and entry_count to 0 to create
+// a boolean. entries will then be: ["ENABLED", "DISABLED"]
+// editing_maxlen: set to 0 to disable editing completely
 tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
-                           char **entries, uint16_t entry_count,
-                           uint16_t entry_selected, char entry_length,
-                           void *actionfunc, char editing_disabled,
+                           char editing_maxlen, char **entries,
+                           uint16_t entry_count, char *prefix, char *suffix,
                            char *bottom_text_high, char *bottom_text_low,
                            char *bottom_text_high_editing,
                            char *bottom_text_low_editing) {
+  // fill userdata
   ud_arrowtext_t *ud = calloc(1, sizeof(ud_arrowtext_t));
-  ud->actionfunc = actionfunc;
+  ud->editing_maxlen = editing_maxlen;
   ud->entries = entries;
-  ud->entry_length = entry_length;
   ud->entry_count = entry_count;
-  ud->entry_selected = entry_selected;
-  ud->actionfunc = actionfunc;
-  ud->editing_disabled = editing_disabled;
-
+  ud->prefix = prefix;
+  ud->suffix = suffix;
   ud->bottom_text_high = bottom_text_high;
   ud->bottom_text_low = bottom_text_low;
   ud->bottom_text_high_editing = bottom_text_high_editing;
   ud->bottom_text_low_editing = bottom_text_low_editing;
 
-  TK_FLOW(ud->container = TK_PARENT; ud->container->bg_mashup = bg_mashup;
-          ud->container->actionfunc = (void *)arrowtext_actionfunc;
-          ud->container->userdata = ud; tk_el_selectable(ud->container);
+  // set defaults for booleans
+  if (!entry_count && !entries) {
+    ud->entries = malloc(sizeof(char *) * 2);
+    ud->entries[0] = "DISABLED";
+    ud->entries[1] = "ENABLED";
+    ud->entry_count = 2;
+    ud->free_bool_default_entries = 1;
+  }
 
-          ud->left = tk_ctrl_arrow(tk, TK_PARENT, 1,
-                                   (void *)arrowtext_actionfunc, (void *)ud);
+  // create the layout
+  TK_FLOW(
+      ud->container = TK_PARENT; ud->container->bg_mashup = bg_mashup;
+      ud->container->actionfunc = (void *)arrowtext_actionfunc;
+      ud->container->userdata = ud; tk_el_selectable(ud->container);
 
-          ud->text = tk_label(tk, TK_PARENT, entries[entry_selected],
-                              GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
-                              GTA2_FONT_FSTYLE_RED_BLACK_NORMAL);
+      ud->left = tk_ctrl_arrow(tk, TK_PARENT, 1, (void *)arrowtext_actionfunc,
+                               (void *)ud);
 
-          ud->underscore = tk_label(tk, TK_PARENT, "_",
-                                    GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0);
-          ud->underscore->actionfunc = (void *)arrowtext_actionfunc;
-          ud->underscore->userdata = ud;
+      if (prefix) ud->text_pre =
+          tk_label(tk, TK_PARENT, prefix, GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
+                   GTA2_FONT_FSTYLE_RED_BLACK_NORMAL);
 
-          ud->right = tk_ctrl_arrow(tk, TK_PARENT, 0,
-                                    (void *)arrowtext_actionfunc, (void *)ud);
+      ud->text = tk_label(tk, TK_PARENT, ud->entries[0],
+                          GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
+                          GTA2_FONT_FSTYLE_RED_BLACK_NORMAL);
 
-          tk_el_padding(ud->left, 5, 4, 5, 0);
-          tk_el_padding(ud->right, 5 - ud->underscore->width, 4, 5, 0);
-          tk_el_padding(TK_PARENT,
-                        (-1) * (ud->left->width + ud->left->padding_left +
-                                ud->left->padding_right),
-                        0, 0, 0););
+      if (suffix) ud->text_suf =
+          tk_label(tk, TK_PARENT, suffix, GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
+                   GTA2_FONT_FSTYLE_RED_BLACK_NORMAL);
+
+      ud->underscore =
+          tk_label(tk, TK_PARENT, "_", GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0);
+      ud->underscore->actionfunc = (void *)arrowtext_actionfunc;
+      ud->underscore->userdata = ud;
+
+      ud->right = tk_ctrl_arrow(tk, TK_PARENT, 0, (void *)arrowtext_actionfunc,
+                                (void *)ud);
+
+      tk_el_padding(ud->left, 5, 4, 5, 0);
+      tk_el_padding(ud->right, 5 - ud->underscore->width, 4, 5, 0);
+      tk_el_padding(TK_PARENT,
+                    (-1) * (ud->left->width + ud->left->padding_left +
+                            ud->left->padding_right),
+                    0, 0, 0););
 
   arrowtext_style(tk, ud);
   return ud->container;

@@ -35,8 +35,8 @@ tk_screen_t *ui_screen_play(tk_t *tk, ui_t *ui) {
 
       tk_ctrl_arrowtext(
           tk, TK_PARENT, bg_mashup(tk->bg, NULL, "2_name", "2", NULL),
-          ui->player_names, GTA2_SAVEGAME_COUNT, 0, GTA2_PLAYERNAME_MAXLEN,
-          NULL, 0, "ENTER:  EDIT NAME", "DELETE:  DELETE PLAYER",
+          GTA2_PLAYERNAME_MAXLEN, ui->player_names, GTA2_SAVEGAME_COUNT, NULL,
+          NULL, "ENTER:  EDIT NAME", "DELETE:  DELETE PLAYER",
           "ENTER:  ENTER NAME", "BACKSPACE:  DELETE LETTER");
 
       tk_el_t *resume =

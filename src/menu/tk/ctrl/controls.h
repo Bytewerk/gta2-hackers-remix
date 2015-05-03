@@ -9,7 +9,9 @@ tk_el_t *tk_ctrl_button(tk_t *tk, tk_el_t *TK_PARENT, char *text,
 
 /*
         CIRCLE:
-                < (A) >
+
+                text
+                        < (A) >
 
         value:
                 ((ud_circle_t*) ctrl->userdata)->value_str[0];
@@ -29,31 +31,16 @@ tk_el_t *tk_ctrl_circle(tk_t *tk, tk_el_t *TK_PARENT, char *text,
                 char* string = ud->entries[id];
 */
 tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
-                           char **entries, uint16_t entry_count,
-                           uint16_t entry_selected, char entry_length,
-                           void *actionfunc, char editing_disabled,
+                           char editing_maxlen, char **entries,
+                           uint16_t entry_count, char *prefix, char *suffix,
                            char *bottom_text_high, char *bottom_text_low,
                            char *bottom_text_high_editing,
                            char *bottom_text_low_editing);
 
-/*
-        BOOLEAN (simplifies ARROWTEXT):
-                < TEXT: DISABLED >
-
-        value: just use the macros below.
-*/
-tk_el_t *tk_ctrl_boolean(tk_t *tk, tk_el_t *TK_PARENT, const char *text,
-                         bg_mashup_t *bg_mashup, char value);
-
-#define tk_ctrl_bool_get(BOOLCTRL)                                             \
-  ((ud_arrowtext_t *)((ud_boolean_t *)BOOLCTRL->userdata)                      \
-       ->arrowtext->userdata)                                                  \
-      ->entry_selected;
-
-#define tk_ctrl_bool_set(BOOLCTRL, VALUE)                                      \
-  ((ud_arrowtext_t *)((ud_boolean_t *)BOOLCTRL->userdata)                      \
-       ->arrowtext->userdata)                                                  \
-      ->entry_selected = VALUE;
+// Macro that simplifies ARROWTEXT:
+#define tk_ctrl_boolean(TK, TK_PARENT, BG_MASHUP, PREFIX)                      \
+  tk_ctrl_arrowtext(TK, TK_PARENT, BG_MASHUP, 0, NULL, 0, PREFIX, NULL, NULL,  \
+                    NULL, NULL, NULL);
 
 /*
         Internal controls (used by other controls) and userdata.
@@ -83,20 +70,26 @@ typedef struct {
 // arrowtext
 #define UNDERSCORE_BLINK_FRAMES 5
 typedef struct {
-  uint16_t entry_count;
-  uint16_t entry_selected;
-  char entry_length;
+  // constructor parameters
+  char editing_maxlen;
   char **entries;
-  char underscore_frame_count;
-  void *actionfunc;
-  char editing_disabled;
+  uint16_t entry_count;
+  char *prefix;
+  char *suffix;
   char *bottom_text_high;
   char *bottom_text_low;
   char *bottom_text_high_editing;
   char *bottom_text_low_editing;
+
+  // other
+  uint16_t entry_selected;
+  char underscore_frame_count;
+  char free_bool_default_entries;
   tk_el_t *container;
   tk_el_t *left;
+  tk_el_t *text_pre;
   tk_el_t *text;
+  tk_el_t *text_suf;
   tk_el_t *underscore;
   tk_el_t *right;
 } ud_arrowtext_t;

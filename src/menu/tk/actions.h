@@ -1,6 +1,6 @@
 #pragma once
 
-#define ACTION_LIMIT_RATE 100 // miliseconds
+#define ACTION_LIMIT_RATE 100 // milliseconds
 
 typedef enum {
   TK_ACTION_NONE,

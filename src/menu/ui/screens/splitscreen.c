@@ -95,7 +95,7 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
         ud->ui->multiplayer_time_values
             ->values[((ud_arrowtext_t *)(ud->time->userdata))->entry_selected];
 
-    int cops_enabled = tk_ctrl_bool_get(ud->cops);
+    int cops_enabled = ((ud_arrowtext_t *)ud->cops->userdata)->entry_selected;
 
     char *buffer = malloc(100);
     snprintf(buffer, 100, "SPLITSCREEN %i %i %s %i", players, screen_layout,
@@ -151,13 +151,15 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
 
           // players
           ud->players = tk_ctrl_arrowtext(
-              tk, TK_PARENT, NULL /*bg*/, ud->players_values,
-              TODO_controllers_found, 1, 0, NULL, 1, NULL, NULL, NULL, NULL);
+              tk, TK_PARENT, NULL /*bg*/, 0, ud->players_values,
+              TODO_controllers_found, NULL, NULL, /*prefix, suffix*/
+              NULL, NULL, NULL, NULL /*bottom text*/);
 
           // screen layout
           ud->screen_layout = tk_ctrl_arrowtext(
-              tk, TK_PARENT, NULL /*bg*/, ud->screen_layout_values,
-              TODO_screen_layout_max, 1, 0, NULL, 1, NULL, NULL, NULL, NULL);
+              tk, TK_PARENT, NULL /*bg*/, 0, ud->screen_layout_values,
+              TODO_screen_layout_max, NULL, NULL, /*prefix, suffix*/
+              NULL, NULL, NULL, NULL /*bottom text*/);
 
           // map (FIXME)
           ud->map =
@@ -169,13 +171,13 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
               tk_ctrl_button(tk, TK_PARENT, "GAME TYPE: FRAGS", NULL, NULL);
 
           // time
-          ud->time =
-              tk_ctrl_arrowtext(tk, TK_PARENT, NULL /*bg*/, ud->time_values,
-                                ui->multiplayer_time_values->count, 1, 0, NULL,
-                                1, NULL, NULL, NULL, NULL);
+          ud->time = tk_ctrl_arrowtext(
+              tk, TK_PARENT, NULL /*bg*/, 0, ud->time_values,
+              ui->multiplayer_time_values->count, NULL, NULL, /*prefix, suffix*/
+              NULL, NULL, NULL, NULL /*bottom text*/);
 
           // cops
-          ud->cops = tk_ctrl_boolean(tk, TK_PARENT, "COPS", NULL, 1);
+          ud->cops = tk_ctrl_boolean(tk, TK_PARENT, NULL, "COPS: ");
 
           // big play button. We don't have the huge font in red
           // for black backgrounds, but modifying argb_selected has
