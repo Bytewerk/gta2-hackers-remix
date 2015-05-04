@@ -10,7 +10,28 @@
 
 #define ERR(MSG)                                                               \
   exit(printf("ERROR (line %i, col %i, char '%c'): %s!\n", line_number,        \
-              char_in_line, buffer[i], MSG))
+              char_in_line, c, MSG))
+
+// checks if there is a hole in the block_geometry array,
+// eg. if player 2 was forgotten, but 1 and 3 are set
+// returns the player count, from 0 to 5
+int sl_parse_check_block(int line_number, int char_in_line, char c,
+                         sl_geo_t **block_geometry) {
+  int last_found = 0;
+  for (int i = 1; i < GTA2_MAX_PLAYERS; i++)
+    if (block_geometry[i]) {
+      if (last_found != i - 1)
+        ERR("missing player number in layout block (eg. 1,3 are set, but 2 is "
+            "missing)");
+      last_found = i;
+    }
+
+  if (!block_geometry[0])
+    ERR("player 1 is missing in this layout block!");
+
+  return last_found;
+}
+
 sl_t *sl_parse(char *buffer, size_t buffer_size) {
   sl_t *sl = malloc(sizeof(sl_t));
   sl->players = calloc(1, sizeof(sl_entry_t *) * GTA2_MAX_PLAYERS);
@@ -22,7 +43,6 @@ sl_t *sl_parse(char *buffer, size_t buffer_size) {
   int layout_width = 0;
   int layout_height = 0;
   int last_left_border_pos_in_line = -1; // -1: not found in line yet
-  char players_found = 0;
 
   for (size_t i = 0; i < buffer_size; i++) {
     char c = buffer[i];
@@ -39,18 +59,21 @@ sl_t *sl_parse(char *buffer, size_t buffer_size) {
         block_geometry = calloc(1, sizeof(sl_geo_t *) * GTA2_MAX_PLAYERS);
         layout_width = 0;
         layout_height = 0;
-        players_found = 0;
         is_comment_line = 0;
       }
       // layout block end ('\n\n')
       else if (c == '\n' && block_geometry) {
-        block_geometry->w = layout_width;
-        block_geometry->h = layout_height;
+        int count =
+            sl_parse_check_block(line_number, char_in_line, c, block_geometry);
 
-        // TODO: attach block to sl!
+        sl_entry_t *entry = malloc(sizeof(sl_entry_t));
+        entry->w = layout_width;
+        entry->h = layout_height;
+
+        // TODO: attach entry to sl!
         block_geometry = NULL;
         last_left_border_pos_in_line = -1;
-        printf("height: %2i (end)\n", layout_height);
+        printf("count: %i, height: %2i (end)\n", count, layout_height);
       } else if (c != '-' && c != '|') {
         if (block_geometry)
           ERR("Found a comment line inside a layout block. This isn't allowed. "
