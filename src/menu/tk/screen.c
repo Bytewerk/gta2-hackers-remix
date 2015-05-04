@@ -70,10 +70,11 @@ void print_el_draw_info(tk_el_t *el, int max_height, int offset_y,
   while (i < 20)
     i += printf(" ");
 
-  printf(
-      "w,h: [%3i,%3i]; padding: [%3i,%3i,%3i,%3i]; max-h: %3i, offset-y: %3i\n",
-      el->width, el->height, el->padding_left, el->padding_top,
-      el->padding_right, el->padding_bottom, max_height, offset_y);
+  printf("w,h: [%3i,%3i]; padding: [%3i,%3i,%3i,%3i]; max-h: %3i, offset-y: "
+         "%3i, actionfunc: %8p, ud: %8p\n",
+         el->width, el->height, el->padding_left, el->padding_top,
+         el->padding_right, el->padding_bottom, max_height, offset_y,
+         el->actionfunc, el->userdata);
 }
 
 void recursive_draw(tk_t *tk, tk_el_t *el_selected, tk_el_t *el, int offset_x,

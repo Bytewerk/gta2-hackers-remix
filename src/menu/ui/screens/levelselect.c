@@ -5,27 +5,47 @@
 
 /*
         TODO:
-                - make the map list scrollable (right now it is overflowing!)
+                - show a detailed map description, author, date, ...
                 - switch the container between the two panels when pressing
                         tab
                 - add a red line between the panels
                 - make the filters usable
                 - change background, based on the selected levels
-                - add a function to each button, to put it back somehow
                 - add F5 action, that reloads the mmp files and redraws the
                         screen
 */
 
 typedef struct {
+  tk_screen_t *screen;
   int entries_count;
   int index_last;
   tk_el_t *list;
-
+  ui_t *ui;
 } ud_levels_t;
 
-void levels_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
-                       tk_action_t action, SDL_Keycode key) {
+void levels_actionfunc_list(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
+                            tk_action_t action, SDL_Keycode key) {
   ud_levels_t *ud = (ud_levels_t *)el->userdata;
+
+  if (action == TK_ACTION_BEFORE_FIRST_SCREEN_FRAME) {
+    // sync the map selection
+    char *map_name = ud->ui->maps[ud->ui->map_selected];
+    tk_el_t *current = ud->list->sub;
+    while (current) {
+      char *map_name_current = cfg_read(((mmp_file_t *)current->userdata)->data,
+                                        "MapFiles/Description");
+      if (map_name_current == map_name)
+        break;
+      current = current->next;
+    }
+
+    ud->screen->el_selected = current;
+    el_selected = current;
+
+    // hack: set the scrollbar right. FIXME, put this in an extra
+    // function instead!
+    action = TK_ACTION_FRAMETIME;
+  }
 
   // set the scrolling right
   // FIXME: should work with action == UP, DOWN (less CPU time!),
@@ -61,11 +81,37 @@ void levels_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   }
 }
 
+void levels_actionfunc_label(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
+                             tk_action_t action, SDL_Keycode key) {
+  if (action == TK_ACTION_ENTER && el == el_selected) {
+    ud_levels_t *ud = (ud_levels_t *)el->parent->userdata;
+    mmp_file_t *file = (mmp_file_t *)el->userdata;
+    char *map_name = cfg_read(file->data, "MapFiles/Description");
+    char **ui_maps = ud->ui->maps;
+
+    // find the currently selected map inside the ui_maps array,
+    // which might have a different sorting than the ui->mmp struct
+    // in the future (eg. when the mmp struct gets sorted by author)
+    // NOTE: comparing pointers in the if()!
+    size_t count = ud->ui->mmp->file_count;
+    size_t i = 0;
+    for (; i < count; i++)
+      if (ui_maps[i] == map_name)
+        break;
+    ud->ui->map_selected = i;
+
+    // go back to the "splitscreen"-screen
+    tk->screen_active = ud->ui->splitscreen;
+  }
+}
+
 tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui) {
   tk_screen_t *levels = tk_screen(tk, NULL, NULL);
   ud_levels_t *ud = malloc(sizeof(ud_levels_t));
   ud->entries_count = 0;
   ud->index_last = 0;
+  ud->ui = ui;
+  ud->screen = levels;
 
   TK_STACK_SCREEN(
       levels,
@@ -80,7 +126,7 @@ tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui) {
       // TK_PARENT->bottom_text_low = "THIS LIST CAN BE SCROLLED";
 
       // map list
-      TK_STACK(TK_PARENT->actionfunc = (void *)levels_actionfunc;
+      TK_STACK(TK_PARENT->actionfunc = (void *)levels_actionfunc_list;
                TK_PARENT->userdata = (void *)ud; ud->list = TK_PARENT;
 
                levels->el_content_container = TK_PARENT;
@@ -91,11 +137,17 @@ tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui) {
                for (size_t i = 0; i < mmp->file_count; i++) {
                  for (int n = 0; n < 4; n++) // debug: more entries to scroll
                  {
-                   tk_el_t *el = tk_ctrl_button(
-                       tk, TK_PARENT,
-                       cfg_read(mmp->files[i]->data, "MapFiles/Description"),
-                       NULL, NULL);
-                   el->userdata = (void *)mmp->files[i];
+                   // NOTE: the format printed in the label
+                   // doesn't need to be the map name. we have
+                   // the userdata for that.
+                   tk_el_t *label =
+                       tk_label(tk, TK_PARENT, cfg_read(mmp->files[i]->data,
+                                                        "MapFiles/Description"),
+                                GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
+                                GTA2_FONT_FSTYLE_RED_BLACK_NORMAL);
+                   label->userdata = (void *)mmp->files[i];
+                   label->actionfunc = levels_actionfunc_label;
+                   tk_el_selectable(label);
                    ud->entries_count++;
                  }
                })

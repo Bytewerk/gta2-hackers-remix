@@ -29,6 +29,12 @@ typedef struct {
   char **game_types;
   char **maps; // count: ui->mmp->file_count
 
+  // synced value between the screens levelselect and splitscreen.
+  // value is an index of the ui->maps array (with the initial sorting
+  // by map name, alphabetically - later we might be able to change
+  // the sorting inside the ui->mmp struct!)
+  size_t map_selected;
+
   // used for the play screen
   char **player_names;
 

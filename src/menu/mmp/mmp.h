@@ -44,4 +44,7 @@ typedef struct mmp_list_t {
 
 mmp_t *mmp_init(const char *path);
 void mmp_sort(mmp_t *mmp, char *key);
+
+mmp_file_t *mmp_file_by_value(mmp_t *mmp, char *key, char *value);
+
 void mmp_cleanup(mmp_t *mmp);

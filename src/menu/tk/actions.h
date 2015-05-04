@@ -21,6 +21,7 @@ typedef enum {
   // in this list get rate limited!
   TK_ACTION_LAST_LIMITED,
 
+  TK_ACTION_BEFORE_FIRST_SCREEN_FRAME,
   TK_ACTION_TYPING,
   TK_ACTION_REDRAW,
   TK_ACTION_FRAMETIME,

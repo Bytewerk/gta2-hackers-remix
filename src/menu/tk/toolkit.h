@@ -28,6 +28,7 @@ typedef struct {
   SDL_Renderer *renderer;
   tk_screen_t *screen_first;
   tk_screen_t *screen_active;
+  tk_screen_t *screen_last_frame;
   gxt_t *gxt;
   sfx_t *sfx;
   sty_t *fsty;
@@ -60,6 +61,9 @@ void captions_draw_buttom_text(tk_t *tk);
 void tk_action(tk_t *tk, SDL_Event *event);
 void tk_actions_element(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                         tk_action_t action, SDL_Keycode key);
+
+void tk_actions_recursive(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
+                          tk_action_t action, SDL_Keycode key);
 
 // elements: common functions
 tk_el_t *tk_el_attach(tk_el_t *el, tk_el_t *parent, tk_el_type_t type);

@@ -5,13 +5,11 @@
 
 /*
         TODO:
-                - replace all the buttons with functional controls
                 - store 'int controllers_found' in the client struct
                         (communication between native and menu)
                 - parse the screen layout config and send the abstracted
                         geometry values to the meta component instead of the
                         layout ID (this is for debugging only)
-                - maybe put the time values in a config, too
 */
 
 // TODO: place this in a common.h or something like that
@@ -38,6 +36,12 @@ typedef struct {
 void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                             tk_action_t action, SDL_Keycode key) {
   ud_splitscreen_t *ud = (ud_splitscreen_t *)el->userdata;
+
+  if (action == TK_ACTION_BEFORE_FIRST_SCREEN_FRAME) {
+    ((ud_arrowtext_t *)ud->map->userdata)->entry_selected =
+        ud->ui->map_selected;
+  }
+
   if (action == TK_ACTION_ENTER) {
     if (el_selected == ud->play) {
       int players =
@@ -61,7 +65,8 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
       server_send(ud->ui->server, buffer, 1);
     }
     if (el_selected == ud->map) {
-      // TODO: select the map that we have selected here
+      ud->ui->map_selected =
+          ((ud_arrowtext_t *)ud->map->userdata)->entry_selected;
       tk->screen_active = ud->ui->levels;
     }
   }

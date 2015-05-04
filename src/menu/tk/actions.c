@@ -55,12 +55,12 @@ void tk_actions_element(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     actionfunc(tk, el, el_selected, action, key);
 }
 
-void actions_recursive(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
-                       tk_action_t action, SDL_Keycode key) {
+void tk_actions_recursive(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
+                          tk_action_t action, SDL_Keycode key) {
   while (el) {
     tk_actions_element(tk, el, el_selected, action, key);
     if (el->sub)
-      actions_recursive(tk, el->sub, el_selected, action, key);
+      tk_actions_recursive(tk, el->sub, el_selected, action, key);
 
     if (!el->parent)
       break; // must be a screen
@@ -97,5 +97,5 @@ void tk_action(tk_t *tk, SDL_Event *event) {
   }
 
   // action for all elements on the screen, recursively
-  actions_recursive(tk, &(tk->screen_active->el), el_selected, action, key);
+  tk_actions_recursive(tk, &(tk->screen_active->el), el_selected, action, key);
 }

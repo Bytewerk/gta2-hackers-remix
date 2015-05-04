@@ -20,7 +20,7 @@ tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *title) {
 
   printf("desktop resolution: %ix%i\n", mode.w, mode.h);
 
-  // DEBUG
+  // DEBUG (for taking screenshots)
   mode.w = 640;
   mode.h = 480;
 
@@ -43,6 +43,16 @@ tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *title) {
 // frame has been reached
 void tk_frame(tk_t *tk, SDL_Event *event) {
   tk_action(tk, event);
+
+  // on screen change: force redraw and fire action
+  if (tk->screen_last_frame != tk->screen_active) {
+    tk->redraw_needed = 1;
+    tk->screen_last_frame = tk->screen_active;
+    tk_actions_recursive(tk, &(tk->screen_active->el),
+                         tk->screen_active->el_selected,
+                         TK_ACTION_BEFORE_FIRST_SCREEN_FRAME, SDLK_UNKNOWN);
+  }
+
   if (tk->redraw_needed) {
     tk->redraw_needed = 0;
     SDL_RenderClear(tk->renderer);

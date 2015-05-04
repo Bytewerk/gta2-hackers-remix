@@ -90,6 +90,13 @@ mmp_t *mmp_init(const char *path) {
   return mmp;
 }
 
+mmp_file_t *mmp_file_by_value(mmp_t *mmp, char *key, char *value) {
+  for (size_t i = 0; i < mmp->file_count; i++)
+    if (!strcmp(cfg_read(mmp->files[i]->data, key), value))
+      return mmp->files[i];
+  return NULL;
+}
+
 void mmp_cleanup(mmp_t *mmp) {
   for (size_t i = 0; i < mmp->file_count; i++) {
     mmp_file_t *file = mmp->files[i];
