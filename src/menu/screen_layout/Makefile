@@ -7,7 +7,7 @@ run: ../out/$(COMPONENT)_test.bin
 
 
 ../out/$(COMPONENT)_test.bin: *.c *.h
-	LANG=C gcc -std=c99 -Wall -g -Werror -o $@ *.c
+	LANG=C gcc -std=c99 -Wall -g  -o $@ *.c
 
 
 valgrind: ../out/$(COMPONENT)_test.bin
