@@ -23,6 +23,35 @@ typedef struct {
   ui_t *ui;
 } ud_levels_t;
 
+void levels_set_scrolling(tk_t *tk, ud_levels_t *ud, tk_el_t *el_selected) {
+  // find out the index of the selected element
+  int index = 0;
+  tk_el_t *current = ud->list->sub;
+  while (current) {
+    if (current == el_selected)
+      break;
+    current = current->next;
+    index++;
+  }
+
+  int el_full_height = el_selected->padding_top + el_selected->height +
+                       el_selected->padding_bottom;
+  int elements_per_page = ud->list->height / el_full_height;
+
+  if (index <= elements_per_page / 2)
+    ud->list->scroll_top = 0;
+  else if (index >= ud->entries_count - elements_per_page / 2)
+    ud->list->scroll_top =
+        (ud->entries_count - elements_per_page) * el_full_height;
+  else
+    ud->list->scroll_top = (index - elements_per_page / 2) * el_full_height;
+
+  // this also shouldn't be necessary!
+  if (index != ud->index_last)
+    tk->redraw_needed = 1;
+  ud->index_last = index;
+}
+
 void levels_actionfunc_list(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                             tk_action_t action, SDL_Keycode key) {
   ud_levels_t *ud = (ud_levels_t *)el->userdata;
@@ -39,45 +68,13 @@ void levels_actionfunc_list(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
       current = current->next;
     }
 
-    ud->screen->el_selected = current;
-    el_selected = current;
-
-    // hack: set the scrollbar right. FIXME, put this in an extra
-    // function instead!
-    action = TK_ACTION_FRAMETIME;
+    ud->screen->el_selected = el_selected = current;
+    levels_set_scrolling(tk, ud, el_selected);
   }
 
-  // set the scrolling right
-  // FIXME: should work with action == UP, DOWN (less CPU time!),
-  // but somehow it gets executed before the selected element
-  // changes!
+  // FIXME!
   if (action == TK_ACTION_FRAMETIME) {
-    // find out the index of the selected element
-    int index = 0;
-    tk_el_t *current = ud->list->sub;
-    while (current) {
-      if (current == el_selected)
-        break;
-      current = current->next;
-      index++;
-    }
-
-    int el_full_height = el_selected->padding_top + el_selected->height +
-                         el_selected->padding_bottom;
-    int elements_per_page = ud->list->height / el_full_height;
-
-    if (index <= elements_per_page / 2)
-      ud->list->scroll_top = 0;
-    else if (index >= ud->entries_count - elements_per_page / 2)
-      ud->list->scroll_top =
-          (ud->entries_count - elements_per_page) * el_full_height;
-    else
-      ud->list->scroll_top = (index - elements_per_page / 2) * el_full_height;
-
-    // this also shouldn't be necessary!
-    if (index != ud->index_last)
-      tk->redraw_needed = 1;
-    ud->index_last = index;
+    levels_set_scrolling(tk, ud, el_selected);
   }
 }
 

@@ -20,10 +20,12 @@ void arrowtext_style(tk_t *tk, ud_arrowtext_t *ud) {
     tk_el_visible(ud->right);
 
   // underscore visibility
-  if (is_editing)
-    tk_el_visible(ud->underscore);
-  else
-    tk_el_invisible(ud->underscore);
+  if (ud->editing_maxlen) {
+    if (is_editing)
+      tk_el_visible(ud->underscore);
+    else
+      tk_el_invisible(ud->underscore);
+  }
 
   // bottom text high
   ud->container->bottom_text_high =
@@ -54,7 +56,7 @@ void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   }
 
   if (el == ud->container) {
-    if (action == TK_ACTION_FRAMETIME) {
+    if (action == TK_ACTION_FRAMETIME && ud->editing_maxlen) {
       ud->underscore_frame_count++;
       if (ud->underscore_frame_count == UNDERSCORE_BLINK_FRAMES - 1) {
         ud->underscore_frame_count = 0;
@@ -197,16 +199,18 @@ tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
           tk_label(tk, TK_PARENT, suffix, GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
                    GTA2_FONT_FSTYLE_RED_BLACK_NORMAL);
 
-      ud->underscore =
-          tk_label(tk, TK_PARENT, "_", GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0);
-      ud->underscore->actionfunc = (void *)arrowtext_actionfunc;
-      ud->underscore->userdata = ud;
+      if (editing_maxlen) {
+        ud->underscore = tk_label(tk, TK_PARENT, "_",
+                                  GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0);
+        ud->underscore->actionfunc = (void *)arrowtext_actionfunc;
+        ud->underscore->userdata = ud;
+      }
 
       ud->right = tk_ctrl_arrow(tk, TK_PARENT, 0, (void *)arrowtext_actionfunc,
                                 (void *)ud);
 
-      tk_el_padding(ud->left, 5, 4, 5, 0);
-      tk_el_padding(ud->right, 5 - ud->underscore->width, 4, 5, 0);
+      tk_el_padding(ud->left, 5, 4, 5, 0); tk_el_padding(
+          ud->right, 5 - (editing_maxlen ? ud->underscore->width : 0), 4, 5, 0);
       tk_el_padding(TK_PARENT,
                     (-1) * (ud->left->width + ud->left->padding_left +
                             ud->left->padding_right),

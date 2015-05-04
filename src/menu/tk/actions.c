@@ -58,9 +58,9 @@ void tk_actions_element(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 void tk_actions_recursive(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                           tk_action_t action, SDL_Keycode key) {
   while (el) {
-    tk_actions_element(tk, el, el_selected, action, key);
     if (el->sub)
       tk_actions_recursive(tk, el->sub, el_selected, action, key);
+    tk_actions_element(tk, el, el_selected, action, key);
 
     if (!el->parent)
       break; // must be a screen
