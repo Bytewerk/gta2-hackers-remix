@@ -125,31 +125,28 @@ tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui) {
       // TK_PARENT->bottom_text_low = "THIS LIST CAN BE SCROLLED";
 
       // map list
-      TK_STACK(TK_PARENT->actionfunc = (void *)levels_actionfunc_list;
-               TK_PARENT->userdata = (void *)ud; ud->list = TK_PARENT;
+      TK_STACK(
+          TK_PARENT->actionfunc = (void *)levels_actionfunc_list;
+          TK_PARENT->userdata = (void *)ud; ud->list = TK_PARENT;
 
-               levels->el_content_container = TK_PARENT;
-               tk_el_padding(TK_PARENT, 300, 123, 0, 30);
-               tk_el_height(TK_PARENT, 250); tk_el_scrollable(TK_PARENT);
+          levels->el_content_container = TK_PARENT;
+          tk_el_padding(TK_PARENT, 300, 123, 0, 30);
+          tk_el_height(TK_PARENT, 250); tk_el_scrollable(TK_PARENT);
 
-               mmp_t *mmp = ui->mmp;
-               for (size_t i = 0; i < mmp->file_count; i++) {
-                 for (int n = 0; n < 4; n++) // debug: more entries to scroll
-                 {
-                   // NOTE: the format printed in the label
-                   // doesn't need to be the map name. we have
-                   // the userdata for that.
-                   tk_el_t *label =
-                       tk_label(tk, TK_PARENT, cfg_read(mmp->files[i]->data,
-                                                        "MapFiles/Description"),
-                                GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
-                                GTA2_FONT_FSTYLE_RED_BLACK_NORMAL);
-                   label->userdata = (void *)mmp->files[i];
-                   label->actionfunc = levels_actionfunc_label;
-                   tk_el_selectable(label);
-                   ud->entries_count++;
-                 }
-               })
+          mmp_t *mmp = ui->mmp; for (size_t i = 0; i < mmp->file_count; i++) {
+            // NOTE: the format printed in the label
+            // doesn't need to be the map name. we have
+            // the userdata for that.
+            tk_el_t *label =
+                tk_label(tk, TK_PARENT,
+                         cfg_read(mmp->files[i]->data, "MapFiles/Description"),
+                         GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL,
+                         GTA2_FONT_FSTYLE_RED_BLACK_NORMAL);
+            label->userdata = (void *)mmp->files[i];
+            label->actionfunc = levels_actionfunc_label;
+            tk_el_selectable(label);
+            ud->entries_count++;
+          })
 
       /*
       // filter controls
