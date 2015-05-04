@@ -59,9 +59,12 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 
       int cops_enabled = ((ud_arrowtext_t *)ud->cops->userdata)->entry_selected;
 
+      // gta2 reads the map index from the registry
+      int map_id = ((ud_arrowtext_t *)ud->map->userdata)->entry_selected;
+
       char *buffer = malloc(100);
-      snprintf(buffer, 100, "SPLITSCREEN %i %i %s %i %i", players,
-               screen_layout, time, game_type, cops_enabled);
+      snprintf(buffer, 100, "SPLITSCREEN %i %i %i %i %s %i", players,
+               screen_layout, map_id, game_type, time, cops_enabled);
       server_send(ud->ui->server, buffer, 1);
     }
     if (el_selected == ud->map) {
