@@ -71,9 +71,12 @@ sl_entry_t **sl_parse(char *buffer, size_t buffer_size) {
         entry->geo = block_geometry;
         entry->next = NULL;
 
-        if (entries[player_count])
-          entries[player_count]->next = entry;
-        else
+        if (entries[player_count]) {
+          sl_entry_t *current = entries[player_count];
+          while (current->next)
+            current = current->next;
+          current->next = entry;
+        } else
           entries[player_count] = entry;
 
         block_geometry = NULL;
@@ -200,11 +203,12 @@ sl_t *sl_init(char *filename) {
     // transform into an array
     player->count = count;
     player->layouts = malloc(sizeof(sl_entry_t *) * count);
-    for (uint16_t j = 0; j < count; j++)
-      player->layouts[j] = entries[j];
+    entry = entries[i];
+    for (uint16_t j = 0; j < count; j++) {
+      player->layouts[j] = entry;
+      entry = entry->next;
+    }
     sl->players[i] = player;
-
-    printf("player count: %i - layouts: %i\n", i, count);
   }
 
   free(entries);
@@ -220,7 +224,6 @@ void sl_cleanup(sl_t *sl) {
         continue;
 
       for (uint16_t j = 0; j < player->count; j++) {
-        printf("freeing %i, %i\n", i, j);
         sl_entry_t *entry = player->layouts[j];
         for (int k = 0; k < GTA2_MAX_PLAYERS; k++)
           if (entry->geo[k])
@@ -228,6 +231,7 @@ void sl_cleanup(sl_t *sl) {
         free(entry->geo);
         free(entry);
       }
+      free(player->layouts);
       free(player);
     }
   free(sl);
