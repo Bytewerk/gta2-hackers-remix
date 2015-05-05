@@ -2,6 +2,7 @@
 #include "../../common/cfg/cfg.h"
 #include "../mmp/mmp.h"
 #include "../server/server.h"
+#include "../sl/sl.h"
 #include "../tk/toolkit.h"
 
 #define GTA2_SAVEGAME_COUNT 8
@@ -22,6 +23,7 @@ typedef struct {
 
   server_t *server;
   mmp_t *mmp;
+  sl_t *sl;
 
   // these are used with the arrowtext control and a prefix
   char **letters;
@@ -43,7 +45,7 @@ typedef struct {
   char slotmachine_enabled;
 } ui_t;
 
-ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server);
+ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server, sl_t *sl);
 void ui_cleanup(ui_t *ui);
 
 // screens

@@ -2,11 +2,12 @@
 #include "../tk/toolkit.h"
 #include "ui_text.h"
 
-ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server) {
+ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server, sl_t *sl) {
   ui_t *ui = malloc(sizeof(ui_t));
   ui->tk = tk;
   ui->server = server;
   ui->mmp = mmp;
+  ui->sl = sl;
   ui->g2hr_config = cfg_load("data/g2hr.cfg", 0);
   ui->multiplayer_time_values =
       cfg_split_value(ui->g2hr_config, "multiplayer/time", ' ');

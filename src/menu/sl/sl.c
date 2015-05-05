@@ -166,7 +166,7 @@ sl_entry_t **sl_parse(char *buffer, size_t buffer_size) {
 #undef ERR
 
 sl_t *sl_init(char *filename) {
-  printf("parsing %s...\n", filename);
+  printf("loading %s...\n", filename);
   FILE *handle = fopen(filename, "rb");
   if (!handle)
     exit(printf("ERROR: Couldn't read '%s'!\n", filename));

@@ -3,6 +3,7 @@
 #include "mmp/mmp.h"
 #include "server/server.h"
 #include "sfx/sfx.h"
+#include "sl/sl.h"
 #include "sty/sty.h"
 #include "tk/toolkit.h"
 #include "ui/interface.h"
@@ -35,9 +36,10 @@ int main(int argc, char *argv[]) {
   sty_t *fsty = sty_load("GTA2/data/fstyle.sty");
   sfx_t *sfx = sfx_init();
   mmp_t *mmp = mmp_init("GTA2/data");
+  sl_t *sl = sl_init("data/screen_layouts.cfg");
   bg_t *bg = bg_init(pics, sizeof(pics) / sizeof(char *));
   tk_t *tk = tk_init(gxt, fsty, sfx, bg, "G2HR");
-  ui_t *ui = ui_init(tk, mmp, server);
+  ui_t *ui = ui_init(tk, mmp, server, sl);
 
   // start the meta component
   if (!strcmp(SDL_GetPlatform(), "Windows")) {
@@ -72,6 +74,7 @@ int main(int argc, char *argv[]) {
   // cleanup all
   ui_cleanup(ui);
   tk_cleanup(tk);
+  sl_cleanup(sl);
   mmp_cleanup(mmp);
   bg_cleanup(bg);
   sfx_cleanup(sfx);

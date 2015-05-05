@@ -132,6 +132,7 @@ obj/gxt.o: $(call DEPS,gxt/gxt.c)
 # CFG
 obj/cfg.o: $(call DEPS,../common/cfg/cfg.c)
 	$(CC) -c -o $@ $<
+
 # MMP
 obj/mmp.o: $(call DEPS,mmp/mmp.c)
 	$(CC) -c -o $@ $<
@@ -140,6 +141,9 @@ obj/mmp.o: $(call DEPS,mmp/mmp.c)
 obj/server.o: $(call DEPS,server/server.c)
 	$(CC) -c -o $@ $<
 
+# SL
+obj/sl.o: $(call DEPS,sl/sl.c)
+	$(CC) -c -o $@ $<
 
 # VALGRIND: automatically create a rule for SDL2 init
 valgrind: obj out out/valgrind.sup out/menu.bin
