@@ -1,4 +1,5 @@
 #include "screen_layout.h"
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -32,10 +33,9 @@ int sl_parse_check_block(int line_number, int char_in_line, char c,
   return last_found;
 }
 
-sl_t *sl_parse(char *buffer, size_t buffer_size) {
-  sl_t *sl = malloc(sizeof(sl_t));
-  sl->players = calloc(1, sizeof(sl_entry_t *) * GTA2_MAX_PLAYERS);
-
+// returns an array of an entry list
+sl_entry_t **sl_parse(char *buffer, size_t buffer_size) {
+  sl_entry_t **entries = calloc(1, sizeof(sl_entry_t *) * GTA2_MAX_PLAYERS);
   sl_geo_t **block_geometry = NULL;
   char is_comment_line = 0;
   int char_in_line = 0;
@@ -55,7 +55,6 @@ sl_t *sl_parse(char *buffer, size_t buffer_size) {
     if (char_in_line == 0) {
       // layout block start
       if (c == '-' && !block_geometry) {
-        printf("new block: ");
         block_geometry = calloc(1, sizeof(sl_geo_t *) * GTA2_MAX_PLAYERS);
         layout_width = 0;
         layout_height = 0;
@@ -63,17 +62,22 @@ sl_t *sl_parse(char *buffer, size_t buffer_size) {
       }
       // layout block end ('\n\n')
       else if (c == '\n' && block_geometry) {
-        int count =
+        int player_count =
             sl_parse_check_block(line_number, char_in_line, c, block_geometry);
 
         sl_entry_t *entry = malloc(sizeof(sl_entry_t));
         entry->w = layout_width;
         entry->h = layout_height;
+        entry->geo = block_geometry;
+        entry->next = NULL;
 
-        // TODO: attach entry to sl!
+        if (entries[player_count])
+          entries[player_count]->next = entry;
+        else
+          entries[player_count] = entry;
+
         block_geometry = NULL;
         last_left_border_pos_in_line = -1;
-        printf("count: %i, height: %2i (end)\n", count, layout_height);
       } else if (c != '-' && c != '|') {
         if (block_geometry)
           ERR("Found a comment line inside a layout block. This isn't allowed. "
@@ -130,10 +134,6 @@ sl_t *sl_parse(char *buffer, size_t buffer_size) {
         if (!geo->h)
           ERR("No border ('-') at the bottom of this number");
 
-        // debug:
-        printf("%i: [%3u,%3u,%3u,%3u], ", c - '0', geo->x, geo->y, geo->w,
-               geo->h);
-
         block_geometry[c - '1'] = geo;
       }
 
@@ -145,10 +145,9 @@ sl_t *sl_parse(char *buffer, size_t buffer_size) {
 
     if (c == '\n') {
       if (block_geometry) {
-        if (!layout_width) {
+        if (!layout_width)
           layout_width = char_in_line;
-          printf("width: %2i, ", layout_width);
-        } else if (layout_width != char_in_line)
+        else if (layout_width != char_in_line)
           ERR("All lines in a layout block must have the same width!");
 
         layout_height++;
@@ -159,7 +158,7 @@ sl_t *sl_parse(char *buffer, size_t buffer_size) {
       char_in_line++;
   }
 
-  return sl;
+  return entries;
 }
 #undef ERR
 
@@ -182,16 +181,54 @@ sl_t *sl_init(char *filename) {
     exit(printf("Read error while reading '%s'!\n", filename));
   fclose(handle);
 
-  sl_t *sl = sl_parse(buffer, size);
+  // parse the file
+  sl_entry_t **entries = sl_parse(buffer, size);
   free(buffer);
+
+  // convert the list into an array for easier access
+  sl_t *sl = malloc(sizeof(sl_t));
+  for (int i = 0; i < GTA2_MAX_PLAYERS; i++) {
+    // count the entries
+    sl_player_t *player = malloc(sizeof(sl_player_t));
+    sl_entry_t *entry = entries[i];
+    uint16_t count = 0;
+    while (entry) {
+      count++;
+      entry = entry->next;
+    }
+
+    // transform into an array
+    player->count = count;
+    player->layouts = malloc(sizeof(sl_entry_t *) * count);
+    for (uint16_t j = 0; j < count; j++)
+      player->layouts[j] = entries[j];
+    sl->players[i] = player;
+
+    printf("player count: %i - layouts: %i\n", i, count);
+  }
+
+  free(entries);
+
   return sl;
 }
 
 void sl_cleanup(sl_t *sl) {
   for (int i = 0; i < GTA2_MAX_PLAYERS; i++)
     if (sl->players[i]) {
-      // ...
-      free(sl->players[i]);
+      sl_player_t *player = sl->players[i];
+      if (!player)
+        continue;
+
+      for (uint16_t j = 0; j < player->count; j++) {
+        printf("freeing %i, %i\n", i, j);
+        sl_entry_t *entry = player->layouts[j];
+        for (int k = 0; k < GTA2_MAX_PLAYERS; k++)
+          if (entry->geo[k])
+            free(entry->geo[k]);
+        free(entry->geo);
+        free(entry);
+      }
+      free(player);
     }
   free(sl);
 }

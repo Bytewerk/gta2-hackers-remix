@@ -7,4 +7,6 @@ int main(int argc, const char **argv) {
 
   sl_t *sl = sl_init((char *)argv[1]);
   sl_cleanup(sl);
+
+  printf("cleaned up!\n");
 }
