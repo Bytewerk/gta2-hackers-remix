@@ -7,9 +7,10 @@
         TODO:
                 - store 'int controllers_found' in the client struct
                         (communication between native and menu)
-                - parse the screen layout config and send the abstracted
-                        geometry values to the meta component instead of the
-                        layout ID (this is for debugging only)
+                - send the abstracted splitscreen geometry values to the meta
+                        component instead of the layout ID (this is for
+   debugging
+                        only)
 */
 
 // TODO: place this in a common.h or something like that
@@ -32,6 +33,31 @@ typedef struct {
   tk_el_t *play;
 } ud_splitscreen_t;
 
+void splitscreen_set_max_layouts(ud_splitscreen_t *ud) {
+  ud_arrowtext_t *ud_layout = ((ud_arrowtext_t *)(ud->screen_layout->userdata));
+  ud_arrowtext_t *ud_players = ((ud_arrowtext_t *)(ud->players->userdata));
+
+  int players = ud_players->entry_selected;
+  int layout = ud_layout->entry_selected;
+  int layout_max = ud->ui->sl->players[players]->count;
+  if (!layout_max)
+    layout_max = 1;
+
+  if (layout >= layout_max)
+    ud_layout->entry_selected = layout_max - 1;
+
+  if (layout_max > 1) {
+    tk_el_enabled(ud->screen_layout);
+    tk_el_enabled(ud_layout->text_pre);
+    tk_el_enabled(ud_layout->text);
+  } else {
+    tk_el_disabled(ud->screen_layout);
+    tk_el_disabled(ud_layout->text_pre);
+    tk_el_disabled(ud_layout->text);
+  }
+  ud_layout->entry_count = layout_max;
+}
+
 // ACTIONFUNC
 void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                             tk_action_t action, SDL_Keycode key) {
@@ -40,6 +66,7 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   if (action == TK_ACTION_BEFORE_FIRST_SCREEN_FRAME) {
     ((ud_arrowtext_t *)ud->map->userdata)->entry_selected =
         ud->ui->map_selected;
+    splitscreen_set_max_layouts(ud);
   }
 
   if (action == TK_ACTION_ENTER) {
@@ -72,6 +99,10 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
           ((ud_arrowtext_t *)ud->map->userdata)->entry_selected;
       tk->screen_active = ud->ui->levels;
     }
+  }
+  if (action == TK_ACTION_LEFT || action == TK_ACTION_RIGHT) {
+    if (el_selected == ud->players)
+      splitscreen_set_max_layouts(ud);
   }
 }
 
