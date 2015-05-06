@@ -6,7 +6,7 @@
 #include "sl/sl.h"
 #include "sty/sty.h"
 #include "tk/toolkit.h"
-#include "ui/interface.h"
+#include "ui/ui.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_net.h>
@@ -32,14 +32,20 @@ int main(int argc, char *argv[]) {
     exit(printf("SDLNet ERROR: %s\n", SDLNet_GetError()));
   IMG_Init(IMG_INIT_PNG);
   server_t *server = server_init();
+
+  // load GTA2 files
   gxt_t *gxt = gxt_load("GTA2/data/e.gxt");
   sty_t *fsty = sty_load("GTA2/data/fstyle.sty");
   sfx_t *sfx = sfx_init();
   mmp_t *mmp = mmp_init("GTA2/data");
-  sl_t *sl = sl_init("data/screen_layouts.cfg");
   bg_t *bg = bg_init(pics, sizeof(pics) / sizeof(char *));
+
+  // load configs
+  sl_t *sl = sl_init("data/screen_layouts.cfg");
+  cfg_t *g2hr_config = cfg_load("data/g2hr.cfg", 0);
+
   tk_t *tk = tk_init(gxt, fsty, sfx, bg, "G2HR");
-  ui_t *ui = ui_init(tk, mmp, server, sl);
+  ui_t *ui = ui_init(tk, mmp, server, sl, g2hr_config);
 
   // start the meta component
   if (!strcmp(SDL_GetPlatform(), "Windows")) {
@@ -74,6 +80,7 @@ int main(int argc, char *argv[]) {
   // cleanup all
   ui_cleanup(ui);
   tk_cleanup(tk);
+  cfg_cleanup(g2hr_config);
   sl_cleanup(sl);
   mmp_cleanup(mmp);
   bg_cleanup(bg);

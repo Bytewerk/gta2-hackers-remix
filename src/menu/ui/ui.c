@@ -1,18 +1,19 @@
-#include "interface.h"
+#include "ui.h"
 #include "../tk/toolkit.h"
 #include "ui_text.h"
 
-ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server, sl_t *sl) {
+ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server, sl_t *sl,
+              cfg_t *g2hr_config) {
   ui_t *ui = malloc(sizeof(ui_t));
   ui->tk = tk;
   ui->server = server;
   ui->mmp = mmp;
   ui->sl = sl;
-  ui->g2hr_config = cfg_load("data/g2hr.cfg", 0);
+  ui->g2hr_config = g2hr_config;
   ui->multiplayer_time_values =
-      cfg_split_value(ui->g2hr_config, "multiplayer/time", ' ');
+      cfg_split_value(g2hr_config, "multiplayer/time", ' ');
   ui->slotmachine_enabled =
-      !strcmp(cfg_read(ui->g2hr_config, "slotmachine/enabled"), "true");
+      !strcmp(cfg_read(g2hr_config, "slotmachine/enabled"), "true");
 
   // letters
   ui->letters = malloc(sizeof(char *) * G2HR_UI_LETTERS_COUNT);
@@ -90,7 +91,5 @@ void ui_cleanup(ui_t *ui) {
   free(ui->game_types);
 
   cfg_split_cleanup(ui->multiplayer_time_values);
-  cfg_cleanup(ui->g2hr_config);
-
   free(ui);
 }

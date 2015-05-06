@@ -1,6 +1,6 @@
 #include "../../tk/ctrl/controls.h"
 #include "../../tk/toolkit.h"
-#include "../interface.h"
+#include "../ui.h"
 #include "../ui_text.h"
 
 tk_screen_t *ui_screen_main_menu(tk_t *tk, ui_t *ui) {

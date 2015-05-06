@@ -1,6 +1,6 @@
 #include "../../tk/ctrl/controls.h"
 #include "../../tk/toolkit.h"
-#include "../interface.h"
+#include "../ui.h"
 #include "../ui_text.h"
 
 /*

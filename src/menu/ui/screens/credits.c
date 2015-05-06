@@ -1,7 +1,7 @@
 #include "../../gxt/gxt.h"
 #include "../../tk/ctrl/controls.h"
 #include "../../tk/toolkit.h"
-#include "../interface.h"
+#include "../ui.h"
 #include "../ui_text.h"
 
 #define CREDITS_MANUAL_SCROLL_OFFSET 50

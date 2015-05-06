@@ -72,7 +72,7 @@ obj/screen_levels.o: $(call DEPS,ui/screens/levelselect.c)
 	$(CC) -c -o $@ $<
 	
 # UI
-obj/ui.o: $(call DEPS,ui/interface.c)
+obj/ui.o: $(call DEPS,ui/ui.c)
 	$(CC) -c -o $@ $<
 
 # TK: CTRL

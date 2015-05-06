@@ -45,7 +45,8 @@ typedef struct {
   char slotmachine_enabled;
 } ui_t;
 
-ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server, sl_t *sl);
+ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server, sl_t *sl,
+              cfg_t *g2hr_config);
 void ui_cleanup(ui_t *ui);
 
 // screens
