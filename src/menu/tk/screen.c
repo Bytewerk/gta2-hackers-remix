@@ -202,6 +202,11 @@ void tk_screen_draw(tk_t *tk) {
   // draw background
   tk_screen_draw_bg(tk);
 
+  // send the DRAW_BEFORE_CONTROLS action
+  tk_actions_recursive(tk, &(tk->screen_active->el),
+                       tk->screen_active->el_selected,
+                       TK_ACTION_DRAW_BEFORE_CONTROLS, SDLK_UNKNOWN);
+
   // draw all elements (and therefore controls)
   if (tk->debug_draw)
     printf("======= REDRAW DEBUG OUTPUT =======\n");

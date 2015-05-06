@@ -144,6 +144,8 @@ obj/server.o: $(call DEPS,server/server.c)
 # SL
 obj/sl.o: $(call DEPS,sl/sl.c)
 	$(CC) -c -o $@ $<
+obj/sl_calc.o: $(call DEPS,sl/calc.c)
+	$(CC) -c -o $@ $<
 
 # VALGRIND: automatically create a rule for SDL2 init
 valgrind: obj out out/valgrind.sup out/menu.bin

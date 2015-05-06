@@ -1,3 +1,5 @@
+#include "../../sl/sl.h"
+#include "../../sty/sty.h"
 #include "../../tk/ctrl/controls.h"
 #include "../../tk/toolkit.h"
 #include "../ui.h"
@@ -16,7 +18,7 @@
 // TODO: place this in a common.h or something like that
 #define GTA2_MP_MAX_PLAYERS 6
 
-#define TODO_controllers_found 4
+#define TODO_controllers_found 6
 
 // USERDATA STRUCT
 typedef struct {
@@ -31,6 +33,49 @@ typedef struct {
   tk_el_t *cops;
   tk_el_t *play;
 } ud_splitscreen_t;
+
+#define G2HR_SPLITSCREEN_PREVIEW_W 100
+#define G2HR_SPLITSCREEN_PREVIEW_H 76
+#define G2HR_SPLITSCREEN_PREVIEW_X 520
+#define G2HR_SPLITSCREEN_PREVIEW_Y 63
+
+void splitscreen_draw_layout(ud_splitscreen_t *ud) {
+  sl_t *sl = ud->ui->sl;
+  int players_max = ((ud_arrowtext_t *)(ud->players->userdata))->entry_selected;
+  int layout_id =
+      ((ud_arrowtext_t *)(ud->screen_layout->userdata))->entry_selected;
+  for (int i = 0; i <= players_max; i++) {
+    // draw the player's panel
+    sl_geo_t geo;
+    sl_calc(sl, G2HR_SPLITSCREEN_PREVIEW_W, G2HR_SPLITSCREEN_PREVIEW_H,
+            players_max, layout_id, i, &geo);
+
+    SDL_Rect r;
+    r.x = geo.x - 2 + G2HR_SPLITSCREEN_PREVIEW_X;
+    r.y = geo.y - 2 + G2HR_SPLITSCREEN_PREVIEW_Y;
+    r.w = geo.w - 2;
+    r.h = geo.h - 2;
+
+    SDL_Renderer *renderer = ud->ui->tk->renderer;
+    SDL_SetRenderDrawColor(renderer, 0xbd, 0x08, 0x19, 0xff);
+    SDL_RenderFillRect(renderer, &r);
+
+    // draw the player's number in the center of the panel
+    char num_str[2];
+    num_str[0] = '1' + i;
+    num_str[1] = '\0';
+
+    int num_w;
+    int num_h;
+    int font_id = GTA2_FONT_FSTYLE_WHITE_RED_TINY;
+    sty_t *fsty = ud->ui->tk->fsty;
+    sty_text_measure(fsty, &num_w, &num_h, font_id, (const char *)num_str);
+
+    int num_x = r.x + r.w / 2 - num_w / 2;
+    int num_y = r.y + r.h / 2 - num_h / 2;
+    sty_text(renderer, fsty, font_id, 0xffffffff, num_x, num_y, 0, num_str);
+  }
+}
 
 void splitscreen_set_max_layouts(ud_splitscreen_t *ud) {
   ud_arrowtext_t *ud_layout = ((ud_arrowtext_t *)(ud->screen_layout->userdata));
@@ -102,7 +147,12 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   if (action == TK_ACTION_LEFT || action == TK_ACTION_RIGHT) {
     if (el_selected == ud->players)
       splitscreen_set_max_layouts(ud);
+    if (el_selected == ud->screen_layout)
+      splitscreen_draw_layout(ud);
   }
+
+  if (action == TK_ACTION_DRAW_BEFORE_CONTROLS)
+    splitscreen_draw_layout(ud);
 }
 
 // SCREEN INIT & LAYOUT
