@@ -34,10 +34,11 @@ typedef struct {
   tk_el_t *play;
 } ud_splitscreen_t;
 
-#define G2HR_SPLITSCREEN_PREVIEW_W 100
-#define G2HR_SPLITSCREEN_PREVIEW_H 76
-#define G2HR_SPLITSCREEN_PREVIEW_X 520
-#define G2HR_SPLITSCREEN_PREVIEW_Y 60
+// make sure that w%12 == 0 && h%12 == 0, it looks better!
+#define G2HR_SPLITSCREEN_PREVIEW_W 96
+#define G2HR_SPLITSCREEN_PREVIEW_H 72
+#define G2HR_SPLITSCREEN_PREVIEW_X 522
+#define G2HR_SPLITSCREEN_PREVIEW_Y 62
 
 void splitscreen_draw_layout(ud_splitscreen_t *ud) {
   sl_t *sl = ud->ui->sl;
