@@ -88,6 +88,8 @@ sl_entry_t **sl_parse(char *buffer, size_t buffer_size) {
         if (block_geometry)
           ERR("Found a comment line inside a layout block. This isn't allowed. "
               "Make sure that you have an empty line after each layout block");
+        if (c != '\n' && c != '\r' && c != '#')
+          ERR("All comment lines must begin with a hash sign (#)");
         is_comment_line = 1;
       }
     }
