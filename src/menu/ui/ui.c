@@ -4,7 +4,7 @@
 
 ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server, sl_t *sl,
               cfg_t *g2hr_config) {
-  ui_t *ui = malloc(sizeof(ui_t));
+  ui_t *ui = calloc(1, sizeof(ui_t));
   ui->tk = tk;
   ui->server = server;
   ui->mmp = mmp;
