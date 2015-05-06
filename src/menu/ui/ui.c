@@ -57,6 +57,7 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server, sl_t *sl,
   }
 
   // screens
+  ui->ready = ui_screen_ready(tk, ui);
   ui->levels = ui_screen_levels(tk, ui);
   ui->credits = ui_screen_credits(tk, ui);
   ui->scores = ui_screen_scores(tk, ui);

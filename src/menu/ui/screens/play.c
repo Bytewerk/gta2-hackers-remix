@@ -16,6 +16,8 @@ void play_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   ud_play_t *ud = (ud_play_t *)el->userdata;
   if (action == TK_ACTION_ENTER &&
       (el_selected == ud->start || el_selected == ud->bonus)) {
+    ui_show_ready_screen(ud->ui, play);
+
     char *buffer = malloc(100);
     snprintf(buffer, 100, "SINGLEPLAYER GTA2 %s %c",
              (el_selected == ud->start) ? "NORMAL" : "BONUS",

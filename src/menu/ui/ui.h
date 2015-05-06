@@ -20,6 +20,7 @@ typedef struct {
   tk_screen_t *splitscreen;
   tk_screen_t *scores;
   tk_screen_t *levels;
+  tk_screen_t *ready;
 
   server_t *server;
   mmp_t *mmp;
@@ -56,3 +57,10 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_play(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_main_menu(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui);
+tk_screen_t *ui_screen_ready(tk_t *tk, ui_t *ui);
+
+#define ui_show_ready_screen(UI, PREVIOUS_SCREEN_IN_UI_STRUCT)                 \
+  {                                                                            \
+    UI->ready->back = UI->PREVIOUS_SCREEN_IN_UI_STRUCT;                        \
+    UI->tk->screen_active = UI->ready;                                         \
+  }

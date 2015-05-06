@@ -16,12 +16,12 @@
 #define G2HR_MENU_FPS 20
 
 int main(int argc, char *argv[]) {
-  const char *pics[] = {"1",        "1_play",   "1_options",       "1_quit",
-                        "2",        "2_name",   "2_league",        "2_level1",
-                        "2_level2", "2_level3", "2_bonus1",        "2_bonus2",
-                        "2_bonus3",
+  const char *pics[] = {
+      "1",        "1_play",   "1_options",     "1_quit",          "2",
+      "2_name",   "2_league", "2_level1",      "2_level2",        "2_level3",
+      "2_bonus1", "2_bonus2", "2_bonus3",
 
-                        "3_tables", "credits",  "g2hr_splitscreen"};
+      "3_tables", "credits",  "levelcomplete", "g2hr_splitscreen"};
 
   // FIXME: attach gxt to ui instead of tk!
 

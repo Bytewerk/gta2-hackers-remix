@@ -107,6 +107,8 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
                                bg_mashup(tk->bg, "credits", NULL, NULL, NULL);
                   tk_el_padding(TK_PARENT, 120, 150, 0, 120);
                   tk_el_width(TK_PARENT, 400); tk_el_scrollable(TK_PARENT);
+
+                  // override default screen actionfunc!
                   TK_PARENT->actionfunc = (void *)credits_actionfunc;
                   TK_PARENT->userdata = (void *)ui;
 

@@ -115,6 +115,8 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 
   if (action == TK_ACTION_ENTER) {
     if (el_selected == ud->play) {
+      ui_show_ready_screen(ud->ui, splitscreen);
+
       int players =
           1 + ((ud_arrowtext_t *)(ud->players->userdata))->entry_selected;
 
