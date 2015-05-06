@@ -37,7 +37,7 @@ typedef struct {
 #define G2HR_SPLITSCREEN_PREVIEW_W 100
 #define G2HR_SPLITSCREEN_PREVIEW_H 76
 #define G2HR_SPLITSCREEN_PREVIEW_X 520
-#define G2HR_SPLITSCREEN_PREVIEW_Y 63
+#define G2HR_SPLITSCREEN_PREVIEW_Y 60
 
 void splitscreen_draw_layout(ud_splitscreen_t *ud) {
   sl_t *sl = ud->ui->sl;
@@ -51,8 +51,8 @@ void splitscreen_draw_layout(ud_splitscreen_t *ud) {
             players_max, layout_id, i, &geo);
 
     SDL_Rect r;
-    r.x = geo.x - 2 + G2HR_SPLITSCREEN_PREVIEW_X;
-    r.y = geo.y - 2 + G2HR_SPLITSCREEN_PREVIEW_Y;
+    r.x = geo.x + G2HR_SPLITSCREEN_PREVIEW_X;
+    r.y = geo.y + G2HR_SPLITSCREEN_PREVIEW_Y;
     r.w = geo.w - 2;
     r.h = geo.h - 2;
 
@@ -171,7 +171,7 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
           bg_mashup(tk->bg, "3_tables", NULL, NULL, "g2hr_splitscreen");
 
       // title bar
-      ud->titlebar = tk_label(tk, TK_PARENT, "4 CONTROLLERS FOUND",
+      ud->titlebar = tk_label(tk, TK_PARENT, "6 CONTROLLERS FOUND",
                               GTA2_FONT_FSTYLE_WHITE_RED_NORMAL, 0);
       tk_el_padding(ud->titlebar, 315, 12, 0, 0);
 

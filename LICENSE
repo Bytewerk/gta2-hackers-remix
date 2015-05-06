@@ -1,17 +1,20 @@
+GTA2: Hacker's Remix is a modification of the GTA2 game by Rockstar Games
+and you need the original game to use this mod. We are not associated
+with Rockstar Games.
+
+
 These are the licenses, that are used in "GTA2: Hacker's Remix":
 
 
 - GPLv2 (or higher)
-	for source code ('Makefile', 'src'-folder)
+	- for all source code ('Makefile', all files in 'src'-folder)
+	- for all config files (only '*.cfg'-files in the data folder)
+	- legal text: src/LICENSE
 
-- CC-BY-4.0
-	for artwork ('data'-folder)
-
-
-Inside both the 'src' and 'data' folders is a 'LICENSE' file, that
-contains the legal text of each license. The file 'data/AUTHORS'
-lists all artwork authors. A human readable summary of the CC-BY-4.0
-license is here: https://creativecommons.org/licenses/by/4.0/
+- Various Creative Commons licenses
+	- for artwork (pictures in 'data'-folder)
+	- exact license for each file is in the README.txt of the same
+		folder
 
 If you have any questions about the licensing, please ask here:
 https://github.com/Bytewerk/gta2-hackers-remix/issues
