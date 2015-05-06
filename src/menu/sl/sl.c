@@ -62,6 +62,13 @@ sl_entry_t **sl_parse(char *buffer, size_t buffer_size) {
       }
       // layout block end ('\n\n')
       else if (c == '\n' && block_geometry) {
+        // go back to the last '\n', to check if there is
+        // anything other than '-' characters in the last line
+        for (size_t j = i - 2; buffer[j] != '\n'; j--)
+          if (buffer[j] != '-' && buffer[j] != '\r')
+            ERR("The last line of a layout block must only consist of dashes "
+                "(-)");
+
         int player_count =
             sl_parse_check_block(line_number, char_in_line, c, block_geometry);
 
