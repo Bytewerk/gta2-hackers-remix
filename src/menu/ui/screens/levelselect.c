@@ -72,12 +72,8 @@ void levels_actionfunc_list(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     levels_set_scrolling(tk, ud, el_selected);
   }
 
-  // FIXME! listen to UP/DOWN actions instead - but fix the execution
-  // order of the actionfunc's first (otherwise this will always
-  // lag one frame behind!)
-  if (action == TK_ACTION_FRAMETIME) {
+  if (action == TK_ACTION_DRAW_BEFORE_CONTROLS)
     levels_set_scrolling(tk, ud, el_selected);
-  }
 }
 
 void levels_actionfunc_label(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
