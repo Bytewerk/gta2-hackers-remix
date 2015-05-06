@@ -61,10 +61,11 @@ void gxt_parse(gxt_t *gxt, char *tkey, char *tdat, uint32_t tkey_size,
 
     // save ID
     char *id = (char *)(tkey + tkey_offset + 4);
-    char id_size = strlen(id);
+    int id_size = strlen(id);
     if (id_size > 8)
       exit(printf("ERROR: invalid ID size: %i\n", id_size));
-    entry->id = malloc(id_size);
+    entry->id = malloc(id_size + 1);
+    entry->id[id_size] = '\0';
     strncpy(entry->id, id, id_size);
 
     // save actual text
@@ -80,7 +81,8 @@ void gxt_parse(gxt_t *gxt, char *tkey, char *tdat, uint32_t tkey_size,
         break;
     }
     int text_size = strlen(text_buffer);
-    entry->text = malloc(text_size);
+    entry->text = malloc(text_size + 1);
+    entry->text[text_size] = '\0';
     strncpy(entry->text, text_buffer, text_size);
 
     // attach to the list
