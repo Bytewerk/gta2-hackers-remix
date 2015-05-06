@@ -17,7 +17,6 @@
 #define GTA2_MP_MAX_PLAYERS 6
 
 #define TODO_controllers_found 4
-#define TODO_screen_layout_max ('F' - 'A')
 
 // USERDATA STRUCT
 typedef struct {
@@ -139,10 +138,9 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
                                 NULL, NULL, NULL /*bottom text*/);
 
           // screen layout
-          ud->screen_layout =
-              tk_ctrl_arrowtext(tk, TK_PARENT, NULL /*bg*/, 0, ui->letters,
-                                TODO_screen_layout_max, "SCREEN LAYOUT: ", NULL,
-                                NULL, NULL, NULL, NULL /*bottom text*/);
+          ud->screen_layout = tk_ctrl_arrowtext(
+              tk, TK_PARENT, NULL /*bg*/, 0, ui->letters, 1, "SCREEN LAYOUT: ",
+              NULL, NULL, NULL, NULL, NULL /*bottom text*/);
 
           // map
           ud->map = tk_ctrl_arrowtext(tk, TK_PARENT, NULL /*bg*/, 0, ui->maps,
