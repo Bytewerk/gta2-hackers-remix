@@ -23,10 +23,15 @@ int main(int argc, const char **argv) {
              j + 'A', layout_w, layout_h);
 
       for (int k = 0; k <= i; k++) {
-        sl_geo_t scaled;
-        sl_calc(sl, screen_w, screen_h, i, j, k, &scaled);
-        printf("   P%i x: %4i, y: %4i, w: %4i, h: %4i\n", k + 1, scaled.x,
-               scaled.y, scaled.w, scaled.h);
+        sl_geo_t geo;
+        sl_calc(sl, screen_w, screen_h, i, j, k, &geo);
+        printf("   P%i x: %4i, y: %4i, w: %4i, h: %4i (scaled to example "
+               "resolution)\n",
+               k + 1, geo.x, geo.y, geo.w, geo.h);
+
+        geo = *(player->layouts[j]->geo[k]);
+        printf("   P%i x: %4i, y: %4i, w: %4i, h: %4i (not scaled)\n", k + 1,
+               geo.x, geo.y, geo.w, geo.h);
       }
     }
   }

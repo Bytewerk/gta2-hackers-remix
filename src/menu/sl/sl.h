@@ -14,8 +14,8 @@ typedef struct {
 typedef struct sl_entry_t {
   struct sl_entry_t *next;
   sl_geo_t **geo;
-  unsigned char w;
-  unsigned char h;
+  uint16_t w;
+  uint16_t h;
 } sl_entry_t;
 
 typedef struct {

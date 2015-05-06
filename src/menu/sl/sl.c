@@ -65,9 +65,12 @@ sl_entry_t **sl_parse(char *buffer, size_t buffer_size) {
         int player_count =
             sl_parse_check_block(line_number, char_in_line, c, block_geometry);
 
+        // Explanation for the '-1' in w and h:
+        // we count the top left edge, but not the bottom right
+        // one.
         sl_entry_t *entry = malloc(sizeof(sl_entry_t));
-        entry->w = layout_width;
-        entry->h = layout_height;
+        entry->w = layout_width - 1;
+        entry->h = layout_height - 1;
         entry->geo = block_geometry;
         entry->next = NULL;
 
@@ -115,7 +118,7 @@ sl_entry_t **sl_parse(char *buffer, size_t buffer_size) {
             ERR("No border ('|') to the right of this number");
           if (buffer[i + j] != '|')
             continue;
-          geo->w = j;
+          geo->w = char_in_line + j - last_left_border_pos_in_line;
           break;
         }
 
@@ -179,13 +182,17 @@ sl_t *sl_init(char *filename) {
   // read the whole file into RAM (<<10 MB) and close it
   char *buffer;
   rewind(handle);
-  buffer = (char *)malloc(size);
+  buffer = (char *)malloc(size + 2);
   if (fread(buffer, 1, size, handle) != size)
     exit(printf("Read error while reading '%s'!\n", filename));
   fclose(handle);
 
+  // add two additional new lines at the end for easier parsing
+  buffer[size] = '\n';
+  buffer[size + 1] = '\n';
+
   // parse the file
-  sl_entry_t **entries = sl_parse(buffer, size);
+  sl_entry_t **entries = sl_parse(buffer, size + 2);
   free(buffer);
 
   // convert the list into an array for easier access
