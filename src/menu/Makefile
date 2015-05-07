@@ -142,8 +142,8 @@ obj/cfg.o: $(call DEPS,../common/cfg/cfg.c)
 obj/mmp.o: $(call DEPS,mmp/mmp.c)
 	$(CC) -c -o $@ $<
 
-# Server
-obj/server.o: $(call DEPS,server/server.c)
+# Network
+obj/net.o: $(call DEPS,net/net.c)
 	$(CC) -c -o $@ $<
 
 # SL

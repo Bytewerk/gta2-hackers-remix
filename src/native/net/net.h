@@ -6,7 +6,7 @@
 
 typedef struct {
   IPaddress ip;
-  TCPsocket sock_server;
+  TCPsocket sock_listen;
   TCPsocket sock_menu;
   TCPsocket sock_injected[GTA2_PLAYER_COUNT];
 

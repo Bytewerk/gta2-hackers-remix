@@ -139,7 +139,7 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
       char *buffer = malloc(100);
       snprintf(buffer, 100, "SPLITSCREEN %i %i %i %i %s %i", players,
                screen_layout, map_id, game_type, time, cops_enabled);
-      server_send(ud->ui->server, buffer, 1);
+      net_send_to_meta(ud->ui->net, buffer, 1);
     }
     if (el_selected == ud->map) {
       ud->ui->map_selected =

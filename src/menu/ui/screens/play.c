@@ -1,4 +1,4 @@
-#include "../../server/server.h"
+#include "../../net/net.h"
 #include "../../tk/ctrl/controls.h"
 #include "../../tk/toolkit.h"
 #include "../ui.h"
@@ -22,7 +22,7 @@ void play_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     snprintf(buffer, 100, "SINGLEPLAYER GTA2 %s %c",
              (el_selected == ud->start) ? "NORMAL" : "BONUS",
              ((ud_circle_t *)el_selected->userdata)->value_str[0]);
-    server_send(ud->ui->server, buffer, 1);
+    net_send_to_meta(ud->ui->net, buffer, 1);
   }
 }
 

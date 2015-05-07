@@ -1,7 +1,7 @@
 #pragma once
 #include "../../common/cfg/cfg.h"
 #include "../mmp/mmp.h"
-#include "../server/server.h"
+#include "../net/net.h"
 #include "../sl/sl.h"
 #include "../tk/toolkit.h"
 
@@ -22,7 +22,7 @@ typedef struct {
   tk_screen_t *levels;
   tk_screen_t *ready;
 
-  server_t *server;
+  net_t *net;
   mmp_t *mmp;
   sl_t *sl;
 
@@ -46,8 +46,7 @@ typedef struct {
   char slotmachine_enabled;
 } ui_t;
 
-ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server, sl_t *sl,
-              cfg_t *g2hr_config);
+ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl, cfg_t *g2hr_config);
 
 void ui_callback_for_meta(char *msg, void *userdata);
 

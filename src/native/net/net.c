@@ -11,12 +11,12 @@ net_t *net_init() {
   for (net->port = G2HR_NATIVE_SERVER_PORT_START;
        net->port < G2HR_NATIVE_SERVER_PORT_START + 10; net->port++) {
     SDLNet_ResolveHost(&(net->ip), NULL, net->port);
-    net->sock_server = SDLNet_TCP_Open(&(net->ip));
-    if (net->sock_server)
+    net->sock_listen = SDLNet_TCP_Open(&(net->ip));
+    if (net->sock_listen)
       break;
   }
 
-  if (!net->sock_server)
+  if (!net->sock_listen)
     exit(printf("SDL_net ERROR while starting native server: %s\n",
                 SDLNet_GetError()));
 
@@ -28,11 +28,11 @@ void net_accept_localhost_only(net_t *net) {
   if (net->sock_menu)
     return;
 
-  net->sock_menu = SDLNet_TCP_Accept(net->sock_server);
+  net->sock_menu = SDLNet_TCP_Accept(net->sock_listen);
   if (!net->sock_menu)
     return;
 
-  IPaddress *remote_ip = SDLNet_TCP_GetPeerAddress(net->sock_server);
+  IPaddress *remote_ip = SDLNet_TCP_GetPeerAddress(net->sock_menu);
   if (remote_ip->host != 0x100007f) {
     printf("remote IP isn't localhost, dropping connection...\n");
     SDLNet_TCP_Close(net->sock_menu);
@@ -44,7 +44,8 @@ void net_accept_localhost_only(net_t *net) {
   SDLNet_TCP_AddSocket(net->set, net->sock_menu);
 
   // drop the server socket, we only want one connection anyway!
-  SDLNet_TCP_Close(net->sock_server);
+  SDLNet_TCP_Close(net->sock_listen);
+  net->sock_listen = NULL;
 }
 
 // check net->sock_menu for success
@@ -62,8 +63,8 @@ void net_block_until_connected(net_t *net, uint32_t timeout_in_ms) {
 
 // TODO: free sockets?
 void net_cleanup(net_t *net) {
-  if (net->sock_server)
-    SDLNet_TCP_Close(net->sock_server);
+  if (net->sock_listen)
+    SDLNet_TCP_Close(net->sock_listen);
   if (net->sock_menu)
     SDLNet_TCP_Close(net->sock_menu);
 

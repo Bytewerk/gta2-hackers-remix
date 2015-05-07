@@ -2,13 +2,13 @@
 #include "../tk/toolkit.h"
 #include "ui_text.h"
 
-ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server, sl_t *sl,
-              cfg_t *g2hr_config) {
+ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl, cfg_t *g2hr_config) {
   ui_t *ui = calloc(1, sizeof(ui_t));
   ui->tk = tk;
-  ui->server = server;
-  ui->server->recv_callback = (void *)ui_callback_for_meta;
-  ui->server->recv_userdata = (void *)ui;
+  ui->net = net;
+  ui->net->meta_recv_callback = (void *)ui_callback_for_meta;
+  // ui->net->native_recv_callback = (void*) ui_callback_for_native;
+  ui->net->userdata = (void *)ui;
   ui->mmp = mmp;
   ui->sl = sl;
   ui->g2hr_config = g2hr_config;

@@ -1,7 +1,7 @@
 #include "bg/background.h"
 #include "gxt/gxt.h"
 #include "mmp/mmp.h"
-#include "server/server.h"
+#include "net/net.h"
 #include "sfx/sfx.h"
 #include "sl/sl.h"
 #include "sty/sty.h"
@@ -23,6 +23,12 @@ int main(int argc, char *argv[]) {
 
       "3_tables", "credits",  "levelcomplete", "g2hr_splitscreen"};
 
+  if (argc != 2)
+    exit(SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "G2HR",
+                                  "'menu.exe' gets startet by 'native.exe' "
+                                  "(native.bin on Linux). Start that instead!",
+                                  NULL));
+
   // FIXME: attach gxt to ui instead of tk!
 
   // init all
@@ -31,7 +37,7 @@ int main(int argc, char *argv[]) {
   if (SDLNet_Init() == -1)
     exit(printf("SDLNet ERROR: %s\n", SDLNet_GetError()));
   IMG_Init(IMG_INIT_PNG);
-  server_t *server = server_init();
+  net_t *net = net_init(strtol(argv[1], NULL, 10));
 
   // load GTA2 files
   gxt_t *gxt = gxt_load("GTA2/data/e.gxt");
@@ -45,12 +51,12 @@ int main(int argc, char *argv[]) {
   cfg_t *g2hr_config = cfg_load("data/g2hr.cfg", 0);
 
   tk_t *tk = tk_init(gxt, fsty, sfx, bg, "G2HR");
-  ui_t *ui = ui_init(tk, mmp, server, sl, g2hr_config);
+  ui_t *ui = ui_init(tk, mmp, net, sl, g2hr_config);
 
   // start the meta component
   if (!strcmp(SDL_GetPlatform(), "Windows")) {
     char *buffer = malloc(100);
-    snprintf(buffer, 100, "start bin/meta.exe %i", server->port);
+    snprintf(buffer, 100, "start bin/meta.exe %i", net->server_port);
     system(buffer);
     free(buffer);
   } else
@@ -74,7 +80,7 @@ int main(int argc, char *argv[]) {
       }
     }
 
-    server_frame(server);
+    net_frame(net);
   }
 
   // cleanup all
@@ -87,7 +93,7 @@ int main(int argc, char *argv[]) {
   sfx_cleanup(sfx);
   sty_cleanup(fsty);
   gxt_cleanup(gxt);
-  server_cleanup(server);
+  net_cleanup(net);
   IMG_Quit();
   SDLNet_Quit();
   SDL_Quit();
