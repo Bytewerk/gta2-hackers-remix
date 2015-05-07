@@ -77,7 +77,8 @@ Func cmd_singleplayer($cmd)
 	RegWrite($reg_base, "stylename",	"REG_SZ",		$sty&".sty")
 	
 	; Start the game
-	Run("GTA2/gta2.exe", "GTA2")
+	$global_game_instances_open = 1
+	$global_game_process_ids[0] = Run("GTA2/gta2.exe", "GTA2")
 	WinWait("GTA2")
 	WinActivate("GTA2")
 Endfunc

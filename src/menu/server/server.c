@@ -6,6 +6,7 @@
 // the connection though.
 server_t *server_init() {
   server_t *server = malloc(sizeof(server_t));
+  server->set = SDLNet_AllocSocketSet(1);
   server->sock = 0;
 
   for (server->port = G2HR_MENU_SERVER_PORT_START;
@@ -40,15 +41,34 @@ void server_accept_localhost_only(server_t *server) {
     return;
   }
 
+  // add it to the socket set
+  SDLNet_TCP_AddSocket(server->set, server->sock);
+
   // drop the server socket, we only want one connection anyway!
-  printf("connected to meta\n");
   SDLNet_TCP_Close(server->sock_server);
+}
+
+char server_parse(server_t *server) {
+  char buffer[G2HR_MENU_SERVER_BUFFER_LEN + 1];
+  buffer[G2HR_MENU_SERVER_BUFFER_LEN] = '\0';
+
+  int length =
+      SDLNet_TCP_Recv(server->sock, &buffer, G2HR_MENU_SERVER_BUFFER_LEN);
+
+  if (length < 0) {
+    printf("ERROR while receiving data from meta component!");
+    return 0;
+  }
+  printf("[meta => menu]: %s\n", buffer);
+  return 1;
 }
 
 void server_frame(server_t *server) {
   server_accept_localhost_only(server);
-  if (!server->sock)
+  if (!server->sock || !SDLNet_CheckSockets(server->set, 0) ||
+      !SDLNet_SocketReady(server->sock))
     return;
+  server_parse(server);
 }
 
 void server_send(server_t *server, char *message, char do_free) {
@@ -68,5 +88,7 @@ void server_cleanup(server_t *server) {
     SDLNet_TCP_Close(server->sock_server);
   if (server->sock)
     SDLNet_TCP_Close(server->sock);
+
+  SDLNet_FreeSocketSet(server->set);
   free(server);
 }

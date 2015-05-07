@@ -1,4 +1,5 @@
 #NoTrayIcon
+#include "common.au3"
 #include "cmds/singleplayer.au3"
 #include <Array.au3>
 
@@ -12,16 +13,15 @@ If $CmdLine[0] < 1 Then _
 ; Connect to the menu
 TCPStartup()
 OnAutoItExitRegister("OnAutoItExit")
-$sock = TCPConnect("127.0.0.1", $CmdLine[1])
+$global_sock = TCPConnect("127.0.0.1", $CmdLine[1])
 If @ERROR Then Exit ConsoleWrite("[meta] connection refused" & @CRLF)
-ConsoleWrite("[meta] connected to the menu" & @CRLF)
-
+re("CONNECTED")
 
 ; Handle incoming commands. Format:
 ; 	COMMAND_NAME [PARAMETER1 [PARAMETER2] ... ]
 $exit = 0
 While Not $exit
-	$data = BinaryToString(TCPRecv($sock,100,1))
+	$data = BinaryToString(TCPRecv($global_sock,100,1))
 	If StringLen($data) > 0 Then
 		ConsoleWrite("[menu] " & $data & "" & @CRLF)
 		
@@ -31,12 +31,30 @@ While Not $exit
 				$exit = 1
 			Case "SINGLEPLAYER"
 				cmd_singleplayer($cmd)
-				
-				
+				Sleep(500)
+				re("HIDE GET READY SCREEN")
 		EndSwitch
 	EndIf
+	
+	
+	; Check if the game is still open
+	If $global_game_instances_open > 0 Then
+		For $i = 0 To 5
+			If $global_game_process_ids[$i] _
+				And Not ProcessExists($global_game_process_ids[$i]) Then
+				
+				$global_game_instances_open -= 1
+				$global_game_process_ids[$i] = NULL
+				re("INSTANCE CLOSED " & $i)
+				
+			Endif
+		Next
+	Endif
+	
+	
+	
 	sleep(100) ; TCPRecv is non-blocking!
 WEnd
 
 ; Clean up
-TCPCloseSocket($sock)
+TCPCloseSocket($global_sock)
