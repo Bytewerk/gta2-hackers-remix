@@ -12,9 +12,9 @@ net_t *net_init(int native_port) {
     exit(SDL_ShowSimpleMessageBox(
         SDL_MESSAGEBOX_ERROR, "G2HR",
         "Menu: Can't connect to the 'native' component!\nGTA2: Hacker's Remix "
-        "is divided into multiple components, which need to connect to each "
-        "other over TCP via localhost in order to do their unholy vodoo magic. "
-        "Check your firewall settings!\n\nMore info: "
+        "is divided into multiple\ncomponents, which need to connect to each "
+        "other over TCP\nvia localhost in order to do their unholy vodoo "
+        "magic.\nCheck your firewall settings!\n\nMore info: "
         "http://git.io/g2hr-firewall",
         NULL));
   SDLNet_TCP_AddSocket(net->set, net->sock_native);

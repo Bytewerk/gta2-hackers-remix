@@ -1,12 +1,15 @@
 #include "net/net.h"
 #include <stdio.h>
+#include <string.h>
 
 // TODO: split the Linux part up: run the wine prefix setup
 // as blocking process, then run the menu in the background
-void menu_start(int server_port) {
+void menu_start(int server_port, char menu_compiled_for_linux) {
   char *buffer = malloc(100);
 
-  if (!strcmp(SDL_GetPlatform(), "Windows"))
+  if (menu_compiled_for_linux)
+    snprintf(buffer, 100, "bin/menu.bin %i &", server_port);
+  else if (!strcmp(SDL_GetPlatform(), "Windows"))
     snprintf(buffer, 100, "start bin/menu.exe %i", server_port);
   else
     snprintf(buffer, 100, "bin/wine_wrapper.sh %i &", server_port);
@@ -17,7 +20,8 @@ void menu_start(int server_port) {
 
 int main(int argc, char **argv) {
   net_t *net = net_init();
-  menu_start(net->port);
+  menu_start(net->port,
+             (argc == 2 && !strcmp(argv[1], "--debug-menu-on-linux")));
 
   // TODO: init controllers etc.
 
