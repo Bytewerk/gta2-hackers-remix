@@ -28,10 +28,16 @@ int main(int argc, char **argv) {
   // wait up to 20 seconds for the menu connection. If it fails,
   // quit (the menu will show an error message)
   net_block_until_connected(net, 20000);
-  if (!net->sock_menu)
+  if (!net->sock_menu) {
     printf("META: NOT CONNECTED TO MENU!\n");
-
-  // TODO:  else while(1) .... main loop!
+  } else {
+    printf("native: connected to menu!\n");
+    while (1) {
+      SDL_Event e;
+      SDL_WaitEventTimeout(&e, 100);
+      net_frame(net);
+    }
+  }
 
   // clean up
   net_cleanup(net);
