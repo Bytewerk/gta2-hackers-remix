@@ -47,6 +47,20 @@ void net_accept_localhost_only(net_t *net) {
   SDLNet_TCP_Close(net->sock_server);
 }
 
+// check net->sock_menu for success
+void net_block_until_connected(net_t *net, uint32_t timeout_in_ms) {
+  uint32_t start_time = SDL_GetTicks();
+  while (!net->sock_menu) {
+    if (SDL_GetTicks() - start_time > timeout_in_ms)
+      break;
+
+    net_accept_localhost_only(net);
+
+    SDL_Delay(100);
+  }
+}
+
+// TODO: free sockets?
 void net_cleanup(net_t *net) {
   if (net->sock_server)
     SDLNet_TCP_Close(net->sock_server);
