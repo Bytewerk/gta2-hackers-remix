@@ -1,4 +1,4 @@
-`G2HR` officially supports Windows and Linux (via Wine). To get a good
+`G2HR` officially supports Windows and Linux (via Wine). To get good
 controller support on Linux, that does not need to go through the wine
 layer, this `native` component will be created.
 
