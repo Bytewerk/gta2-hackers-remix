@@ -4,7 +4,7 @@
 // listen on all addresses. Better would be localhost only, but SDL2_net
 // doesn't support this. We'll check for localhost when establishing
 // the connection though.
-net_t *server_init() {
+net_t *net_init() {
   net_t *net = calloc(1, sizeof(net_t));
   net->set = SDLNet_AllocSocketSet(GTA2_PLAYER_COUNT + 1);
 
@@ -24,15 +24,15 @@ net_t *server_init() {
   return net;
 }
 
-void net_accept_localhost_only(net_t *server) {
+void net_accept_localhost_only(net_t *net) {
   if (net->sock_menu)
     return;
 
-  net->sock_menu = SDLNet_TCP_Accept(net->sock);
+  net->sock_menu = SDLNet_TCP_Accept(net->sock_server);
   if (!net->sock_menu)
     return;
 
-  IPaddress *remote_ip = SDLNet_TCP_GetPeerAddress(server->sock);
+  IPaddress *remote_ip = SDLNet_TCP_GetPeerAddress(net->sock_server);
   if (remote_ip->host != 0x100007f) {
     printf("remote IP isn't localhost, dropping connection...\n");
     SDLNet_TCP_Close(net->sock_menu);
@@ -48,15 +48,15 @@ void net_accept_localhost_only(net_t *server) {
 }
 
 void net_cleanup(net_t *net) {
-  if (server->sock_server)
-    SDLNet_TCP_Close(server->sock_server);
-  if (server->sock_menu)
-    SDLNet_TCP_Close(server->sock_menu);
+  if (net->sock_server)
+    SDLNet_TCP_Close(net->sock_server);
+  if (net->sock_menu)
+    SDLNet_TCP_Close(net->sock_menu);
 
   for (int i = 0; i < GTA2_PLAYER_COUNT; i++)
-    if (server->sock_injected[i])
-      SDLNet_TCP_Close(server->sock_injected[i]);
+    if (net->sock_injected[i])
+      SDLNet_TCP_Close(net->sock_injected[i]);
 
   SDLNet_FreeSocketSet(net->set);
-  free(server);
+  free(net);
 }
