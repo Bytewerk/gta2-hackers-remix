@@ -19,4 +19,4 @@ Here is a more detailed list of tasks:
 * some advanced stuff: rumble support (definatelly planned!),
 	buffer/proxy the current score and maybe some other stats from the
 	`injected` components to the `menu` component
-* (maybe integrate video recording on by calling ffmpeg?)
+* (maybe integrate video recording by calling ffmpeg?)
