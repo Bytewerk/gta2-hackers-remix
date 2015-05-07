@@ -48,6 +48,9 @@ typedef struct {
 
 ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server, sl_t *sl,
               cfg_t *g2hr_config);
+
+void ui_callback_for_meta(char *msg, void *userdata);
+
 void ui_cleanup(ui_t *ui);
 
 // screens

@@ -5,6 +5,9 @@
 #define G2HR_MENU_SERVER_BUFFER_LEN 100
 
 typedef struct {
+  void *recv_callback; // callback(char* message, void* userdata)
+  void *recv_userdata;
+
   IPaddress ip;
   TCPsocket sock_server;
   TCPsocket sock;

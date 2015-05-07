@@ -48,7 +48,7 @@ void server_accept_localhost_only(server_t *server) {
   SDLNet_TCP_Close(server->sock_server);
 }
 
-char server_parse(server_t *server) {
+void server_parse(server_t *server) {
   char buffer[G2HR_MENU_SERVER_BUFFER_LEN + 1];
   buffer[G2HR_MENU_SERVER_BUFFER_LEN] = '\0';
 
@@ -56,11 +56,18 @@ char server_parse(server_t *server) {
       SDLNet_TCP_Recv(server->sock, &buffer, G2HR_MENU_SERVER_BUFFER_LEN);
 
   if (length < 0) {
-    printf("ERROR while receiving data from meta component!");
-    return 0;
+    printf("ERROR while receiving data from meta component!\n");
+    return;
   }
   printf("[meta => menu]: %s\n", buffer);
-  return 1;
+
+  void (*callback)(char *msg, void *ud) = server->recv_callback;
+
+  if (callback)
+    callback(buffer, server->recv_userdata);
+  else
+    printf("ERROR: no callback function attached to the server, can't handle "
+           "the message above!\n");
 }
 
 void server_frame(server_t *server) {

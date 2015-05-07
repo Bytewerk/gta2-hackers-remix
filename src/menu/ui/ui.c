@@ -7,6 +7,8 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, server_t *server, sl_t *sl,
   ui_t *ui = calloc(1, sizeof(ui_t));
   ui->tk = tk;
   ui->server = server;
+  ui->server->recv_callback = (void *)ui_callback_for_meta;
+  ui->server->recv_userdata = (void *)ui;
   ui->mmp = mmp;
   ui->sl = sl;
   ui->g2hr_config = g2hr_config;

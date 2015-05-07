@@ -77,6 +77,8 @@ obj/screen_ready.o: $(call DEPS,ui/screens/ready.c)
 # UI
 obj/ui.o: $(call DEPS,ui/ui.c)
 	$(CC) -c -o $@ $<
+obj/ui_callbacks.o: $(call DEPS,ui/ui_callbacks.c)
+	$(CC) -c -o $@ $<
 
 # TK: CTRL
 obj/ctrl_arrow.o: $(call DEPS,tk/ctrl/arrow.c)
