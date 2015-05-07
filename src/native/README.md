@@ -1,26 +1,22 @@
-# Native Component
+`G2HR` officially supports Windows and Linux (via Wine). To get a good
+controller support on Linux, that does not need to go through the wine
+layer, this `native` component will be created.
 
-# Compiling on Linux
-* Install `SDL2`, `SDL2_net`
-* execute `make` in this folder to build it
-
-# IDE Setup (Windows only)
-## Why Code::Blocks?
-
-This part of the code is being developed with [Code::Blocks](http://www.codeblocks.org/) on Windows. Why Code::Blocks instead of Visual C++? Because it is OSS, has less bloat and ships a working MinGW toolchain.
-
-It should theoretically compile on Linux too, but we'll need to figure out how much sense that makes, considering we'll need Wine for GTA2 anyway.
-
-## Setup
-
-* [Download Code::Blocks](http://www.codeblocks.org/downloads/26#windows) (the one that has MinGW included) and install it
-* [Download SDL2](http://libsdl.org/download-2.0.php) development libraries for MinGWx32
-* [Download SDL2_net](http://www.libsdl.org/projects/SDL_net/) *for 32-bit Windows*
-* [Download the latest project files](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.0.3-IDE-projects) (Currently you'll need to change the folders to reflect the post-alpha structure. I'll upload a newer version of the project files at some point.)
-* Extract the `bin`, `include`, `lib` and `share` folders from the SDL2 and SDL2_net archives to `%Pogram Files%/Codeblocks/MinGW/` (merge existing folders)
-* open the project
-* start hacking
-
-## Fix SDL 2.0.3
-You'll probably get the error `winapifamily.h: No such file or directory`, when you try to compile.
-This is a bug in the mentioned SDL version, [here's the fix.](http://stackoverflow.com/a/22600114)
+Here is a more detailed list of tasks:
+* host a TCP server for native<->menu communication
+* start the menu (on Linux: start the virtual wine desktop with the menu
+	inside)
+* parse controller mappings from a config file (this will come later,
+	once the basic stuff is working)
+* bind all connected (xbox 360 compatible) game controllers and
+	interpret the keys
+* send toolkit events (eg. TK_ACTION_ENTER) as well as the count of
+	connected controllers (initially and when it changes) to the menu,
+	while it is active
+* when the game is running (meta gets a notification from the menu),
+	connect to the `injected` components of all running instances via
+	TCP and generate/send the movement bytes from the controller input
+* some advanced stuff: rumble support (definatelly planned!),
+	buffer/proxy the current score and maybe some other stats from the
+	`injected` components to the `menu` component
+* (maybe integrate video recording on by calling ffmpeg?)
