@@ -1,8 +1,8 @@
-all: bin/menu.exe bin/meta.exe
+all: bin/menu.exe bin/meta.exe bin/native.bin
 
 
-run: bin/menu.exe bin/meta.exe
-	WINEDEBUG=-all wine explorer /desktop=G2HR,640x480 bin/menu.exe
+run: bin/menu.exe bin/meta.exe bin/native.bin
+	bin/native.bin
 	wineboot -e -f
 
 
@@ -19,8 +19,12 @@ bin/menu.exe:
 bin/meta.exe:
 	$(MAKE) -C src/meta
 
+bin/native.bin:
+	$(MAKE) -C src/native/ Linux
+
+
 clean:
 	rm bin/*.exe bin/*.bin || true
 	$(MAKE) -s -C src/menu clean
 	
-.PHONY: clean all bin/menu.exe bin/meta.exe regsniff
+.PHONY: clean all bin/menu.exe bin/meta.exe bin/native.bin regsniff
