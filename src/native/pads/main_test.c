@@ -9,8 +9,13 @@ int main(int argc, const char **argv) {
   printf("running init...\n");
   pads_t *pads = pads_init(1);
 
-  // TODO: create main loop with
-  // pads_frame(pads);
+  while (1) {
+    SDL_Event e;
+    SDL_WaitEvent(&e);
+    if (e.type == SDL_QUIT)
+      break;
+    pads_frame(pads, &e, 1);
+  }
 
   printf("cleaning up...\n");
   pads_cleanup(pads);

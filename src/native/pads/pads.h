@@ -7,6 +7,11 @@
 typedef struct pad_controller_t {
   struct pad_controller_t *next;
 
+  // pads, that were attached earlier and get disconnected after
+  // that, do not get deleted. instead, when they get re-attached,
+  // they have the same position in the list again.
+  char disconnected;
+
   SDL_GameController *controller;
   char *guid;
   // SDL_Haptic* haptic;
@@ -20,6 +25,6 @@ typedef struct {
 
 pads_t *pads_init(char verbose);
 
-void pads_frame(pads_t *pads, SDL_Event *event);
+void pads_frame(pads_t *pads, SDL_Event *event, char verbose);
 
 void pads_cleanup(pads_t *pads);

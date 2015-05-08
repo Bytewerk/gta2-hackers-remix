@@ -2,17 +2,18 @@
 #include <stdio.h>
 #include <string.h>
 
-char pads_is_joystick_attached(pads_t *pads, char *guid) {
+pad_controller_t *pads_is_joystick_attached(pads_t *pads, char *guid) {
   pad_controller_t *pad = pads->first;
   while (pad) {
-    if (!strcmp(guid, pad->guid))
-      return 1;
+    if (!strcmp(guid, pad->guid)) {
+      return pad;
+    }
     pad = pad->next;
   }
-  return 0;
+  return NULL;
 }
 
-void pads_scan(pads_t *pads, char verbose) {
+void pads_add(pads_t *pads, char verbose) {
   int joy_count = SDL_NumJoysticks();
 
   pad_controller_t *last = pads->first;
@@ -38,7 +39,8 @@ void pads_scan(pads_t *pads, char verbose) {
     if (verbose)
       printf("guid: %s\n", guid);
 
-    if (pads_is_joystick_attached(pads, guid)) {
+    pad_controller_t *pad = pads_is_joystick_attached(pads, guid);
+    if (pad && !pad->disconnected) {
       if (verbose)
         printf("this sdl game controller is already attached, skipping...\n");
       free(guid);
@@ -54,35 +56,78 @@ void pads_scan(pads_t *pads, char verbose) {
     }
 
     if (verbose)
-      printf("game controller name: %s\n", SDL_GameControllerName(controller));
+      printf("%sattaching game controller: %s\n", pad ? "re-" : "",
+             SDL_GameControllerName(controller));
 
-    // controller is open, create the full struct
-    pad_controller_t *pad = calloc(1, sizeof(pad_controller_t));
+    // controller is open, re-fill the old struct
+    // or create a new one
+    char attach_to_list = (pad == NULL);
+    if (pad) {
+      pad->disconnected = 0;
+      free(guid);
+    } else {
+      pad = calloc(1, sizeof(pad_controller_t));
+      pad->guid = guid;
+    }
+
     pad->controller = controller;
-    pad->guid = guid;
+
     // pad->haptic =
+    pads->count++;
 
     // attach to the list
-    pads->count++;
-    if (last)
-      last->next = pad;
-    else
-      pads->first = pad;
-    last = pad;
+    if (attach_to_list) {
+      if (last)
+        last->next = pad;
+      else
+        pads->first = pad;
+      last = pad;
+    }
   }
   if (verbose)
     printf("scan finished! count of attached controllers: %i\n", pads->count);
 }
 
+void pads_rm(pads_t *pads, char verbose) {
+  pad_controller_t *current = pads->first;
+  while (current) {
+    if (!current->disconnected &&
+        !SDL_GameControllerGetAttached(current->controller)) {
+      SDL_GameControllerClose(current->controller);
+      current->disconnected = 1;
+      if (verbose)
+        printf("controller disconnected: %s\n", current->guid);
+      pads->count--;
+    }
+    current = current->next;
+  }
+}
+
 pads_t *pads_init(char verbose) {
   pads_t *pads = calloc(1, sizeof(pads_t));
-  pads_scan(pads, verbose);
+  pads_add(pads, verbose);
   return pads;
 }
 
-void pads_frame(pads_t *pads, SDL_Event *event) {
-  // TODO - handle events: attached (scan),
-  // detatched (close and drop from ist), remapped (?)
+void pads_frame(pads_t *pads, SDL_Event *event, char verbose) {
+  switch (event->type) {
+  case SDL_CONTROLLERDEVICEADDED: {
+    pads_add(pads, verbose);
+    break;
+  }
+  case SDL_CONTROLLERDEVICEREMOVED: {
+    pads_rm(pads, verbose);
+    break;
+  }
+  case SDL_CONTROLLERDEVICEREMAPPED: {
+    printf("[native] SDL2 says, that some game controller device has been "
+           "re-mapped. Not really sure what that means, so not doing anything. "
+           "If you think this is a bug and GTA2: Hacker's Remix should so "
+           "something else here, please report a bug at: "
+           "http://git.io/g2hr-bugs");
+    break;
+  }
+  }
 }
 
 void pads_cleanup(pads_t *pads) {
