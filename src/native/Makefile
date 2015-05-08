@@ -62,6 +62,11 @@ obj/net_frame.o: $(call DEPS,net/native_net_frame.c)
 obj/pads.o: $(call DEPS,pads/pads.c)
 	$(CC) -c -o $@ $<
 
+# Menu Event Handler
+obj/meh.o: $(call DEPS,meh/meh.c)
+	$(CC) -c -o $@ $<
+
+
 # OTHER
 
 obj ../../bin:

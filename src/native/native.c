@@ -1,3 +1,4 @@
+#include "meh/meh.h"
 #include "net/native_net.h"
 #include "pads/pads.h"
 #include <stdio.h>
@@ -47,6 +48,8 @@ int main(int argc, char **argv) {
     SDL_WaitEventTimeout(&e, 50);
     net_frame(net, native);
     pads_frame(pads, &e, 0);
+    if (!native->is_ingame)
+      meh_frame(net, pads, &e);
 
     // net_send_menu_action(net, TK_ACTION_UP, 1);
   }
