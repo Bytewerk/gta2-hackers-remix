@@ -1,4 +1,5 @@
 #include "native_net.h"
+#include "../../common/native_api.h"
 #include <SDL2/SDL_net.h>
 
 // listen on all addresses. Better would be localhost only, but SDL2_net
@@ -61,7 +62,17 @@ void net_block_until_connected(net_t *net, uint32_t timeout_in_ms) {
   }
 }
 
-// TODO: free sockets?
+void net_send_menu_action(net_t *net, tk_action_t action, char redraw) {
+  printf("[native => menu]: sending menu action %i (see tk_actions.h)\n",
+         action);
+
+  char header = NA_ACTION;
+  SDLNet_TCP_Send(net->sock_menu, &header, 1);
+
+  NA_ACTION_t data = {action, redraw};
+  SDLNet_TCP_Send(net->sock_menu, &data, sizeof(NA_ACTION_t));
+}
+
 void net_cleanup(net_t *net) {
   if (net->sock_listen)
     SDLNet_TCP_Close(net->sock_listen);

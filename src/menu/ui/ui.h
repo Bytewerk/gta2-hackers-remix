@@ -41,6 +41,9 @@ typedef struct {
   // used for the play screen
   char **player_names;
 
+  // synced from the native component
+  uint16_t controllers_connected;
+
   cfg_t *g2hr_config;
   cfg_split_t *multiplayer_time_values;
   char slotmachine_enabled;
@@ -49,7 +52,7 @@ typedef struct {
 ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl, cfg_t *g2hr_config);
 
 void ui_callback_for_meta(char *msg, void *userdata);
-
+void ui_callback_for_native(TCPsocket sock, char header, void *userdata);
 void ui_cleanup(ui_t *ui);
 
 // screens

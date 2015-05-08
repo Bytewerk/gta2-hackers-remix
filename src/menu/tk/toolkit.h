@@ -59,6 +59,8 @@ void tk_screen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 void captions_draw_buttom_text(tk_t *tk);
 
 void tk_action(tk_t *tk, SDL_Event *event);
+void tk_action_exec(tk_t *tk, tk_action_t action, SDL_Keycode key);
+
 void tk_actions_element(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                         tk_action_t action, SDL_Keycode key);
 

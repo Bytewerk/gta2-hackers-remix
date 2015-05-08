@@ -6,8 +6,12 @@
 
 typedef struct {
   void *userdata;
-  void *meta_recv_callback;   // callback(char* message, void* userdata)
-  void *native_recv_callback; // TODO: probably another format
+
+  // callback(char* message, void* userdata)
+  void *meta_recv_callback;
+
+  // callback(TCPsocket sock_native, char header, void* ud)
+  void *native_recv_callback;
 
   IPaddress ip;
   TCPsocket sock_listen;

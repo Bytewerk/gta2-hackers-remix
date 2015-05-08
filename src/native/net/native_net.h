@@ -1,4 +1,5 @@
 #pragma once
+#include "../../common/tk_actions.h"
 #include "../native.h"
 #include <SDL2/SDL_net.h>
 
@@ -21,6 +22,8 @@ net_t *net_init();
 void net_block_until_connected(net_t *net, uint32_t timeout_in_ms);
 
 // net_connect_injected(int count);
+
+void net_send_menu_action(net_t *net, tk_action_t action, char redraw);
 
 void net_cleanup(net_t *net);
 

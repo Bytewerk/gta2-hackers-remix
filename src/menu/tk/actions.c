@@ -68,6 +68,21 @@ void tk_actions_recursive(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   }
 }
 
+// directly execute an action on the toolkit, without a sdl event
+void tk_action_exec(tk_t *tk, tk_action_t action, SDL_Keycode key) {
+  tk_el_t *el_selected = tk->screen_active->el_selected;
+
+  if (tk->exclusive_action_element) {
+    tk_actions_element(tk, tk->exclusive_action_element, el_selected, action,
+                       key);
+    return;
+  }
+
+  // action for all elements on the screen, recursively
+  tk_actions_recursive(tk, &(tk->screen_active->el), el_selected, action, key);
+}
+
+// TODO: name this to tk_action_from_SDL_event or something
 // event is NULL when if the timelimit for the next
 // frame has been reached
 void tk_action(tk_t *tk, SDL_Event *event) {
@@ -87,15 +102,7 @@ void tk_action(tk_t *tk, SDL_Event *event) {
   if (action == TK_ACTION_REDRAW || (event && event->type == SDL_KEYDOWN))
     tk->redraw_needed = 1;
 
-  tk_el_t *el_selected = tk->screen_active->el_selected;
   SDL_Keycode key = event ? event->key.keysym.sym : SDLK_UNKNOWN;
 
-  if (tk->exclusive_action_element) {
-    tk_actions_element(tk, tk->exclusive_action_element, el_selected, action,
-                       key);
-    return;
-  }
-
-  // action for all elements on the screen, recursively
-  tk_actions_recursive(tk, &(tk->screen_active->el), el_selected, action, key);
+  tk_action_exec(tk, action, key);
 }

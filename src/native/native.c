@@ -34,10 +34,14 @@ int main(int argc, char **argv) {
     native->quit = 1;
   }
 
+  // DEBUG!
+
   while (!native->quit) {
     SDL_Event e;
-    SDL_WaitEventTimeout(&e, 100);
+    SDL_WaitEventTimeout(&e, 1000); // set high for debugging
     net_frame(net, native);
+
+    net_send_menu_action(net, TK_ACTION_UP, 1);
   }
 
   // clean up

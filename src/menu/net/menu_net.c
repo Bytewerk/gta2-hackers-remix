@@ -82,6 +82,25 @@ void net_parse_meta(net_t *net) {
            "the message above!\n");
 }
 
+void net_parse_native(net_t *net) {
+  char header;
+
+  if (SDLNet_TCP_Recv(net->sock_native, &header, 1) <= 0) {
+    printf("[menu] unexpected disconnect from meta!\n");
+    return;
+  }
+  printf("[native => menu]: received action 0x%x (see native_api.h)\n", header);
+
+  void (*callback)(TCPsocket sock_native, char header, void *ud) =
+      net->native_recv_callback;
+
+  if (callback)
+    callback(net->sock_native, header, net->userdata);
+  else
+    printf("ERROR: no callback function attached to the client, can't handle "
+           "the message above!\n");
+}
+
 void net_frame(net_t *net) {
   if (!net->sock_meta) {
     net_accept_localhost_only(net);
@@ -94,9 +113,8 @@ void net_frame(net_t *net) {
   if (SDLNet_SocketReady(net->sock_meta))
     net_parse_meta(net);
 
-  // TODO:
-  // if(SDLNet_SocketReady(net->sock_native))
-  // ...
+  if (SDLNet_SocketReady(net->sock_native))
+    net_parse_native(net);
 }
 
 void net_send_to_meta(net_t *net, char *message, char do_free) {

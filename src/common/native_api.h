@@ -21,7 +21,10 @@
 
 // perform a toolkit action
 #define NA_ACTION 0x11
-typedef struct { tk_action_t action; } NA_ACTION_t;
+typedef struct {
+  tk_action_t action;
+  char redraw;
+} NA_ACTION_t;
 
 #define NA_CONTROLLERS_CONNECTED 0x12
-typedef struct { char count; } NA_CONTROLLERS_CONNECTED_t;
+typedef struct { uint16_t count; } NA_CONTROLLERS_CONNECTED_t;

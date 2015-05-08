@@ -7,7 +7,7 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl, cfg_t *g2hr_config) {
   ui->tk = tk;
   ui->net = net;
   ui->net->meta_recv_callback = (void *)ui_callback_for_meta;
-  // ui->net->native_recv_callback = (void*) ui_callback_for_native;
+  ui->net->native_recv_callback = (void *)ui_callback_for_native;
   ui->net->userdata = (void *)ui;
   ui->mmp = mmp;
   ui->sl = sl;
