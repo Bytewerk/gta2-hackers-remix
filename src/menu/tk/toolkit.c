@@ -42,7 +42,7 @@ tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *title) {
 // event is NULL when if the timelimit for the next
 // frame has been reached
 void tk_frame(tk_t *tk, SDL_Event *event) {
-  tk_action(tk, event);
+  tk_action_from_sdl_event(tk, event);
 
   // on screen change: force redraw and fire action
   if (tk->screen_last_frame != tk->screen_active) {
