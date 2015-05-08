@@ -143,7 +143,7 @@ obj/mmp.o: $(call DEPS,mmp/mmp.c)
 	$(CC) -c -o $@ $<
 
 # Network
-obj/net.o: $(call DEPS,net/net.c)
+obj/net.o: $(call DEPS,net/menu_net.c)
 	$(CC) -c -o $@ $<
 
 # SL

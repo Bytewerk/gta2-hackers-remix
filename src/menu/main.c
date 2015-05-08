@@ -1,7 +1,7 @@
 #include "bg/background.h"
 #include "gxt/gxt.h"
 #include "mmp/mmp.h"
-#include "net/net.h"
+#include "net/menu_net.h"
 #include "sfx/sfx.h"
 #include "sl/sl.h"
 #include "sty/sty.h"

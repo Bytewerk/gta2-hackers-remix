@@ -53,7 +53,7 @@ obj/native.o: $(call DEPS,native.c)
 	$(CC) -c -o $@ $<
 
 # NET
-obj/net.o: $(call DEPS,net/net.c)
+obj/net.o: $(call DEPS,net/native_net.c)
 	$(CC) -c -o $@ $<
 
 

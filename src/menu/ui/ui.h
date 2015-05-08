@@ -1,7 +1,7 @@
 #pragma once
 #include "../../common/cfg/cfg.h"
 #include "../mmp/mmp.h"
-#include "../net/net.h"
+#include "../net/menu_net.h"
 #include "../sl/sl.h"
 #include "../tk/toolkit.h"
 

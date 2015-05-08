@@ -1,6 +1,4 @@
-#include "../../net/net.h"
 #include "../../tk/ctrl/controls.h"
-#include "../../tk/toolkit.h"
 #include "../ui.h"
 #include "../ui_text.h"
 

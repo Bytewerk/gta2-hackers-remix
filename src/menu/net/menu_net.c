@@ -1,4 +1,4 @@
-#include "net.h"
+#include "menu_net.h"
 #include <SDL2/SDL_net.h>
 
 net_t *net_init(int native_port) {

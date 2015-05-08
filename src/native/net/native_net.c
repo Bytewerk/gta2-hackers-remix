@@ -1,4 +1,4 @@
-#include "net.h"
+#include "native_net.h"
 #include <SDL2/SDL_net.h>
 
 // listen on all addresses. Better would be localhost only, but SDL2_net

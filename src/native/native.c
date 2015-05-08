@@ -1,4 +1,4 @@
-#include "net/net.h"
+#include "net/native_net.h"
 #include <stdio.h>
 #include <string.h>
 
