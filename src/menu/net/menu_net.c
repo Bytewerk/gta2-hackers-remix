@@ -75,11 +75,7 @@ void net_parse_meta(net_t *net) {
 
   void (*callback)(char *msg, void *ud) = net->meta_recv_callback;
 
-  if (callback)
-    callback(buffer, net->userdata);
-  else
-    printf("ERROR: no callback function attached to the server, can't handle "
-           "the message above!\n");
+  callback(buffer, net->userdata);
 }
 
 void net_parse_native(net_t *net) {
@@ -89,16 +85,11 @@ void net_parse_native(net_t *net) {
     printf("[menu] unexpected disconnect from meta!\n");
     return;
   }
-  printf("[native => menu]: received action 0x%x (see native_api.h)\n", header);
 
   void (*callback)(TCPsocket sock_native, char header, void *ud) =
       net->native_recv_callback;
 
-  if (callback)
-    callback(net->sock_native, header, net->userdata);
-  else
-    printf("ERROR: no callback function attached to the client, can't handle "
-           "the message above!\n");
+  callback(net->sock_native, header, net->userdata);
 }
 
 void net_frame(net_t *net) {

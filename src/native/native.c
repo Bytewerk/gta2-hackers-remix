@@ -53,8 +53,6 @@ int main(int argc, char **argv) {
     pads_frame(pads, &e, 0);
     if (!native->is_ingame)
       meh_frame(net, pads, &e);
-
-    // net_send_menu_action(net, TK_ACTION_UP, 1);
   }
 
   // clean up
