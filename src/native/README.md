@@ -20,3 +20,9 @@ Here is a more detailed list of tasks:
 	buffer/proxy the current score and maybe some other stats from the
 	`injected` components to the `menu` component
 * (maybe integrate video recording by calling ffmpeg?)
+
+
+folder|description
+------|-------
+net | network code (server talks to 'meta', (up to 6) clients talk to 'injected')
+pads | controller code (Xbox360 controllers and compatible supported)

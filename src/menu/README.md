@@ -8,5 +8,6 @@ gxt | Parses the [`GTA Text`](http://www.gtamodding.com/index.php?title=GXT#GTA2
 mmp | Plain text map info is stored in `mmp` files. The code in this folder loads all of those files and sorts them by any key, eg. the map name. See also: [this thread](http://gtamp.com/forum/viewtopic.php?t=188)
 sl | screen layout related, for the splitscreen mod
 server | TCP server for communication between 'menu' and 'meta' components
+net | network code (server talks to 'meta', client talks to 'native')
 tk | Toolkit written from scratch, that emulates the `GTA2` menu controls in `SDL2` and even adds new features. Sketches without `SDL2` and `GTA2` related code can be found in [vinylkit](https://github.com/robotanarchy/vinylkit).
 ui | The actual user interface, built with the toolkit.

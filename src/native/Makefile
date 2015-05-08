@@ -68,6 +68,6 @@ obj ../../bin:
 clean:
 	rm ../../bin/native.exe || true
 	rm ../../bin/native.bin || true
-	rm -r obj || true
+	rm -r obj out || true
 
 .PHONY: clean win env_win run info Windows Linux
