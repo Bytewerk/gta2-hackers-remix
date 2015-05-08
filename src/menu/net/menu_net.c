@@ -102,15 +102,13 @@ void net_parse_native(net_t *net) {
 }
 
 void net_frame(net_t *net) {
-  if (!net->sock_meta) {
+  if (!net->sock_meta)
     net_accept_localhost_only(net);
-    return;
-  }
 
   if (!SDLNet_CheckSockets(net->set, 0))
     return;
 
-  if (SDLNet_SocketReady(net->sock_meta))
+  if (net->sock_meta && SDLNet_SocketReady(net->sock_meta))
     net_parse_meta(net);
 
   if (SDLNet_SocketReady(net->sock_native))

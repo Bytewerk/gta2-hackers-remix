@@ -9,10 +9,12 @@
 void menu_start(int server_port, char menu_compiled_for_linux) {
   char *buffer = malloc(100);
 
-  if (menu_compiled_for_linux)
-    snprintf(buffer, 100, "gdb -ex run --args src/menu/out/menu.bin %i &",
+  if (menu_compiled_for_linux) {
+    // run the menu with gdb, print a stack trace when it fails
+    snprintf(buffer, 100,
+             "gdb -batch -ex run -ex bt --args src/menu/out/menu.bin %i &",
              server_port);
-  else if (!strcmp(SDL_GetPlatform(), "Windows"))
+  } else if (!strcmp(SDL_GetPlatform(), "Windows"))
     snprintf(buffer, 100, "start bin/menu.exe %i", server_port);
   else
     snprintf(buffer, 100, "bin/wine_wrapper.sh %i &", server_port);
@@ -30,7 +32,7 @@ int main(int argc, char **argv) {
   net_t *net = net_init();
   pads_t *pads = pads_init(0);
   menu_start(net->port,
-             (argc == 2 && !strcmp(argv[1], "--debug-menu-on-linux")));
+             (argc == 2 && !strcmp(argv[1], "--debug-menu-with-gdb-on-linux")));
 
   // TODO: init controllers etc.
 

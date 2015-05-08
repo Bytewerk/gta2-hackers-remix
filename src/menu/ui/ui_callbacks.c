@@ -31,7 +31,6 @@ void ui_callback_for_native(TCPsocket sock, char header, void *userdata) {
 
     ui->controllers_connected = data.count;
     splitscreen_set_players(ui);
-
     break;
   }
   }

@@ -16,9 +16,12 @@
 // TODO: place this in a common.h or something like that
 #define GTA2_MP_MAX_PLAYERS 6
 
+#define G2HR_CONTROLLERS_FOUND_TITLE_LEN 20
+
 // USERDATA STRUCT
 typedef struct {
   ui_t *ui;
+  char title[G2HR_CONTROLLERS_FOUND_TITLE_LEN + 1];
 
   tk_el_t *titlebar;
   tk_el_t *players;
@@ -95,9 +98,12 @@ void splitscreen_set_max_layouts(ud_splitscreen_t *ud) {
   ud_layout->entry_count = layout_max;
 }
 
-// TODO: set the count on the top right
 void splitscreen_set_players(ui_t *ui) {
-  ud_splitscreen_t *ud = (ud_splitscreen_t *)ui->splitscreen->el.userdata;
+  if (!ui->splitscreen)
+    return;
+
+  ud_splitscreen_t *ud =
+      (ud_splitscreen_t *)ui->splitscreen->el_content_container->userdata;
   uint16_t count = ui->controllers_connected;
 
   tk_el_t *players = ud->players;
@@ -111,10 +117,14 @@ void splitscreen_set_players(ui_t *ui) {
     ud_players->entry_count = 1;
   }
 
-  if (ud_players->entry_selected > ud_players->entry_count) {
+  if (ud_players->entry_selected > ud_players->entry_count)
     ud_players->entry_selected = ud_players->entry_count - 1;
-    splitscreen_set_max_layouts(ud);
-  }
+
+  splitscreen_set_max_layouts(ud);
+  snprintf(ud->title, G2HR_CONTROLLERS_FOUND_TITLE_LEN, "%i CONTROLLER%s FOUND",
+           count, (count == 1 ? "" : "S"));
+
+  ui->tk->redraw_needed = 1;
 }
 
 // ACTIONFUNC
@@ -125,7 +135,7 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   if (action == TK_ACTION_BEFORE_FIRST_SCREEN_FRAME) {
     ((ud_arrowtext_t *)ud->map->userdata)->entry_selected =
         ud->ui->map_selected;
-    splitscreen_set_max_layouts(ud);
+    splitscreen_set_players(ud->ui);
   }
 
   if (action == TK_ACTION_ENTER) {
@@ -188,7 +198,8 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
           bg_mashup(tk->bg, "3_tables", NULL, NULL, "g2hr_splitscreen");
 
       // title bar
-      ud->titlebar = tk_label(tk, TK_PARENT, "6 CONTROLLERS FOUND",
+
+      ud->titlebar = tk_label(tk, TK_PARENT, ud->title,
                               GTA2_FONT_FSTYLE_WHITE_RED_NORMAL, 0);
       tk_el_padding(ud->titlebar, 315, 12, 0, 0);
 

@@ -199,6 +199,17 @@ void tk_screen_draw(tk_t *tk) {
                               ? screen->el_content_container->sub
                               : screen->el.sub;
 
+  // if the selected element is disabled, use the next one!
+  while (screen->el_selected->flags & TK_EL_FLAG_DISABLED) {
+    if (screen->el_selected->next)
+      screen->el_selected = screen->el_selected->next;
+    else {
+      printf(
+          "ERROR while redrawing: this screen only has disabled elements!\n");
+      break;
+    }
+  }
+
   // draw background
   tk_screen_draw_bg(tk);
 
