@@ -1,4 +1,5 @@
 #pragma once
+#include "../native.h"
 #include <SDL2/SDL_net.h>
 
 #define G2HR_NATIVE_SERVER_PORT_START 20140
@@ -23,4 +24,4 @@ void net_block_until_connected(net_t *net, uint32_t timeout_in_ms);
 
 void net_cleanup(net_t *net);
 
-void net_frame(net_t *net);
+void net_frame(net_t *net, native_t *native);

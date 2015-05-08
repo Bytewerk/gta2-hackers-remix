@@ -61,16 +61,6 @@ void net_block_until_connected(net_t *net, uint32_t timeout_in_ms) {
   }
 }
 
-void net_frame(net_t *net) {
-  if (!SDLNet_CheckSockets(net->set, 0))
-    return;
-
-  // if(SDLNet_SocketReady(net->sock_menu))
-  // net_parse_menu(net);
-
-  // TODO: also loop over the injected sockets
-}
-
 // TODO: free sockets?
 void net_cleanup(net_t *net) {
   if (net->sock_listen)

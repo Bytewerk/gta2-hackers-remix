@@ -55,7 +55,8 @@ obj/native.o: $(call DEPS,native.c)
 # NET
 obj/net.o: $(call DEPS,net/native_net.c)
 	$(CC) -c -o $@ $<
-
+obj/net_frame.o: $(call DEPS,net/native_net_frame.c)
+	$(CC) -c -o $@ $<
 
 
 

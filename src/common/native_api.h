@@ -7,6 +7,7 @@
 
 //
 // MENU TO NATIVE MESSAGES
+// they all have one byte length
 //
 #define NA_CLEANUP 0x01
 

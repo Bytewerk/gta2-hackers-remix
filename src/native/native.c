@@ -19,6 +19,7 @@ void menu_start(int server_port, char menu_compiled_for_linux) {
 }
 
 int main(int argc, char **argv) {
+  native_t *native = calloc(1, sizeof(native_t));
   net_t *net = net_init();
   menu_start(net->port,
              (argc == 2 && !strcmp(argv[1], "--debug-menu-on-linux")));
@@ -30,15 +31,16 @@ int main(int argc, char **argv) {
   net_block_until_connected(net, 20000);
   if (!net->sock_menu) {
     printf("META: NOT CONNECTED TO MENU!\n");
-  } else {
-    printf("native: connected to menu!\n");
-    while (1) {
-      SDL_Event e;
-      SDL_WaitEventTimeout(&e, 100);
-      net_frame(net);
-    }
+    native->quit = 1;
+  }
+
+  while (!native->quit) {
+    SDL_Event e;
+    SDL_WaitEventTimeout(&e, 100);
+    net_frame(net, native);
   }
 
   // clean up
   net_cleanup(net);
+  free(native);
 }
