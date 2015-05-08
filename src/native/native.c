@@ -1,4 +1,5 @@
 #include "net/native_net.h"
+#include "pads/pads.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -20,7 +21,12 @@ void menu_start(int server_port, char menu_compiled_for_linux) {
 
 int main(int argc, char **argv) {
   native_t *native = calloc(1, sizeof(native_t));
+
+  // initialize everything
+  if (SDL_Init(SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC) < 0)
+    return printf("ERROR from SDL: %s\n", SDL_GetError());
   net_t *net = net_init();
+  pads_t *pads = pads_init(0);
   menu_start(net->port,
              (argc == 2 && !strcmp(argv[1], "--debug-menu-on-linux")));
 
@@ -38,13 +44,16 @@ int main(int argc, char **argv) {
 
   while (!native->quit) {
     SDL_Event e;
-    SDL_WaitEventTimeout(&e, 1000); // set high for debugging
+    SDL_WaitEventTimeout(&e, 50);
     net_frame(net, native);
+    pads_frame(pads, &e, 0);
 
-    net_send_menu_action(net, TK_ACTION_UP, 1);
+    // net_send_menu_action(net, TK_ACTION_UP, 1);
   }
 
   // clean up
   net_cleanup(net);
+  pads_cleanup(pads);
   free(native);
+  SDL_Quit();
 }

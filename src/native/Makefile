@@ -52,13 +52,15 @@ env_win:
 obj/native.o: $(call DEPS,native.c)
 	$(CC) -c -o $@ $<
 
-# NET
+# Network
 obj/net.o: $(call DEPS,net/native_net.c)
 	$(CC) -c -o $@ $<
 obj/net_frame.o: $(call DEPS,net/native_net_frame.c)
 	$(CC) -c -o $@ $<
 
-
+# Game Controllers
+obj/pads.o: $(call DEPS,pads/pads.c)
+	$(CC) -c -o $@ $<
 
 # OTHER
 

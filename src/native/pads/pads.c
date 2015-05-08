@@ -55,9 +55,8 @@ void pads_add(pads_t *pads, char verbose) {
       continue;
     }
 
-    if (verbose)
-      printf("%sattaching game controller: %s\n", pad ? "re-" : "",
-             SDL_GameControllerName(controller));
+    printf("[native] %sattached game controller: %s (%s)\n", (pad ? "re-" : ""),
+           guid, SDL_GameControllerName(controller));
 
     // controller is open, re-fill the old struct
     // or create a new one
@@ -95,8 +94,7 @@ void pads_rm(pads_t *pads, char verbose) {
         !SDL_GameControllerGetAttached(current->controller)) {
       SDL_GameControllerClose(current->controller);
       current->disconnected = 1;
-      if (verbose)
-        printf("controller disconnected: %s\n", current->guid);
+      printf("[native] game controller disconnected: %s\n", current->guid);
       pads->count--;
     }
     current = current->next;
