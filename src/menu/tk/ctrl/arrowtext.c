@@ -3,6 +3,26 @@
 #include "controls.h"
 #include <string.h>
 
+void tk_ctrl_arrowtext_disabled(tk_el_t *ctrl) {
+  ud_arrowtext_t *ud = ((ud_arrowtext_t *)(ctrl->userdata));
+  tk_el_disabled(ctrl);
+  if (ud->text_pre)
+    tk_el_disabled(ud->text_pre);
+  tk_el_disabled(ud->text);
+  if (ud->text_suf)
+    tk_el_disabled(ud->text_suf);
+}
+
+void tk_ctrl_arrowtext_enabled(tk_el_t *ctrl) {
+  ud_arrowtext_t *ud = ((ud_arrowtext_t *)(ctrl->userdata));
+  tk_el_enabled(ctrl);
+  if (ud->text_pre)
+    tk_el_enabled(ud->text_pre);
+  tk_el_enabled(ud->text);
+  if (ud->text_suf)
+    tk_el_enabled(ud->text_suf);
+}
+
 void arrowtext_style(tk_t *tk, ud_arrowtext_t *ud) {
   char is_editing = (tk->exclusive_action_element == ud->container);
 

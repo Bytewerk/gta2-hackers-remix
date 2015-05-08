@@ -37,6 +37,11 @@ tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
                            char *bottom_text_high_editing,
                            char *bottom_text_low_editing);
 
+// arrowtext consists of lots of sub-elements. use these
+// helper functions to disable and enable them properly:
+void tk_ctrl_arrowtext_disabled(tk_el_t *arrowtext_ctrl);
+void tk_ctrl_arrowtext_enabled(tk_el_t *arrowtext_ctrl);
+
 // Macro that simplifies ARROWTEXT:
 #define tk_ctrl_boolean(TK, TK_PARENT, BG_MASHUP, PREFIX)                      \
   tk_ctrl_arrowtext(TK, TK_PARENT, BG_MASHUP, 0, NULL, 0, PREFIX, NULL, NULL,  \

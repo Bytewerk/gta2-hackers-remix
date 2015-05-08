@@ -7,8 +7,6 @@
 
 /*
         TODO:
-                - store 'int controllers_found' in the client struct
-                        (communication between native and menu)
                 - send the abstracted splitscreen geometry values to the meta
                         component instead of the layout ID (this is for
    debugging
@@ -17,8 +15,6 @@
 
 // TODO: place this in a common.h or something like that
 #define GTA2_MP_MAX_PLAYERS 6
-
-#define TODO_controllers_found 6
 
 // USERDATA STRUCT
 typedef struct {
@@ -91,16 +87,34 @@ void splitscreen_set_max_layouts(ud_splitscreen_t *ud) {
   if (layout >= layout_max)
     ud_layout->entry_selected = layout_max - 1;
 
-  if (layout_max > 1) {
-    tk_el_enabled(ud->screen_layout);
-    tk_el_enabled(ud_layout->text_pre);
-    tk_el_enabled(ud_layout->text);
-  } else {
-    tk_el_disabled(ud->screen_layout);
-    tk_el_disabled(ud_layout->text_pre);
-    tk_el_disabled(ud_layout->text);
-  }
+  if (layout_max > 1)
+    tk_ctrl_arrowtext_enabled(ud->screen_layout);
+  else
+    tk_ctrl_arrowtext_disabled(ud->screen_layout);
+
   ud_layout->entry_count = layout_max;
+}
+
+// TODO: set the count on the top right
+void splitscreen_set_players(ui_t *ui) {
+  ud_splitscreen_t *ud = (ud_splitscreen_t *)ui->splitscreen->el.userdata;
+  uint16_t count = ui->controllers_connected;
+
+  tk_el_t *players = ud->players;
+  ud_arrowtext_t *ud_players = ((ud_arrowtext_t *)(ud->players->userdata));
+
+  if (count > 1) {
+    tk_ctrl_arrowtext_enabled(players);
+    ud_players->entry_count = count;
+  } else {
+    tk_ctrl_arrowtext_disabled(players);
+    ud_players->entry_count = 1;
+  }
+
+  if (ud_players->entry_selected > ud_players->entry_count) {
+    ud_players->entry_selected = ud_players->entry_count - 1;
+    splitscreen_set_max_layouts(ud);
+  }
 }
 
 // ACTIONFUNC
@@ -187,8 +201,8 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
           // players
           ud->players =
               tk_ctrl_arrowtext(tk, TK_PARENT, NULL /*bg*/, 0, ui->numbers,
-                                TODO_controllers_found, "PLAYERS: ", NULL, NULL,
-                                NULL, NULL, NULL /*bottom text*/);
+                                ui->controllers_connected, "PLAYERS: ", NULL,
+                                NULL, NULL, NULL, NULL /*bottom text*/);
 
           // screen layout
           ud->screen_layout = tk_ctrl_arrowtext(

@@ -10,7 +10,8 @@ void menu_start(int server_port, char menu_compiled_for_linux) {
   char *buffer = malloc(100);
 
   if (menu_compiled_for_linux)
-    snprintf(buffer, 100, "bin/menu.bin %i &", server_port);
+    snprintf(buffer, 100, "gdb -ex run --args src/menu/out/menu.bin %i &",
+             server_port);
   else if (!strcmp(SDL_GetPlatform(), "Windows"))
     snprintf(buffer, 100, "start bin/menu.exe %i", server_port);
   else

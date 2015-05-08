@@ -64,6 +64,9 @@ tk_screen_t *ui_screen_main_menu(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_ready(tk_t *tk, ui_t *ui);
 
+// screen functions required else where
+void splitscreen_set_players(ui_t *ui);
+
 #define ui_show_ready_screen(UI, PREVIOUS_SCREEN_IN_UI_STRUCT)                 \
   {                                                                            \
     UI->ready->back = UI->PREVIOUS_SCREEN_IN_UI_STRUCT;                        \

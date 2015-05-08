@@ -30,7 +30,7 @@ void ui_callback_for_native(TCPsocket sock, char header, void *userdata) {
     SDLNet_TCP_Recv(sock, &data, sizeof(NA_CONTROLLERS_CONNECTED_t));
 
     ui->controllers_connected = data.count;
-    printf("debug: connected controlles: %i\n", data.count);
+    splitscreen_set_players(ui);
 
     break;
   }
