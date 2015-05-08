@@ -1,5 +1,6 @@
 #pragma once
 
+#define G2HR_TK_ACTIONS_VERSION 1
 #define ACTION_LIMIT_RATE 100 // milliseconds
 
 typedef enum {

@@ -1,5 +1,5 @@
 #include "toolkit.h"
-#include "actions.h"
+#include "../../common/tk_actions.h"
 
 tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *title) {
   tk_t *tk = calloc(1, sizeof(tk_t));

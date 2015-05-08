@@ -1,4 +1,4 @@
-#include "actions.h"
+#include "../../common/tk_actions.h"
 #include "toolkit.h"
 #include <SDL2/SDL.h>
 

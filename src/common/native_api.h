@@ -1,4 +1,5 @@
 #pragma once
+#include "tk_actions.h"
 
 // NA: native api
 // WORK IN PROGRESS.
@@ -12,8 +13,4 @@
 
 // send a toolkit message
 #define NA_TK_ACTION 0x01
-typedef struct { TK_ACTION_t action; } NA_ACTION_t;
-
-// If you want to see hex output in the terminal,
-// just use this reserved garbage byte.
-#define IA_GARBAGE 0xFF
+typedef struct { tk_action_t action; } NA_ACTION_t;

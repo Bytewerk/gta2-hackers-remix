@@ -1,9 +1,9 @@
 #pragma once
+#include "../../common/tk_actions.h"
 #include "../bg/background.h"
 #include "../gxt/gxt.h"
 #include "../sfx/sfx.h"
 #include "../sty/sty.h"
-#include "actions.h"
 #include "elements.h"
 #include <SDL2/SDL.h>
 #include <stdint.h>
