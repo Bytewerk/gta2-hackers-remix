@@ -1,9 +1,35 @@
-all: bin/menu.exe bin/meta.exe bin/native.bin
+all: bin/menu.exe bin/meta.exe bin/native.bin bin/proxy.dll
 
 
-run: bin/menu.exe bin/meta.exe bin/native.bin
+# The four main components
+bin/proxy.dll:
+	$(MAKE) -C src/injected/
+
+bin/meta.exe:
+	$(MAKE) -C src/meta/
+
+bin/menu.exe:
+	$(MAKE) -C src/menu/ Windows
+
+bin/menu.bin:
+	$(MAKE) -C src/menu/ Linux
+
+bin/native.bin:
+	$(MAKE) -C src/native/ Linux
+
+bin/native.exe:
+	$(MAKE) -C src/native/ Windows
+
+
+
+# Additional targets for easy debugging
+run: bin/menu.exe bin/meta.exe bin/native.bin GTA2/dmavideo.dll
 	bin/native.bin
 	wineboot -e -f
+
+GTA2/dmavideo.dll: bin/proxy.dll
+	cp bin/proxy.dll GTA2/dmavideo.dll
+
 
 # Run native.bin with gdb and print a stack trace, when it
 # fails. The very short "--debug-menu-with-gdb-on-linux"
@@ -20,22 +46,8 @@ gdb: bin/menu.bin bin/meta.exe bin/native.bin
 regsniff: GTA2/gta2manager.exe
 	cd GTA2 && WINEDEBUG=+reg wine gta2manager.exe
 
-
-bin/menu.exe:
-	$(MAKE) -C src/menu/ Windows
-
-bin/menu.bin:
-	$(MAKE) -C src/menu/ Linux
-
-bin/meta.exe:
-	$(MAKE) -C src/meta
-
-bin/native.bin:
-	$(MAKE) -C src/native/ Linux
-
-
 clean:
 	rm bin/*.exe bin/*.bin || true
 	$(MAKE) -s -C src/menu clean
 	
-.PHONY: clean all bin/menu.exe bin/meta.exe bin/native.bin regsniff
+.PHONY: clean all bin/menu.exe bin/meta.exe bin/native.bin bin/proxy.dll GTA2/dmavideo.dll regsniff
