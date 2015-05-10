@@ -9,5 +9,6 @@ mmp | Plain text map info is stored in `mmp` files. The code in this folder load
 sl | screen layout related, for the splitscreen mod
 server | TCP server for communication between 'menu' and 'meta' components
 net | network code (server talks to 'meta', client talks to 'native')
+rpc | Registry path changer - replaces the registry strings in GTA2.exe, so each player can have seperate registry locations (and therefore player names, and resolutions). The modified exe-files get cached.
 tk | Toolkit written from scratch, that emulates the `GTA2` menu controls in `SDL2` and even adds new features. Sketches without `SDL2` and `GTA2` related code can be found in [vinylkit](https://github.com/robotanarchy/vinylkit).
 ui | The actual user interface, built with the toolkit.
