@@ -22,7 +22,7 @@
 #include <stdlib.h>
 
 #include "gta2_memory.h"
-#include "../../injected_api.h"
+#include "../common/injected_api.h"
 
 // FIXME: It doesn't compile, when including the .h file here :(
 // Is this a bug in the MSVC linker?
@@ -35,7 +35,7 @@
 #define WIN32_LEAN_AND_MEAN
 
 // Need to link with Ws2_32.lib
-#pragma comment (lib, "Ws2_32.lib")
+// #pragma comment (lib, "Ws2_32.lib")
 
 #define TCP_SERVER_START_PORT 19990
 

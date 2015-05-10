@@ -3,16 +3,12 @@
 #include "cmds/singleplayer.au3"
 #include <Array.au3>
 
-Func OnAutoItExit()
-   TCPShutdown()
-EndFunc
 
 If $CmdLine[0] < 1 Then _
 	Exit Msgbox(16,"G2HR","Syntax: meta.exe menu_server_port")
 
 ; Connect to the menu
 TCPStartup()
-OnAutoItExitRegister("OnAutoItExit")
 $global_sock = TCPConnect("127.0.0.1", $CmdLine[1])
 If @ERROR Then Exit ConsoleWrite("[meta] connection refused" & @CRLF)
 re("CONNECTED")
@@ -22,6 +18,12 @@ re("CONNECTED")
 $exit = 0
 While Not $exit
 	$data = BinaryToString(TCPRecv($global_sock,100,1))
+	If @Error == -1 Then
+		ConsoleWrite("[meta] unexpected disconnect from menu, " _
+			& "shutting down..." & @CRLF)
+		ExitLoop
+	Endif
+	
 	If StringLen($data) > 0 Then
 		ConsoleWrite("[menu] " & $data & "" & @CRLF)
 		
@@ -58,3 +60,4 @@ WEnd
 
 ; Clean up
 TCPCloseSocket($global_sock)
+TCPShutdown()

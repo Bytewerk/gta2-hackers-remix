@@ -1,4 +1,4 @@
-#include "../../injected_api.h"
+#include "../common/injected_api.h"
 #include "gta2_memory.h"
 
 #include <stdarg.h>
