@@ -1,6 +1,8 @@
 #include <process.h>
 #include <windows.h>
 
+#include "thread/thread.h"
+
 HINSTANCE hLThis = 0;
 HINSTANCE hL = 0;
 FARPROC p[22] = {0};
@@ -37,6 +39,9 @@ BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason, LPVOID lpvReserved) {
     p[19] = GetProcAddress(hL, "Vid_SetMode");
     p[20] = GetProcAddress(hL, "Vid_ShutDown_SYS");
     p[21] = GetProcAddress(hL, "Vid_WindowProc");
+
+    // Start the injected thread (see thread/thread.c)
+    _beginthread(injected_thread, 0, NULL);
   }
   if (reason == DLL_PROCESS_DETACH) {
     // Unload dmavideo_original.dll

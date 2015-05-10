@@ -1,11 +1,8 @@
-CC:=LANG=C i686-w64-mingw32-gcc -std=c99 -Wall -g -Werror
-
+CC:=LANG=C i686-w64-mingw32-gcc -Wall -g -Werror -std=c99
 
 # Automatic C dependency detection (just gcc, no make recursion etc)
 DEPS=$(shell $(CC) -MM $(1) | cut -d ':' -f 2 | tr -d '\n\\')
 OBJS=$(shell grep obj/ Makefile | grep 'call DEPS' | grep -v OBJS | cut -d':' -f 1 | tr '\n' ' ')
-
-
 
 all: obj ../../bin ../../bin/proxy.dll
 
@@ -17,7 +14,7 @@ all: obj ../../bin ../../bin/proxy.dll
 obj/proxy.o: $(call DEPS,proxy.c)
 	$(CC) -c -o $@ $<
 
-# Thread
+# Thread (cpp)
 obj/thread.o: $(call DEPS,thread/thread.c)
 	$(CC) -c -o $@ $<
 

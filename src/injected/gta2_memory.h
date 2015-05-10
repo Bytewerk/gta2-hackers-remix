@@ -20,6 +20,8 @@ char MP_PLAYER_ID; // 0...5
 // Addresses that work in both single- (SP) and multiplayer (MP)
 //
 
+#define EXE_NAME ((char *)0x01021120)
+
 #define GTA2_ADDR_PLAYER_IN_VEHICLE (char *)0x5e20bc
 
 // See also: sdl_controller_code/gta2_controls.h
@@ -32,8 +34,8 @@ char MP_PLAYER_ID; // 0...5
 // Different for SP and MP
 //
 
-// FIXME: this one only works for the first game started.
-// maybe a different pointer works better?
+// NOTE: this one only works for the first game started.
+// (but G2HR implements its own menu, so that's not an issue :))
 #define GTA2_ADDRSP_SCORE (int *)(*((char **)(EXE_OFFSET + 0x1E8DC0)) + 0x188)
 
 #define GTA2_ADDRMP_SCORE (int *)((char *)0x5EC50C + MP_PLAYER_ID * 0x04);
