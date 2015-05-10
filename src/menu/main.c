@@ -2,6 +2,7 @@
 #include "gxt/gxt.h"
 #include "mmp/mmp.h"
 #include "net/menu_net.h"
+#include "rpc/rpc.h"
 #include "sfx/sfx.h"
 #include "sl/sl.h"
 #include "sty/sty.h"
@@ -47,11 +48,15 @@ int main(int argc, char *argv[]) {
   bg_t *bg = bg_init(pics, sizeof(pics) / sizeof(char *));
 
   // load configs
+  char *pref_path = SDL_GetPrefPath("bytewerk", "G2HR");
   sl_t *sl = sl_init("data/screen_layouts.cfg");
   cfg_t *g2hr_config = cfg_load("data/g2hr.cfg", 0);
 
   tk_t *tk = tk_init(gxt, fsty, sfx, bg, "G2HR");
   ui_t *ui = ui_init(tk, mmp, net, sl, g2hr_config);
+
+  // run registry path changer
+  rpc_init(pref_path);
 
   // start the meta component
   if (!strcmp(SDL_GetPlatform(), "Windows")) {
@@ -88,6 +93,7 @@ int main(int argc, char *argv[]) {
   tk_cleanup(tk);
   cfg_cleanup(g2hr_config);
   sl_cleanup(sl);
+  free(pref_path);
   mmp_cleanup(mmp);
   bg_cleanup(bg);
   sfx_cleanup(sfx);

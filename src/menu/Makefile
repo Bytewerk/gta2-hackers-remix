@@ -152,6 +152,10 @@ obj/sl.o: $(call DEPS,sl/sl.c)
 obj/sl_calc.o: $(call DEPS,sl/calc.c)
 	$(CC) -c -o $@ $<
 
+# RPC
+obj/rpc.o: $(call DEPS,rpc/rpc.c)
+	$(CC) -c -o $@ $<
+
 # VALGRIND: automatically create a rule for SDL2 init
 valgrind: obj out out/valgrind.sup out/menu.bin
 	cd "../../" && valgrind --suppressions=src/menu/out/valgrind.sup \
