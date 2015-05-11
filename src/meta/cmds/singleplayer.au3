@@ -6,10 +6,7 @@
 ;
 ; Credit to Sektor for his GTA2 launcher, reading 'frmLauncher.frm' from
 ; its source code was very helpful while creating this function!
-; 		http://gtamp.com/forum/viewtopic.php?f=4&t=456
-;
-; FIXME: reg_base should point somewhere else, but we'll need to adjust
-; that in GTA2.exe, too!
+; 		http://gtamp.com/forum/viewtopic.php?t=456
 ;
 Func cmd_singleplayer($cmd)
 	Local $reg_base = _
