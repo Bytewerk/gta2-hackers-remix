@@ -9,7 +9,7 @@
 #define RPC_SEARCH_STR "\\DMA Design Ltd\\GTA2\\"
 void rpc_replace(char *exe_buffer, size_t size, char *cache_file,
                  int player_num, rpc_pos_t *pos) {
-  printf("writing %s...\n", cache_file);
+  printf("caching %s...\n", cache_file);
 
   // generate the replaced-string
   char *original = RPC_SEARCH_STR;
@@ -17,10 +17,9 @@ void rpc_replace(char *exe_buffer, size_t size, char *cache_file,
   char replaced[original_len + 1];
   sprintf(replaced, "\\GTA2HackersRemix\\P%i\\", player_num + 1);
 
-  FILE *handle = fopen(cache_file, "w");
+  FILE *handle = fopen(cache_file, "wb");
 
-  int pos_last = 0;
-
+  size_t pos_last = 0;
   while (pos) {
     size_t pos_end = pos->pos;
 
@@ -31,7 +30,7 @@ void rpc_replace(char *exe_buffer, size_t size, char *cache_file,
     pos = pos->next;
   }
 
-  // write the end
+  // write the rest, close the file
   fwrite(exe_buffer + pos_last, size - pos_last, 1, handle);
   fclose(handle);
 }

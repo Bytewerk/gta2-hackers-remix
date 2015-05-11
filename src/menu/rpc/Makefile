@@ -2,7 +2,7 @@ COMPONENT := rpc
 
 
 run: ../out/$(COMPONENT)_test.bin
-	cd ../../../ && ../out/$(COMPONENT)_test.bin $(INPUT_FILE)
+	cd ../../../ && src/menu/out/$(COMPONENT)_test.bin $(INPUT_FILE)
 
 
 ../out/$(COMPONENT)_test.bin: *.c *.h
