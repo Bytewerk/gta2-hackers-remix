@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
   sl_t *sl = sl_init("data/screen_layouts.cfg");
   cfg_t *g2hr_config = cfg_load("data/g2hr.cfg", 0);
 
-  tk_t *tk = tk_init(gxt, fsty, sfx, bg, "G2HR");
+  tk_t *tk = tk_init(gxt, fsty, sfx, bg, pref_path, "G2HR");
   ui_t *ui = ui_init(tk, mmp, net, sl, g2hr_config);
 
   // run registry path changer
@@ -60,8 +60,9 @@ int main(int argc, char *argv[]) {
 
   // start the meta component
   if (!strcmp(SDL_GetPlatform(), "Windows")) {
-    char *buffer = malloc(100);
-    snprintf(buffer, 100, "start bin/meta.exe %i", net->server_port);
+    int buffer_size = 30;
+    char *buffer = malloc(buffer_size + 1);
+    snprintf(buffer, buffer_size, "start bin/meta.exe %i", net->server_port);
     system(buffer);
     free(buffer);
   } else

@@ -6,6 +6,9 @@
 void ui_callback_for_meta(char *msg, void *userdata) {
   ui_t *ui = (ui_t *)userdata;
 
+  if (!strcmp(msg, "CONNECTED! CAN YOU GIVE ME THE CONFIG PATH?"))
+    net_send_to_meta(ui->net, ui->tk->pref_path, 0);
+
   if (!strcmp(msg, "HIDE GET READY SCREEN")) {
     ui->tk->screen_active = ui->ready->back;
   }
