@@ -18,6 +18,10 @@ void net_frame_action_for_menu(native_t *native, char action) {
 }
 
 void net_frame(net_t *net, native_t *native) {
+  // check for new sockets from injected GTA2 instances
+  net_accept_localhost_only(net);
+
+  // check if the connected socket have new data
   if (!SDLNet_CheckSockets(net->set, 0))
     return;
 

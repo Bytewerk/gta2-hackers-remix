@@ -26,7 +26,7 @@ void net_accept_localhost_only(net_t *net) {
 
   IPaddress *remote_ip = SDLNet_TCP_GetPeerAddress(new);
   if (remote_ip->host != 0x100007f) {
-    printf("[meta] incoming connection, but not from localhost."
+    printf("[native] incoming connection, but not from localhost."
            " Drop it like it's hot!\n");
     SDLNet_TCP_Close(new);
     return;
@@ -34,16 +34,17 @@ void net_accept_localhost_only(net_t *net) {
 
   // the first socket is always the menu socket!
   if (!net->sock_menu) {
-    printf("[meta] connected to menu\n");
+    printf("[native] connected to menu\n");
     net->sock_menu = new;
   } else if (net->sock_injected_count < GTA2_PLAYER_COUNT - 1) {
-    printf("[meta] connection established to injected GTA2 instance"
-           " (count: %i)\n",
-           net->sock_injected_count);
     net->sock_injected_sorted_by_time[net->sock_injected_count] = new;
     net->sock_injected_count++;
+
+    printf("[native] connection established to injected GTA2 instance"
+           " (count: %i)\n",
+           net->sock_injected_count);
   } else {
-    printf("[meta] we already have %i connected GTA2 instance"
+    printf("[native] we already have %i connected GTA2 instance"
            " sockets. Something wrong, dropping the new"
            " connection!\n",
            net->sock_injected_count);
