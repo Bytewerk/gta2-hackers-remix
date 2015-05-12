@@ -1,26 +1,31 @@
 #pragma once
+#include "../../common/common.h"
 #include "../native.h"
 #include <SDL2/SDL_net.h>
 
-#define G2HR_NATIVE_SERVER_PORT_START 20140
-#define GTA2_PLAYER_COUNT 6 // TODO: put in common.h
+typedef struct { TCPsocket tcp; } net_sock_t;
 
 typedef struct {
   IPaddress ip;
   TCPsocket sock_listen;
   TCPsocket sock_menu;
-  TCPsocket sock_injected[GTA2_PLAYER_COUNT];
 
+  // all 'injected' clients, sorted by connection time
+  TCPsocket sock_injected_sorted_by_time[GTA2_PLAYER_COUNT];
+
+  // 'injected' clients, sorted by player ID
+  TCPsocket sock_injected_sorted_by_id[GTA2_PLAYER_COUNT];
+
+  // TODO: we'll probably need to recreate this set, once
+  // an instance disconnects!
   SDLNet_SocketSet set;
 
-  int port;
+  int sock_injected_count;
 } net_t;
 
 net_t *net_init();
 
 void net_block_until_connected(net_t *net, uint32_t timeout_in_ms);
-
-// net_connect_injected(int count);
 
 void net_cleanup(net_t *net);
 

@@ -1,3 +1,4 @@
 #pragma once
 
 #define GTA2_PLAYER_COUNT 6
+#define G2HR_NATIVE_SERVER_PORT 20142

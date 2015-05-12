@@ -1,3 +1,4 @@
+#include "../common/common.h"
 #include "meh/meh.h"
 #include "net/native_net.h"
 #include "pads/pads.h"
@@ -31,7 +32,7 @@ int main(int argc, char **argv) {
     return printf("ERROR from SDL: %s\n", SDL_GetError());
   net_t *net = net_init();
   pads_t *pads = pads_init(0);
-  menu_start(net->port,
+  menu_start(G2HR_NATIVE_SERVER_PORT,
              (argc == 2 && !strcmp(argv[1], "--debug-menu-with-gdb-on-linux")));
 
   // TODO: init controllers etc.
