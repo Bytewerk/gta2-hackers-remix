@@ -21,8 +21,9 @@ typedef struct {
   net_gta2_session_t *gta2_sessions[GTA2_PLAYER_COUNT];
   int gta2_session_count;
 
-  // TODO: we'll probably need to recreate this set, once
-  // an instance disconnects!
+  // Looks like we don't need to re-create this set, once a socket
+  // disconnects. Tested with ~10 sessions, although it can hold only
+  // 6 of them.
   SDLNet_SocketSet set;
 } net_t;
 
