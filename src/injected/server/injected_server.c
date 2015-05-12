@@ -1,3 +1,7 @@
+/*
+        TODO: currently unused code, needs to be integrated again
+*/
+
 #include "../../common/injected_api.h"
 #include "../gta2_memory.h"
 

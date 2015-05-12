@@ -36,18 +36,21 @@ void net_accept_localhost_only(net_t *net) {
   if (!net->sock_menu) {
     printf("[native] connected to menu\n");
     net->sock_menu = new;
-  } else if (net->sock_injected_count < GTA2_PLAYER_COUNT - 1) {
-    net->sock_injected_sorted_by_time[net->sock_injected_count] = new;
-    net->sock_injected_count++;
+  } else if (net->gta2_session_count < GTA2_PLAYER_COUNT - 1) {
+    net_gta2_session_t *session = malloc(sizeof(net_gta2_session_t));
 
-    printf("[native] connection established to injected GTA2 instance"
-           " (count: %i)\n",
-           net->sock_injected_count);
+    session->sock = new;
+    net->gta2_sessions[net->gta2_session_count] = session;
+    net->gta2_session_count++;
+
+    printf("[native] connection established to injected GTA2"
+           " instance (count: %i)\n",
+           net->gta2_session_count);
   } else {
     printf("[native] we already have %i connected GTA2 instance"
            " sockets. Something wrong, dropping the new"
            " connection!\n",
-           net->sock_injected_count);
+           net->gta2_session_count);
     SDLNet_TCP_Close(new);
     return;
   }
@@ -69,15 +72,28 @@ void net_block_until_connected(net_t *net, uint32_t timeout_in_ms) {
   }
 }
 
+void net_gta2_session_cleanup(net_t *net, int id) {
+  printf("[native] injected socket %i disconnected!\n", id);
+  net_gta2_session_t *session = net->gta2_sessions[id];
+  SDLNet_TCP_Close(session->sock);
+
+  free(session);
+
+  // move up all later sessions in the array
+  for (int i = id + 1; i < net->gta2_session_count; i++)
+    net->gta2_sessions[i - 1] = net->gta2_sessions[i];
+
+  net->gta2_session_count--;
+}
+
 void net_cleanup(net_t *net) {
   if (net->sock_listen)
     SDLNet_TCP_Close(net->sock_listen);
   if (net->sock_menu)
     SDLNet_TCP_Close(net->sock_menu);
 
-  for (int i = 0; i < GTA2_PLAYER_COUNT; i++)
-    if (net->sock_injected_sorted_by_time[i])
-      SDLNet_TCP_Close(net->sock_injected_sorted_by_time[i]);
+  for (int i = 0; i < net->gta2_session_count; i++)
+    net_gta2_session_cleanup(net, i);
 
   SDLNet_FreeSocketSet(net->set);
   free(net);
