@@ -34,7 +34,7 @@ void net_accept_localhost_only(net_t *net) {
 
   // the first socket is always the menu socket!
   if (!net->sock_menu) {
-    printf("[meta] connected to menu component\n");
+    printf("[meta] connected to menu\n");
     net->sock_menu = new;
   } else if (net->sock_injected_count < GTA2_PLAYER_COUNT - 1) {
     printf("[meta] connection established to injected GTA2 instance"

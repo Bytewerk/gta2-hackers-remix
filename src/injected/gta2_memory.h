@@ -20,6 +20,7 @@ char MP_PLAYER_ID; // 0...5
 // Addresses that work in both single- (SP) and multiplayer (MP)
 //
 
+// not sure if this one really works!
 #define EXE_NAME ((char *)0x01021120)
 
 #define GTA2_ADDR_PLAYER_IN_VEHICLE (char *)0x5e20bc
