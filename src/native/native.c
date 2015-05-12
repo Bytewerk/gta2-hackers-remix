@@ -1,4 +1,5 @@
 #include "../common/common.h"
+#include "ieh/ieh.h"
 #include "meh/meh.h"
 #include "net/native_net.h"
 #include "pads/pads.h"
@@ -52,7 +53,10 @@ int main(int argc, char **argv) {
     SDL_WaitEventTimeout(&e, 50);
     net_frame(net, native);
     pads_frame(pads, &e, 0);
-    if (!native->is_ingame)
+
+    if (net->gta2_session_count)
+      ieh_frame(net, pads, &e);
+    else
       meh_frame(net, pads, &e);
   }
 

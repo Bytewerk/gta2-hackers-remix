@@ -38,3 +38,9 @@ void net_frame(net_t *net, native_t *native);
 void net_gta2_session_cleanup(net_t *net, int id);
 
 void net_cleanup(net_t *net);
+
+#define NET_SEND_HEADER(SOCKET, HEADER)                                        \
+  {                                                                            \
+    char header = HEADER;                                                      \
+    SDLNet_TCP_Send(SOCKET, &header, 1);                                       \
+  }

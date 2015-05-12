@@ -66,6 +66,10 @@ obj/pads.o: $(call DEPS,pads/pads.c)
 obj/meh.o: $(call DEPS,meh/meh.c)
 	$(CC) -c -o $@ $<
 
+# Injected Event Handler
+obj/ieh.o: $(call DEPS,ieh/ieh.c)
+	$(CC) -c -o $@ $<
+
 
 # OTHER
 
