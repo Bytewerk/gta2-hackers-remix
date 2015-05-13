@@ -28,6 +28,8 @@
       axis = SDL_CONTROLLER_AXIS_##SDL_SUFFIX;                                 \
     }                                                                          \
   }
+#define STATE_AXIS                                                             \
+  (axis_is_positive ? state->axis_positive : state->axis_negative)
 
 #define CMAP_SDL_KEY_BUFFER_SIZE 100
 #define DOCU                                                                   \
@@ -119,19 +121,23 @@ void cmap_map_action(cmap_t *cmap, cfg_t *cfg, char *str_action,
 
     // actually map the buttons, if they have not been used in this
     // state (walking/driving) yet.
+    char failed = 0;
     if (button != SDL_CONTROLLER_BUTTON_INVALID) {
       if (state->buttons[button])
-        exit(printf("ERROR: the button '%s' has been mapped"
-                    " twice in the '%s' section of this config!" DOCU,
-                    cmap_value, (cfg_key[0] == 'w') ? "walking" : "driving"));
-
-      state->buttons[button] = cmap_action;
-    } else {
-      if (axis_is_positive)
-        state->axis_positive[axis] = cmap_action;
+        failed = 1;
       else
-        state->axis_negative[axis] = cmap_action;
+        state->buttons[button] = cmap_action;
+    } else {
+      if (STATE_AXIS[axis])
+        failed = 1;
+      else
+        STATE_AXIS[axis] = cmap_action;
     }
+
+    if (failed)
+      exit(printf("ERROR: '%s' has been mapped twice in the '%s' section of"
+                  " this config!" DOCU,
+                  cmap_value, (cfg_key[0] == 'w') ? "walking" : "driving"));
   }
   cfg_split_cleanup(split);
 
@@ -140,6 +146,8 @@ void cmap_map_action(cmap_t *cmap, cfg_t *cfg, char *str_action,
 }
 #undef DOCU
 #undef CONVERT_BUTTON
+#undef CONVERT_STICK
+#undef STATE_AXIS
 
 #define MAPPING(IS_REQUIRED, ACTION)                                           \
   cmap_map_action(cmap, cfg, str(ACTION), G2HR_CMAP_##ACTION, IS_REQUIRED)
