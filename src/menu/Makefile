@@ -134,7 +134,7 @@ obj/sfx.o: $(call DEPS,sfx/sfx.c)
 obj/gxt.o: $(call DEPS,gxt/gxt.c)
 	$(CC) -c -o $@ $<
 
-# CFG
+# CFG (maybe put this in a 'common' Makefile?)
 obj/cfg.o: $(call DEPS,../common/cfg/cfg.c)
 	$(CC) -c -o $@ $<
 

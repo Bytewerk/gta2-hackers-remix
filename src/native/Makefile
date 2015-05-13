@@ -70,6 +70,13 @@ obj/meh.o: $(call DEPS,meh/meh.c)
 obj/ieh.o: $(call DEPS,ieh/ieh.c)
 	$(CC) -c -o $@ $<
 
+# Controller Mappings
+obj/cmap.o:$(call DEPS,cmap/cmap.c)
+	$(CC) -c -o $@ $<
+
+# CFG (maybe put this in a 'common' Makefile?)
+obj/cfg.o: $(call DEPS,../common/cfg/cfg.c)
+	$(CC) -c -o $@ $<
 
 # OTHER
 

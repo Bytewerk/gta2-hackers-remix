@@ -1,4 +1,5 @@
 #include "../common/common.h"
+#include "cmap/cmap.h"
 #include "ieh/ieh.h"
 #include "meh/meh.h"
 #include "net/native_net.h"
@@ -31,8 +32,9 @@ int main(int argc, char **argv) {
   // initialize everything
   if (SDL_Init(SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC) < 0)
     return printf("ERROR from SDL: %s\n", SDL_GetError());
-  net_t *net = net_init();
+  cmap_t *cmap = cmap_init();
   pads_t *pads = pads_init(0);
+  net_t *net = net_init();
   menu_start(G2HR_NATIVE_SERVER_PORT,
              (argc == 2 && !strcmp(argv[1], "--debug-menu-with-gdb-on-linux")));
 
@@ -55,7 +57,7 @@ int main(int argc, char **argv) {
     pads_frame(pads, &e, 0);
 
     if (net->gta2_session_count)
-      ieh_frame(net, pads, &e);
+      ieh_frame(net, pads, cmap, &e);
     else
       meh_frame(net, pads, &e);
   }
@@ -63,6 +65,7 @@ int main(int argc, char **argv) {
   // clean up
   net_cleanup(net);
   pads_cleanup(pads);
+  cmap_cleanup(cmap);
   free(native);
   SDL_Quit();
 }
