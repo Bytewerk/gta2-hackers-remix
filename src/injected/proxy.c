@@ -3,49 +3,49 @@
 
 #include "thread/thread.h"
 
-HINSTANCE hLThis = 0;
-HINSTANCE hL = 0;
+// global variables: hold a reference to the original DLL (so we can un-
+// load it later) and addresses of the functions we need to proxy
+HINSTANCE original_dll = 0;
 FARPROC p[22] = {0};
 
-BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason, LPVOID lpvReserved) {
+BOOL WINAPI DllMain(HINSTANCE dll_instance, DWORD reason, LPVOID userdata) {
   if (reason == DLL_PROCESS_ATTACH) {
     // Load the real dmavideo.dll library (which must be named
     // dmavideo_original.dll now)
-    hLThis = hInst;
-    hL = LoadLibrary("dmavideo_original.dll");
-    if (!hL)
+    original_dll = LoadLibrary("dmavideo_original.dll");
+    if (!original_dll)
       return 0;
 
     // Get all function addresses in that DLL-file
-    p[0] = GetProcAddress(hL, "Vid_CheckMode");
-    p[1] = GetProcAddress(hL, "Vid_ClearScreen");
-    p[2] = GetProcAddress(hL, "Vid_CloseScreen");
-    p[3] = GetProcAddress(hL, "Vid_DisableWrites");
-    p[4] = GetProcAddress(hL, "Vid_EnableWrites");
-    p[5] = GetProcAddress(hL, "Vid_FindDevice");
-    p[6] = GetProcAddress(hL, "Vid_FindFirstMode");
-    p[7] = GetProcAddress(hL, "Vid_FindMode");
-    p[8] = GetProcAddress(hL, "Vid_FindNextMode");
-    p[9] = GetProcAddress(hL, "Vid_FlipBuffers");
-    p[10] = GetProcAddress(hL, "Vid_FreeSurface");
-    p[11] = GetProcAddress(hL, "Vid_GetSurface");
-    p[12] = GetProcAddress(hL, "Vid_GetVersion");
-    p[13] = GetProcAddress(hL, "Vid_GrabSurface");
-    p[14] = GetProcAddress(hL, "Vid_InitDLL");
-    p[15] = GetProcAddress(hL, "Vid_Init_SYS");
-    p[16] = GetProcAddress(hL, "Vid_ReleaseSurface");
-    p[17] = GetProcAddress(hL, "Vid_SetDevice");
-    p[18] = GetProcAddress(hL, "Vid_SetGamma");
-    p[19] = GetProcAddress(hL, "Vid_SetMode");
-    p[20] = GetProcAddress(hL, "Vid_ShutDown_SYS");
-    p[21] = GetProcAddress(hL, "Vid_WindowProc");
+    p[0] = GetProcAddress(original_dll, "Vid_CheckMode");
+    p[1] = GetProcAddress(original_dll, "Vid_ClearScreen");
+    p[2] = GetProcAddress(original_dll, "Vid_CloseScreen");
+    p[3] = GetProcAddress(original_dll, "Vid_DisableWrites");
+    p[4] = GetProcAddress(original_dll, "Vid_EnableWrites");
+    p[5] = GetProcAddress(original_dll, "Vid_FindDevice");
+    p[6] = GetProcAddress(original_dll, "Vid_FindFirstMode");
+    p[7] = GetProcAddress(original_dll, "Vid_FindMode");
+    p[8] = GetProcAddress(original_dll, "Vid_FindNextMode");
+    p[9] = GetProcAddress(original_dll, "Vid_FlipBuffers");
+    p[10] = GetProcAddress(original_dll, "Vid_FreeSurface");
+    p[11] = GetProcAddress(original_dll, "Vid_GetSurface");
+    p[12] = GetProcAddress(original_dll, "Vid_GetVersion");
+    p[13] = GetProcAddress(original_dll, "Vid_GrabSurface");
+    p[14] = GetProcAddress(original_dll, "Vid_InitDLL");
+    p[15] = GetProcAddress(original_dll, "Vid_Init_SYS");
+    p[16] = GetProcAddress(original_dll, "Vid_ReleaseSurface");
+    p[17] = GetProcAddress(original_dll, "Vid_SetDevice");
+    p[18] = GetProcAddress(original_dll, "Vid_SetGamma");
+    p[19] = GetProcAddress(original_dll, "Vid_SetMode");
+    p[20] = GetProcAddress(original_dll, "Vid_ShutDown_SYS");
+    p[21] = GetProcAddress(original_dll, "Vid_WindowProc");
 
     // Start the injected thread (see thread/thread.c)
     _beginthread(injected_thread, 0, NULL);
   }
   if (reason == DLL_PROCESS_DETACH) {
     // Unload dmavideo_original.dll
-    FreeLibrary(hL);
+    FreeLibrary(original_dll);
   }
 
   return 1;
