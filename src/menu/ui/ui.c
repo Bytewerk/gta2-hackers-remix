@@ -17,6 +17,11 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl, cfg_t *g2hr_config) {
   ui->slotmachine_enabled =
       !strcmp(cfg_read(g2hr_config, "slotmachine/enabled"), "true");
 
+  if (!ui->multiplayer_time_values)
+    exit(printf("ERROR: missing the 'multiplayer/time' variable in"
+                " your g2hr.cfg! Please add it, you can look at the default"
+                " config for reference.\n"));
+
   // letters
   ui->letters = malloc(sizeof(char *) * G2HR_UI_LETTERS_COUNT);
   for (int i = 0; i < G2HR_UI_LETTERS_COUNT; i++) {
