@@ -5,8 +5,11 @@
 
 typedef struct {
   TCPsocket sock;
+
   int player_id;
-  char player_set;
+  char is_player_id_set;
+
+  int instance_pid;
 
 } net_gta2_session_t;
 
@@ -20,6 +23,8 @@ typedef struct {
   // struct for.
   net_gta2_session_t *gta2_sessions[GTA2_PLAYER_COUNT];
   int gta2_session_count;
+
+  int player_port_table[GTA2_PLAYER_COUNT];
 
   // Looks like we don't need to re-create this set, once a socket
   // disconnects. Tested with ~10 sessions, although it can hold only
