@@ -22,6 +22,7 @@ void menu_start(int server_port, char menu_compiled_for_linux) {
   else
     snprintf(buffer, 100, "bin/wine_wrapper.sh %i &", server_port);
 
+  printf("[native] starting menu component...\n");
   system(buffer);
   free(buffer);
 }

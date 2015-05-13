@@ -106,10 +106,13 @@ void cmap_map_action(cmap_t *cmap, cfg_t *cfg, char *str_action,
     CONVERT_STICK(axis, cmap_value, RIGHTX, 1, "RIGHT", "RIGHT");
 
     // TRIGGERS (special case of axis)
+    // (Yes, the names are inconsistent with SDL2. However, they
+    // are consistent with the other axes, first the position on
+    // the game pad and then the name)
     if (axis == SDL_CONTROLLER_AXIS_INVALID) {
-      if (!strcmp(cmap_value, "TRIGGERLEFT"))
+      if (!strcmp(cmap_value, "LEFTTRIGGER"))
         axis = SDL_CONTROLLER_AXIS_TRIGGERLEFT;
-      else if (!strcmp(cmap_value, "TRIGGERRIGHT"))
+      else if (!strcmp(cmap_value, "RIGHTTRIGGER"))
         axis = SDL_CONTROLLER_AXIS_TRIGGERRIGHT;
     }
 
