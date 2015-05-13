@@ -34,18 +34,23 @@ typedef enum {
 
 } cmap_action_t;
 
+typedef struct {
+  cmap_action_t buttons[SDL_CONTROLLER_BUTTON_MAX];
+  cmap_action_t axis_positive[SDL_CONTROLLER_AXIS_MAX];
+  cmap_action_t axis_negative[SDL_CONTROLLER_AXIS_MAX];
+
+} cmap_state_t;
+
 typedef struct cmap_t {
   struct cmap_t *next;
 
-  // meta data (TODO: axis treshhold!)
+  // meta data (TODO: axis treshhold, axis offset!)
   char *description;
   char *author;
   char *version;
 
-  // actual mapping data
-  cmap_action_t buttons[SDL_CONTROLLER_BUTTON_MAX];
-  cmap_action_t axis_positive[SDL_CONTROLLER_AXIS_MAX];
-  cmap_action_t axis_negative[SDL_CONTROLLER_AXIS_MAX];
+  cmap_state_t walking;
+  cmap_state_t driving;
 
 } cmap_t;
 
