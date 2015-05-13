@@ -165,7 +165,8 @@ void cfg_cleanup(cfg_t *cfg) {
 cfg_split_t *cfg_split_value(cfg_t *cfg, char *key, char delimeter) {
   char *value = cfg_read(cfg, key);
   if (!value[0]) {
-    exit(printf("WARNING: Can't find value for %s in config!\n", key));
+    // FIXME: make this warning optional!
+    printf("WARNING: Can't find value for %s in config!\n", key);
     return NULL;
   }
 

@@ -19,6 +19,16 @@
       BUTTON = SDL_CONTROLLER_BUTTON_##SDL_SUFFIX;                             \
   }
 
+#define CONVERT_STICK(AXIS, CMAP_STR, SDL_SUFFIX, IS_POSITIVE,                 \
+                      STICKNAME /*"LEFT", "RIGHT" */, DIRECTION)               \
+  {                                                                            \
+    if (AXIS == SDL_CONTROLLER_AXIS_INVALID &&                                 \
+        !strcmp(STICKNAME "STICK_" DIRECTION, CMAP_STR)) {                     \
+      axis_is_positive = IS_POSITIVE;                                          \
+      axis = SDL_CONTROLLER_AXIS_##SDL_SUFFIX;                                 \
+    }                                                                          \
+  }
+
 #define CMAP_SDL_KEY_BUFFER_SIZE 100
 #define DOCU                                                                   \
   "\n(more info:"                                                              \
@@ -61,14 +71,13 @@ void cmap_map_action(cmap_t *cmap, cfg_t *cfg, char *str_action,
   // iterate over all keys and save them to the struct
   cmap_state_t *state = (cfg_key[0] == 'w') ? &cmap->walking : &cmap->driving;
   for (int i = 0; i < split->count; i++) {
-    // TODO: add support for axes
-
+    SDL_GameControllerButton button = SDL_CONTROLLER_BUTTON_INVALID;
+    SDL_GameControllerAxis axis = SDL_CONTROLLER_AXIS_INVALID;
+    char axis_is_positive = 1;
     char *cmap_value = split->values[i];
 
-    // There's also SDL_GameControllerGetButtonFromString, but this
-    // only works with not-so-readable values such as 'dpup' for
-    // DPAD_UP.
-    SDL_GameControllerButton button = SDL_CONTROLLER_BUTTON_INVALID;
+    // BUTTONS (there's also SDL_GameControllerGetButtonFromString,
+    // but 'dpup' isn't as readable as DPAD_UP)
     CONVERT_BUTTON(button, cmap_value, A);
     CONVERT_BUTTON(button, cmap_value, B);
     CONVERT_BUTTON(button, cmap_value, X);
@@ -84,15 +93,45 @@ void cmap_map_action(cmap_t *cmap, cfg_t *cfg, char *str_action,
     CONVERT_BUTTON(button, cmap_value, DPAD_LEFT);
     CONVERT_BUTTON(button, cmap_value, DPAD_RIGHT);
 
-    if (button == SDL_CONTROLLER_BUTTON_INVALID)
-      exit(printf("ERROR: invalid button name '%s'!" DOCU, cmap_value));
+    // AXES
+    CONVERT_STICK(axis, cmap_value, LEFTY, 0, "LEFT", "UP");
+    CONVERT_STICK(axis, cmap_value, LEFTY, 1, "LEFT", "DOWN");
+    CONVERT_STICK(axis, cmap_value, LEFTX, 0, "LEFT", "LEFT");
+    CONVERT_STICK(axis, cmap_value, LEFTX, 1, "LEFT", "RIGHT");
+    CONVERT_STICK(axis, cmap_value, RIGHTY, 0, "RIGHT", "UP");
+    CONVERT_STICK(axis, cmap_value, RIGHTY, 1, "RIGHT", "DOWN");
+    CONVERT_STICK(axis, cmap_value, RIGHTX, 0, "RIGHT", "RIGHT");
+    CONVERT_STICK(axis, cmap_value, RIGHTX, 1, "RIGHT", "RIGHT");
 
-    if (state->buttons[button])
-      exit(printf("ERROR: the button '%s' has been mapped twice"
-                  " in the '%s' section of this config!" DOCU,
-                  cmap_value, (cfg_key[0] == 'w') ? "walking" : "driving"));
+    // TRIGGERS (special case of axis)
+    if (axis == SDL_CONTROLLER_AXIS_INVALID) {
+      if (!strcmp(cmap_value, "TRIGGERLEFT"))
+        axis = SDL_CONTROLLER_AXIS_TRIGGERLEFT;
+      else if (!strcmp(cmap_value, "TRIGGERRIGHT"))
+        axis = SDL_CONTROLLER_AXIS_TRIGGERRIGHT;
+    }
 
-    state->buttons[button] = cmap_action;
+    // verify if the value could be parsed
+    if (button == SDL_CONTROLLER_BUTTON_INVALID &&
+        axis == SDL_CONTROLLER_AXIS_INVALID)
+      exit(printf("ERROR: invalid value '%s' (in %s)!" DOCU, cmap_value,
+                  cfg_key));
+
+    // actually map the buttons, if they have not been used in this
+    // state (walking/driving) yet.
+    if (button != SDL_CONTROLLER_BUTTON_INVALID) {
+      if (state->buttons[button])
+        exit(printf("ERROR: the button '%s' has been mapped"
+                    " twice in the '%s' section of this config!" DOCU,
+                    cmap_value, (cfg_key[0] == 'w') ? "walking" : "driving"));
+
+      state->buttons[button] = cmap_action;
+    } else {
+      if (axis_is_positive)
+        state->axis_positive[axis] = cmap_action;
+      else
+        state->axis_negative[axis] = cmap_action;
+    }
   }
   cfg_split_cleanup(split);
 
@@ -119,6 +158,18 @@ cmap_t *cmap_init() {
   MAPPING(1, WALKING_JUMP);
   MAPPING(1, WALKING_WEAPON_PREV);
   MAPPING(1, WALKING_WEAPON_NEXT);
+
+  // all driving keys are optional. fallback is: using the same
+  // controls as for walking.
+  MAPPING(0, DRIVING_FORWARD);
+  MAPPING(0, DRIVING_BACKWARD);
+  MAPPING(0, DRIVING_LEFT);
+  MAPPING(0, DRIVING_RIGHT);
+  MAPPING(0, DRIVING_ATTACK);
+  MAPPING(0, DRIVING_EXIT_CAR);
+  MAPPING(0, DRIVING_HANDBRAKE);
+  MAPPING(0, DRIVING_WEAPON_PREV);
+  MAPPING(0, DRIVING_WEAPON_NEXT);
 
   cfg_cleanup(cfg);
   return cmap;
