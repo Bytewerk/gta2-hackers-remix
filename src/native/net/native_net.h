@@ -25,6 +25,7 @@ typedef struct {
   // disconnects. Tested with ~10 sessions, although it can hold only
   // 6 of them.
   SDLNet_SocketSet set;
+
 } net_t;
 
 net_t *net_init();

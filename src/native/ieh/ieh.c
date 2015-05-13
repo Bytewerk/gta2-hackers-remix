@@ -2,7 +2,15 @@
 #include "../../common/injected_api.h"
 
 void ieh_frame(net_t *net, pads_t *pads, cmap_t *cmap, SDL_Event *event) {
-  // SDL_EventType t = event->type;
+  // only do something, when the event timeout was reached,
+  // so we have a constant rate of input!
+  if (event->type)
+    return;
 
-  // TODO: map buttons and axis!
+  // what we need here:
+  // - player count
+  // - is player driving?
+
+  // TODO: iterate over all players, check button and axis state,
+  // generate movement actions
 }
