@@ -6,14 +6,13 @@
 
 #define DEFAULT_BUFLEN 512
 
+// global variable, because we use it in multiple threads
 SOCKET global_sock2native = INVALID_SOCKET;
 
 int net_init() {
   WSADATA wsaData;
 
   struct addrinfo *result = NULL, *ptr = NULL, hints;
-  char sendbuf[100];
-  snprintf(sendbuf, 99, "pid: %i", GetCurrentProcessId());
 
   int iResult;
 
@@ -109,6 +108,10 @@ do {
   */
 
   return 0;
+}
+
+void net_send(char *buffer, int length) {
+  send(global_sock2native, buffer, length, 0);
 }
 
 void net_cleanup() {

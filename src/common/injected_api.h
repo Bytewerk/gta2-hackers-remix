@@ -1,12 +1,11 @@
 #pragma once
+#include <inttypes.h>
 
-#define INJECTED_API_VERSION 4
-
-// Client to server messages
-#define IA_MOVEMENT 0x00
+// Native to injected messages
+#define IA_MOVEMENT 0xa0
 typedef struct { short /*2 bytes*/ movement; } IA_MOVEMENT_t;
 
-#define IA_TEXT 0x01
+#define IA_TEXT 0xa1
 typedef enum { ITEM, NETWORK, BIG } gta2_textpos_t;
 typedef struct {
   gta2_textpos_t position;
@@ -14,12 +13,13 @@ typedef struct {
   char text[100];
 } IA_TEXT_t;
 
-// Server to client messages
-#define IA_RUMBLE 0x01
-typedef struct { char rumble; } IA_RUMBLE_t;
+// Injected to native messages
 
-#define IA_DEBUG_TEXT 0x02
-typedef struct { char text[100]; } IA_DEBUG_TEXT_t;
+#define IA_PID 0x01
+typedef struct { uint16_t pid; } IA_PID_t;
+
+#define IA_RUMBLE 0x02
+typedef struct { char rumble; } IA_RUMBLE_t;
 
 #define IA_VEHICLE_INFO 0x03
 typedef struct { char in_vehicle; } IA_VEHICLE_INFO_t;
@@ -29,15 +29,9 @@ typedef struct { int delta; } IA_SCORE_DELTA_t;
 
 #define IA_SCOREBOARD 0x05 // TODO
 typedef struct {
-  char score[6];
+  int score[6];
   int money[6];
 } IA_SCOREBOARD_t;
-
-#define IA_WINHANDLE 0x06 // TODO
-typedef struct { int handle; } IA_WINHANDLE_t;
-
-#define IA_API_VERSION 0x07
-typedef struct { int version; } IA_API_VERSION_t;
 
 // Server to client events (without arguments)
 #define IA_QUIT 0xE0 // TODO

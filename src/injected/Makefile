@@ -14,13 +14,8 @@ all: obj ../../bin ../../bin/proxy.dll
 obj/proxy.o: $(call DEPS,proxy.c)
 	$(CC) -c -o $@ $<
 
-# Thread (cpp)
+# Thread
 obj/thread.o: $(call DEPS,thread/thread.c)
-	$(CC) -c -o $@ $<
-
-
-# Server (currently not used!)
-obj/server.o: $(call DEPS,server/injected_server.c)
 	$(CC) -c -o $@ $<
 
 # Network
@@ -33,6 +28,7 @@ obj ../../bin:
 	mkdir -p $@
 
 clean:
+	rm -r obj || true
 	rm ../../bin/proxy.dll || true
 
 .PHONY: all clean
