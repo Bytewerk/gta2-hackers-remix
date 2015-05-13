@@ -19,10 +19,13 @@ obj/thread.o: $(call DEPS,thread/thread.c)
 	$(CC) -c -o $@ $<
 
 
-# Server
+# Server (currently not used!)
 obj/server.o: $(call DEPS,server/injected_server.c)
 	$(CC) -c -o $@ $<
 
+# Network
+obj/net.o: $(call DEPS,net/injected_net.c)
+	$(CC) -c -o $@ $<
 
 
 # OTHER

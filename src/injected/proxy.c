@@ -1,7 +1,8 @@
-#include <process.h>
-#include <windows.h>
-
+#include "net/injected_net.h"
 #include "thread/thread.h"
+#include <process.h>
+#include <stdio.h>
+#include <windows.h>
 
 // global variables: hold a reference to the original DLL (so we can un-
 // load it later) and addresses of the functions we need to proxy
@@ -10,6 +11,10 @@ FARPROC p[22] = {0};
 
 BOOL WINAPI DllMain(HINSTANCE dll_instance, DWORD reason, LPVOID userdata) {
   if (reason == DLL_PROCESS_ATTACH) {
+    // redirect stdout to a logfile for easier debugging
+    freopen("injected.log", "a", stdout);
+    setbuf(stdout, NULL);
+
     // Load the real dmavideo.dll library (which must be named
     // dmavideo_original.dll now)
     original_dll = LoadLibrary("dmavideo_original.dll");
@@ -42,10 +47,10 @@ BOOL WINAPI DllMain(HINSTANCE dll_instance, DWORD reason, LPVOID userdata) {
 
     // Start the injected thread (see thread/thread.c)
     _beginthread(injected_thread, 0, NULL);
-  }
-  if (reason == DLL_PROCESS_DETACH) {
-    // Unload dmavideo_original.dll
+  } else if (reason == DLL_PROCESS_DETACH) {
+    net_cleanup();
     FreeLibrary(original_dll);
+    fclose(stdout);
   }
 
   return 1;
