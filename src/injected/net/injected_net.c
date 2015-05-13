@@ -9,6 +9,7 @@
 // global variable, because we use it in multiple threads
 SOCKET global_sock2native = INVALID_SOCKET;
 
+// TODO: clean this code up!
 int net_init() {
   WSADATA wsaData;
 
@@ -69,27 +70,6 @@ int net_init() {
     return 1;
   }
   /*
-// Send an initial buffer
-iResult = send(global_sock2native, sendbuf, (int)strlen(sendbuf), 0 );
-if (iResult == SOCKET_ERROR) {
-  printf("send failed with error: %d\n", WSAGetLastError());
-  closesocket(global_sock2native);
-  WSACleanup();
-  return 1;
-}
-
-printf("Bytes Sent: %i\n", iResult);
-
-// shutdown the connection since no more data will be sent
-iResult = shutdown(global_sock2native, SD_SEND);
-if (iResult == SOCKET_ERROR) {
-  printf("shutdown failed with error: %d\n", WSAGetLastError());
-  closesocket(global_sock2native);
-  WSACleanup();
-  return 1;
-}
-
-
 char recvbuf[DEFAULT_BUFLEN];
 int recvbuflen = DEFAULT_BUFLEN;
 
