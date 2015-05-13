@@ -15,7 +15,9 @@ int injected_connect() {
   WSADATA wsaData;
   SOCKET ConnectSocket = INVALID_SOCKET;
   struct addrinfo *result = NULL, *ptr = NULL, hints;
-  char *sendbuf = "this is a test";
+  char sendbuf[100];
+  snprintf(sendbuf, 99, "pid: %i", GetCurrentProcessId());
+
   char recvbuf[DEFAULT_BUFLEN];
   int iResult;
   int recvbuflen = DEFAULT_BUFLEN;
