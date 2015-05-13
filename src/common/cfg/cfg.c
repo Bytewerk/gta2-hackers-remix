@@ -185,6 +185,7 @@ cfg_split_t *cfg_split_value(cfg_t *cfg, char *key, char delimeter) {
       int length_substr = i - cutoff_start;
       split_values[filled] = calloc(1, length_substr + 1);
       strncpy(split_values[filled], value + cutoff_start, length_substr);
+      split_values[filled] = cfg_trim(split_values[filled], 0);
       filled++;
       cutoff_start = i + 1;
     }

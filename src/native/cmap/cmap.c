@@ -40,8 +40,8 @@ void cmap_map_action(cmap_t *cmap, cfg_t *cfg, char *str_action,
     if (!is_required)
       return;
     exit(printf("ERROR: couldn't find required value for '%s'"
-                " (section/key format). Please add it to the config and"
-                " try again!\n",
+                " (section/key format, case sensitive!). Please add it to"
+                " the config and try again!\n",
                 cfg_key));
   }
 
