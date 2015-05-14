@@ -2,7 +2,7 @@
         TODO: currently unused code, needs to be integrated again
 */
 
-#include "../../common/injected_api.h"
+#include "../../common/api_native2injected.h"
 #include "../gta2_memory.h"
 
 #include <stdarg.h>
@@ -33,7 +33,7 @@
 // pipe to the connected sdl_contoller_code (which should
 // in turn print it on stdout with the player instance number).
 // Format and the remaining arguments can be used like in printf.
-// Max. length of the string is in injected_api.h.
+// Max. length of the string is in api_native2injected.h.
 void ia_server_log(SOCKET ClientSocket, const char *format, ...) {
   va_list args;
 

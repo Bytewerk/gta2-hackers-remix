@@ -1,8 +1,8 @@
 #pragma once
-#include "../../common/injected_api.h"
+#include "../../common/api_native2injected.h"
 
 /*
-        Sends "injected_api.h" messages to the native component.
+        Sends "api_native2injected.h" messages to the native component.
         Use the CODE parameter to fill the data array.
 
         Example useage:

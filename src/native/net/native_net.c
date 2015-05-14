@@ -1,5 +1,5 @@
 #include "native_net.h"
-#include "../../common/native_api.h"
+#include "../../common/api_native2menu.h"
 #include <SDL2/SDL_net.h>
 
 // listen on all addresses. Better would be localhost only, but SDL2_net

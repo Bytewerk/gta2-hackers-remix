@@ -1,5 +1,5 @@
 #include "menu_net.h"
-#include "../../common/native_api.h"
+#include "../../common/api_native2menu.h"
 #include <SDL2/SDL_net.h>
 
 net_t *net_init(int native_port) {
@@ -118,7 +118,7 @@ void net_send_to_meta(net_t *net, char *message, char do_free) {
 }
 
 void net_send_to_native(net_t *net, char message) {
-  printf("[menu => native%s]: code 0x%x (see native_api.h)\n",
+  printf("[menu => native%s]: code 0x%x (see api_native2menu.h)\n",
          net->sock_native ? "" : " (disconnected)", message);
 
   if (net->sock_native)

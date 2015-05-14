@@ -1,5 +1,5 @@
 #include "ieh.h"
-#include "../../common/injected_api.h"
+#include "../../common/api_native2injected.h"
 
 void ieh_frame(net_t *net, pads_t *pads, cmap_t *cmap, SDL_Event *event) {
   // only do something, when the event timeout was reached,

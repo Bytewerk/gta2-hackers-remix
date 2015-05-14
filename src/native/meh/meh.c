@@ -1,5 +1,5 @@
 #include "meh.h"
-#include "../../common/native_api.h"
+#include "../../common/api_native2menu.h"
 
 void meh_send_action(net_t *net, tk_action_t action, char redraw) {
   NET_SEND_HEADER(net->sock_menu, NA_ACTION);

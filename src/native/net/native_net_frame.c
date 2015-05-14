@@ -1,5 +1,5 @@
-#include "../../common/injected_api.h"
-#include "../../common/native_api.h"
+#include "../../common/api_native2injected.h"
+#include "../../common/api_native2menu.h"
 #include "native_net.h"
 
 void net_frame_action_for_menu(native_t *native, char msg_id) {
