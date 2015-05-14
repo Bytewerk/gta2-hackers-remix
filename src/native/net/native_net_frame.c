@@ -8,13 +8,16 @@ void net_frame_action_for_menu(native_t *native, char msg_id) {
     native->quit = 1;
     break;
   case NA_POWEROFF:
-    printf("[menu => native] POWEROFF (not implemented yet!)\n");
+    printf("[menu => native] POWEROFF"
+           " (not implemented yet!)\n");
     native->quit = 1;
     break;
   case NA_REBOOT:
     printf("[menu => native] REBOOT (not implemented yet!)\n");
     native->quit = 1;
     break;
+  default:
+    printf("[menu => native] %i\n", msg_id);
   }
 }
 
