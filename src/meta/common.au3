@@ -11,10 +11,19 @@ Global $global_game_process_ids[6]
 
 ; Initialize Arrayss
 For $i=0 To 5
-	$global_game_process_ids[$i] = NULL
+	$global_game_process_ids[$i] = 0
 Next
 
 ; Zero-terminated string reply to the server
 Func re($message)
 	TCPSend($global_sock, $message & Chr(0))
+Endfunc
+
+
+Func send_pid_table()
+	$str = "PID_TABLE"
+	For $i=0 To 5
+		$str &= " " & $global_game_process_ids[$i]
+	Next
+	re($str)
 Endfunc

@@ -60,7 +60,7 @@ While Not $exit
 				And Not ProcessExists($global_game_process_ids[$i]) Then
 				
 				$global_game_instances_open -= 1
-				$global_game_process_ids[$i] = NULL
+				$global_game_process_ids[$i] = 0
 				re("INSTANCE CLOSED " & $i)
 				
 			Endif

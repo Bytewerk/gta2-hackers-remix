@@ -78,6 +78,7 @@ Func cmd_singleplayer($cmd)
 	$global_game_instances_open = 1
 	$global_game_process_ids[0] = Run($global_config_path _
 		& "G2HR_PLAYER1.exe", "GTA2")
+	send_pid_table()
 	WinWait("GTA2")
 	WinActivate("GTA2")
 Endfunc
