@@ -16,9 +16,6 @@ int ingame_player_id_by_pid(uint16_t pid, uint16_t *table) {
   return -1;
 }
 
-// make use of:
-// ud->ingame
-// instance->sock
 void ingame_recv_callback(unsigned char msg_id,
                           net_injected_instance_t *instance, void *userdata) {
   TCPsocket sock = instance->sock;

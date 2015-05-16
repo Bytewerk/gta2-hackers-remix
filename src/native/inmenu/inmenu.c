@@ -12,7 +12,6 @@ void inmenu_recv_callback(unsigned char msg_id, TCPsocket sock,
                           void *userdata) {
   inmenu_t *inmenu = (inmenu_t *)userdata;
 
-  // FIXME: replace with FRAMEDATACASE-like macro syntax
   switch (msg_id) {
     MESSAGECASESHORT(NA_CLEANUP, inmenu->has_quit = 1);
     MESSAGECASESHORT(NA_POWEROFF, {
