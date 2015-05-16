@@ -58,7 +58,12 @@ void ingame_recv_callback(unsigned char msg_id,
   }
 }
 
-void ingame_frame(ingame_t *ingame) {
+void ingame_frame(ingame_t *ingame, SDL_Event *event) {
+  // only send the current movement when the event timeout has
+  // been reached!
+  if (event)
+    return;
+
   int count = ingame->net->injected_count;
 
   for (int i = 0; i < count; i++) {

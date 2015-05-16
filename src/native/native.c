@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
       break;
 
     if (net->injected_count)
-      ingame_frame(ingame);
+      ingame_frame(ingame, &e);
     else
       inmenu_frame(inmenu, &e);
   }
