@@ -39,6 +39,9 @@ void ingame_recv_callback(unsigned char msg_id,
           ingame_player_id_by_pid(data->pid, ingame->inmenu->pids);
       printf("[native] got pid: %i => must be player %i\n",
              ud_instance->instance_pid, ud_instance->player_id);
+
+      MESSAGESEND(sock, IA_PLAYER_ID, data->id = ud_instance->player_id);
+
     });
   }
 }

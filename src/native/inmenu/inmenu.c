@@ -36,7 +36,6 @@ void inmenu_recv_callback(unsigned char msg_id, TCPsocket sock,
   }
 }
 
-// FIXME: replace with SEND2MENU macro syntax!
 void inmenu_send_action(net_t *net, tk_action_t action, char redraw) {
   MESSAGESENDSHORT(net->sock_menu, NA_ACTION);
 

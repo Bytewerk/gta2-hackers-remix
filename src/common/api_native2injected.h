@@ -14,7 +14,7 @@ typedef struct {
 } IA_TEXT_t;
 
 #define IA_PLAYER_ID 0xa2
-typedef struct { char id; } IA_PLAYER_ID_t;
+typedef struct { int id; } IA_PLAYER_ID_t;
 
 // Injected to native messages
 
