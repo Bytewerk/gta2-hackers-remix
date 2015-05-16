@@ -1,7 +1,7 @@
 #include "../common/common.h"
 #include "cmap/cmap.h"
-#include "ieh/ieh.h"
-#include "meh/meh.h"
+#include "ingame/ingame.h"
+#include "inmenu/inmenu.h"
 #include "net/native_net.h"
 #include "pads/pads.h"
 #include <stdio.h>
@@ -28,43 +28,46 @@ void menu_start(int server_port, char menu_compiled_for_linux) {
 }
 
 int main(int argc, char **argv) {
-  native_t *native = calloc(1, sizeof(native_t));
-
   // initialize everything
   if (SDL_Init(SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC) < 0)
     return printf("ERROR from SDL: %s\n", SDL_GetError());
   cmap_t *cmap = cmap_init();
   pads_t *pads = pads_init(0);
   net_t *net = net_init();
-  menu_start(G2HR_NATIVE_SERVER_PORT,
-             (argc == 2 && !strcmp(argv[1], "--debug-menu-with-gdb-on-linux")));
-
-  // TODO: init controllers etc.
+  inmenu_t *inmenu = inmenu_init(net, pads);
+  ingame_t *ingame = ingame_init(net);
 
   // wait up to 20 seconds for the menu connection. If it fails,
   // quit (the menu will show an error message)
+  menu_start(G2HR_NATIVE_SERVER_PORT,
+             (argc == 2 && !strcmp(argv[1], "--debug-menu-with-gdb-on-linux")));
   net_block_until_connected(net, 20000);
   if (!net->sock_menu) {
-    printf("META: NOT CONNECTED TO MENU!\n");
-    native->quit = 1;
+    printf("[native] not connected to menu!\n");
+    inmenu->has_quit = 1;
   }
 
-  while (!native->quit) {
+  while (!inmenu->has_quit) {
     SDL_Event e;
     SDL_WaitEventTimeout(&e, 50);
-    net_frame(net, native);
+
     pads_frame(pads, &e, 0);
 
-    if (net->gta2_session_count)
-      ieh_frame(net, pads, cmap, &e);
+    if (!net_frame(net, (void *)inmenu_recv_callback, (void *)inmenu,
+                   (void *)ingame_recv_callback))
+      break;
+
+    if (net->injected_count)
+      ingame_frame(ingame);
     else
-      meh_frame(net, pads, &e);
+      inmenu_frame(inmenu, &e);
   }
 
   // clean up
+  ingame_cleanup(ingame);
+  inmenu_cleanup(inmenu);
   net_cleanup(net);
   pads_cleanup(pads);
   cmap_cleanup(cmap);
-  free(native);
   SDL_Quit();
 }

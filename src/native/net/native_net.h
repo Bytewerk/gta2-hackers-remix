@@ -5,13 +5,9 @@
 
 typedef struct {
   TCPsocket sock;
+  void *userdata;
 
-  int player_id;
-  char is_player_id_set;
-
-  int instance_pid;
-
-} net_gta2_session_t;
+} net_injected_instance_t;
 
 typedef struct {
   IPaddress ip;
@@ -21,8 +17,8 @@ typedef struct {
   // these are sorted by connection time, not by the player
   // id. that's what we have the player_id field inside the
   // struct for.
-  net_gta2_session_t *gta2_sessions[GTA2_PLAYER_COUNT];
-  int gta2_session_count;
+  net_injected_instance_t *injected_instances[GTA2_PLAYER_COUNT];
+  int injected_count;
 
   int player_port_table[GTA2_PLAYER_COUNT];
 
@@ -39,9 +35,23 @@ void net_block_until_connected(net_t *net, uint32_t timeout_in_ms);
 
 void net_accept_localhost_only(net_t *net);
 
-void net_frame(net_t *net, native_t *native);
+/*
+        returns 0 on error.
 
-void net_gta2_session_cleanup(net_t *net, int id);
+        inmenu_recv_callback parameters:
+                unsigned char msg_id, TCPsocket sock, void* userdata
+
+        ingame_recv_callback parameters:
+                unsigned char msg_id, net_injected_instance_t* instance
+
+        We need different callback parameters, because the ingame function
+        must be able to allocate new usedata dynamically and attach it to
+        the instance.
+*/
+char net_frame(net_t *net, void *inmenu_recv_callback, void *inmenu_userdata,
+               void *ingame_recv_callback);
+
+void net_injected_instance_cleanup(net_t *net, int id);
 
 void net_cleanup(net_t *net);
 

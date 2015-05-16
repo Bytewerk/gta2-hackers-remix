@@ -62,12 +62,12 @@ obj/net_frame.o: $(call DEPS,net/native_net_frame.c)
 obj/pads.o: $(call DEPS,pads/pads.c)
 	$(CC) -c -o $@ $<
 
-# Menu Event Handler
-obj/meh.o: $(call DEPS,meh/meh.c)
+# inmenu
+obj/inmenu.o: $(call DEPS,inmenu/inmenu.c)
 	$(CC) -c -o $@ $<
 
-# Injected Event Handler
-obj/ieh.o: $(call DEPS,ieh/ieh.c)
+# ingame
+obj/ingame.o: $(call DEPS,ingame/ingame.c)
 	$(CC) -c -o $@ $<
 
 # Controller Mappings

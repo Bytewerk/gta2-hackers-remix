@@ -2,5 +2,5 @@
 
 typedef struct {
   char quit;
-  char is_ingame;
+  char is_ingame; // obsolete!
 } native_t;

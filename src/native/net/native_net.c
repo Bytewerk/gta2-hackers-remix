@@ -36,21 +36,22 @@ void net_accept_localhost_only(net_t *net) {
   if (!net->sock_menu) {
     printf("[native] connected to menu\n");
     net->sock_menu = new;
-  } else if (net->gta2_session_count < GTA2_PLAYER_COUNT - 1) {
-    net_gta2_session_t *session = malloc(sizeof(net_gta2_session_t));
+  } else if (net->injected_count < GTA2_PLAYER_COUNT - 1) {
+    net_injected_instance_t *instance =
+        calloc(1, sizeof(net_injected_instance_t));
 
-    session->sock = new;
-    net->gta2_sessions[net->gta2_session_count] = session;
-    net->gta2_session_count++;
+    instance->sock = new;
+    net->injected_instances[net->injected_count] = instance;
+    net->injected_count++;
 
     printf("[native] connection established to injected GTA2"
            " instance (count: %i)\n",
-           net->gta2_session_count);
+           net->injected_count);
   } else {
-    printf("[native] we already have %i connected GTA2 instance"
-           " sockets. Something wrong, dropping the new"
-           " connection!\n",
-           net->gta2_session_count);
+    printf("[native] WARNING: we already have %i connected GTA2"
+           " instances! Something wrong, dropping the new connection!"
+           " Please report this at http://git.io/g2hr-bugs\n",
+           net->injected_count);
     SDLNet_TCP_Close(new);
     return;
   }
@@ -72,18 +73,21 @@ void net_block_until_connected(net_t *net, uint32_t timeout_in_ms) {
   }
 }
 
-void net_gta2_session_cleanup(net_t *net, int id) {
-  printf("[native] injected socket %i disconnected!\n", id);
-  net_gta2_session_t *session = net->gta2_sessions[id];
-  SDLNet_TCP_Close(session->sock);
+void net_injected_instance_cleanup(net_t *net, int id) {
+  net->injected_count--;
+  printf("[native] injected GTA2 instance %i disconnected"
+         " (count: %i)\n",
+         id, net->injected_count);
 
-  free(session);
+  net_injected_instance_t *instance = net->injected_instances[id];
+  SDLNet_TCP_Close(instance->sock);
+  if (instance->userdata)
+    free(instance->userdata);
+  free(instance);
 
-  // move up all later sessions in the array
-  for (int i = id + 1; i < net->gta2_session_count; i++)
-    net->gta2_sessions[i - 1] = net->gta2_sessions[i];
-
-  net->gta2_session_count--;
+  // move up all later instances in the array
+  for (int i = id + 1; i <= net->injected_count; i++)
+    net->injected_instances[i - 1] = net->injected_instances[i];
 }
 
 void net_cleanup(net_t *net) {
@@ -92,8 +96,8 @@ void net_cleanup(net_t *net) {
   if (net->sock_menu)
     SDLNet_TCP_Close(net->sock_menu);
 
-  for (int i = 0; i < net->gta2_session_count; i++)
-    net_gta2_session_cleanup(net, i);
+  for (int i = 0; i < net->injected_count; i++)
+    net_injected_instance_cleanup(net, i);
 
   SDLNet_FreeSocketSet(net->set);
   free(net);

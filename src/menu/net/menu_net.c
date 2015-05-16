@@ -78,11 +78,13 @@ void net_parse_meta(net_t *net) {
   callback(buffer, net->userdata);
 }
 
+// TODO: return 1 on success, 0 on failure - and parse that in the
+// main loop!
 void net_parse_native(net_t *net) {
   char header;
 
   if (SDLNet_TCP_Recv(net->sock_native, &header, 1) <= 0) {
-    printf("[menu] unexpected disconnect from meta!\n");
+    printf("[menu] unexpected disconnect from native!\n");
     return;
   }
 

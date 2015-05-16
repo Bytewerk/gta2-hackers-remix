@@ -26,6 +26,6 @@ folder|description
 ------|-------
 net | network code (server talks to 'meta', (up to 6) clients talk to 'injected')
 pads | controller code (Xbox360 controllers and compatible supported)
-meh | menu event handler (handles SDL events while the menu is open, such as: controller (dis)connected, controller key pressed, ...)
-ieh | injected GTA2 instance event handler
+ingame | glues the controllers to the game
+inmenu | glues the controllers to the menu, also sends events such as controller connected/disconnected
 cmap | controller mapping parser
