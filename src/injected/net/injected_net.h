@@ -23,8 +23,23 @@
     net_send(buffer, sizeof(buffer));                                          \
   }
 
-int net_init(); // >0 on failure
+// see mem_recv_callback() in mem/mem.c for example usage
+#define FROMNATIVECASE(MSG_ID, CODE)                                           \
+  case MSG_ID: {                                                               \
+    char buffer[sizeof(MSG_ID##_t)];                                           \
+    net_recv_message(buffer, sizeof(MSG_ID##_t));                              \
+    MSG_ID##_t *data = (MSG_ID##_t *)buffer;                                   \
+    CODE return;                                                               \
+  }
+
+// returns 0 on failure
+char net_init();
+
+// returns 0 on failure
+char net_recv_blocking(void *callback, void *userdata);
+
 void net_cleanup();
 
-// use SEND2NATIVE instead!
+// use SEND2NATIVE and FROMNATIVECASE instead!
 void net_send(char *buffer, int length);
+void net_recv_message(char *buffer, int length);

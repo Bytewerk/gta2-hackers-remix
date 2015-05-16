@@ -9,8 +9,8 @@
 // global variable, because we use it in multiple threads
 SOCKET global_sock2native = INVALID_SOCKET;
 
-// TODO: clean this code up!
-int net_init() {
+// returns 0 on failure, 1 on success
+char net_init() {
   WSADATA wsaData;
 
   struct addrinfo *result = NULL, *ptr = NULL, hints;
@@ -21,7 +21,7 @@ int net_init() {
   iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
   if (iResult != 0) {
     printf("WSAStartup failed with error: %d\n", iResult);
-    return 1;
+    return 0;
   }
 
   ZeroMemory(&hints, sizeof(hints));
@@ -37,7 +37,7 @@ int net_init() {
   if (iResult != 0) {
     printf("getaddrinfo failed with error: %d\n", iResult);
     WSACleanup();
-    return 1;
+    return 0;
   }
 
   // Attempt to connect to an address until one succeeds
@@ -49,7 +49,7 @@ int net_init() {
     if (global_sock2native == INVALID_SOCKET) {
       printf("socket failed with error: %d\n", WSAGetLastError());
       WSACleanup();
-      return 1;
+      return 0;
     }
 
     // Connect to server.
@@ -67,7 +67,7 @@ int net_init() {
   if (global_sock2native == INVALID_SOCKET) {
     printf("Unable to connect to server!\n");
     WSACleanup();
-    return 1;
+    return 0;
   }
   /*
 char recvbuf[DEFAULT_BUFLEN];
@@ -87,17 +87,35 @@ do {
 } while( iResult > 0 );
   */
 
-  return 0;
+  return 1;
 }
 
 void net_send(char *buffer, int length) {
   send(global_sock2native, buffer, length, 0);
 }
 
+void net_recv_message(char *buffer, int length) {
+  recv(global_sock2native, buffer, length, 0);
+}
+
+// returns 0 on failure, 1 on success
+char net_recv_blocking(void *callback, void *userdata) {
+  char msg_id;
+
+  // this call is blocking. it returns <1 on failure
+  if (recv(global_sock2native, &msg_id, 1, 0) < 1)
+    return 0;
+
+  // execute the callback
+  void (*func)(char msg_id, void *userdata) = callback;
+  func(msg_id, userdata);
+
+  return 1;
+}
+
 void net_cleanup() {
-  if (global_sock2native != INVALID_SOCKET) {
+  if (global_sock2native != INVALID_SOCKET)
     closesocket(global_sock2native);
-  }
 
   WSACleanup();
 }

@@ -37,7 +37,12 @@ void net_frame_action_for_injected_instance(net_gta2_session_t *session,
     FRAMEDATACASE(IA_PID, {
       session->instance_pid = data->pid;
       printf("got pid: %i\n", data->pid);
+
       // TODO: try to look up player number by pid now
+      // STUB STUB STUB BAD CODE :p
+      NET_SEND_HEADER(session->sock, IA_PLAYER_ID);
+      char player_id = 1;
+      NET_SEND_HEADER(session->sock, player_id);
     });
   }
   // TODO: if we're here, it was garbage, show a warning.

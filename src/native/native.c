@@ -49,8 +49,6 @@ int main(int argc, char **argv) {
     native->quit = 1;
   }
 
-  // DEBUG!
-
   while (!native->quit) {
     SDL_Event e;
     SDL_WaitEventTimeout(&e, 50);

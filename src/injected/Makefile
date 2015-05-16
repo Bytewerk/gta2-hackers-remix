@@ -21,6 +21,10 @@ obj/thread.o: $(call DEPS,thread/thread.c)
 # Network
 obj/net.o: $(call DEPS,net/injected_net.c)
 	$(CC) -c -o $@ $<
+	
+# Memory
+obj/mem.o: $(call DEPS,mem/mem.c)
+	$(CC) -c -o $@ $<
 
 
 # OTHER
