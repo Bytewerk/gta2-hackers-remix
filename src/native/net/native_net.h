@@ -33,9 +33,14 @@
     return;                                                                    \
   }
 
-typedef struct {
+typedef struct net_injected_instance_t {
   TCPsocket sock;
   void *userdata;
+
+  // this is either NULL or points to a location in
+  // ingame->instance_by_player_id - so that the value there can be
+  // set to NULL on disconnect!
+  struct net_injected_instance_t **sorted_array_location;
 
 } net_injected_instance_t;
 

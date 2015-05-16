@@ -81,6 +81,8 @@ void net_injected_instance_cleanup(net_t *net, int id) {
 
   net_injected_instance_t *instance = net->injected_instances[id];
   SDLNet_TCP_Close(instance->sock);
+  if (instance->sorted_array_location)
+    *(instance->sorted_array_location) = NULL;
   if (instance->userdata)
     free(instance->userdata);
   free(instance);

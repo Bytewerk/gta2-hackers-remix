@@ -6,6 +6,7 @@
 typedef struct {
   net_t *net;
   inmenu_t *inmenu;
+  net_injected_instance_t *instance_by_player_id[GTA2_PLAYER_COUNT];
 
   // score table etc.
 } ingame_t;
