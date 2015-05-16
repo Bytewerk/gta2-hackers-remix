@@ -14,20 +14,25 @@ void inmenu_recv_callback(unsigned char msg_id, TCPsocket sock,
 
   // FIXME: replace with FRAMEDATACASE-like macro syntax
   switch (msg_id) {
-  case NA_CLEANUP:
-    inmenu->has_quit = 1;
-    break;
-  case NA_POWEROFF:
-    printf("[menu => native] POWEROFF"
-           " (not implemented yet!)\n");
-    inmenu->has_quit = 1;
-    break;
-  case NA_REBOOT:
-    printf("[menu => native] REBOOT (not implemented yet!)\n");
-    inmenu->has_quit = 1;
-    break;
-  default:
-    printf("[menu => native] %i\n", msg_id);
+    MESSAGECASESHORT(NA_CLEANUP, inmenu->has_quit = 1);
+    MESSAGECASESHORT(NA_POWEROFF, {
+      printf("[menu => native] POWEROFF"
+             " (not implemented yet!)\n");
+      inmenu->has_quit = 1;
+    });
+    MESSAGECASESHORT(NA_REBOOT, {
+      printf("[menu => native] REBOOT (not implemented yet!)\n");
+      inmenu->has_quit = 1;
+    });
+
+    MESSAGECASE(sock, NA_PID_TABLE, {
+      for (int i = 0; i < 6; i++)
+        inmenu->pids[i] = data->pids[i];
+      printf("[native] got pid table:");
+      for (int i = 0; i < 6; i++)
+        printf(" %i", data->pids[i]);
+      printf("\n");
+    });
   }
 }
 

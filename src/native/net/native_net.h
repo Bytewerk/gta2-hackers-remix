@@ -27,6 +27,12 @@
     return;                                                                    \
   }
 
+#define MESSAGECASESHORT(MSG_ID, CODE)                                         \
+  case MSG_ID: {                                                               \
+    CODE;                                                                      \
+    return;                                                                    \
+  }
+
 typedef struct {
   TCPsocket sock;
   void *userdata;

@@ -5,7 +5,7 @@
 typedef struct {
   net_t *net;
   pads_t *pads;
-
+  uint16_t pids[6];
   char has_quit;
 } inmenu_t;
 
