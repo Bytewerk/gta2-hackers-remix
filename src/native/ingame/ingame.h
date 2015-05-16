@@ -1,9 +1,11 @@
 #pragma once
 #include "../../common/common.h"
+#include "../inmenu/inmenu.h"
 #include "../net/native_net.h"
 
 typedef struct {
   net_t *net;
+  inmenu_t *inmenu;
 
   // score table etc.
 } ingame_t;
@@ -16,7 +18,7 @@ typedef struct {
   // TODO: put selected game controller layout here
 } ingame_instance_userdata_t;
 
-ingame_t *ingame_init(net_t *net);
+ingame_t *ingame_init(net_t *net, inmenu_t *inmenu);
 
 // on the first call of a new session, the instance userdata is NULL and
 // will be allocated in this function. it gets free'd by the network

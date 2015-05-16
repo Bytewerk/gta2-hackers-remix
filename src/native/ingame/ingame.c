@@ -1,9 +1,10 @@
 #include "ingame.h"
 #include "../../common/api_native2injected.h"
 
-ingame_t *ingame_init(net_t *net) {
+ingame_t *ingame_init(net_t *net, inmenu_t *inmenu) {
   ingame_t *ingame = calloc(1, sizeof(ingame_t));
   ingame->net = net;
+  ingame->inmenu = inmenu;
 
   return ingame;
 }
@@ -13,30 +14,23 @@ ingame_t *ingame_init(net_t *net) {
 // instance->sock
 void ingame_recv_callback(unsigned char msg_id,
                           net_injected_instance_t *instance) {
-  printf("[native] ingame recv callback stub. msg_id: %i\n", msg_id);
+  TCPsocket sock = instance->sock;
+  ingame_instance_userdata_t *ud =
+      (ingame_instance_userdata_t *)instance->userdata;
 
-  // ingame_instance_userdata_t* ud =
-  //	(ingame_instance_userdata_t*) instance->userdata;
-
-  // TODO: create userdata, if it is empty!
-  // TODO: actually handle the message, we'll need a
-  // FRAMEDATACASE like macro here.
-
-  /*
-
-  switch(msg_id)
-  {
-          FRAMEDATACASE(IA_PID,
-          {
-                  session->instance_pid = data->pid;
-                  printf("got pid: %i\n", data->pid);
-
-                  // TODO: try to look up player number by pid now
-          });
-
+  if (!ud) {
+    ud = malloc(sizeof(ingame_instance_userdata_t));
+    ud->player_id = -1;
+    instance->userdata = (void *)ud;
   }
 
-  */
+  switch (msg_id) {
+    MESSAGECASE(sock, IA_PID, {
+      ud->instance_pid = data->pid;
+      printf("[native] got pid: %i\n", data->pid);
+      // TODO: look up the player id!
+    });
+  }
 }
 
 void ingame_frame(ingame_t *ingame) {
