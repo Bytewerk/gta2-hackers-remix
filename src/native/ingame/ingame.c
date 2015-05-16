@@ -2,9 +2,10 @@
 #include "../../common/api_native2injected.h"
 #include "../../common/common.h"
 
-ingame_t *ingame_init(net_t *net, inmenu_t *inmenu) {
+ingame_t *ingame_init(net_t *net, pads_t *pads, inmenu_t *inmenu) {
   ingame_t *ingame = calloc(1, sizeof(ingame_t));
   ingame->net = net;
+  ingame->pads = pads;
   ingame->inmenu = inmenu;
 
   return ingame;
@@ -44,8 +45,6 @@ void ingame_recv_callback(unsigned char msg_id,
         MESSAGESEND(sock, IA_PLAYER_ID, data->id = ud_instance->player_id);
 
         ingame->instance_by_player_id[player_id] = instance;
-
-        printf("set instance %i to %p\n", player_id, instance);
 
         // store the array location, so it can get NULL'd on
         // disconnect by net_frame().
