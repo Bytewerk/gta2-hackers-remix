@@ -72,14 +72,15 @@ void net_accept_localhost_only(net_t *net);
                 unsigned char msg_id, TCPsocket sock, void* userdata
 
         ingame_recv_callback parameters:
-                unsigned char msg_id, net_injected_instance_t* instance
+                unsigned char msg_id, net_injected_instance_t* instance,
+                void* userdata
 
         We need different callback parameters, because the ingame function
         must be able to allocate new usedata dynamically and attach it to
         the instance.
 */
 char net_frame(net_t *net, void *inmenu_recv_callback, void *inmenu_userdata,
-               void *ingame_recv_callback);
+               void *ingame_recv_callback, void *ingame_userdata);
 
 void net_injected_instance_cleanup(net_t *net, int id);
 

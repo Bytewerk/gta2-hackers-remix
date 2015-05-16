@@ -49,6 +49,9 @@ void inmenu_send_action(net_t *net, tk_action_t action, char redraw) {
     inmenu_send_action(inmenu->net, TK_ACTION_##TK_ACTION, 1);
 
 void inmenu_frame(inmenu_t *inmenu, SDL_Event *event) {
+  if (!event)
+    return;
+
   SDL_EventType t = event->type;
 
   // send the controller count

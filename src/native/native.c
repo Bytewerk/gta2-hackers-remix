@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
     pads_frame(pads, &e, 0);
 
     if (!net_frame(net, (void *)inmenu_recv_callback, (void *)inmenu,
-                   (void *)ingame_recv_callback))
+                   (void *)ingame_recv_callback, (void *)ingame))
       break;
 
     if (net->injected_count)

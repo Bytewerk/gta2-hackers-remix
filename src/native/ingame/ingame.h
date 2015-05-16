@@ -11,7 +11,6 @@ typedef struct {
 } ingame_t;
 
 typedef struct {
-  ingame_t *ingame;
   int player_id;    // -1 if unset
   int instance_pid; // 0 if unset
 
@@ -24,7 +23,7 @@ ingame_t *ingame_init(net_t *net, inmenu_t *inmenu);
 // will be allocated in this function. it gets free'd by the network
 // functions on disconnect.
 void ingame_recv_callback(unsigned char msg_id,
-                          net_injected_instance_t *instance);
+                          net_injected_instance_t *instance, void *userdata);
 
 // TODO: add SDL_Event, like in inmenu.h?
 void ingame_frame(ingame_t *ingame);

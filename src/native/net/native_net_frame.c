@@ -1,7 +1,7 @@
 #include "native_net.h"
 
 char net_frame(net_t *net, void *inmenu_recv_callback, void *inmenu_userdata,
-               void *ingame_recv_callback) {
+               void *ingame_recv_callback, void *ingame_userdata) {
   // check for new sockets from injected GTA2 instances
   net_accept_localhost_only(net);
 
@@ -34,9 +34,9 @@ char net_frame(net_t *net, void *inmenu_recv_callback, void *inmenu_userdata,
     }
 
     // execute the callback
-    void (*func)(char msg_id, net_injected_instance_t *instance) =
-        ingame_recv_callback;
-    func(msg_id, instance);
+    void (*func)(char msg_id, net_injected_instance_t *instance,
+                 void *userdata) = ingame_recv_callback;
+    func(msg_id, instance, ingame_userdata);
   }
 
   return 1;
