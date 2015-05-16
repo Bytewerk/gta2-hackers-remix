@@ -12,18 +12,18 @@ SOCKET global_sock2native = INVALID_SOCKET;
 // returns 0 on failure, 1 on success
 char net_init() {
   WSADATA wsaData;
-
-  struct addrinfo *result = NULL, *ptr = NULL, hints;
-
+  struct addrinfo *result = NULL;
+  struct addrinfo *ptr = NULL;
   int iResult;
 
   // Initialize Winsock
   iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-  if (iResult != 0) {
+  if (iResult) {
     printf("WSAStartup failed with error: %d\n", iResult);
     return 0;
   }
 
+  struct addrinfo hints;
   ZeroMemory(&hints, sizeof(hints));
   hints.ai_family = AF_UNSPEC;
   hints.ai_socktype = SOCK_STREAM;
@@ -34,9 +34,8 @@ char net_init() {
   sprintf(port_str, "%i", G2HR_NATIVE_SERVER_PORT);
 
   iResult = getaddrinfo("127.0.0.1", port_str, &hints, &result);
-  if (iResult != 0) {
+  if (iResult) {
     printf("getaddrinfo failed with error: %d\n", iResult);
-    WSACleanup();
     return 0;
   }
 
@@ -48,7 +47,6 @@ char net_init() {
         socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
     if (global_sock2native == INVALID_SOCKET) {
       printf("socket failed with error: %d\n", WSAGetLastError());
-      WSACleanup();
       return 0;
     }
 
@@ -66,26 +64,8 @@ char net_init() {
 
   if (global_sock2native == INVALID_SOCKET) {
     printf("Unable to connect to server!\n");
-    WSACleanup();
     return 0;
   }
-  /*
-char recvbuf[DEFAULT_BUFLEN];
-int recvbuflen = DEFAULT_BUFLEN;
-
-// Receive until the peer closes the connection
-do {
-
-  iResult = recv(global_sock2native, recvbuf, recvbuflen, 0);
-  if ( iResult > 0 )
-      printf("Bytes received: %d\n", iResult);
-  else if ( iResult == 0 )
-      printf("Connection closed\n");
-  else
-      printf("recv failed with error: %d\n", WSAGetLastError());
-
-} while( iResult > 0 );
-  */
 
   return 1;
 }
