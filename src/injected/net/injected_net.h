@@ -29,7 +29,8 @@
     char buffer[sizeof(MSG_ID##_t)];                                           \
     net_recv_message(buffer, sizeof(MSG_ID##_t));                              \
     MSG_ID##_t *data = (MSG_ID##_t *)buffer;                                   \
-    CODE return;                                                               \
+    CODE;                                                                      \
+    return;                                                                    \
   }
 
 // returns 0 on failure

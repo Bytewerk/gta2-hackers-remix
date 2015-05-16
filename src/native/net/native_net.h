@@ -3,6 +3,30 @@
 #include "../native.h"
 #include <SDL2/SDL_net.h>
 
+#define MESSAGESEND(SOCKET, MSG_ID, CODE)                                      \
+  {                                                                            \
+    char buffer[sizeof(MSG_ID##_t) + 1];                                       \
+    buffer[0] = MSG_ID;                                                        \
+    MSG_ID##_t *data = (MSG_ID##_t *)(buffer + 1);                             \
+    CODE;                                                                      \
+    SDLNet_TCP_Send(SOCKET, buffer, sizeof(buffer));                           \
+  }
+
+#define MESSAGESENDSHORT(SOCKET, MSG_ID)                                       \
+  {                                                                            \
+    char header = MSG_ID;                                                      \
+    SDLNet_TCP_Send(SOCKET, &header, 1);                                       \
+  }
+
+#define MESSAGECASE(SOCKET, MSG_ID, CODE)                                      \
+  case MSG_ID: {                                                               \
+    char buffer[sizeof(MSG_ID##_t)];                                           \
+    SDLNet_TCP_Recv(SOCKET, buffer, sizeof(MSG_ID##_t));                       \
+    MSG_ID##_t *data = (MSG_ID##_t *)buffer;                                   \
+    CODE;                                                                      \
+    return;                                                                    \
+  }
+
 typedef struct {
   TCPsocket sock;
   void *userdata;
@@ -54,9 +78,3 @@ char net_frame(net_t *net, void *inmenu_recv_callback, void *inmenu_userdata,
 void net_injected_instance_cleanup(net_t *net, int id);
 
 void net_cleanup(net_t *net);
-
-#define NET_SEND_HEADER(SOCKET, HEADER)                                        \
-  {                                                                            \
-    char header = HEADER;                                                      \
-    SDLNet_TCP_Send(SOCKET, &header, 1);                                       \
-  }

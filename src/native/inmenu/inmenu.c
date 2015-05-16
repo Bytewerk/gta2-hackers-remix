@@ -33,7 +33,8 @@ void inmenu_recv_callback(unsigned char msg_id, TCPsocket sock,
 
 // FIXME: replace with SEND2MENU macro syntax!
 void inmenu_send_action(net_t *net, tk_action_t action, char redraw) {
-  NET_SEND_HEADER(net->sock_menu, NA_ACTION);
+  MESSAGESENDSHORT(net->sock_menu, NA_ACTION);
+
   NA_ACTION_t data = {action, redraw};
   SDLNet_TCP_Send(net->sock_menu, &data, sizeof(data));
 }
@@ -47,9 +48,8 @@ void inmenu_frame(inmenu_t *inmenu, SDL_Event *event) {
 
   // send the controller count
   if (t == SDL_CONTROLLERDEVICEADDED || t == SDL_CONTROLLERDEVICEREMOVED) {
-    NET_SEND_HEADER(inmenu->net->sock_menu, NA_CONTROLLERS_CONNECTED);
-    NA_CONTROLLERS_CONNECTED_t data = {inmenu->pads->count};
-    SDLNet_TCP_Send(inmenu->net->sock_menu, &data, sizeof(data));
+    MESSAGESEND(inmenu->net->sock_menu, NA_CONTROLLERS_CONNECTED,
+                data->count = inmenu->pads->count);
   }
 
   if (t == SDL_CONTROLLERBUTTONDOWN &&
