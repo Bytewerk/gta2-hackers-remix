@@ -1,4 +1,5 @@
 #pragma once
+#include "cmap_gta2_controls.h"
 #include <SDL2/SDL.h>
 #include <stdint.h>
 
@@ -55,5 +56,7 @@ typedef struct cmap_t {
 } cmap_t;
 
 cmap_t *cmap_init();
+
+uint16_t cmap_action_to_movement_bitmask(cmap_action_t action);
 
 void cmap_cleanup(cmap_t *cmap);

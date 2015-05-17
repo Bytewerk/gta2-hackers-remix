@@ -13,6 +13,9 @@ typedef struct pad_controller_t {
   char disconnected;
 
   SDL_GameController *controller;
+
+  // FIXME: the guid is the same for all xbox 360 controllers -.-
+  // find another way to identify them / just try if we can connect?
   char *guid;
   // SDL_Haptic* haptic;
 

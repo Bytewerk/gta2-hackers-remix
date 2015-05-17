@@ -2,9 +2,11 @@
 #include "../../common/api_native2injected.h"
 #include "../../common/common.h"
 
-ingame_t *ingame_init(net_t *net, pads_t *pads, inmenu_t *inmenu) {
+ingame_t *ingame_init(net_t *net, cmap_t *cmap, pads_t *pads,
+                      inmenu_t *inmenu) {
   ingame_t *ingame = calloc(1, sizeof(ingame_t));
   ingame->net = net;
+  ingame->cmap = cmap;
   ingame->pads = pads;
   ingame->inmenu = inmenu;
 
@@ -58,20 +60,45 @@ void ingame_recv_callback(unsigned char msg_id,
   }
 }
 
+void ingame_send_movement_data(ingame_t *ingame,
+                               net_injected_instance_t *instance,
+                               pad_controller_t *pad) {
+  ingame_instance_userdata_t *ud =
+      (ingame_instance_userdata_t *)instance->userdata;
+  cmap_state_t *state =
+      ud->is_driving ? &(ingame->cmap->driving) : &(ingame->cmap->walking);
+
+  uint16_t movement = 0;
+
+  // handle all buttons
+  for (SDL_GameControllerButton i = 0; i < SDL_CONTROLLER_BUTTON_MAX; i++) {
+    // not pressed: skip
+    if (!SDL_GameControllerGetButton(pad->controller, i))
+      continue;
+
+    movement |= cmap_action_to_movement_bitmask(state->buttons[i]);
+  }
+
+  // TODO: handle axes
+
+  // stuff it up the socket
+  MESSAGESEND(instance->sock, IA_MOVEMENT, data->movement = movement);
+}
+
 void ingame_frame(ingame_t *ingame, SDL_Event *event) {
   // only send the current movement when the event timeout has
   // been reached!
   if (event)
     return;
 
-  int count = ingame->net->injected_count;
+  int count = MIN(ingame->net->injected_count, ingame->pads->count);
+  pad_controller_t *pad = ingame->pads->first;
 
   for (int i = 0; i < count; i++) {
     net_injected_instance_t *instance = ingame->instance_by_player_id[i];
-    if (!instance)
-      continue;
-
-    // FIXME: NOW SEND MOVEMENT DATA
+    if (instance && !pad->disconnected)
+      ingame_send_movement_data(ingame, instance, pad);
+    pad = pad->next;
   }
 }
 

@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
   pads_t *pads = pads_init(0);
   net_t *net = net_init();
   inmenu_t *inmenu = inmenu_init(net, pads);
-  ingame_t *ingame = ingame_init(net, pads, inmenu);
+  ingame_t *ingame = ingame_init(net, cmap, pads, inmenu);
 
   // wait up to 20 seconds for the menu connection. If it fails,
   // quit (the menu will show an error message)

@@ -189,4 +189,37 @@ cmap_t *cmap_init() {
 #undef MAPPING
 #undef str
 
+#define str(x) #x
+#define MAPPING(ACTION, BITMASK)                                               \
+  case G2HR_CMAP_##ACTION:                                                     \
+    return GTA2_CTRL_##BITMASK
+
+uint16_t cmap_action_to_movement_bitmask(cmap_action_t action) {
+  switch (action) {
+    MAPPING(NONE, NOT_MOVING);
+
+    MAPPING(WALKING_FORWARD, FORWARD);
+    MAPPING(WALKING_BACKWARD, BACKWARD);
+    MAPPING(WALKING_LEFT, LEFT);
+    MAPPING(WALKING_RIGHT, RIGHT);
+    MAPPING(WALKING_ATTACK, ATTACK);
+    MAPPING(WALKING_ENTER_CAR, ENTER_EXIT_CAR);
+    MAPPING(WALKING_JUMP, JUMP_HANDBRAKE);
+    MAPPING(WALKING_WEAPON_PREV, WEAPON_PREV);
+    MAPPING(WALKING_WEAPON_NEXT, WEAPON_NEXT);
+
+    MAPPING(DRIVING_FORWARD, FORWARD);
+    MAPPING(DRIVING_BACKWARD, BACKWARD);
+    MAPPING(DRIVING_LEFT, LEFT);
+    MAPPING(DRIVING_RIGHT, RIGHT);
+    MAPPING(DRIVING_ATTACK, ATTACK);
+    MAPPING(DRIVING_EXIT_CAR, ENTER_EXIT_CAR);
+    MAPPING(DRIVING_HANDBRAKE, JUMP_HANDBRAKE);
+    MAPPING(DRIVING_WEAPON_PREV, WEAPON_PREV);
+    MAPPING(DRIVING_WEAPON_NEXT, WEAPON_NEXT);
+  }
+  return GTA2_CTRL_NOT_MOVING;
+}
+#undef MAPPING
+
 void cmap_cleanup(cmap_t *cmap) { free(cmap); }

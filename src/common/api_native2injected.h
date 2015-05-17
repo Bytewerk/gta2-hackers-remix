@@ -3,7 +3,7 @@
 
 // Native to injected messages
 #define IA_MOVEMENT 0xa0
-typedef struct { short /*2 bytes*/ movement; } IA_MOVEMENT_t;
+typedef struct { uint16_t movement; } IA_MOVEMENT_t;
 
 #define IA_TEXT 0xa1
 typedef enum { ITEM, NETWORK, BIG } gta2_textpos_t;
