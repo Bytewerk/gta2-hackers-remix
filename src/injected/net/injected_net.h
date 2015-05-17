@@ -14,7 +14,7 @@
                 });
 
 */
-#define SEND2NATIVE(MSG_ID, CODE)                                              \
+#define MESSAGESEND(MSG_ID, CODE)                                              \
   {                                                                            \
     char buffer[sizeof(MSG_ID##_t) + 1];                                       \
     buffer[0] = MSG_ID;                                                        \
@@ -24,7 +24,7 @@
   }
 
 // see mem_recv_callback() in mem/mem.c for example usage
-#define FROMNATIVECASE(MSG_ID, CODE)                                           \
+#define MESSAGECASE(MSG_ID, CODE)                                              \
   case MSG_ID: {                                                               \
     char buffer[sizeof(MSG_ID##_t)];                                           \
     net_recv_message(buffer, sizeof(MSG_ID##_t));                              \
@@ -41,6 +41,6 @@ char net_recv_blocking(void *callback, void *userdata);
 
 void net_cleanup();
 
-// use SEND2NATIVE and FROMNATIVECASE instead!
+// use MESSAGESEND and MESSAGECASE instead!
 void net_send(char *buffer, int length);
 void net_recv_message(char *buffer, int length);

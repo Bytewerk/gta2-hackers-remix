@@ -8,7 +8,7 @@ void injected_thread(void *param) {
     return;
 
   // send the PID for identification
-  SEND2NATIVE(IA_PID, data->pid = GetCurrentProcessId());
+  MESSAGESEND(IA_PID, data->pid = GetCurrentProcessId());
 
   mem_t *mem = mem_init();
 

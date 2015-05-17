@@ -22,7 +22,7 @@ void mem_recv_callback(unsigned char msg_id, void *userdata) {
   mem_t *mem = (mem_t *)userdata;
 
   switch (msg_id) {
-    FROMNATIVECASE(IA_PLAYER_ID, {
+    MESSAGECASE(IA_PLAYER_ID, {
       mem->player_id = data->id;
       printf("got the player id: %i\n", data->id);
     })
