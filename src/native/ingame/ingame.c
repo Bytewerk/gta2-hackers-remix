@@ -109,8 +109,9 @@ void ingame_handle_buttonpress(ingame_t *ingame,
     if (button == SDL_CONTROLLER_BUTTON_START)
       printf("[player %i] quit confirmation STUB\n", player_id);
     if (button == SDL_CONTROLLER_BUTTON_BACK) {
-      ud->is_in_quit_dialog = 0;
       printf("[player %i] cancel quit dialog STUB\n", player_id);
+      MESSAGESENDSHORT(instance->sock, IA_ESC_TEXT_HIDE);
+      ud->is_in_quit_dialog = 0;
     }
   } else {
     if (button == SDL_CONTROLLER_BUTTON_START) {
@@ -118,6 +119,10 @@ void ingame_handle_buttonpress(ingame_t *ingame,
     }
     if (button == SDL_CONTROLLER_BUTTON_BACK) {
       printf("[player %i] show quit dialog STUB\n", player_id);
+
+      // FIXME: actually set the text here, will require macros
+      // that generate unicode text
+      MESSAGESENDSHORT(instance->sock, IA_ESC_TEXT_SHOW);
       ud->is_in_quit_dialog = 1;
     }
   }

@@ -29,6 +29,17 @@ void mem_recv_callback(unsigned char msg_id, void *userdata) {
     });
 
     MESSAGECASE(IA_MOVEMENT, { *GTA2_ADDR_MOVEMENT = data->movement; });
+
+    MESSAGECASESHORT(IA_ESC_TEXT_HIDE, { *GTA2_ADDR_ESC_TEXT_IS_VISIBLE = 0; });
+
+    MESSAGECASE(IA_ESC_TEXT_SHOW, {
+      *GTA2_ADDR_ESC_TEXT_IS_VISIBLE = 0;
+
+      // FIXME: use the data to change the text etc!
+      printf("FIXME, use %p!\n", data);
+
+      *GTA2_ADDR_ESC_TEXT_IS_VISIBLE = 1;
+    });
   }
 
   // printf("got this from native: %i\n", msg_id);

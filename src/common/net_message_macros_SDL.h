@@ -3,7 +3,7 @@
 
 #define MESSAGESEND(SOCKET, MSG_ID, CODE)                                      \
   {                                                                            \
-    char buffer[sizeof(MSG_ID##_t) + 1];                                       \
+    char buffer[sizeof(MSG_ID##_t) + 1] = {0};                                 \
     buffer[0] = MSG_ID;                                                        \
     MSG_ID##_t *data = (MSG_ID##_t *)(buffer + 1);                             \
     CODE;                                                                      \

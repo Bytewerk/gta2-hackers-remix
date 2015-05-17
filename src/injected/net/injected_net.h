@@ -40,6 +40,12 @@
     return;                                                                    \
   }
 
+#define MESSAGECASESHORT(MSG_ID, CODE)                                         \
+  case MSG_ID: {                                                               \
+    CODE;                                                                      \
+    return;                                                                    \
+  }
+
 // returns 0 on failure
 char net_init();
 

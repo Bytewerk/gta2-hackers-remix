@@ -16,7 +16,7 @@ typedef struct {
   char line2[66];
   char line3[66];
   uint16_t timeout_ms; // 0: never time out!
-} IA_TEXT_t;
+} IA_ESC_TEXT_SHOW_t;
 
 // Injected to native messages
 
