@@ -2,12 +2,19 @@
 #include "../../common/api_native2injected.h"
 
 /*
+        The message macros are identically to the ones in
+        net_message_macros_SDL.h, except that they don't have a SOCKET
+        parameter here and (indirectly) use the microsoft API instead of
+        SDL_net.
+*/
+
+/*
         Sends "api_native2injected.h" messages to the native component.
         Use the CODE parameter to fill the data array.
 
         Example useage:
-                SEND2NATIVE(IA_RUMBLE, data->rumble=123 );
-                SEND2NATIVE(IA_SCOREBOARD,
+                MESSAGESEND(IA_RUMBLE, data->rumble=123 );
+                MESSAGESEND(IA_SCOREBOARD,
                 {
                         for(int i=0;i<5;i++)
                                 data->score[i] = data->money[i] = i*10;
