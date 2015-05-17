@@ -52,14 +52,18 @@ int main(int argc, char **argv) {
     if (SDL_WaitEventTimeout(&e, 50)) {
       pads_frame(pads, &e, 0);
 
-      if (!net->injected_count)
+      if (net->injected_count)
+        ingame_frame(ingame, &e);
+      else
         inmenu_frame(inmenu, &e);
+    } else {
+      // FIXME: make sure this gets called on a certain rate
+      // (=> with controller presses all the time, still send the
+      // movement bytes at the same rate, don't wait for the event
+      // timeout then!!)
+      if (net->injected_count)
+        ingame_frame(ingame, NULL);
     }
-
-    // FIXME: remove NULL parameter!
-    // FIXME: don't make this faster than a certain rate!
-    if (net->injected_count)
-      ingame_frame(ingame, NULL);
 
     // check for incoming data
     if (!net_frame(net, (void *)inmenu_recv_callback, (void *)inmenu,

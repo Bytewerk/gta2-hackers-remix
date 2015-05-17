@@ -98,19 +98,52 @@ void ingame_send_movement_data(ingame_t *ingame,
   MESSAGESEND(instance->sock, IA_MOVEMENT, data->movement = movement);
 }
 
-void ingame_frame(ingame_t *ingame, SDL_Event *event) {
-  // only send the current movement when the event timeout has
-  // been reached!
-  if (event)
-    return;
+void ingame_handle_buttonpress(ingame_t *ingame,
+                               net_injected_instance_t *instance,
+                               pad_controller_t *pad,
+                               SDL_GameControllerButton button, int player_id) {
+  ingame_instance_userdata_t *ud =
+      (ingame_instance_userdata_t *)instance->userdata;
 
+  if (ud->is_in_quit_dialog) {
+    if (button == SDL_CONTROLLER_BUTTON_START)
+      printf("[player %i] quit confirmation STUB\n", player_id);
+    if (button == SDL_CONTROLLER_BUTTON_BACK) {
+      ud->is_in_quit_dialog = 0;
+      printf("[player %i] cancel quit dialog STUB\n", player_id);
+    }
+  } else {
+    if (button == SDL_CONTROLLER_BUTTON_START) {
+      printf("[player %i] next layout STUB\n", player_id);
+    }
+    if (button == SDL_CONTROLLER_BUTTON_BACK) {
+      printf("[player %i] show quit dialog STUB\n", player_id);
+      ud->is_in_quit_dialog = 1;
+    }
+  }
+}
+
+// event: NULL when the timeout has been reached
+void ingame_frame(ingame_t *ingame, SDL_Event *event) {
   int count = MIN(ingame->net->injected_count, ingame->pads->count);
   pad_controller_t *pad = ingame->pads->first;
 
   for (int i = 0; i < count; i++) {
     net_injected_instance_t *instance = ingame->instance_by_player_id[i];
-    if (instance && !pad->disconnected)
-      ingame_send_movement_data(ingame, instance, pad);
+
+    ingame_instance_userdata_t *ud =
+        (ingame_instance_userdata_t *)instance->userdata;
+
+    if (instance && !pad->disconnected) {
+      if (event) {
+        if (event->type == SDL_CONTROLLERBUTTONDOWN &&
+            event->cbutton.which == pad->joystick_id) {
+          ingame_handle_buttonpress(ingame, instance, pad,
+                                    event->cbutton.button, i);
+        }
+      } else if (!ud->is_in_quit_dialog)
+        ingame_send_movement_data(ingame, instance, pad);
+    }
     pad = pad->next;
   }
 }

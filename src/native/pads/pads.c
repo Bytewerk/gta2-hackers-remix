@@ -70,6 +70,8 @@ void pads_add(pads_t *pads, char verbose) {
     }
 
     pad->controller = controller;
+    pad->joystick_id =
+        SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(controller));
 
     // pad->haptic =
     pads->count++;
