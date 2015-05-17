@@ -19,6 +19,7 @@ typedef struct {
   int player_id;    // -1 if unset
   int instance_pid; // 0 if unset
   char is_driving;  // 0: walking, 1: driving
+  char is_in_quit_dialog;
 
   // TODO: put selected game controller layout here
 } ingame_instance_userdata_t;

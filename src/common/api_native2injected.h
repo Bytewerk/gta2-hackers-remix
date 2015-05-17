@@ -5,16 +5,18 @@
 #define IA_MOVEMENT 0xa0
 typedef struct { uint16_t movement; } IA_MOVEMENT_t;
 
-#define IA_TEXT 0xa1
-typedef enum { ITEM, NETWORK, BIG } gta2_textpos_t;
-typedef struct {
-  gta2_textpos_t position;
-  char timer;
-  char text[100];
-} IA_TEXT_t;
-
-#define IA_PLAYER_ID 0xa2
+#define IA_PLAYER_ID 0xa1
 typedef struct { int id; } IA_PLAYER_ID_t;
+
+// TODO
+#define IA_ESC_TEXT_HIDE 0xa2
+#define IA_ESC_TEXT_SHOW 0xa3
+typedef struct {
+  char line1[22];
+  char line2[66];
+  char line3[66];
+  uint16_t timeout_ms; // 0: never time out!
+} IA_TEXT_t;
 
 // Injected to native messages
 
@@ -35,10 +37,3 @@ typedef struct {
   int score[6];
   int money[6];
 } IA_SCOREBOARD_t;
-
-// Server to client events (without arguments)
-#define IA_QUIT 0xE0 // TODO
-
-// If you want to see hex output in the terminal,
-// just use this reserved garbage byte.
-#define IA_GARBAGE 0xFF

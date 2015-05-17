@@ -28,7 +28,7 @@ void ingame_recv_callback(unsigned char msg_id,
   ingame_t *ingame = (ingame_t *)userdata;
 
   if (!ud_instance) {
-    ud_instance = malloc(sizeof(ingame_instance_userdata_t));
+    ud_instance = calloc(1, sizeof(ingame_instance_userdata_t));
     ud_instance->player_id = -1;
     instance->userdata = (void *)ud_instance;
   }
@@ -63,14 +63,10 @@ void ingame_recv_callback(unsigned char msg_id,
 void ingame_send_movement_data(ingame_t *ingame,
                                net_injected_instance_t *instance,
                                pad_controller_t *pad) {
-  // FIXME: this doesn't work for some reason:
-  //
-  // ingame_instance_userdata_t* ud
-  //	= (ingame_instance_userdata_t*) instance->userdata;
-  // cmap_state_t* state = ud->is_driving ? &(ingame->cmap->driving)
-  //	: &(ingame->cmap->walking);
-
-  cmap_state_t *state = &(ingame->cmap->walking);
+  ingame_instance_userdata_t *ud =
+      (ingame_instance_userdata_t *)instance->userdata;
+  cmap_state_t *state =
+      ud->is_driving ? &(ingame->cmap->driving) : &(ingame->cmap->walking);
 
   uint16_t movement = 0;
 

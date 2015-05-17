@@ -84,8 +84,6 @@ void cmap_map_action(cmap_t *cmap, cfg_t *cfg, char *str_action,
     CONVERT_BUTTON(button, cmap_value, B);
     CONVERT_BUTTON(button, cmap_value, X);
     CONVERT_BUTTON(button, cmap_value, Y);
-    CONVERT_BUTTON(button, cmap_value, BACK);
-    CONVERT_BUTTON(button, cmap_value, START);
     CONVERT_BUTTON(button, cmap_value, LEFTSTICK);
     CONVERT_BUTTON(button, cmap_value, RIGHTSTICK);
     CONVERT_BUTTON(button, cmap_value, LEFTSHOULDER);
