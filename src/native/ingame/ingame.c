@@ -75,17 +75,28 @@ void ingame_send_movement_data(ingame_t *ingame,
   uint16_t movement = 0;
 
   // handle all buttons
-  for (SDL_GameControllerButton i = 0; i < SDL_CONTROLLER_BUTTON_MAX; i++) {
+  for (SDL_GameControllerButton i = SDL_CONTROLLER_BUTTON_A;
+       i < SDL_CONTROLLER_BUTTON_MAX; i++) {
     // not pressed: skip
     if (!SDL_GameControllerGetButton(pad->controller, i))
       continue;
 
-    uint16_t new = cmap_action_to_movement_bitmask(state->buttons[i]);
-
-    movement |= new;
+    movement |= cmap_action_to_movement_bitmask(state->buttons[i]);
   }
 
-  // TODO: handle axes (TODO: add deadzones to config)
+  // handle axes
+  for (SDL_GameControllerAxis i = SDL_CONTROLLER_AXIS_LEFTX;
+       i < SDL_CONTROLLER_AXIS_MAX; i++) {
+    int16_t value = SDL_GameControllerGetAxis(pad->controller, i);
+
+    // FIXME: load deadzones from config!
+    int16_t deadzone = 32767 / 2;
+
+    if (value > deadzone)
+      movement |= cmap_action_to_movement_bitmask(state->axis_positive[i]);
+    else if (value < -1 * deadzone)
+      movement |= cmap_action_to_movement_bitmask(state->axis_negative[i]);
+  }
 
   // stuff it up the socket
   MESSAGESEND(instance->sock, IA_MOVEMENT, data->movement = movement);
