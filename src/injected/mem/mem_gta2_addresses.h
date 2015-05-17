@@ -25,8 +25,8 @@ char MP_PLAYER_ID; // 0...5
 
 #define GTA2_ADDR_PLAYER_IN_VEHICLE (char *)0x5e20bc
 
-// See also: sdl_controller_code/gta2_controls.h
-#define GTA2_ADDR_MOVEMENT (char *)0x5ecacc
+// See also: native/cmap/cmap_gta2_controls.h
+#define GTA2_ADDR_MOVEMENT (uint16_t *)0x5ecacc
 
 // http://git.io/g2hr-rumble-byte
 #define GTA2_ADDR_RUMBLE (char *)0x665770

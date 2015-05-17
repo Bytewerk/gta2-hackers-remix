@@ -49,18 +49,22 @@ int main(int argc, char **argv) {
 
   while (!inmenu->has_quit) {
     SDL_Event e;
-    SDL_WaitEventTimeout(&e, 50);
+    if (SDL_WaitEventTimeout(&e, 50)) {
+      pads_frame(pads, &e, 0);
 
-    pads_frame(pads, &e, 0);
+      if (!net->injected_count)
+        inmenu_frame(inmenu, &e);
+    }
 
+    // FIXME: remove NULL parameter!
+    // FIXME: don't make this faster than a certain rate!
+    if (net->injected_count)
+      ingame_frame(ingame, NULL);
+
+    // check for incoming data
     if (!net_frame(net, (void *)inmenu_recv_callback, (void *)inmenu,
                    (void *)ingame_recv_callback, (void *)ingame))
       break;
-
-    if (net->injected_count)
-      ingame_frame(ingame, &e);
-    else
-      inmenu_frame(inmenu, &e);
   }
 
   // clean up

@@ -13,5 +13,5 @@ run: ../out/$(COMPONENT)_test.bin
 
 
 valgrind: ../out/$(COMPONENT)_test.bin
-	cd ../../../ && valgrind --leak-check=full src/native/out/$(COMPONENT)_test.bin \
-	$(INPUT_FILE)
+	cd ../../../ && valgrind --leak-check=full --show-leak-kinds=all \
+	 src/native/out/$(COMPONENT)_test.bin $(INPUT_FILE)

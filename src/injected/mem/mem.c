@@ -1,5 +1,6 @@
 #include "mem.h"
 #include "../net/injected_net.h"
+#include "mem_gta2_addresses.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -25,8 +26,12 @@ void mem_recv_callback(unsigned char msg_id, void *userdata) {
     MESSAGECASE(IA_PLAYER_ID, {
       mem->player_id = data->id;
       printf("got the player id: %i\n", data->id);
-    })
+    });
+
+    MESSAGECASE(IA_MOVEMENT, { *GTA2_ADDR_MOVEMENT = data->movement; });
   }
+
+  // printf("got this from native: %i\n", msg_id);
 }
 
 void mem_cleanup(mem_t *mem) { free(mem); }

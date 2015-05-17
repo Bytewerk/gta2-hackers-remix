@@ -63,10 +63,14 @@ void ingame_recv_callback(unsigned char msg_id,
 void ingame_send_movement_data(ingame_t *ingame,
                                net_injected_instance_t *instance,
                                pad_controller_t *pad) {
-  ingame_instance_userdata_t *ud =
-      (ingame_instance_userdata_t *)instance->userdata;
-  cmap_state_t *state =
-      ud->is_driving ? &(ingame->cmap->driving) : &(ingame->cmap->walking);
+  // FIXME: this doesn't work for some reason:
+  //
+  // ingame_instance_userdata_t* ud
+  //	= (ingame_instance_userdata_t*) instance->userdata;
+  // cmap_state_t* state = ud->is_driving ? &(ingame->cmap->driving)
+  //	: &(ingame->cmap->walking);
+
+  cmap_state_t *state = &(ingame->cmap->walking);
 
   uint16_t movement = 0;
 
@@ -76,10 +80,12 @@ void ingame_send_movement_data(ingame_t *ingame,
     if (!SDL_GameControllerGetButton(pad->controller, i))
       continue;
 
-    movement |= cmap_action_to_movement_bitmask(state->buttons[i]);
+    uint16_t new = cmap_action_to_movement_bitmask(state->buttons[i]);
+
+    movement |= new;
   }
 
-  // TODO: handle axes
+  // TODO: handle axes (TODO: add deadzones to config)
 
   // stuff it up the socket
   MESSAGESEND(instance->sock, IA_MOVEMENT, data->movement = movement);

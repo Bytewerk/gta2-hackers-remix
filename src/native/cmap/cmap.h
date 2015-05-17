@@ -43,6 +43,7 @@ typedef struct {
 } cmap_state_t;
 
 typedef struct cmap_t {
+  // currently unused - this will be for multiple configs!
   struct cmap_t *next;
 
   // meta data (TODO: axis treshhold, axis offset!)
