@@ -29,6 +29,7 @@ void ui_callback_for_meta(char *msg, void *userdata) {
 void ui_callback_for_native(TCPsocket sock, char header, void *userdata) {
   ui_t *ui = (ui_t *)userdata;
 
+  // TODO: use message macros!
   switch (header) {
   case NA_ACTION: {
     NA_ACTION_t data;
@@ -48,5 +49,11 @@ void ui_callback_for_native(TCPsocket sock, char header, void *userdata) {
     splitscreen_set_players(ui);
     break;
   }
+
+    MESSAGECASE(sock, NA_QUIT_GAME, {
+      char *buffer = malloc(20);
+      snprintf(buffer, 100, "QUIT %i", data->player_id);
+      net_send_to_meta(ui->net, buffer, 1);
+    });
   }
 }

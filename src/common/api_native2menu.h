@@ -31,3 +31,6 @@ typedef struct {
 
 #define NA_CONTROLLERS_CONNECTED 0x32
 typedef struct { uint16_t count; } NA_CONTROLLERS_CONNECTED_t;
+
+#define NA_QUIT_GAME 0x33
+typedef struct { char player_id; } NA_QUIT_GAME_t;

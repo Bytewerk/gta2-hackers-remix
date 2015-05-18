@@ -49,6 +49,8 @@ While Not $exit
 				cmd_singleplayer($cmd)
 				Sleep(500)
 				re("HIDE GET READY SCREEN")
+			Case "QUIT"
+				ProcessClose($global_game_process_ids[$cmd[1]])
 		EndSwitch
 	EndIf
 	

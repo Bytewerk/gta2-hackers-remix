@@ -1,5 +1,6 @@
 #include "ingame.h"
 #include "../../common/api_native2injected.h"
+#include "../../common/api_native2menu.h"
 #include "../../common/common.h"
 
 ingame_t *ingame_init(net_t *net, cmap_t *cmap, pads_t *pads,
@@ -106,19 +107,22 @@ void ingame_handle_buttonpress(ingame_t *ingame,
       (ingame_instance_userdata_t *)instance->userdata;
 
   if (ud->is_in_quit_dialog) {
-    if (button == SDL_CONTROLLER_BUTTON_START)
-      printf("[player %i] quit confirmation STUB\n", player_id);
+    if (button == SDL_CONTROLLER_BUTTON_START) {
+      printf("[player %i] confirmed quit dialog STUB\n", player_id + 1);
+      MESSAGESEND(ingame->net->sock_menu, NA_QUIT_GAME,
+                  data->player_id = player_id);
+    }
     if (button == SDL_CONTROLLER_BUTTON_BACK) {
-      printf("[player %i] cancel quit dialog STUB\n", player_id);
+      printf("[player %i] cancel quit dialog\n", player_id + 1);
       MESSAGESENDSHORT(instance->sock, IA_ESC_TEXT_HIDE);
       ud->is_in_quit_dialog = 0;
     }
   } else {
     if (button == SDL_CONTROLLER_BUTTON_START) {
-      printf("[player %i] next layout STUB\n", player_id);
+      printf("[player %i] next layout STUB\n", player_id + 1);
     }
     if (button == SDL_CONTROLLER_BUTTON_BACK) {
-      printf("[player %i] show quit dialog STUB\n", player_id);
+      printf("[player %i] show quit dialog STUB\n", player_id + 1);
 
       // FIXME: actually set the text here, will require macros
       // that generate unicode text
