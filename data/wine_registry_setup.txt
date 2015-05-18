@@ -1,0 +1,12 @@
+; You can manually import this file to set a black background in the wine desktop:
+;	regedit wine_registry_setup.txt
+;
+; (TODO: automate wine prefix setup etc.)
+;
+; Do not import this file on Windows (that is why it's NOT named .reg)!
+;
+;
+
+; Set a black desktop background
+[HKEY_CURRENT_USER\Control Panel\Colors]
+"Background"="0 0 0"
