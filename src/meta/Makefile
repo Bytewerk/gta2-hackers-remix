@@ -3,7 +3,10 @@
 # See also: "Compiling Scripts" in the AutoIt3 help for command-
 # line reference.
 
-AUT2EXE := "c:\Program Files\AutoIt3\Aut2Exe\Aut2exe.exe"
+AUTOIT_DIR := c:\Program Files\AutoIt3
+AUT2EXE := "$(AUTOIT_DIR)\Aut2Exe\Aut2exe.exe"
+SCITE := "$(AUTOIT_DIR)\SciTE\SciTE.exe"
+AU3INFO := "$(AUTOIT_DIR)\Au3Info.exe"
 WINEPREFIX := $(shell realpath ../../build/wineprefix)
 WINE := WINEPREFIX=$(WINEPREFIX) WINEDEBUG=-all wine
 
@@ -18,5 +21,12 @@ $(WINEPREFIX):
 
 clean:
 	rm ../../bin/meta.exe || true
-	
-.PHONY: clean wineprefix
+
+
+scite:
+	$(WINE) $(SCITE) &
+
+au3info:
+	$(WINE) $(AU3INFO) &
+
+.PHONY: clean wineprefix scite au3info
