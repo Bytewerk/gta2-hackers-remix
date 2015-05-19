@@ -25,7 +25,7 @@ char MP_PLAYER_ID; // 0...5
 // See also: native/cmap/cmap_gta2_controls.h
 #define GTA2_ADDR_MOVEMENT (uint16_t *)0x5ecacc
 
-// 1: visible, 0: invisible
+// 1: visible, 0: invisible --- FIXME: this address isn't working!
 #define GTA2_ADDR_ESC_TEXT_IS_VISIBLE (char *)0xbbc47a
 
 // works for english language. the text is in unicode format (this means
