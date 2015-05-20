@@ -85,13 +85,26 @@ void ingame_send_movement_data(ingame_t *ingame,
   for (SDL_GameControllerAxis i = SDL_CONTROLLER_AXIS_LEFTX;
        i < SDL_CONTROLLER_AXIS_MAX; i++) {
     int16_t value = SDL_GameControllerGetAxis(pad->controller, i);
+    int16_t deadzone_positive = 32767 / 2;
+    int16_t deadzone_negative = 32767 / 2;
 
-    // FIXME: load deadzones from config!
-    int16_t deadzone = 32767 / 2;
+    if (i == SDL_CONTROLLER_AXIS_LEFTX) {
+      deadzone_positive = state->dead_leftstick.right;
+      deadzone_negative = state->dead_leftstick.left;
+    } else if (i == SDL_CONTROLLER_AXIS_LEFTY) {
+      deadzone_positive = state->dead_leftstick.down;
+      deadzone_negative = state->dead_leftstick.up;
+    } else if (i == SDL_CONTROLLER_AXIS_RIGHTX) {
+      deadzone_positive = state->dead_rightstick.right;
+      deadzone_negative = state->dead_rightstick.left;
+    } else if (i == SDL_CONTROLLER_AXIS_RIGHTY) {
+      deadzone_positive = state->dead_rightstick.down;
+      deadzone_negative = state->dead_rightstick.up;
+    }
 
-    if (value > deadzone)
+    if (value > deadzone_positive)
       movement |= cmap_action_to_movement_bitmask(state->axis_positive[i]);
-    else if (value < -1 * deadzone)
+    else if (value < -1 * deadzone_negative)
       movement |= cmap_action_to_movement_bitmask(state->axis_negative[i]);
   }
 
