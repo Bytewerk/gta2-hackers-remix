@@ -35,16 +35,12 @@ void inmenu_recv_callback(unsigned char msg_id, TCPsocket sock,
   }
 }
 
-void inmenu_send_action(net_t *net, tk_action_t action, char redraw) {
-  MESSAGESENDSHORT(net->sock_menu, NA_ACTION);
-
-  NA_ACTION_t data = {action, redraw};
-  SDLNet_TCP_Send(net->sock_menu, &data, sizeof(data));
-}
-
 #define MAP_BUTTON(BUTTON, TK_ACTION)                                          \
   if (b == SDL_CONTROLLER_BUTTON_##BUTTON)                                     \
-    inmenu_send_action(inmenu->net, TK_ACTION_##TK_ACTION, 1);
+  MESSAGESEND(inmenu->net->sock_menu, NA_ACTION, {                             \
+    data->action = TK_ACTION_##TK_ACTION;                                      \
+    data->redraw = 1;                                                          \
+  })
 
 void inmenu_frame(inmenu_t *inmenu, SDL_Event *event) {
   if (!event)
