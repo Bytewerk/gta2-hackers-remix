@@ -2,10 +2,16 @@
 #include <stdio.h>
 #include <string.h>
 
-pad_controller_t *pads_is_joystick_attached(pads_t *pads, char *guid) {
+/*
+        FIXME: This detection is pretty crappy, but it's hard to do
+        when the GUID is useless for Xbox360 controllers (they all have
+        the same one!) and the joystick_id changes as the OS decides...
+*/
+pad_controller_t *pads_is_joystick_attached(pads_t *pads,
+                                            SDL_JoystickID joystick_id) {
   pad_controller_t *pad = pads->first;
   while (pad) {
-    if (!strcmp(guid, pad->guid)) {
+    if (joystick_id == pad->joystick_id) {
       return pad;
     }
     pad = pad->next;
@@ -39,7 +45,7 @@ void pads_add(pads_t *pads, char verbose) {
     if (verbose)
       printf("guid: %s\n", guid);
 
-    pad_controller_t *pad = pads_is_joystick_attached(pads, guid);
+    pad_controller_t *pad = pads_is_joystick_attached(pads, i);
     if (pad && !pad->disconnected) {
       if (verbose)
         printf("this sdl game controller is already attached, skipping...\n");
