@@ -36,17 +36,31 @@ typedef enum {
 } cmap_action_t;
 
 typedef struct {
+  uint16_t left;
+  uint16_t up;
+  uint16_t right;
+  uint16_t down;
+} cmap_deadzone_t;
+
+typedef struct {
   cmap_action_t buttons[SDL_CONTROLLER_BUTTON_MAX];
   cmap_action_t axis_positive[SDL_CONTROLLER_AXIS_MAX];
   cmap_action_t axis_negative[SDL_CONTROLLER_AXIS_MAX];
 
+  cmap_deadzone_t dead_leftstick;
+  cmap_deadzone_t dead_rightstick;
+
+  // not supported - if you need these, file a feature request
+  // at http://git.io/g2hr-bugs
+  //
+  // uint16_t dead_lefttrigger;
+  // uint16_t dead_righttrigger;
 } cmap_state_t;
 
 typedef struct cmap_t {
   // currently unused - this will be for multiple configs!
   struct cmap_t *next;
 
-  // meta data (TODO: axis treshhold, axis offset!)
   char *description;
   char *author;
   char *version;

@@ -4,7 +4,10 @@
 #include <stdio.h>
 #include <string.h>
 
+// http://wiki.libsdl.org/SDL_GameControllerGetAxis
+#define AXIS_OFFSET_MAX 32767
 #define str(x) #x
+#define DOCU "\n(more info: http://git.io/g2hr-mappings )\n"
 
 /*
         TODO: add move file loading from mmp to cfg and also use it here
@@ -32,9 +35,6 @@
   (axis_is_positive ? state->axis_positive : state->axis_negative)
 
 #define CMAP_SDL_KEY_BUFFER_SIZE 100
-#define DOCU                                                                   \
-  "\n(more info:"                                                              \
-  " http://git.io/g2hr-mappings )\n"
 
 void cmap_map_action(cmap_t *cmap, cfg_t *cfg, char *str_action,
                      cmap_action_t cmap_action, char is_required) {
@@ -145,13 +145,82 @@ void cmap_map_action(cmap_t *cmap, cfg_t *cfg, char *str_action,
   // TODO: remove key from cfg, so we can verify later that there
   // are no invalid keys
 }
-#undef DOCU
 #undef CONVERT_BUTTON
 #undef CONVERT_STICK
 #undef STATE_AXIS
 
+double cmap_sscanf_double_helper(char *str, char *cfg_key, int i) {
+  double d = 0;
+  if (!sscanf(str, "%lf", &d))
+    exit(printf("ERROR: invalid value '%s' in '%s' (item %i)."
+                " Expected a double here (eg. 0.5)." DOCU,
+                str, cfg_key, i));
+  return d;
+}
+
+#define SPLITVAL2FLOAT(NUM)                                                    \
+  cmap_sscanf_double_helper(split->values[NUM], cfg_key, NUM)
+
+void cmap_map_deadzone_stick(cfg_t *cfg, char *cfg_key, cmap_deadzone_t *d) {
+  if (d->left)
+    exit(printf("ERROR: deadzone has been defined"
+                " twice in the same section: %s" DOCU,
+                cfg_key));
+
+  // default is always 0.5
+  d->left = d->up = d->right = d->down = 0.5 * AXIS_OFFSET_MAX;
+
+  // read the space separated values
+  cfg_split_t *split = cfg_split_value(cfg, cfg_key, ' ');
+  if (!split)
+    return;
+
+  // factors (left, up, right, down), parsed symmetrically just like
+  // in CSS (eg. padding: ...)
+  double f[] = {0, 0, 0, 0};
+  switch (split->count) {
+  case 1:
+    f[0] = f[1] = f[2] = f[3] = SPLITVAL2FLOAT(0);
+    break;
+  case 2:
+    f[0] = f[2] = SPLITVAL2FLOAT(0); // left, right
+    f[1] = f[3] = SPLITVAL2FLOAT(1); // up, down
+    break;
+  case 3:
+    f[0] = SPLITVAL2FLOAT(0);        // left
+    f[1] = f[3] = SPLITVAL2FLOAT(1); // up, down
+    f[2] = SPLITVAL2FLOAT(2);        // right
+    break;
+  case 4:
+    f[0] = SPLITVAL2FLOAT(0);
+    f[1] = SPLITVAL2FLOAT(1);
+    f[2] = SPLITVAL2FLOAT(2);
+    f[3] = SPLITVAL2FLOAT(3);
+    break;
+  default:
+    exit(printf("ERROR: invalid value count for %s! Should"
+                " be 1...4" DOCU,
+                cfg_key));
+  }
+  cfg_split_cleanup(split);
+
+  d->left = f[0] * AXIS_OFFSET_MAX;
+  d->up = f[1] * AXIS_OFFSET_MAX;
+  d->right = f[2] * AXIS_OFFSET_MAX;
+  d->down = f[3] * AXIS_OFFSET_MAX;
+
+  // TODO: remove key from cfg, so we can verify later that there
+  // are no invalid keys
+}
+
 #define MAPPING(IS_REQUIRED, ACTION)                                           \
   cmap_map_action(cmap, cfg, str(ACTION), G2HR_CMAP_##ACTION, IS_REQUIRED)
+
+#define DEADZONE_STICK(NAME)                                                   \
+  cmap_map_deadzone_stick(cfg, "walking/deadzone-" str(NAME),                  \
+                          &(cmap->walking.dead_##NAME));                       \
+  cmap_map_deadzone_stick(cfg, "driving/deadzone-" str(NAME),                  \
+                          &(cmap->driving.dead_##NAME))
 
 cmap_t *cmap_init() {
   cmap_t *cmap = calloc(1, sizeof(cmap_t));
@@ -169,7 +238,7 @@ cmap_t *cmap_init() {
   MAPPING(1, WALKING_WEAPON_NEXT);
 
   // all driving keys are optional. fallback is: using the same
-  // controls as for walking.
+  // controls as for walking (not implemented that way yet though)
   MAPPING(0, DRIVING_FORWARD);
   MAPPING(0, DRIVING_BACKWARD);
   MAPPING(0, DRIVING_LEFT);
@@ -180,14 +249,17 @@ cmap_t *cmap_init() {
   MAPPING(0, DRIVING_WEAPON_PREV);
   MAPPING(0, DRIVING_WEAPON_NEXT);
 
+  // add all deadzones (fallback is always 0.5)
+  DEADZONE_STICK(leftstick);
+  DEADZONE_STICK(rightstick);
+
   cfg_cleanup(cfg);
   return cmap;
 }
 
 #undef MAPPING
-#undef str
+#undef DEADZONE_STICK
 
-#define str(x) #x
 #define MAPPING(ACTION, BITMASK)                                               \
   case G2HR_CMAP_##ACTION:                                                     \
     return GTA2_CTRL_##BITMASK

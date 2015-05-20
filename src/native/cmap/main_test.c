@@ -15,6 +15,25 @@ int main(int argc, const char **argv) {
            SDL_GameControllerGetStringForButton(i), state->buttons[i], new);
   }
 
+  printf("--------------\n");
+  for (int is_driving = 0; is_driving < 2; is_driving++) {
+    cmap_state_t state = is_driving ? cmap->driving : cmap->walking;
+
+    for (int is_rightstick = 0; is_rightstick < 2; is_rightstick++) {
+      cmap_deadzone_t d =
+          is_rightstick ? state.dead_rightstick : state.dead_leftstick;
+
+      printf("%s - %sSTICK DEADZONES\n", is_driving ? "DRIVING" : "WALKING",
+             is_rightstick ? "RIGHT" : "LEFT");
+
+      printf("\tleft:  %7i\n", d.left);
+      printf("\tup:    %7i\n", d.up);
+      printf("\tright: %7i\n", d.right);
+      printf("\tdown:  %7i\n", d.down);
+    }
+  }
+  printf("--------------\n");
+
   printf("cleaning up...\n");
   cmap_cleanup(cmap);
   SDL_Quit();
