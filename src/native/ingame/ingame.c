@@ -121,7 +121,7 @@ void ingame_handle_buttonpress(ingame_t *ingame,
 
   if (ud->is_in_quit_dialog) {
     if (button == SDL_CONTROLLER_BUTTON_START) {
-      printf("[player %i] confirmed quit dialog STUB\n", player_id + 1);
+      printf("[player %i] confirmed quit dialog\n", player_id + 1);
       MESSAGESEND(ingame->net->sock_menu, NA_QUIT_GAME,
                   data->player_id = player_id);
     }
@@ -135,7 +135,13 @@ void ingame_handle_buttonpress(ingame_t *ingame,
       printf("[player %i] next layout STUB\n", player_id + 1);
     }
     if (button == SDL_CONTROLLER_BUTTON_BACK) {
-      printf("[player %i] show quit dialog STUB\n", player_id + 1);
+      printf("[player %i] show quit dialog STUB:\n"
+             "\t--------------------------------------\n"
+             "\t\tIs that it?\n"
+             "\t\tPress START to quit,\n"
+             "\t\tPress BACK  to resume.\n"
+             "\t--------------------------------------\n",
+             player_id + 1);
 
       // FIXME: actually set the text here, will require macros
       // that generate unicode text

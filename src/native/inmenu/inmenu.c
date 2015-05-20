@@ -15,8 +15,8 @@ void inmenu_recv_callback(unsigned char msg_id, TCPsocket sock,
   switch (msg_id) {
     MESSAGECASESHORT(NA_CLEANUP, inmenu->has_quit = 1);
     MESSAGECASESHORT(NA_POWEROFF, {
-      printf("[menu => native] POWEROFF"
-             " (not implemented yet!)\n");
+      printf("[menu => native] POWEROFF (not implemented yet!)"
+             "\n");
       inmenu->has_quit = 1;
     });
     MESSAGECASESHORT(NA_REBOOT, {
@@ -67,7 +67,9 @@ void inmenu_frame(inmenu_t *inmenu, SDL_Event *event) {
     MAP_BUTTON(DPAD_RIGHT, RIGHT);
     MAP_BUTTON(DPAD_DOWN, DOWN);
     MAP_BUTTON(A, ENTER);
+    MAP_BUTTON(START, ENTER);
     MAP_BUTTON(B, ESC);
+    MAP_BUTTON(BACK, ESC);
   }
 }
 #undef MAP_BUTTON
