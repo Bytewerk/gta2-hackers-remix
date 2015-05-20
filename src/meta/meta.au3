@@ -49,6 +49,10 @@ While Not $exit
 				cmd_singleplayer($cmd)
 				Sleep(500)
 				re("HIDE GET READY SCREEN")
+			Case "SCREENLAYOUT"
+				Local $geo[4] = [$cmd[2], $cmd[3], $cmd[4], $cmd[5]]
+				$global_game_screen_layouts[$cmd[1]] = $geo
+				_ArrayDisplay($global_game_screen_layouts[$cmd[1]], $cmd[1])
 			Case "QUIT"
 				ProcessClose($global_game_process_ids[$cmd[1]])
 		EndSwitch
@@ -57,7 +61,7 @@ While Not $exit
 	
 	; Check if the game is still open
 	If $global_game_instances_open > 0 Then
-		For $i = 0 To 5
+		For $i = 0 To $GTA2_PLAYER_COUNT - 1
 			If $global_game_process_ids[$i] _
 				And Not ProcessExists($global_game_process_ids[$i]) Then
 				

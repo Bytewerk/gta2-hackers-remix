@@ -136,7 +136,7 @@ void splitscreen_set_players(ui_t *ui) {
 #define LAYOUT_BUFFER_LEN 200
 void splitscreen_start(ud_splitscreen_t *ud) {
   int player_count =
-      ((ud_arrowtext_t *)(ud->players->userdata))->entry_selected + 1;
+      ((ud_arrowtext_t *)(ud->players->userdata))->entry_selected;
 
   int layout_id =
       ((ud_arrowtext_t *)(ud->screen_layout->userdata))->entry_selected;
@@ -148,15 +148,13 @@ void splitscreen_start(ud_splitscreen_t *ud) {
   uint16_t screen_w = tk->mode.w;
   uint16_t screen_h = tk->mode.h;
 
-  printf("[menu] layout table:    player     x     y     w     h\n");
-
-  for (int i = 0; i < player_count; i++) {
+  for (int i = 0; i <= player_count; i++) {
     sl_geo_t geo;
     sl_calc(sl, screen_w, screen_h, player_count, layout_id, i, &geo);
 
     char buffer[LAYOUT_BUFFER_LEN + 1];
-    snprintf(buffer, LAYOUT_BUFFER_LEN, "SCREENLAYOUT %i %5i %5i"
-                                        " %5i %5i",
+    snprintf(buffer, LAYOUT_BUFFER_LEN, "SCREENLAYOUT %i %i %i %i"
+                                        " %i",
              i, geo.x, geo.y, geo.w, geo.h);
 
     net_send_to_meta(ui->net, buffer, 0);

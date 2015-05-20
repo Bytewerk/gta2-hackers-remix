@@ -28,5 +28,6 @@ typedef struct { sl_player_t *players[GTA2_MAX_PLAYERS]; } sl_t;
 sl_t *sl_init(char *filename);
 void sl_cleanup(sl_t *sl);
 
-void sl_calc(sl_t *sl, uint16_t screen_w, uint16_t screen_h, int player_count,
-             int layout_id, int player_id, sl_geo_t *geo);
+void sl_calc(sl_t *sl, uint16_t screen_w, uint16_t screen_h,
+             int player_count_zero_based, int layout_id, int player_id,
+             sl_geo_t *geo);
