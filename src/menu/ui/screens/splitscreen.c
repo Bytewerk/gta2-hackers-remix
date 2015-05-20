@@ -158,9 +158,14 @@ void splitscreen_start(ud_splitscreen_t *ud) {
              i, geo.x, geo.y, geo.w, geo.h);
 
     net_send_to_meta(ui->net, buffer, 0);
-  }
 
-  // ...
+    // FIXME: currently the messaging protocol between meta and menu
+    // can't handle too many messages at once, so we simply wait.
+    // For six players, this makes a total delay of 0.6 seconds.
+    // NOTE: the menu can't show the 'get ready...' screen during
+    // this period, so it looks like the GUI hangs!
+    SDL_Delay(100);
+  }
 }
 #undef LAYOUT_BUFFER_LEN
 
@@ -180,6 +185,10 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
       ui_show_ready_screen(ud->ui, splitscreen);
 
       splitscreen_start(ud);
+
+      char *buffer = malloc(100);
+      snprintf(buffer, 100, "SPLITSCREEN DEBUG");
+      net_send_to_meta(ud->ui->net, buffer, 1);
 
       /*
               FIXME: put all of this in splitscreen_start
