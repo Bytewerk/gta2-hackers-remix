@@ -166,6 +166,8 @@ void splitscreen_start(ud_splitscreen_t *ud) {
 
   int cops_enabled = ((ud_arrowtext_t *)ud->cops->userdata)->entry_selected;
 
+  // FIXME: this seems to be buggy
+  // (terminal output: SPLITSCREEN 0 1 (null) 2613936 1)
   snprintf(buffer, SPLITSCREEN_BUFFER_LEN, "SPLITSCREEN %i %i %s %i %i",
            player_count, map_id, game_type, time, cops_enabled);
   net_send_to_meta(ui->net, buffer, 0);
