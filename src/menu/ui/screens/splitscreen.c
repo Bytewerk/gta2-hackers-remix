@@ -5,17 +5,6 @@
 #include "../ui.h"
 #include "../ui_text.h"
 
-/*
-        TODO:
-                - send the abstracted splitscreen geometry values to the meta
-                        component instead of the layout ID (this is for
-   debugging
-                        only)
-*/
-
-// TODO: place this in a common.h or something like that
-#define GTA2_MP_MAX_PLAYERS 6
-
 #define G2HR_CONTROLLERS_FOUND_TITLE_LEN 20
 
 // USERDATA STRUCT
@@ -133,7 +122,7 @@ void splitscreen_set_players(ui_t *ui) {
   ui->tk->redraw_needed = 1;
 }
 
-#define LAYOUT_BUFFER_LEN 200
+#define SPLITSCREEN_BUFFER_LEN 200
 void splitscreen_start(ud_splitscreen_t *ud) {
   int player_count =
       ((ud_arrowtext_t *)(ud->players->userdata))->entry_selected;
@@ -145,6 +134,7 @@ void splitscreen_start(ud_splitscreen_t *ud) {
   sl_t *sl = ui->sl;
   tk_t *tk = ui->tk;
 
+  char buffer[SPLITSCREEN_BUFFER_LEN + 1];
   uint16_t screen_w = tk->mode.w;
   uint16_t screen_h = tk->mode.h;
 
@@ -152,10 +142,8 @@ void splitscreen_start(ud_splitscreen_t *ud) {
     sl_geo_t geo;
     sl_calc(sl, screen_w, screen_h, player_count, layout_id, i, &geo);
 
-    char buffer[LAYOUT_BUFFER_LEN + 1];
-    snprintf(buffer, LAYOUT_BUFFER_LEN, "SCREENLAYOUT %i %i %i %i"
-                                        " %i",
-             i, geo.x, geo.y, geo.w, geo.h);
+    snprintf(buffer, SPLITSCREEN_BUFFER_LEN, "SCREENLAYOUT %i %i %i %i %i", i,
+             geo.x, geo.y, geo.w, geo.h);
 
     net_send_to_meta(ui->net, buffer, 0);
 
@@ -166,8 +154,23 @@ void splitscreen_start(ud_splitscreen_t *ud) {
     // this period, so it looks like the GUI hangs!
     SDL_Delay(100);
   }
+
+  // Build and send the start command
+  int map_id = ((ud_arrowtext_t *)ud->map->userdata)->entry_selected;
+
+  char game_type = ((ud_arrowtext_t *)ud->game_type->userdata)->entry_selected;
+
+  char *time =
+      ud->ui->multiplayer_time_values
+          ->values[((ud_arrowtext_t *)(ud->time->userdata))->entry_selected];
+
+  int cops_enabled = ((ud_arrowtext_t *)ud->cops->userdata)->entry_selected;
+
+  snprintf(buffer, SPLITSCREEN_BUFFER_LEN, "SPLITSCREEN %i %i %s %i %i",
+           player_count, map_id, game_type, time, cops_enabled);
+  net_send_to_meta(ui->net, buffer, 0);
 }
-#undef LAYOUT_BUFFER_LEN
+#undef SPLITSCREEN_BUFFER_LEN
 
 // ACTIONFUNC
 void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
@@ -183,44 +186,7 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   if (action == TK_ACTION_ENTER) {
     if (el_selected == ud->play) {
       ui_show_ready_screen(ud->ui, splitscreen);
-
       splitscreen_start(ud);
-
-      char *buffer = malloc(100);
-      snprintf(buffer, 100, "SPLITSCREEN DEBUG");
-      net_send_to_meta(ud->ui->net, buffer, 1);
-
-      /*
-              FIXME: put all of this in splitscreen_start
-
-      int players = 1 + ((ud_arrowtext_t*)(ud->players->userdata))
-              ->entry_selected;
-
-      int screen_layout =
-              ((ud_arrowtext_t*)(ud->screen_layout->userdata))
-              ->entry_selected;
-
-      char* time = ud->ui->multiplayer_time_values->values
-              [((ud_arrowtext_t*)(ud->time->userdata))
-              ->entry_selected];
-
-      char game_type = ((ud_arrowtext_t*)ud->game_type->userdata)
-              ->entry_selected;
-
-      int cops_enabled = ((ud_arrowtext_t*) ud->cops->userdata)
-              ->entry_selected;
-
-      // gta2 reads the map index from the registry
-      int map_id = ((ud_arrowtext_t*)ud->map->userdata)
-              ->entry_selected;
-
-      char* buffer = malloc(100);
-      snprintf(buffer, 100, "SPLITSCREEN %i %i %i %i %s %i",
-              players, screen_layout, map_id, game_type, time,
-              cops_enabled);
-      net_send_to_meta(ud->ui->net, buffer, 1);
-
-      */
     }
     if (el_selected == ud->map) {
       ud->ui->map_selected =
