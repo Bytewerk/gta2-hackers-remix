@@ -104,7 +104,10 @@ void splitscreen_set_players(ui_t *ui) {
 
   ud_splitscreen_t *ud =
       (ud_splitscreen_t *)ui->splitscreen->el_content_container->userdata;
-  uint16_t count = ui->controllers_connected;
+
+  // DEBUG
+  // uint16_t count = ui->controllers_connected;
+  uint16_t count = 6;
 
   tk_el_t *players = ud->players;
   ud_arrowtext_t *ud_players = ((ud_arrowtext_t *)(ud->players->userdata));
@@ -120,12 +123,48 @@ void splitscreen_set_players(ui_t *ui) {
   if (ud_players->entry_selected > ud_players->entry_count)
     ud_players->entry_selected = ud_players->entry_count - 1;
 
+  // DEBUG
+  count = ui->controllers_connected;
+
   splitscreen_set_max_layouts(ud);
   snprintf(ud->title, G2HR_CONTROLLERS_FOUND_TITLE_LEN, "%i CONTROLLER%s FOUND",
            count, (count == 1 ? "" : "S"));
 
   ui->tk->redraw_needed = 1;
 }
+
+#define LAYOUT_BUFFER_LEN 200
+void splitscreen_start(ud_splitscreen_t *ud) {
+  int player_count =
+      ((ud_arrowtext_t *)(ud->players->userdata))->entry_selected + 1;
+
+  int layout_id =
+      ((ud_arrowtext_t *)(ud->screen_layout->userdata))->entry_selected;
+
+  ui_t *ui = ud->ui;
+  sl_t *sl = ui->sl;
+  tk_t *tk = ui->tk;
+
+  uint16_t screen_w = tk->mode.w;
+  uint16_t screen_h = tk->mode.h;
+
+  printf("[menu] layout table:    player     x     y     w     h\n");
+
+  for (int i = 0; i < player_count; i++) {
+    sl_geo_t geo;
+    sl_calc(sl, screen_w, screen_h, player_count, layout_id, i, &geo);
+
+    char buffer[LAYOUT_BUFFER_LEN + 1];
+    snprintf(buffer, LAYOUT_BUFFER_LEN, "SCREENLAYOUT %i %5i %5i"
+                                        " %5i %5i",
+             i, geo.x, geo.y, geo.w, geo.h);
+
+    net_send_to_meta(ui->net, buffer, 0);
+  }
+
+  // ...
+}
+#undef LAYOUT_BUFFER_LEN
 
 // ACTIONFUNC
 void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
@@ -142,28 +181,39 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     if (el_selected == ud->play) {
       ui_show_ready_screen(ud->ui, splitscreen);
 
-      int players =
-          1 + ((ud_arrowtext_t *)(ud->players->userdata))->entry_selected;
+      splitscreen_start(ud);
+
+      /*
+              FIXME: put all of this in splitscreen_start
+
+      int players = 1 + ((ud_arrowtext_t*)(ud->players->userdata))
+              ->entry_selected;
 
       int screen_layout =
-          ((ud_arrowtext_t *)(ud->screen_layout->userdata))->entry_selected;
+              ((ud_arrowtext_t*)(ud->screen_layout->userdata))
+              ->entry_selected;
 
-      char *time = ud->ui->multiplayer_time_values
-                       ->values[((ud_arrowtext_t *)(ud->time->userdata))
-                                    ->entry_selected];
+      char* time = ud->ui->multiplayer_time_values->values
+              [((ud_arrowtext_t*)(ud->time->userdata))
+              ->entry_selected];
 
-      char game_type =
-          ((ud_arrowtext_t *)ud->game_type->userdata)->entry_selected;
+      char game_type = ((ud_arrowtext_t*)ud->game_type->userdata)
+              ->entry_selected;
 
-      int cops_enabled = ((ud_arrowtext_t *)ud->cops->userdata)->entry_selected;
+      int cops_enabled = ((ud_arrowtext_t*) ud->cops->userdata)
+              ->entry_selected;
 
       // gta2 reads the map index from the registry
-      int map_id = ((ud_arrowtext_t *)ud->map->userdata)->entry_selected;
+      int map_id = ((ud_arrowtext_t*)ud->map->userdata)
+              ->entry_selected;
 
-      char *buffer = malloc(100);
-      snprintf(buffer, 100, "SPLITSCREEN %i %i %i %i %s %i", players,
-               screen_layout, map_id, game_type, time, cops_enabled);
+      char* buffer = malloc(100);
+      snprintf(buffer, 100, "SPLITSCREEN %i %i %i %i %s %i",
+              players, screen_layout, map_id, game_type, time,
+              cops_enabled);
       net_send_to_meta(ud->ui->net, buffer, 1);
+
+      */
     }
     if (el_selected == ud->map) {
       ud->ui->map_selected =

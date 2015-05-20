@@ -16,18 +16,17 @@ tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *pref_path,
   //	- hide windows taskbar (in 'meta' component, while init)
   //	- provide an option: run the mod in windowed mode
   //	- provide as option: change display number
-  SDL_DisplayMode mode;
-  if (SDL_GetDesktopDisplayMode(0, &mode) != 0)
+  if (SDL_GetDesktopDisplayMode(0, &(tk->mode)) != 0)
     exit(printf("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError()));
 
-  printf("desktop resolution: %ix%i\n", mode.w, mode.h);
+  printf("desktop resolution: %ix%i\n", tk->mode.w, tk->mode.h);
 
   // DEBUG (for taking screenshots)
-  mode.w = 640;
-  mode.h = 480;
+  tk->mode.w = 640;
+  tk->mode.h = 480;
 
   // create the SDL window
-  tk->window = SDL_CreateWindow(title, 0, 0, mode.w, mode.h,
+  tk->window = SDL_CreateWindow(title, 0, 0, tk->mode.w, tk->mode.h,
                                 SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS);
   if (!tk->window)
     exit(printf("SDL_ERROR: %s\n", SDL_GetError()));
