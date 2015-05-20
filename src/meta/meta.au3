@@ -1,6 +1,7 @@
 #NoTrayIcon
 #include "common.au3"
 #include "cmds/singleplayer.au3"
+#include "cmds/splitscreen.au3"
 #include <Array.au3>
 
 If $CmdLine[0] <> 1 Then
@@ -53,7 +54,9 @@ While Not $exit
 				Local $geo[4] = [$cmd[2], $cmd[3], $cmd[4], $cmd[5]]
 				$global_game_screen_layouts[$cmd[1]] = $geo
 			Case "SPLITSCREEN"
-				re("SPLITSCREEN: STUB!")
+				cmd_splitscreen($cmd)
+				Sleep(500)
+				re("HIDE GET READY SCREEN")
 			Case "QUIT"
 				ProcessClose($global_game_process_ids[$cmd[1]])
 		EndSwitch
