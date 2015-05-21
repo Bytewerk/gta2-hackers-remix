@@ -1,5 +1,5 @@
 run: ../out/gxt_test.bin
-	../out/gxt_test.bin ../data/e.gxt
+	../out/gxt_test.bin ../data/e.gxt "quit1"
 
 
 ../out/gxt_test.bin: *.c *.h
@@ -7,4 +7,4 @@ run: ../out/gxt_test.bin
 
 
 valgrind: ../out/gxt_test.bin
-	valgrind --leak-check=full ../out/gxt_test.bin  ../data/e.gxt
+	valgrind --leak-check=full ../out/gxt_test.bin  ../data/e.gxt "quit1"

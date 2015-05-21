@@ -2,8 +2,8 @@
 #include <stdio.h>
 
 int main(int argc, const char **argv) {
-  if (argc != 2)
-    return printf("Syntax: main_test gta2_text_file\n");
+  if (argc != 3)
+    return printf("Syntax: main_test gta2_text_file string\n");
   gxt_t *gxt = gxt_load(argv[1]);
 
   /*
@@ -19,8 +19,8 @@ int main(int argc, const char **argv) {
   }
   */
 
-  printf("finding gxt str...\n");
-  char *str = gxt_get(gxt, "play");
+  printf("finding gxt str for '%s'...\n", argv[2]);
+  char *str = gxt_get(gxt, (char *)argv[2]);
 
   printf("printing gxt str...\n");
   printf("%s\n", str);
