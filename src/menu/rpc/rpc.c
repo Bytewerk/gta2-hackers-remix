@@ -35,6 +35,23 @@ void rpc_replace(char *exe_buffer, size_t size, char *cache_file,
   fclose(handle);
 }
 
+/*
+        When pressing ESC in the game, it shows 3 lines of text
+        (quit1...quit3), "Is that it?" etc.
+        In order to draw text on the game screen, we force this to be always
+        on and then change the messages in memory.
+
+        This works by replacing a conditional jump with NOP (no operation)
+        bytes in the binary code.
+*/
+void rpc_apply_always_show_esc_dialog_hack(char *exe_buffer, size_t size) {
+  // This is for vike's exe.
+  // Address in the GTA2 freeware exe is: 0xC8725
+  char *pos = exe_buffer + 0xD8725;
+  for (int i = 0; i < 6; i++)
+    pos[i] = 0x90; // NOP
+}
+
 rpc_pos_t *rpc_search(char *exe_buffer, size_t size) {
   rpc_pos_t *first = NULL;
   rpc_pos_t *last;
@@ -96,7 +113,12 @@ void rpc_init(char *prefpath) {
       if (fread(exe_buffer, 1, size, handle) != size)
         exit(printf("Read error while reading '%s'!\n", gta2_exe));
       fclose(handle);
+
+      // find the registry strings we'll replace
       first = rpc_search(exe_buffer, size);
+
+      // apply additional hacks
+      rpc_apply_always_show_esc_dialog_hack(exe_buffer, size);
     }
 
     // perform search and replace
