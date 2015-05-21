@@ -59,16 +59,10 @@ Endfunc
 
 
 
-; This command starts a single player GTA2 game.
-; Syntax:
-;	$cmd[1]: levelpack ("GTA2", "MY_CUSTOM_PACK_1", ...)
-;	$cmd[2]: type ("NORMAL", "BONUS")
-;	$cmd[3]: id (eg. "1"-"3" or "A"-"I")
-;
-; Credit to Sektor for his GTA2 launcher, reading 'frmLauncher.frm' from
-; its source code was very helpful while creating this function!
-; 		http://gtamp.com/forum/viewtopic.php?t=456
-;
+; This command starts a splitscreeen game by launching multiple
+; instances of GTA2. The first one hosts a network game, the others
+; join it. After starting it, the windows get attached to the main
+; window and moved in the right positions.
 Func cmd_splitscreen($cmd)
 	Local $player_count = $cmd[1] ; Zero based!
 	Local $map_id = $cmd[2]
