@@ -26,6 +26,10 @@ obj/net.o: $(call DEPS,net/injected_net.c)
 obj/mem.o: $(call DEPS,mem/mem.c)
 	$(CC) -c -o $@ $<
 
+# Memory Init
+obj/mem_init.o: $(call DEPS,mem/mem_init.c)
+	$(CC) -c -o $@ $<
+
 
 # OTHER
 obj ../../bin:

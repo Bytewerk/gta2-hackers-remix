@@ -1,14 +1,19 @@
 #pragma once
+#include <wchar.h>
 
 typedef struct {
   int player_id; // -1: unknown
 
-  // wide chars. The addresses get found dynamically in mem.c.
-  char *line1; // len: 11
-  char *line2; // len: 33
-  char *line3; // len: 33
+  // see also: mem_init() and http://git.io/g2hr-esc-text
+  wchar_t *line1; // len: 11
+  wchar_t *line2; // len: 33
+  wchar_t *line3; // len: 33
 
 } mem_t;
+
+#define mem_text_clear(MEM)                                                    \
+  if (mem->line1)                                                              \
+  mem->line1[0] = mem->line2[0] = mem->line3[0] = '\0'
 
 mem_t *mem_init();
 
