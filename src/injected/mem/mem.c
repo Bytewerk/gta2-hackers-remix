@@ -4,11 +4,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <windows.h> // IsBadReadPtr, Sleep
+
 mem_t *mem_init() {
   mem_t *mem = calloc(1, sizeof(mem_t));
 
   mem->player_id = -1;
 
+  // try to find the "Is that it?" text-location
+  char found = 0;
+  while (!found) {
+    Sleep(100);
+
+    char *addr = ((char *)0x03bbabb2);
+
+    for (int i = 0; i < 100; i++) {
+      printf("trying addr 0x%p...", addr);
+
+      if (!IsBadReadPtr(addr, 12)) {
+        if (addr[0] == 'I' && addr[2] == 's' && addr[4] == ' ' &&
+            addr[6] == 't' && addr[8] == 'h' && addr[10] == 'a' &&
+            addr[12] == 't') {
+          found = 1;
+          break;
+        }
+      }
+      printf("nothing!\n");
+      addr += 0x00010000;
+    }
+
+    if (found) {
+      addr[0] = '\0';
+      mem->line1 = addr;
+    }
+  }
   return mem;
 }
 
@@ -30,15 +59,12 @@ void mem_recv_callback(unsigned char msg_id, void *userdata) {
 
     MESSAGECASE(IA_MOVEMENT, { *GTA2_ADDR_MOVEMENT = data->movement; });
 
-    MESSAGECASESHORT(IA_ESC_TEXT_HIDE, { *GTA2_ADDR_ESC_TEXT_IS_VISIBLE = 0; });
+    MESSAGECASESHORT(IA_ESC_TEXT_HIDE, { mem->line1[0] = '\0'; });
 
-    MESSAGECASE(IA_ESC_TEXT_SHOW, {
-      *GTA2_ADDR_ESC_TEXT_IS_VISIBLE = 0;
-
-      // FIXME: use the data to change the text etc!
-      printf("FIXME, use %p!\n", data);
-
-      *GTA2_ADDR_ESC_TEXT_IS_VISIBLE = 1;
+    MESSAGECASESHORT(IA_ESC_TEXT_SHOW, {
+      char *addr = mem->line1;
+      for (int i = 0; i < 11; i++)
+        addr[i * 2] = '!';
     });
   }
 

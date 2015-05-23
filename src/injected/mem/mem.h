@@ -3,6 +3,11 @@
 typedef struct {
   int player_id; // -1: unknown
 
+  // wide chars. The addresses get found dynamically in mem.c.
+  char *line1; // len: 11
+  char *line2; // len: 33
+  char *line3; // len: 33
+
 } mem_t;
 
 mem_t *mem_init();
