@@ -125,7 +125,15 @@ void ingame_handle_buttonpress(ingame_t *ingame,
                   data->player_id = player_id);
     }
     if (button == SDL_CONTROLLER_BUTTON_BACK) {
-      MESSAGESENDSHORT(instance->sock, IA_ESC_TEXT_HIDE);
+      // TODO: put this in a macro, so we don't use strncpy wrong
+      // by accident!
+      // somehow it only works for sure when sending this twice.
+      MESSAGESEND(instance->sock, IA_ESC_TEXT_SHOW,
+                  strncpy(data->line1, "", 11);
+                  strncpy(data->line2, "", 33); strncpy(data->line3, "", 33););
+      MESSAGESEND(instance->sock, IA_ESC_TEXT_SHOW,
+                  strncpy(data->line1, "", 11);
+                  strncpy(data->line2, "", 33); strncpy(data->line3, "", 33););
       ud->is_in_quit_dialog = 0;
     }
   } else {

@@ -30,7 +30,11 @@ void mem_init_find_is_that_it(mem_t *mem) {
   if (mem->line1) {
     mem->line2 = (char *)mem->line1 + 0x18;
     mem->line3 = (char *)mem->line1 + 0x5c;
-    mem_text_clear(mem);
+
+    // hide the text initially
+    mem->line1[0] = '\0';
+    mem->line2[0] = '\0';
+    mem->line3[0] = '\0';
   } else
     printf("Failed to find the 'Is that it'-text!\n");
 }

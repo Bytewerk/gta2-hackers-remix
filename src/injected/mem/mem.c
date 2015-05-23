@@ -19,8 +19,6 @@ void mem_recv_callback(unsigned char msg_id, void *userdata) {
 
     MESSAGECASE(IA_MOVEMENT, { *GTA2_ADDR_MOVEMENT = data->movement; });
 
-    MESSAGECASESHORT(IA_ESC_TEXT_HIDE, { mem_text_clear(mem); });
-
     MESSAGECASE(IA_ESC_TEXT_SHOW, {
       if (mem->line1) {
         for (int i = 0; i < 11; i++)
