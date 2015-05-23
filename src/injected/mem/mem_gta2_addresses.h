@@ -28,7 +28,10 @@ char MP_PLAYER_ID; // 0...5
 
 // works for english language. the text is in unicode format (this means
 // every second byte is 00!)
-#define GTA2_ADDR_ESC_TEXT_ALIGNMENT ((wchar_t *)0x03bbabb2)
+
+// desktop: 0x02f3abb2
+// laptop:  0x03bbabb2
+#define GTA2_ADDR_ESC_TEXT_ALIGNMENT ((wchar_t *)0x0000abb2)
 #define GTA2_ESC_TEXT_QUIT1 L"Is that it?"
 
 // http://git.io/g2hr-rumble-byte

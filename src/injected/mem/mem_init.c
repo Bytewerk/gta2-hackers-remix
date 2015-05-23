@@ -6,17 +6,24 @@
 // Find the "Is that it?" text-location with an educated guess.
 // documentation: http://git.io/g2hr-esc-text
 void mem_init_find_is_that_it(mem_t *mem) {
+  Sleep(1000);
+
   int tries = 0;
   while (!mem->line1 && tries < 100) {
-    Sleep(100);
-    wchar_t *addr = GTA2_ADDR_ESC_TEXT_ALIGNMENT;
+    for (int i = 0; i < 10000 && !mem->line1; i++) {
+      wchar_t *addr =
+          (wchar_t *)((char *)GTA2_ADDR_ESC_TEXT_ALIGNMENT + i * 0x00010000);
 
-    for (int i = 0; i < 100; i++) {
-      if (!IsBadReadPtr(addr, 12) && !wcscmp(addr, GTA2_ESC_TEXT_QUIT1))
+      if (!IsBadReadPtr(addr, 12) && !wcscmp(addr, GTA2_ESC_TEXT_QUIT1)) {
         mem->line1 = addr;
-      addr += 0x00010000;
+      }
     }
     tries++;
+
+    if (!mem->line1) {
+      printf("quit string not found, try #%i...\n", tries);
+      Sleep(100);
+    }
   }
 
   if (mem->line1) {
