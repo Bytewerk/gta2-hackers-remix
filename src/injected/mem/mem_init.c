@@ -14,9 +14,8 @@ void mem_init_find_is_that_it(mem_t *mem) {
       wchar_t *addr =
           (wchar_t *)((char *)GTA2_ADDR_ESC_TEXT_ALIGNMENT + i * 0x00010000);
 
-      if (!IsBadReadPtr(addr, 12) && !wcscmp(addr, GTA2_ESC_TEXT_QUIT1)) {
+      if (!IsBadReadPtr(addr, 12) && !wcscmp(addr, GTA2_ESC_TEXT_QUIT1))
         mem->line1 = addr;
-      }
     }
     tries++;
 
@@ -31,7 +30,7 @@ void mem_init_find_is_that_it(mem_t *mem) {
     mem->line3 = (wchar_t *)((char *)mem->line1 + 0x5c);
     mem_text_clear(mem);
   } else
-    printf("Failed to find the 'Is that it'-text!\n");
+    printf("giving up, won't be able to display text ingame!\n");
 }
 
 mem_t *mem_init() {
