@@ -21,11 +21,16 @@ void mem_recv_callback(unsigned char msg_id, void *userdata) {
 
     MESSAGECASESHORT(IA_ESC_TEXT_HIDE, { mem_text_clear(mem); });
 
-    MESSAGECASESHORT(IA_ESC_TEXT_SHOW, {
+    MESSAGECASE(IA_ESC_TEXT_SHOW, {
       if (mem->line1) {
-        mem->line1[0] = 'I';
-        mem->line2[0] = 'P';
-        mem->line3[0] = 'P';
+        for (int i = 0; i < 11; i++)
+          ((char *)mem->line1)[i * 2] = data->line1[i];
+
+        for (int i = 0; i < 33; i++)
+          ((char *)mem->line2)[i * 2] = data->line2[i];
+
+        for (int i = 0; i < 33; i++)
+          ((char *)mem->line3)[i * 2] = data->line3[i];
       }
     });
   }

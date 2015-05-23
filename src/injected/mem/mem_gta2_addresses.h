@@ -31,7 +31,7 @@ char MP_PLAYER_ID; // 0...5
 
 // desktop: 0x02f3abb2
 // laptop:  0x03bbabb2
-#define GTA2_ADDR_ESC_TEXT_ALIGNMENT ((wchar_t *)0x0000abb2)
+#define GTA2_ADDR_ESC_TEXT_ALIGNMENT ((char *)0x0000abb2)
 #define GTA2_ESC_TEXT_QUIT1 L"Is that it?"
 
 // http://git.io/g2hr-rumble-byte

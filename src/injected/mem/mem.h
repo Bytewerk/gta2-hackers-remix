@@ -1,19 +1,23 @@
 #pragma once
-#include <wchar.h>
+#include <strings.h>
 
 typedef struct {
   int player_id; // -1: unknown
 
   // see also: mem_init() and http://git.io/g2hr-esc-text
-  wchar_t *line1; // len: 11
-  wchar_t *line2; // len: 33
-  wchar_t *line3; // len: 33
+  char *line1; // len: 11
+  char *line2; // len: 33
+  char *line3; // len: 33
 
 } mem_t;
 
+// somehow zero-ing the first byte isn't enough.
 #define mem_text_clear(MEM)                                                    \
-  if (mem->line1)                                                              \
-  mem->line1[0] = mem->line2[0] = mem->line3[0] = '\0'
+  if (MEM->line1) {                                                            \
+    memset(MEM->line1, '\0', 22);                                              \
+    memset(MEM->line2, '\0', 66);                                              \
+    memset(MEM->line3, '\0', 66);                                              \
+  }
 
 mem_t *mem_init();
 
