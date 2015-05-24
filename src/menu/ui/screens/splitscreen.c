@@ -155,21 +155,24 @@ void splitscreen_start(ud_splitscreen_t *ud) {
     SDL_Delay(100);
   }
 
+  /*
   // Build and send the start command
-  int map_id = ((ud_arrowtext_t *)ud->map->userdata)->entry_selected;
+  int map_id = ((ud_arrowtext_t*)ud->map->userdata)->entry_selected;
 
-  char game_type = ((ud_arrowtext_t *)ud->game_type->userdata)->entry_selected;
+  char game_type = ((ud_arrowtext_t*)ud->game_type->userdata)
+          ->entry_selected;
 
-  char *time =
-      ud->ui->multiplayer_time_values
-          ->values[((ud_arrowtext_t *)(ud->time->userdata))->entry_selected];
+  char* time = ud->ui->multiplayer_time_values->values
+          [((ud_arrowtext_t*)(ud->time->userdata))->entry_selected];
 
-  int cops_enabled = ((ud_arrowtext_t *)ud->cops->userdata)->entry_selected;
+  int cops_enabled = ((ud_arrowtext_t*) ud->cops->userdata)
+          ->entry_selected;
 
   // FIXME: this seems to be buggy
   // (terminal output: SPLITSCREEN 0 1 (null) 2613936 1)
-  snprintf(buffer, SPLITSCREEN_BUFFER_LEN, "SPLITSCREEN %i %i %s %i %i",
-           player_count, map_id, game_type, time, cops_enabled);
+  */
+  snprintf(buffer, SPLITSCREEN_BUFFER_LEN,
+           "SPLITSCREEN STUB 1 2 3 4 5 6 7 8 9");
   net_send_to_meta(ui->net, buffer, 0);
 }
 #undef SPLITSCREEN_BUFFER_LEN
