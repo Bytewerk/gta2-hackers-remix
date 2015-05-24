@@ -4,6 +4,10 @@ data/g2hr.cfg
 # wine prefix
 build/wineprefix
 
+# wine msstyle theme without window borders
+*.msstyles
+
+
 # PKGBUILDs
 build/PKGBUILDs/*/pkg
 build/PKGBUILDs/*/src

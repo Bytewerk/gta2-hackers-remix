@@ -1,0 +1,92 @@
+/*
+  Wine Sample Theme
+  This file demonstrates how to create a basic msstyles theme from scratch
+
+  Copyright (C) 2008 Roderick Colenbrander
+  This file is licensed under the LGPL
+*/
+
+/* Unicode file containing the display names of the color schemes (NULL terminated) */
+1 COLORNAMES "colornames.txt"
+
+/* Each color scheme can be available in different sizes (e.g. NormalSize, LargeFonts ..).
+   This unicode file contains the file names of the original ini files for each color + font combination.
+   The names are in capital letters and the extension is separated by a underscore instead of a dot.
+*/
+1 FILERESNAMES "fileresnames.txt"
+
+/* Unicode file containing the names of the original Microsoft theme templates? */
+1 ORIGFILENAMES "origfilenames.txt"
+
+/* Version number which is 3 for XP themes (03 00 Little Endian in the file) */
+1 PACKTHEM_VERSION "packthem_version.txt"
+
+/* Unicode file containing the different font sizes supported by this theme e.g. NormalSize, LargeFonts, ExtraLargeFonts */
+1 SIZENAMES "sizenames.txt"
+
+/* Each file name in FILERESNAMES has a corresponding section here */
+WINESAMPLETHEME_INI TEXTFILE "WineSampleTheme.ini"
+
+/* Table of display names ('descriptions') corresponding to COLORNAMES. */
+STRINGTABLE
+{
+  1000, "Wine Sample Theme description"
+}
+
+/* Table of tooltips corresponding to COLORNAMES */
+STRINGTABLE
+{
+  2000, "Wine Sample Theme tooltip"
+}
+
+/* Font size corresponding to SIZENAMES (?) */
+STRINGTABLE
+{
+  3000, "Normal" 
+}
+
+/* Something else font related ?? */
+STRINGTABLE
+{
+  4000, "Normal" 
+}
+
+/* Theme info */
+STRINGTABLE
+{
+  5000, "Wine Sample Theme" /* DisplayName */
+  5001, "Wine Sample Theme" /* Tooltip */
+  5002, "" /* Company */
+  5003, "Roderick Colenbrander" /* Author */
+  5004, "Released under LGPL, 2008" /* Copyright */
+  5005, "" /* Website */
+  5006, "1.0" /* Version */
+  5007, "Wine Sample XP Theme" /* Description */
+}
+
+
+1 VERSIONINFO
+FILEVERSION 1,0,0,1
+PRODUCTVERSION 1,0,0,1
+FILEOS 0x40004
+FILETYPE 0x1
+{
+BLOCK "StringFileInfo"
+{
+  BLOCK "040904b0"
+  {
+    VALUE "Comments", ""
+    VALUE "CompanyName", ""
+    VALUE "FileDescription", "Wine Sample Theme"
+    VALUE "FileVersion", "1, 0, 0, 1"
+    VALUE "InternalName", ""
+    VALUE "LegalCopyright", "Copyright © 2008"
+    VALUE "LegalTrademarks", ""
+    VALUE "OriginalFilename", "winetheme.rc"
+    VALUE "PrivateBuild", ""
+    VALUE "ProductName", "Wine Sample Theme"
+    VALUE "ProductVersion", "1, 0, 0, 1"
+    VALUE "SpecialBuild", ""
+  }
+}
+}
