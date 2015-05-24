@@ -1,3 +1,4 @@
+#include "../../../common/common.h"
 #include "../../gxt/gxt.h"
 #include "../../tk/ctrl/controls.h"
 #include "../../tk/toolkit.h"
@@ -7,12 +8,8 @@
 #define CREDITS_MANUAL_SCROLL_OFFSET 50
 
 typedef struct {
-  tk_el_t *hr_text;
   tk_el_t *scrolling;
   ui_t *ui;
-
-  uint32_t hr_color;
-
 } ud_credits_t;
 
 uint32_t credits_argb(char color) {
@@ -127,10 +124,12 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
 
       tk_el_padding(TK_PARENT, 120, 150, 0, 120); tk_el_width(TK_PARENT, 400);
 
-      ud->hr_text = tk_label(tk, TK_PARENT, "HACKER'S REMIX",
-                             GTA2_FONT_FSTYLE_GRADIENT_BLACK_NORMAL, 0);
-      ud->hr_text->padding_bottom = 5;
-      ud->hr_text->argb_normal = credits_argb('C'); tk_el_center(ud->hr_text);
+      tk_el_t *hr_text =
+          tk_label(tk, TK_PARENT, "HACKER'S REMIX V" G2HR_VERSION,
+                   GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0);
+      hr_text->padding_bottom = 5;
+      // hr_text->argb_normal = credits_argb('C');
+      tk_el_center(hr_text);
 
       // scrolling part
       TK_STACK(ud->scrolling = TK_PARENT; tk_el_scrollable(TK_PARENT);

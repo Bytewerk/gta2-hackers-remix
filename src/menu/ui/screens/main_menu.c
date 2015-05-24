@@ -1,3 +1,4 @@
+#include "../../../common/common.h"
 #include "../../tk/ctrl/controls.h"
 #include "../../tk/toolkit.h"
 #include "../ui.h"
@@ -8,7 +9,7 @@ tk_screen_t *ui_screen_main_menu(tk_t *tk, ui_t *ui) {
 
   TK_STACK_SCREEN(
       main_menu, tk_el_padding(TK_PARENT, 300, 250, 0, 0);
-      TK_PARENT->bottom_text_low = "G2HR V0.4";
+      TK_PARENT->bottom_text_low = "G2HR V" G2HR_VERSION;
 
       tk_ctrl_button(tk, TK_PARENT, "CAMPAIGN",
                      bg_mashup(tk->bg, NULL, "1_play", "1", NULL), ui->play);
