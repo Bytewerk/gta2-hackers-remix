@@ -12,10 +12,10 @@ typedef struct { int id; } IA_PLAYER_ID_t;
 #define IA_ESC_TEXT_HIDE 0xa2
 #define IA_ESC_TEXT_SHOW 0xa3
 typedef struct {
-  char line1[22];
-  char line2[66];
-  char line3[66];
-  uint16_t timeout_ms; // 0: never time out!
+  char line1[11];
+  char line2[33];
+  char line3[33];
+  uint16_t timeout_ms; // (not implemented yet, set to 0)
 } IA_ESC_TEXT_SHOW_t;
 
 // Injected to native messages

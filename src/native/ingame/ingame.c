@@ -121,13 +121,19 @@ void ingame_handle_buttonpress(ingame_t *ingame,
 
   if (ud->is_in_quit_dialog) {
     if (button == SDL_CONTROLLER_BUTTON_START) {
-      printf("[player %i] confirmed quit dialog\n", player_id + 1);
       MESSAGESEND(ingame->net->sock_menu, NA_QUIT_GAME,
                   data->player_id = player_id);
     }
     if (button == SDL_CONTROLLER_BUTTON_BACK) {
-      printf("[player %i] cancel quit dialog\n", player_id + 1);
-      MESSAGESENDSHORT(instance->sock, IA_ESC_TEXT_HIDE);
+      // TODO: put this in a macro, so we don't use strncpy wrong
+      // by accident!
+      // somehow it only works for sure when sending this twice.
+      MESSAGESEND(instance->sock, IA_ESC_TEXT_SHOW,
+                  strncpy(data->line1, "", 11);
+                  strncpy(data->line2, "", 33); strncpy(data->line3, "", 33););
+      MESSAGESEND(instance->sock, IA_ESC_TEXT_SHOW,
+                  strncpy(data->line1, "", 11);
+                  strncpy(data->line2, "", 33); strncpy(data->line3, "", 33););
       ud->is_in_quit_dialog = 0;
     }
   } else {
@@ -135,16 +141,13 @@ void ingame_handle_buttonpress(ingame_t *ingame,
       printf("[player %i] next layout STUB\n", player_id + 1);
     }
     if (button == SDL_CONTROLLER_BUTTON_BACK) {
-      printf("[player %i] show quit dialog STUB:\n"
-             "\t--------------------------------------\n"
-             "\t\tIs that it?\n"
-             "\t\tPress START to quit,\n"
-             "\t\tPress BACK  to resume.\n"
-             "\t--------------------------------------\n",
-             player_id + 1);
+      // TODO: put this in a macro, so we don't use strncpy wrong
+      // by accident!
+      MESSAGESEND(instance->sock, IA_ESC_TEXT_SHOW,
+                  strncpy(data->line1, "Is that it?", 11);
+                  strncpy(data->line2, "Press START to quit play.", 33);
+                  strncpy(data->line3, "Press BACK to continue.", 33););
 
-      // FIXME: actually set the text here, will require macros
-      // that generate unicode text
       MESSAGESENDSHORT(instance->sock, IA_ESC_TEXT_SHOW);
       ud->is_in_quit_dialog = 1;
     }
