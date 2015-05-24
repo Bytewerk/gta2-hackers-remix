@@ -21,11 +21,15 @@ bin/native.exe:
 	$(MAKE) -C src/native/ Windows
 
 
-
 # Additional targets for easy debugging
 run: bin/menu.exe bin/meta.exe bin/native.bin GTA2/dmavideo.dll
 	bin/native.bin
 	wineboot -e -f
+
+# Testing the wine msstyle theme
+winecfg:
+	WINEDEBUG=-all wine explorer /desktop=Test,800x600 winecfg
+
 
 GTA2/dmavideo.dll: bin/proxy.dll
 	cp bin/proxy.dll GTA2/dmavideo.dll
@@ -50,4 +54,4 @@ clean:
 	rm bin/*.exe bin/*.bin || true
 	$(MAKE) -s -C src/menu clean
 	
-.PHONY: clean all bin/menu.exe bin/meta.exe bin/native.bin bin/proxy.dll GTA2/dmavideo.dll regsniff
+.PHONY: clean all bin/menu.exe bin/meta.exe bin/native.bin bin/proxy.dll GTA2/dmavideo.dll regsniff winecfg
