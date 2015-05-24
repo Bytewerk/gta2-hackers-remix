@@ -28,6 +28,7 @@ run: bin/menu.exe bin/meta.exe bin/native.bin GTA2/dmavideo.dll
 
 # Testing the wine msstyle theme
 winecfg:
+	$(MAKE) -C wine-theme-no-window-borders
 	WINEDEBUG=-all wine explorer /desktop=Test,800x600 winecfg
 
 

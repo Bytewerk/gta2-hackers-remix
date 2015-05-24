@@ -54,14 +54,14 @@ STRINGTABLE
 /* Theme info */
 STRINGTABLE
 {
-  5000, "Wine Sample Theme" /* DisplayName */
-  5001, "Wine Sample Theme" /* Tooltip */
+  5000, "G2HR Wine Theme" /* DisplayName */
+  5001, "G2HR Wine Theme without window borders" /* Tooltip */
   5002, "" /* Company */
-  5003, "Roderick Colenbrander" /* Author */
-  5004, "Released under LGPL, 2008" /* Copyright */
-  5005, "" /* Website */
-  5006, "1.0" /* Version */
-  5007, "Wine Sample XP Theme" /* Description */
+  5003, "" /* Author */
+  5004, "GPLv2 or higher" /* Copyright */
+  5005, "http://git.io/g2hr" /* Website */
+  5006, "0.1" /* Version */
+  5007, "Wine theme that doesn't have window borders" /* Description */
 }
 
 
@@ -77,14 +77,14 @@ BLOCK "StringFileInfo"
   {
     VALUE "Comments", ""
     VALUE "CompanyName", ""
-    VALUE "FileDescription", "Wine Sample Theme"
+    VALUE "FileDescription", "G2HR Wine Theme"
     VALUE "FileVersion", "1, 0, 0, 1"
     VALUE "InternalName", ""
-    VALUE "LegalCopyright", "Copyright © 2008"
+    VALUE "LegalCopyright", "Copyright © 2015"
     VALUE "LegalTrademarks", ""
     VALUE "OriginalFilename", "winetheme.rc"
     VALUE "PrivateBuild", ""
-    VALUE "ProductName", "Wine Sample Theme"
+    VALUE "ProductName", "G2HR Wine Theme"
     VALUE "ProductVersion", "1, 0, 0, 1"
     VALUE "SpecialBuild", ""
   }
