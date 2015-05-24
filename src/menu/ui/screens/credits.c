@@ -6,6 +6,15 @@
 
 #define CREDITS_MANUAL_SCROLL_OFFSET 50
 
+typedef struct {
+  tk_el_t *hr_text;
+  tk_el_t *scrolling;
+  ui_t *ui;
+
+  uint32_t hr_color;
+
+} ud_credits_t;
+
 uint32_t credits_argb(char color) {
   switch (color) {
   case 'W':
@@ -25,31 +34,32 @@ uint32_t credits_argb(char color) {
 // TODO: Quit at the end of the credits? or at least stop scrolling.
 void credits_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                         tk_action_t action) {
-  ui_t *ui = (ui_t *)(el->userdata);
+  ud_credits_t *ud = (ud_credits_t *)(el->userdata);
+  ui_t *ui = ud->ui;
 
   if (action == TK_ACTION_BACKSPACE || action == TK_ACTION_ESC ||
       action == TK_ACTION_ENTER) {
     if (ui->slotmachine_enabled) {
       tk->screen_active = ui->main;
-      el->scroll_top = 0;
+      ud->scrolling->scroll_top = 0;
     } else
       tk->quit = 1;
   }
 
   if (action == TK_ACTION_FRAMETIME) {
-    el->scroll_top += 1;
+    ud->scrolling->scroll_top += 1;
     tk->redraw_needed = 1;
   }
 
   if (action == TK_ACTION_UP) {
-    if (el->scroll_top > CREDITS_MANUAL_SCROLL_OFFSET)
-      el->scroll_top -= CREDITS_MANUAL_SCROLL_OFFSET;
+    if (ud->scrolling->scroll_top > CREDITS_MANUAL_SCROLL_OFFSET)
+      ud->scrolling->scroll_top -= CREDITS_MANUAL_SCROLL_OFFSET;
     else
-      el->scroll_top = 0;
+      ud->scrolling->scroll_top = 0;
   }
 
   if (action == TK_ACTION_DOWN) {
-    el->scroll_top += CREDITS_MANUAL_SCROLL_OFFSET;
+    ud->scrolling->scroll_top += CREDITS_MANUAL_SCROLL_OFFSET;
   }
 }
 
@@ -101,21 +111,37 @@ void credits_add_original(tk_t *tk, tk_el_t *TK_PARENT) {
   }
 
 tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
+  ud_credits_t *ud = malloc(sizeof(ud_credits_t));
+  ud->ui = ui;
+
   tk_screen_t *credits = tk_screen(tk, NULL, NULL);
 
-  TK_STACK_SCREEN(credits, TK_PARENT->bg_mashup =
-                               bg_mashup(tk->bg, "credits", NULL, NULL, NULL);
-                  tk_el_padding(TK_PARENT, 120, 150, 0, 120);
-                  tk_el_width(TK_PARENT, 400); tk_el_scrollable(TK_PARENT);
+  TK_STACK_SCREEN(
+      credits,
 
-                  // override default screen actionfunc!
-                  TK_PARENT->actionfunc = (void *)credits_actionfunc;
-                  TK_PARENT->userdata = (void *)ui;
+      TK_PARENT->bg_mashup = bg_mashup(tk->bg, "credits", NULL, NULL, NULL);
 
-                  ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_HUGE, 200, 0, "ORIGINAL");
-                  ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_HUGE, 0, 20, "GTA2 CREDITS");
+      tk_el_padding(TK_PARENT, 120, 150, 0, 120); tk_el_width(TK_PARENT, 400);
 
-                  credits_add_original(tk, TK_PARENT););
+      ud->hr_text = tk_label(tk, TK_PARENT, "HACKER'S REMIX",
+                             GTA2_FONT_FSTYLE_GRADIENT_BLACK_NORMAL, 0);
+      ud->hr_text->padding_bottom = 5;
+      ud->hr_text->argb_normal = credits_argb('C'); tk_el_center(ud->hr_text);
+
+      // scrolling part
+      TK_STACK(ud->scrolling = TK_PARENT; tk_el_scrollable(TK_PARENT);
+
+               // override default screen actionfunc!
+               TK_PARENT->actionfunc = (void *)credits_actionfunc;
+               TK_PARENT->userdata = (void *)ud;
+
+               // G2HR credits
+               // ...
+
+               // original credits
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_HUGE, 200, 0, "ORIGINAL");
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_HUGE, 0, 20, "GTA2 CREDITS");
+               credits_add_original(tk, TK_PARENT);));
 
   return credits;
 }
