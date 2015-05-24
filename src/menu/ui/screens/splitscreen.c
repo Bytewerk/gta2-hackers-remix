@@ -213,7 +213,7 @@ void splitscreen_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 // SCREEN INIT & LAYOUT
 
 tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
-  ud_splitscreen_t *ud = malloc(sizeof(ud_splitscreen_t));
+  ud_splitscreen_t *ud = calloc(1, sizeof(ud_splitscreen_t));
   ud->ui = ui;
 
   tk_screen_t *splitscreen = tk_screen(tk, NULL, NULL);

@@ -118,6 +118,10 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
 
   TK_STACK_SCREEN(
       credits,
+      // override default screen actionfunc. this is necessary,
+      // because we never have a selected element!
+      TK_PARENT->actionfunc = (void *)credits_actionfunc;
+      TK_PARENT->userdata = (void *)ud;
 
       TK_PARENT->bg_mashup = bg_mashup(tk->bg, "credits", NULL, NULL, NULL);
 
@@ -130,10 +134,6 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
 
       // scrolling part
       TK_STACK(ud->scrolling = TK_PARENT; tk_el_scrollable(TK_PARENT);
-
-               // override default screen actionfunc!
-               TK_PARENT->actionfunc = (void *)credits_actionfunc;
-               TK_PARENT->userdata = (void *)ud;
 
                // G2HR credits
                // ...

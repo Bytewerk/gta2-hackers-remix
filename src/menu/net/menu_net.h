@@ -26,7 +26,7 @@ typedef struct {
   int server_port;
 } net_t;
 
-net_t *net_init(int native_port);
+net_t *net_init();
 void net_cleanup(net_t *net);
 void net_frame(net_t *net);
 void net_send_to_meta(net_t *net, char *message, char do_free);

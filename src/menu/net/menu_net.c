@@ -1,15 +1,16 @@
 #include "menu_net.h"
 #include "../../common/api_native2menu.h"
+#include "../../common/common.h"
 #include <SDL2/SDL_net.h>
 
-net_t *net_init(int native_port) {
+net_t *net_init() {
   net_t *net = calloc(1, sizeof(net_t));
   net->set = SDLNet_AllocSocketSet(2);
 
   // join the 'native' component's server
-  SDLNet_ResolveHost(&(net->ip), "localhost", native_port);
+  SDLNet_ResolveHost(&(net->ip), "localhost", G2HR_NATIVE_SERVER_PORT);
   net->sock_native = SDLNet_TCP_Open(&(net->ip));
-  if (!net->sock_native)
+  if (!net->sock_native && !strcmp(SDL_GetPlatform(), "Windows"))
     exit(SDL_ShowSimpleMessageBox(
         SDL_MESSAGEBOX_ERROR, "G2HR",
         "Menu: Can't connect to the 'native' component!\nGTA2: Hacker's Remix "
@@ -18,7 +19,9 @@ net_t *net_init(int native_port) {
         "magic.\nCheck your firewall settings!\n\nMore info: "
         "http://git.io/g2hr-firewall",
         NULL));
-  SDLNet_TCP_AddSocket(net->set, net->sock_native);
+
+  if (net->sock_native)
+    SDLNet_TCP_AddSocket(net->set, net->sock_native);
 
   // listen on all addresses. Better would be localhost only,
   // but SDL2_net doesn't support this. We'll check for localhost
@@ -104,7 +107,7 @@ void net_frame(net_t *net) {
   if (net->sock_meta && SDLNet_SocketReady(net->sock_meta))
     net_parse_meta(net);
 
-  if (SDLNet_SocketReady(net->sock_native))
+  if (net->sock_native && SDLNet_SocketReady(net->sock_native))
     net_parse_native(net);
 }
 

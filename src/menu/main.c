@@ -24,11 +24,12 @@ int main(int argc, char *argv[]) {
 
       "3_tables", "credits",  "levelcomplete", "g2hr_splitscreen"};
 
-  if (argc != 2)
-    exit(SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "G2HR",
-                                  "'menu.exe' gets startet by 'native.exe' "
-                                  "(native.bin on Linux). Start that instead!",
-                                  NULL));
+  if (argc != 2 && !strcmp(SDL_GetPlatform(), "Windows"))
+    exit(SDL_ShowSimpleMessageBox(
+        SDL_MESSAGEBOX_ERROR, "G2HR",
+        "'menu.exe' gets startet by 'native.exe' (native.bin on"
+        " Linux). Start that instead!",
+        NULL));
 
   // FIXME: attach gxt to ui instead of tk!
 
@@ -38,7 +39,7 @@ int main(int argc, char *argv[]) {
   if (SDLNet_Init() == -1)
     exit(printf("SDLNet ERROR: %s\n", SDLNet_GetError()));
   IMG_Init(IMG_INIT_PNG);
-  net_t *net = net_init(strtol(argv[1], NULL, 10));
+  net_t *net = net_init();
 
   // load GTA2 files
   gxt_t *gxt = gxt_load("GTA2/data/e.gxt");
