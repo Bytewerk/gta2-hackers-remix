@@ -107,10 +107,14 @@ Func cmd_splitscreen($cmd)
 	For $i=1 To ($player_count+1)
 		Local $param = "-j 127.0.0.1"
 		If $i == 1 Then $param = "-c"
-	
-		Run($global_config_path & "\G2HR_PLAYER" & $i & ".exe " _
+		
+		$global_game_process_ids[$i-1] =  Run($global_config_path _
+			& "\G2HR_PLAYER" & $i & ".exe " _
 			& $param, @ScriptDir & "\..\GTA2", @SW_SHOW)
 	Next
 	
 	; Wait until all instances are connected somehow
+	Local $host_pid = $global_game_process_ids[0]
+	Local $host_hwnd = wait_for_hwnd_by_pid($host_pid)
+	re("host window open: " & $host_hwnd)
 Endfunc

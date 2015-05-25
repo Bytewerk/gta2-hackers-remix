@@ -32,3 +32,43 @@ Func send_pid_table()
 	Next
 	re($str)
 Endfunc
+
+
+; "clean room" re-implementation of _GetHwndFromPID($PID)
+;
+; A similar function can be found in the autoit forums - but with an
+; unknown author and license. This is my own version, created without
+; looking at the source code found there:
+;
+; https://www.autoitscript.com/forum/topic/
+; 86680-pid-window-handle-hwnd-conversion/?do=findComment&comment=621521
+
+Func get_hwnd_from_pid($pid)
+	Local $list = WinList()
+	For $i = 1 To $list[0][0] -1
+	
+		Local $hwnd = $list[$i][1]
+		
+		If WinGetProcess($hwnd) == $pid Then _
+			Return $hwnd
+	Next
+	Return Null
+Endfunc
+
+
+Func wait_for_hwnd_by_pid($pid)
+	While True
+		Local $hwnd = get_hwnd_from_pid($pid)
+		If $hwnd Then _
+			Return $hwnd
+		Sleep(100)
+	Wend
+Endfunc
+
+
+
+
+
+
+
+
