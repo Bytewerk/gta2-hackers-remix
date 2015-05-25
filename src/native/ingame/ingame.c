@@ -162,10 +162,10 @@ void ingame_frame(ingame_t *ingame, SDL_Event *event) {
   for (int i = 0; i < count; i++) {
     net_injected_instance_t *instance = ingame->instance_by_player_id[i];
 
-    ingame_instance_userdata_t *ud =
-        (ingame_instance_userdata_t *)instance->userdata;
-
     if (instance && !pad->disconnected) {
+      ingame_instance_userdata_t *ud =
+          (ingame_instance_userdata_t *)instance->userdata;
+
       if (event) {
         if (event->type == SDL_CONTROLLERBUTTONDOWN &&
             event->cbutton.which == pad->joystick_id) {
