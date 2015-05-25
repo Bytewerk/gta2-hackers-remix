@@ -82,7 +82,11 @@ While Not $exit
 	sleep(100) ; TCPRecv is non-blocking!
 WEnd
 
-; Clean up
+; Clean up (sends a message, in case the clean up is unexpected by menu)
+re("CLEANING UP...")
 ProcessClose("dplaysvr.exe")
+For $i = 1 To $GTA2_PLAYER_COUNT
+	ProcessClose("G2HR_PLAYER"&$i&".exe")
+Next
 TCPCloseSocket($global_sock)
 TCPShutdown()

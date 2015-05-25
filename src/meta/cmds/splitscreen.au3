@@ -62,21 +62,12 @@ Func prepare_common_registry_settings($i) ;$i: 1...6
 	RegWrite($root&"\Screen", "videodevice", "REG_DWORD", 0x01)
 	RegWrite($root&"\Screen", "videoname", "REG_SZ", "dmavideo.dll")
 	RegWrite($root&"\Screen", "special_recognition", "REG_DWORD", 0x01)
-	
-	
-	
 Endfunc
 
 
-
-; This command starts a splitscreeen game by launching multiple
-; instances of GTA2. The first one hosts a network game, the others
-; join it. After starting it, the windows get attached to the main
-; window and moved in the right positions.
-Func cmd_splitscreen($cmd)
-	Local $player_count = $cmd[1] ; Zero based!
+Func prepare_host_registry($cmd)
 	Local $map_id = $cmd[2]
-	;Local $game_type = $cmd[3]
+	; Local $game_type = $cmd[3]
 	Local $time = $cmd[4]
 	Local $cops_enabled = $cmd[5]
 	
@@ -85,19 +76,29 @@ Func cmd_splitscreen($cmd)
 	Local $root_original = "HKCU\Software\DMA Design Ltd\GTA2"
 	prepare_common_registry_network_settings($root_original)
 	
-	; OK until here!
-	
 	RegWrite($root_original&"\Network", "map_index", "REG_DWORD", _
 		$map_id)
 	RegWrite($root_original&"\Network", "police", "REG_DWORD", _
 		$cops_enabled)
 		
 	; TODO: game type
+	
 	RegWrite($root_original&"\Network", "game_time_limit", _
 		"REG_DWORD", $time)
+Endfunc
+
+
+; This command starts a splitscreeen game by launching multiple
+; instances of GTA2. The first one hosts a network game, the others
+; join it. After starting it, the windows get attached to the main
+; window and moved in the right positions.
+Func cmd_splitscreen($cmd)
+	Local $player_count = $cmd[1] ; Zero based!
 	
+	; Host settings (map id, game type etc.)
+	prepare_host_registry($cmd)
 	
-	; Client settings (such as resultions etc., TODO!)
+	; Client settings (such as resultions etc.)
 	For $i = 1 To ($player_count+1)
 		prepare_common_registry_settings($i)
 	Next
@@ -109,8 +110,7 @@ Func cmd_splitscreen($cmd)
 	
 		Run($global_config_path & "\G2HR_PLAYER" & $i & ".exe " _
 			& $param, @ScriptDir & "\..\GTA2", @SW_SHOW)
-	
-		; Debug: only show the host window for now
-		Exitloop
 	Next
+	
+	; Wait until all instances are connected somehow
 Endfunc
