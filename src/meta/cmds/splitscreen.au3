@@ -1,3 +1,7 @@
+#include <WinAPI.au3>
+#include <Constants.au3>
+
+
 ; We have this in an extra function, because we also need to do this
 ; for the normal registry path (Software\DMA Design Ltd\GTA2\). Although
 ; it is replaced in the exe files where it was found, somehow the net-
@@ -112,6 +116,8 @@ Func cmd_splitscreen($cmd)
 			& "\G2HR_PLAYER" & $i & ".exe " _
 			& $param, @ScriptDir & "\..\GTA2", @SW_SHOW)
 	Next
+	send_pid_table()
+	
 	
 	; Wait until all instances are connected to the host
 	Local $host_pid = $global_game_process_ids[0]
@@ -120,22 +126,18 @@ Func cmd_splitscreen($cmd)
 	wait_for_listview_entry_count($hwnd, $GTA2_LOBBY_CTRL_LIST, _
 		$player_count +1)
 
-
-	Local $host_hwnds = get_all_hwnds_from_pid($host_pid)
-	re("host hwnd count (before start): " & $host_hwnds[0])
-
-
-	; Debug code below!
-	
 	; Press the start button!
 	ControlClick($hwnd,"",$GTA2_LOBBY_CTRL_START)
 	
-	$host_hwnds = get_all_hwnds_from_pid($host_pid)
-	re("host hwnd count (after start): " & $host_hwnds[0])
-	sleep(1000)
-	
-	$host_hwnds = get_all_hwnds_from_pid($host_pid)
-	re("host hwnd count (later): " & $host_hwnds[0])
-	
-	; TODO: adjust window position
+	; Move the window
+	; (TODO: natively on Windows: attach it to the G2HR menu window)
+	For $i = $player_count To $i = 0 Step -1
+		Local $geo = $global_game_screen_layouts[$i]
+		$hwnd = wait_until_only_one_hwnd_left( _
+			$global_game_process_ids[$i])
+		
+		_WinAPI_SetWindowPos($hwnd, $HWND_TOP, $geo[0], $geo[1], _
+			$geo[2], $geo[3], $SWP_NOSIZE)
+	Next
+	re("splitscreen game initialized.")
 Endfunc

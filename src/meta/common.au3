@@ -79,6 +79,17 @@ Func wait_for_hwnd_with_control($pid, $ctrl_id)
 	Wend
 Endfunc
 
+; Returns the single hwnd id that is left
+Func wait_until_only_one_hwnd_left($pid)
+	While True
+		Local $hwnds = get_all_hwnds_from_pid($pid)
+		
+		If IsArray($hwnds) And $hwnds[0] == 1 Then _
+			Return $hwnds[1]
+		
+		Sleep(100)
+	Wend
+Endfunc
 
 Func wait_for_listview_entry_count($hwnd, $ctrl_id, $count)
 	While True
