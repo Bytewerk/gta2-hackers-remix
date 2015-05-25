@@ -76,9 +76,14 @@ Func cmd_splitscreen($cmd)
 		
 		; Host settings
 		If $i == 1 Then
-			Local $r = "HKEY_CURRENT_USER\Software\GTA2HackersRemix\P1"
+			Local $r = "HKCU\Software\GTA2HackersRemix\P1"
 			RegWrite($r&"\Network", "map_index", "REG_DWORD", $map_id)
-			; TODO: also write game type etc.
+			RegWrite($r&"\Network", "police", "REG_DWORD", _
+				$cops_enabled)
+			
+			; TODO: game type
+			RegWrite($r&"\Network", "game_time_limit", "REG_DWORD", _
+				$time)
 		Endif
 	Next
 	
