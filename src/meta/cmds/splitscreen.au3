@@ -113,16 +113,29 @@ Func cmd_splitscreen($cmd)
 			& $param, @ScriptDir & "\..\GTA2", @SW_SHOW)
 	Next
 	
-	; Wait until all instances are connected somehow
+	; Wait until all instances are connected to the host
 	Local $host_pid = $global_game_process_ids[0]
 	Local $hwnd = wait_for_hwnd_with_control($host_pid, _
 		$GTA2_LOBBY_CTRL_LIST)
-	
-	re("host window is open: " & $hwnd)
-	
 	wait_for_listview_entry_count($hwnd, $GTA2_LOBBY_CTRL_LIST, _
 		$player_count +1)
+
+
+	Local $host_hwnds = get_all_hwnds_from_pid($host_pid)
+	re("host hwnd count (before start): " & $host_hwnds[0])
+
+
+	; Debug code below!
 	
-	re("everyone is there!")
+	; Press the start button!
+	ControlClick($hwnd,"",$GTA2_LOBBY_CTRL_START)
 	
+	$host_hwnds = get_all_hwnds_from_pid($host_pid)
+	re("host hwnd count (after start): " & $host_hwnds[0])
+	sleep(1000)
+	
+	$host_hwnds = get_all_hwnds_from_pid($host_pid)
+	re("host hwnd count (later): " & $host_hwnds[0])
+	
+	; TODO: adjust window position
 Endfunc

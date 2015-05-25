@@ -88,9 +88,6 @@ Func wait_for_listview_entry_count($hwnd, $ctrl_id, $count)
 		If $current == $count Then _
 			Return
 		
-		; Debug
-		re("listview entries: " & $current)
-		
 		Sleep(100)
 	Wend
 Endfunc

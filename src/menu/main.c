@@ -87,7 +87,8 @@ int main(int argc, char *argv[]) {
       }
     }
 
-    net_frame(net);
+    if (!net_frame(net))
+      tk->quit = 1;
   }
 
   // cleanup all

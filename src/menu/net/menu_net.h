@@ -28,5 +28,5 @@ typedef struct {
 
 net_t *net_init();
 void net_cleanup(net_t *net);
-void net_frame(net_t *net);
+char net_frame(net_t *net); // 1: success, 0: failure (disconnect)
 void net_send_to_meta(net_t *net, char *message, char do_free);

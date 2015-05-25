@@ -63,7 +63,8 @@ void net_accept_localhost_only(net_t *net) {
   SDLNet_TCP_Close(net->sock_listen);
 }
 
-void net_parse_meta(net_t *net) {
+// returns 1 on success, 0 on failure
+char net_parse_meta(net_t *net) {
   char buffer[G2HR_MENU_SERVER_BUFFER_LEN + 1];
   buffer[G2HR_MENU_SERVER_BUFFER_LEN] = '\0';
 
@@ -72,43 +73,47 @@ void net_parse_meta(net_t *net) {
 
   if (length < 0) {
     printf("ERROR while receiving data from meta component!\n");
-    return;
+    return 0;
   }
   printf("[meta => menu]: %s\n", buffer);
 
   void (*callback)(char *msg, void *ud) = net->meta_recv_callback;
-
   callback(buffer, net->userdata);
+  return 1;
 }
 
-// TODO: return 1 on success, 0 on failure - and parse that in the
-// main loop!
-void net_parse_native(net_t *net) {
+// returns 1 on success, 0 on failure
+char net_parse_native(net_t *net) {
   char header;
 
   if (SDLNet_TCP_Recv(net->sock_native, &header, 1) <= 0) {
     printf("[menu] unexpected disconnect from native!\n");
-    return;
+    return 0;
   }
 
   void (*callback)(TCPsocket sock_native, char header, void *ud) =
       net->native_recv_callback;
-
   callback(net->sock_native, header, net->userdata);
+  return 1;
 }
 
-void net_frame(net_t *net) {
+// returns 1 on success, 0 on failure
+char net_frame(net_t *net) {
   if (!net->sock_meta)
     net_accept_localhost_only(net);
 
   if (!SDLNet_CheckSockets(net->set, 0))
-    return;
+    return 1;
 
   if (net->sock_meta && SDLNet_SocketReady(net->sock_meta))
-    net_parse_meta(net);
+    if (!net_parse_meta(net))
+      return 0;
 
   if (net->sock_native && SDLNet_SocketReady(net->sock_native))
-    net_parse_native(net);
+    if (!net_parse_native(net))
+      return 0;
+
+  return 1;
 }
 
 void net_send_to_meta(net_t *net, char *message, char do_free) {
