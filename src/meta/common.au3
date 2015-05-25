@@ -26,7 +26,7 @@ Endfunc
 
 
 Func send_pid_table()
-	$str = "PID_TABLE"
+	Local $str = "PID_TABLE"
 	For $i=0 To $GTA2_PLAYER_COUNT - 1
 		$str &= " " & $global_game_process_ids[$i]
 	Next

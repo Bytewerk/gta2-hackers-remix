@@ -18,9 +18,9 @@ re("CONNECTED! CAN YOU GIVE ME THE CONFIG PATH?")
 
 ; Handle incoming commands. Format:
 ; 	COMMAND_NAME [PARAMETER1 [PARAMETER2] ... ]
-$exit = 0
+Global $exit = 0
 While Not $exit
-	$data = BinaryToString(TCPRecv($global_sock,200,1))
+	Global $data = BinaryToString(TCPRecv($global_sock,200,1))
 	If @Error == -1 Then
 		ConsoleWrite("[meta] unexpected disconnect from menu, " _
 			& "shutting down..." & @CRLF)
@@ -42,7 +42,7 @@ While Not $exit
 			re("LOOKS VALID")
 		Endif
 		
-		$cmd = StringSplit($data," ",2)
+		Global $cmd = StringSplit($data," ",2)
 		Switch $cmd[0]
 			Case "CLEANUP"
 				$exit = 1
@@ -51,7 +51,7 @@ While Not $exit
 				Sleep(500)
 				re("HIDE GET READY SCREEN")
 			Case "SCREENLAYOUT"
-				Local $geo[4] = [$cmd[2], $cmd[3], $cmd[4], $cmd[5]]
+				Global $geo[4] = [$cmd[2], $cmd[3], $cmd[4], $cmd[5]]
 				$global_game_screen_layouts[$cmd[1]] = $geo
 			Case "SPLITSCREEN"
 				cmd_splitscreen($cmd)
@@ -83,5 +83,6 @@ While Not $exit
 WEnd
 
 ; Clean up
+ProcessClose("dplaysvr.exe")
 TCPCloseSocket($global_sock)
 TCPShutdown()

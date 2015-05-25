@@ -1,7 +1,10 @@
-Func prepare_common_registry_settings($i) ;$i: 1...6
-	Local $geo = $global_game_screen_layouts[$i -1]
-	Local $root = "HKEY_CURRENT_USER\Software\GTA2HackersRemix\P" & $i
-	
+; We have this in an extra function, because we also need to do this
+; for the normal registry path (Software\DMA Design Ltd\GTA2\). Although
+; it is replaced in the exe files where it was found, somehow the net-
+; work settings still get loaded from there. So the easiest way is, just
+; putting it there, too.
+;
+Func prepare_common_registry_network_settings($root)
 	; Working network settings, when selecting TCP/IP and 127.0.0.1.
 	; Simply dumped with: ConsoleWrite(RegRead(...))
 	RegWrite($root&"\Network", "protocol_selected", "REG_DWORD", 0)
@@ -16,6 +19,13 @@ Func prepare_common_registry_settings($i) ;$i: 1...6
 	RegWrite($root&"\Network", "UseProtocold", "REG_BINARY", _
 		Binary("0xE05EE9367785CF11960C0080C7534E82"))
 	RegWrite($root&"\Network", "UseProtocols", "REG_DWORD", 16)
+Endfunc
+
+Func prepare_common_registry_settings($i) ;$i: 1...6
+	Local $geo = $global_game_screen_layouts[$i -1]
+	Local $root = "HKEY_CURRENT_USER\Software\GTA2HackersRemix\P" & $i
+	
+	prepare_common_registry_network_settings($root)
 	
 	RegWrite($root&"\Screen","full_width","REG_DWORD", $geo[2])
 	RegWrite($root&"\Screen","full_height","REG_DWORD", $geo[3])
@@ -66,25 +76,30 @@ Endfunc
 Func cmd_splitscreen($cmd)
 	Local $player_count = $cmd[1] ; Zero based!
 	Local $map_id = $cmd[2]
-	Local $game_type = $cmd[3]
+	;Local $game_type = $cmd[3]
 	Local $time = $cmd[4]
 	Local $cops_enabled = $cmd[5]
 	
-	; Write all registry keys
+	; Host settings (they need to be in the original registry path,
+	; couldn't change that in the exe files yet)
+	Local $root_original = "HKCU\Software\DMA Design Ltd\GTA2"
+	prepare_common_registry_network_settings($root_original)
+	
+	; OK until here!
+	
+	RegWrite($root_original&"\Network", "map_index", "REG_DWORD", _
+		$map_id)
+	RegWrite($root_original&"\Network", "police", "REG_DWORD", _
+		$cops_enabled)
+		
+	; TODO: game type
+	RegWrite($root_original&"\Network", "game_time_limit", _
+		"REG_DWORD", $time)
+	
+	
+	; Client settings (such as resultions etc., TODO!)
 	For $i = 1 To ($player_count+1)
 		prepare_common_registry_settings($i)
-		
-		; Host settings
-		If $i == 1 Then
-			Local $r = "HKCU\Software\GTA2HackersRemix\P1"
-			RegWrite($r&"\Network", "map_index", "REG_DWORD", $map_id)
-			RegWrite($r&"\Network", "police", "REG_DWORD", _
-				$cops_enabled)
-			
-			; TODO: game type
-			RegWrite($r&"\Network", "game_time_limit", "REG_DWORD", _
-				$time)
-		Endif
 	Next
 	
 	; Launch all instances
@@ -98,5 +113,4 @@ Func cmd_splitscreen($cmd)
 		; Debug: only show the host window for now
 		Exitloop
 	Next
-	
 Endfunc
