@@ -1,3 +1,6 @@
+#include <WinAPI.au3>
+#include <Constants.au3>
+
 ; Constants (see also: common.h)
 Global Const $GTA2_PLAYER_COUNT = 6
 Global Const $GTA2_LOBBY_CTRL_START = 1021
@@ -103,6 +106,20 @@ Func wait_for_listview_entry_count($hwnd, $ctrl_id, $count)
 	Wend
 Endfunc
 
+
+Func move_until_it_works($hwnd, $geo)
+	While True
+		_WinAPI_SetWindowPos($hwnd, $HWND_TOP, $geo[0], $geo[1], _
+			$geo[2], $geo[3], $SWP_NOSIZE)
+		
+		Local $pos = WinGetPos($hwnd)
+		If $pos[0] == $geo[0] And $pos[1] == $geo[1] Then _
+			Return
+			
+		re("moving window " & $hwnd & " failed, tying again...")
+		Sleep(100)
+	Wend
+Endfunc
 
 
 

@@ -1,7 +1,3 @@
-#include <WinAPI.au3>
-#include <Constants.au3>
-
-
 ; We have this in an extra function, because we also need to do this
 ; for the normal registry path (Software\DMA Design Ltd\GTA2\). Although
 ; it is replaced in the exe files where it was found, somehow the net-
@@ -136,8 +132,7 @@ Func cmd_splitscreen($cmd)
 		$hwnd = wait_until_only_one_hwnd_left( _
 			$global_game_process_ids[$i])
 		
-		_WinAPI_SetWindowPos($hwnd, $HWND_TOP, $geo[0], $geo[1], _
-			$geo[2], $geo[3], $SWP_NOSIZE)
+		move_until_it_works($hwnd, $geo)
 	Next
 	re("splitscreen game initialized.")
 Endfunc
