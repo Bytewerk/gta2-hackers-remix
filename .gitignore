@@ -4,8 +4,8 @@ data/g2hr.cfg
 # wine prefix
 build/wineprefix
 
-# wine msstyle theme without window borders
-*.msstyles
+# core dumps. this rule never hits anything of course.
+core.*
 
 
 # PKGBUILDs
@@ -35,22 +35,14 @@ GTA2/*
 *.log
 
 # Compiled Object files
-*.slo
-*.lo
 *.o
-*.obj
 
 # Precompiled Headers
 *.gch
 *.pch
 
 # Compiled Dynamic libraries
-*.so
-*.dylib
 *.dll
-
-# Fortran module files
-*.mod
 
 # Compiled Static libraries
 *.lai
@@ -60,35 +52,9 @@ GTA2/*
 
 # Executables
 *.exe
-*.out
-*.app
 *.x86_64
 *.i686
 *.bin
-
-
-# Code::Blocks project files
-*.cbp
-*.depend
-*.layout
-
-# Visual Studio (2013, add others if you need) project files
-# see also: http://git.io/visual-studio-gitignore
-# VS project root
-Debug/
-Release/
-ipch/
-*.sdf
-*.sln
-*.suo
-*.opensdf
-
-# VS project: dmavideo folder
-*.vcxproj
-*.filters
-*.user
-*.def
-
 
 # Valgrind SDL2 init rule (make valgrind)
 *.sup
