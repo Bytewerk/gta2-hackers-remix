@@ -115,6 +115,14 @@ Func cmd_splitscreen($cmd)
 	
 	; Wait until all instances are connected somehow
 	Local $host_pid = $global_game_process_ids[0]
-	Local $host_hwnd = wait_for_hwnd_by_pid($host_pid)
-	re("host window open: " & $host_hwnd)
+	Local $hwnd = wait_for_hwnd_with_control($host_pid, _
+		$GTA2_LOBBY_CTRL_LIST)
+	
+	re("host window is open: " & $hwnd)
+	
+	wait_for_listview_entry_count($hwnd, $GTA2_LOBBY_CTRL_LIST, _
+		$player_count +1)
+	
+	re("everyone is there!")
+	
 Endfunc

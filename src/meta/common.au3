@@ -1,5 +1,7 @@
-; Variables derivated from defines in common.h
+; Constants (see also: common.h)
 Global Const $GTA2_PLAYER_COUNT = 6
+Global Const $GTA2_LOBBY_CTRL_START = 1021
+Global Const $GTA2_LOBBY_CTRL_LIST  = 1024
 
 
 ; Global variables
@@ -34,37 +36,64 @@ Func send_pid_table()
 Endfunc
 
 
-; "clean room" re-implementation of _GetHwndFromPID($PID)
-;
-; A similar function can be found in the autoit forums - but with an
-; unknown author and license. This is my own version, created without
-; looking at the source code found there:
-;
-; https://www.autoitscript.com/forum/topic/
-; 86680-pid-window-handle-hwnd-conversion/?do=findComment&comment=621521
-
-Func get_hwnd_from_pid($pid)
+; Return values:
+; 		$ret[0]: count of hwnds
+; 		$ret[1]: first hwnd
+; 		...
+Func get_all_hwnds_from_pid($pid)
 	Local $list = WinList()
-	For $i = 1 To $list[0][0] -1
+	Local $ret[1]
+	$ret[0] = 0
+	
+	For $i = 1 To $list[0][0]
 	
 		Local $hwnd = $list[$i][1]
 		
-		If WinGetProcess($hwnd) == $pid Then _
-			Return $hwnd
+		If WinGetProcess($hwnd) == $pid Then
+			_ArrayAdd($ret, $hwnd)
+			$ret[0] += 1
+		Endif
 	Next
+	
+	Return $ret
+Endfunc
+
+Func find_hwnd_with_control($hwnds, $ctrl_id)
+	For $i=1 To $hwnds[0]
+		If ControlCommand($hwnds[$i], "", $ctrl_id, "IsVisible") Then
+			Return $hwnds[$i]
+		Endif
+	Next
+	
 	Return Null
 Endfunc
 
-
-Func wait_for_hwnd_by_pid($pid)
+Func wait_for_hwnd_with_control($pid, $ctrl_id)
 	While True
-		Local $hwnd = get_hwnd_from_pid($pid)
+		Local $hwnd = find_hwnd_with_control( _
+			get_all_hwnds_from_pid($pid), $ctrl_id)
 		If $hwnd Then _
 			Return $hwnd
+		
 		Sleep(100)
 	Wend
 Endfunc
 
+
+Func wait_for_listview_entry_count($hwnd, $ctrl_id, $count)
+	While True
+		Local $current = ControlListView($hwnd, "", $ctrl_id, _
+			"GetItemCount")
+		
+		If $current == $count Then _
+			Return
+		
+		; Debug
+		re("listview entries: " & $current)
+		
+		Sleep(100)
+	Wend
+Endfunc
 
 
 
