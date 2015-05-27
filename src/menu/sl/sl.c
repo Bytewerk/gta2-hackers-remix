@@ -1,4 +1,6 @@
 #include "sl.h"
+#include "../../common/io/io.h"
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -178,30 +180,11 @@ sl_entry_t **sl_parse(char *buffer, size_t buffer_size) {
 #undef ERR
 
 sl_t *sl_init(char *filename) {
-  printf("loading %s...\n", filename);
-  FILE *handle = fopen(filename, "rb");
-  if (!handle)
-    exit(printf("ERROR: Couldn't read '%s'!\n", filename));
-
-  // calculate file size
-  int size;
-  fseek(handle, 0, SEEK_END);
-  size = ftell(handle);
-
-  // read the whole file into RAM (<<10 MB) and close it
-  char *buffer;
-  rewind(handle);
-  buffer = (char *)malloc(size + 2);
-  if (fread(buffer, 1, size, handle) != size)
-    exit(printf("Read error while reading '%s'!\n", filename));
-  fclose(handle);
-
-  // add two additional new lines at the end for easier parsing
-  buffer[size] = '\n';
-  buffer[size + 1] = '\n';
+  uint16_t size;
+  char *buffer = io_load_small_file_to_ram(filename, &size, 0);
 
   // parse the file
-  sl_entry_t **entries = sl_parse(buffer, size + 2);
+  sl_entry_t **entries = sl_parse(buffer, size);
   free(buffer);
 
   // convert the list into an array for easier access
