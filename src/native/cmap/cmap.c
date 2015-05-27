@@ -1,6 +1,7 @@
 #include "cmap.h"
 #include "../../common/cfg/cfg.h"
 #include "../../common/headers/common.h"
+#include "../../common/io/io.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -8,12 +9,6 @@
 #define AXIS_OFFSET_MAX 32767
 #define str(x) #x
 #define DOCU "\n(more info: http://git.io/g2hr-mappings )\n"
-
-/*
-        TODO: add move file loading from mmp to cfg and also use it here
-        to load all ini files in that directory!
-
-*/
 
 #define CONVERT_BUTTON(BUTTON, CMAP_STR, SDL_SUFFIX)                           \
   {                                                                            \
@@ -222,10 +217,11 @@ void cmap_map_deadzone_stick(cfg_t *cfg, char *cfg_key, cmap_deadzone_t *d) {
   cmap_map_deadzone_stick(cfg, "driving/deadzone-" str(NAME),                  \
                           &(cmap->driving.dead_##NAME))
 
-cmap_t *cmap_init() {
+void cmap_load_file(char *filename, void *userdata) {
+  cmap_init_t *list = (cmap_init_t *)userdata;
   cmap_t *cmap = calloc(1, sizeof(cmap_t));
 
-  cfg_t *cfg = cfg_load("data/controller-mappings/default.ini", 0);
+  cfg_t *cfg = cfg_load(filename, 0);
 
   MAPPING(1, WALKING_FORWARD);
   MAPPING(1, WALKING_BACKWARD);
@@ -254,11 +250,28 @@ cmap_t *cmap_init() {
   DEADZONE_STICK(rightstick);
 
   cfg_cleanup(cfg);
-  return cmap;
+
+  // add it to the list
+  if (list->first)
+    list->last->next = cmap;
+  else
+    list->first = cmap;
+  list->last = cmap;
 }
 
 #undef MAPPING
 #undef DEADZONE_STICK
+
+cmap_t *cmap_init() {
+  cmap_init_t *userdata = calloc(1, sizeof(cmap_init_t));
+
+  io_iterate_over_files_in_folder("data/controller-mappings", "ini",
+                                  cmap_load_file, (void *)userdata, 1);
+
+  cmap_t *first = userdata->first;
+  free(userdata);
+  return first;
+}
 
 #define MAPPING(ACTION, BITMASK)                                               \
   case G2HR_CMAP_##ACTION:                                                     \
@@ -292,4 +305,10 @@ uint16_t cmap_action_to_movement_bitmask(cmap_action_t action) {
 }
 #undef MAPPING
 
-void cmap_cleanup(cmap_t *cmap) { free(cmap); }
+void cmap_cleanup(cmap_t *cmap) {
+  while (cmap) {
+    cmap_t *old = cmap;
+    cmap = cmap->next;
+    free(old);
+  }
+}

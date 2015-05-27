@@ -9,9 +9,9 @@ run: ../out/$(COMPONENT)_test.bin
 	mkdir -p ../out/
 	LANG=C gcc -std=c99 -Wall -Werror -g \
 		`pkg-config --cflags --libs $(LIBS)` -o $@ *.c \
-			../../common/cfg/cfg.c
+			../../common/cfg/cfg.c ../../common/io/io.c
 
 
 valgrind: ../out/$(COMPONENT)_test.bin
 	cd ../../../ && valgrind --leak-check=full --show-leak-kinds=all \
-	 src/native/out/$(COMPONENT)_test.bin $(INPUT_FILE)
+	 src/native/out/$(COMPONENT)_test.bin

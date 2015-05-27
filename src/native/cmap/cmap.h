@@ -70,6 +70,13 @@ typedef struct cmap_t {
 
 } cmap_t;
 
+// internal struct that gets used while iterating over all configs
+typedef struct {
+  cmap_t *first;
+  cmap_t *last;
+
+} cmap_init_t;
+
 cmap_t *cmap_init();
 
 uint16_t cmap_action_to_movement_bitmask(cmap_action_t action);
