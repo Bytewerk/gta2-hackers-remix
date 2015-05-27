@@ -1,13 +1,13 @@
 #include "rpc.h"
 #include "../../common/headers/common.h"
-#include <stdio.h>
+#include "../../common/io/io.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
 #define RPC_SEARCH_STR "\\DMA Design Ltd\\GTA2\\"
-void rpc_replace(char *exe_buffer, size_t size, char *cache_file,
+void rpc_replace(char *exe_buffer, uint16_t size, char *cache_file,
                  int player_num, rpc_pos_t *pos) {
   printf("caching %s...\n", cache_file);
 
@@ -19,9 +19,9 @@ void rpc_replace(char *exe_buffer, size_t size, char *cache_file,
 
   FILE *handle = fopen(cache_file, "wb");
 
-  size_t pos_last = 0;
+  uint16_t pos_last = 0;
   while (pos) {
-    size_t pos_end = pos->pos;
+    uint16_t pos_end = pos->pos;
 
     fwrite(exe_buffer + pos_last, pos_end - pos_last, 1, handle);
     fwrite(replaced, original_len, 1, handle);
@@ -44,7 +44,7 @@ void rpc_replace(char *exe_buffer, size_t size, char *cache_file,
         This works by replacing a conditional jump with NOP (no operation)
         bytes in the binary code.
 */
-void rpc_apply_always_show_esc_dialog_hack(char *exe_buffer, size_t size) {
+void rpc_apply_always_show_esc_dialog_hack(char *exe_buffer, uint16_t size) {
   // This is for vike's exe.
   // Address in the GTA2 freeware exe is: 0xC8725
   char *pos = exe_buffer + 0xD8725;
@@ -52,14 +52,14 @@ void rpc_apply_always_show_esc_dialog_hack(char *exe_buffer, size_t size) {
     pos[i] = 0x90; // NOP
 }
 
-rpc_pos_t *rpc_search(char *exe_buffer, size_t size) {
+rpc_pos_t *rpc_search(char *exe_buffer, uint16_t size) {
   rpc_pos_t *first = NULL;
   rpc_pos_t *last;
 
   char *original = RPC_SEARCH_STR;
   int original_length = strlen(original);
 
-  for (size_t i = 0; i < size; i++) {
+  for (uint16_t i = 0; i < size; i++) {
     for (int j = 0; j < original_length && j + i < size; j++) {
       if (exe_buffer[i + j] != original[j])
         break;
@@ -87,7 +87,7 @@ void rpc_init(char *prefpath) {
   char cache_file[RPC_CACHE_PATH_LENGTH + 1];
   char *exe_buffer = NULL;
   rpc_pos_t *first;
-  size_t size;
+  uint16_t size;
 
   for (int i = 0; i < GTA2_PLAYER_COUNT; i++) {
     snprintf(cache_file, RPC_CACHE_PATH_LENGTH, "%sG2HR_PLAYER%i.exe", prefpath,
@@ -97,22 +97,7 @@ void rpc_init(char *prefpath) {
 
     // read GTA2.exe, if that hasn't been done already
     if (!exe_buffer) {
-      char *gta2_exe = "GTA2/gta2.exe";
-      printf("loading %s...\n", gta2_exe);
-      FILE *handle = fopen(gta2_exe, "rb");
-      if (!handle)
-        exit(printf("ERROR: Couldn't read '%s'!\n", gta2_exe));
-
-      // calculate file size
-      fseek(handle, 0, SEEK_END);
-      size = ftell(handle);
-
-      // read the whole file into RAM (<<10 MB) and close it
-      rewind(handle);
-      exe_buffer = (char *)malloc(size);
-      if (fread(exe_buffer, 1, size, handle) != size)
-        exit(printf("Read error while reading '%s'!\n", gta2_exe));
-      fclose(handle);
+      exe_buffer = io_load_small_file_to_ram("GTA2/gta2.exe", &size, 0);
 
       // find the registry strings we'll replace
       first = rpc_search(exe_buffer, size);
