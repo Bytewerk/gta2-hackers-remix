@@ -12,6 +12,6 @@ typedef struct {
   char lang; // 'E' for english etc.
 } gxt_t;
 
-gxt_t *gxt_load(const char *filename);
+gxt_t *gxt_load(char *filename);
 char *gxt_get(gxt_t *gxt, char *id);
 void gxt_cleanup(gxt_t *gxt);

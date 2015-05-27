@@ -28,6 +28,7 @@
 */
 
 #include "gxt.h"
+#include "../../common/io/io.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -98,25 +99,10 @@ void gxt_parse(gxt_t *gxt, char *tkey, char *tdat, uint32_t tkey_size,
   free(text_buffer);
 }
 
-gxt_t *gxt_load(const char *filename) {
+gxt_t *gxt_load(char *filename) {
+  uint16_t size;
+  char *buffer = io_load_small_file_to_ram(filename, &size, 0);
   gxt_t *gxt = malloc(sizeof(gxt_t));
-  printf("loading %s...\n", filename);
-  FILE *handle = fopen(filename, "rb");
-  if (!handle)
-    exit(printf("ERROR: Couldn't read file!"));
-
-  // calculate file size
-  int size;
-  fseek(handle, 0, SEEK_END);
-  size = ftell(handle);
-
-  // read the whole file into RAM (<<10 MB) and close it
-  char *buffer;
-  rewind(handle);
-  buffer = (char *)malloc(size);
-  if (fread(buffer, 1, size, handle) != size)
-    exit(printf("Read error!"));
-  fclose(handle);
 
   // check file header ("GBL", lang, 0x6400)
   if (buffer[0] != 'G' || buffer[1] != 'B' || buffer[2] != 'L' ||
