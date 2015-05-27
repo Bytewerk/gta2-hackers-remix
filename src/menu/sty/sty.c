@@ -1,16 +1,12 @@
 #include "sty.h"
+#include "../../common/io/io.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-/*
-        TODO:
-                - find out, if memory copy functions are more effective
-
-        This parser can currently handle the following chunks:
-                FONB, SPRX, SPRG, PALX, PPAL, PALB, SPRB
-*/
+// This parser can currently handle the following chunks:
+// FONB, SPRX, SPRG, PALX, PPAL, PALB, SPRB
 
 // Font base
 void sty_parser_read_FONB(sty_t *sty, char *buffer_pos, uint32_t length) {
@@ -133,26 +129,8 @@ uint32_t sty_parser_read_next_chunk(sty_t *sty, char *buffer, uint32_t offset,
 }
 
 sty_t *sty_load(char *filename) {
-  printf("loading %s...\n", filename);
-
-  // open the file
-  FILE *handle;
-  handle = fopen(filename, "rb");
-  if (handle == NULL)
-    exit(printf("Can't open the file!\n"));
-
-  // calculate file size
-  int size;
-  fseek(handle, 0, SEEK_END);
-  size = ftell(handle);
-
-  // read the whole file into RAM (<<10 MB) and close it
-  char *buffer;
-  rewind(handle);
-  buffer = (char *)malloc(sizeof(char) * size);
-  if (fread(buffer, 1, size, handle) != size)
-    exit(printf("Read error!\n"));
-  fclose(handle);
+  uint16_t size;
+  char *buffer = io_load_small_file_to_ram(filename, &size, 0);
 
   // check the file header
   if (buffer[0] != 'G' || buffer[1] != 'B' || buffer[2] != 'S' ||
