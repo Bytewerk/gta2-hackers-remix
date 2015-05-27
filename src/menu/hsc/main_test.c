@@ -1,7 +1,7 @@
 #include "hsc.h"
 #include <stdio.h>
 
-int main(int argc, const char **argv) {
+int main(int argc, char **argv) {
   if (argc != 2)
     return printf("Syntax: main_test hiscore_file\n");
   hsc_t *hsc = hsc_load(NULL, argv[1]);

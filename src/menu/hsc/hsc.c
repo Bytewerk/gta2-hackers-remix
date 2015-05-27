@@ -1,34 +1,20 @@
 #include "hsc.h"
+#include "../../common/io/io.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
-hsc_t *hsc_load(hsc_t *hsc, const char *filename) {
-  // open the file
-  printf("loading %s...\n", filename);
+hsc_t *hsc_load(hsc_t *hsc, char *filename) {
   if (!hsc)
     hsc = calloc(1, sizeof(hsc_t));
-  FILE *handle = fopen(filename, "rb");
-
-  // default values
-  if (!handle) {
-    // FIXME: magic numbers, use real gta2 default scores
-    printf("Couldn't read file, setting default values...\n");
-    // ...
+  if (!access(filename, 0)) {
+    printf("NOTE: couldn't read high scores, setting default"
+           " values (STUB)...\n");
     return hsc;
   }
 
-  // calculate file size
-  int size;
-  fseek(handle, 0, SEEK_END);
-  size = ftell(handle);
-
-  // read the whole file into RAM (<<10 MB) and close it
-  char *buffer;
-  rewind(handle);
-  buffer = (char *)malloc(size);
-  if (fread(buffer, 1, size, handle) != size)
-    exit(printf("Read error!"));
-  fclose(handle);
+  uint16_t size;
+  char *buffer = io_load_small_file_to_ram(filename, &size, 0);
 
   for (int i = 0; i < GTA2_LEVEL_COUNT; i++) {
     for (int j = 0; j < 5; j++) // entries
