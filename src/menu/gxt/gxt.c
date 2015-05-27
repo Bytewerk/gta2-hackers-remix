@@ -100,7 +100,7 @@ void gxt_parse(gxt_t *gxt, char *tkey, char *tdat, uint32_t tkey_size,
 }
 
 gxt_t *gxt_load(char *filename) {
-  uint16_t size;
+  uint32_t size;
   char *buffer = io_load_small_file_to_ram(filename, &size, 0);
   gxt_t *gxt = malloc(sizeof(gxt_t));
 
@@ -115,6 +115,8 @@ gxt_t *gxt_load(char *filename) {
       buffer[9] != 'Y')
     exit(printf("ERROR: expected TKEY as first chunk!\n"));
   uint32_t tkey_size = *(uint32_t *)(buffer + 10);
+
+  printf("tkey_size: %i, size: %i\n", tkey_size, size);
 
   // check the TDAT chunk header
   char *tdatbuf = 6 /* file header */ + 8 /* chunk header */

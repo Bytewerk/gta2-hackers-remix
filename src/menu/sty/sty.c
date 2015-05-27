@@ -129,7 +129,7 @@ uint32_t sty_parser_read_next_chunk(sty_t *sty, char *buffer, uint32_t offset,
 }
 
 sty_t *sty_load(char *filename) {
-  uint16_t size;
+  uint32_t size;
   char *buffer = io_load_small_file_to_ram(filename, &size, 0);
 
   // check the file header

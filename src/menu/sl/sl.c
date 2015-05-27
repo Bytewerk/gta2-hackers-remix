@@ -180,7 +180,7 @@ sl_entry_t **sl_parse(char *buffer, size_t buffer_size) {
 #undef ERR
 
 sl_t *sl_init(char *filename) {
-  uint16_t size;
+  uint32_t size;
   char *buffer = io_load_small_file_to_ram(filename, &size, 0);
 
   // parse the file

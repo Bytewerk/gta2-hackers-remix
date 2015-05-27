@@ -7,7 +7,7 @@
 #include <unistd.h>
 
 #define RPC_SEARCH_STR "\\DMA Design Ltd\\GTA2\\"
-void rpc_replace(char *exe_buffer, uint16_t size, char *cache_file,
+void rpc_replace(char *exe_buffer, uint32_t size, char *cache_file,
                  int player_num, rpc_pos_t *pos) {
   printf("caching %s...\n", cache_file);
 
@@ -19,9 +19,9 @@ void rpc_replace(char *exe_buffer, uint16_t size, char *cache_file,
 
   FILE *handle = fopen(cache_file, "wb");
 
-  uint16_t pos_last = 0;
+  uint32_t pos_last = 0;
   while (pos) {
-    uint16_t pos_end = pos->pos;
+    uint32_t pos_end = pos->pos;
 
     fwrite(exe_buffer + pos_last, pos_end - pos_last, 1, handle);
     fwrite(replaced, original_len, 1, handle);
@@ -44,7 +44,7 @@ void rpc_replace(char *exe_buffer, uint16_t size, char *cache_file,
         This works by replacing a conditional jump with NOP (no operation)
         bytes in the binary code.
 */
-void rpc_apply_always_show_esc_dialog_hack(char *exe_buffer, uint16_t size) {
+void rpc_apply_always_show_esc_dialog_hack(char *exe_buffer, uint32_t size) {
   // This is for vike's exe.
   // Address in the GTA2 freeware exe is: 0xC8725
   char *pos = exe_buffer + 0xD8725;
@@ -52,14 +52,14 @@ void rpc_apply_always_show_esc_dialog_hack(char *exe_buffer, uint16_t size) {
     pos[i] = 0x90; // NOP
 }
 
-rpc_pos_t *rpc_search(char *exe_buffer, uint16_t size) {
+rpc_pos_t *rpc_search(char *exe_buffer, uint32_t size) {
   rpc_pos_t *first = NULL;
   rpc_pos_t *last;
 
   char *original = RPC_SEARCH_STR;
   int original_length = strlen(original);
 
-  for (uint16_t i = 0; i < size; i++) {
+  for (uint32_t i = 0; i < size; i++) {
     for (int j = 0; j < original_length && j + i < size; j++) {
       if (exe_buffer[i + j] != original[j])
         break;
@@ -87,7 +87,7 @@ void rpc_init(char *prefpath) {
   char cache_file[RPC_CACHE_PATH_LENGTH + 1];
   char *exe_buffer = NULL;
   rpc_pos_t *first;
-  uint16_t size;
+  uint32_t size;
 
   for (int i = 0; i < GTA2_PLAYER_COUNT; i++) {
     snprintf(cache_file, RPC_CACHE_PATH_LENGTH, "%sG2HR_PLAYER%i.exe", prefpath,

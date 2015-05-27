@@ -7,7 +7,7 @@
 
 // read small files (<<10 MB) into RAM
 // returned buffer must be free'd after usage!
-char *io_load_small_file_to_ram(char *filename, uint16_t *size, char quiet) {
+char *io_load_small_file_to_ram(char *filename, uint32_t *size, char quiet) {
   if (!quiet)
     printf("loading %s...\n", filename);
 

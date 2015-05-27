@@ -1,7 +1,7 @@
 #include "gxt.h"
 #include <stdio.h>
 
-int main(int argc, const char **argv) {
+int main(int argc, char **argv) {
   if (argc != 3)
     return printf("Syntax: main_test gta2_text_file string\n");
   gxt_t *gxt = gxt_load(argv[1]);

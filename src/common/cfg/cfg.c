@@ -56,7 +56,7 @@ char *cfg_trim(char *str, int from) {
   return realloc(str, trimmed_end - offset_start + 1);
 }
 
-cfg_t *cfg_parse(char *buffer, uint16_t size) {
+cfg_t *cfg_parse(char *buffer, uint32_t size) {
   cfg_t *first = NULL;
   cfg_t *last = NULL;
 
@@ -68,7 +68,7 @@ cfg_t *cfg_parse(char *buffer, uint16_t size) {
 
   char *section = NULL;
   int section_length = 0;
-  for (int i = 0; i <= size; i++) {
+  for (uint32_t i = 0; i <= size; i++) {
     char c = i < size ? buffer[i] : '\n'; // add an extra line end
     if (c == '[')
       start_brackets = i + 1;
@@ -129,7 +129,7 @@ cfg_t *cfg_parse(char *buffer, uint16_t size) {
 }
 
 cfg_t *cfg_load(char *filename, char quiet) {
-  uint16_t size;
+  uint32_t size;
   char *buffer = io_load_small_file_to_ram(filename, &size, quiet);
 
   cfg_t *cfg = cfg_parse(buffer, size);
