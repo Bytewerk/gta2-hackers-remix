@@ -17,13 +17,6 @@
 #define G2HR_MENU_FPS 20
 
 int main(int argc, char *argv[]) {
-  const char *pics[] = {
-      "1",        "1_play",   "1_options",     "1_quit",          "2",
-      "2_name",   "2_league", "2_level1",      "2_level2",        "2_level3",
-      "2_bonus1", "2_bonus2", "2_bonus3",
-
-      "3_tables", "credits",  "levelcomplete", "g2hr_splitscreen"};
-
   if (argc != 2 && !strcmp(SDL_GetPlatform(), "Windows"))
     exit(SDL_ShowSimpleMessageBox(
         SDL_MESSAGEBOX_ERROR, "G2HR",
@@ -46,7 +39,7 @@ int main(int argc, char *argv[]) {
   sty_t *fsty = sty_load("GTA2/data/fstyle.sty");
   sfx_t *sfx = sfx_init();
   mmp_t *mmp = mmp_init("GTA2/data");
-  bg_t *bg = bg_init(pics, sizeof(pics) / sizeof(char *));
+  bg_t *bg = bg_init();
 
   // load configs
   char *pref_path = SDL_GetPrefPath("bytewerk", "G2HR");

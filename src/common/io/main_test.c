@@ -2,13 +2,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void callback(char *filename, void *userdata) {
+void callback(char *path, char *name, char *ext, void *userdata) {
   int *counter = (int *)userdata;
   *counter = *counter + 1;
 
-  uint16_t size;
-  char *buffer = io_load_small_file_to_ram(filename, &size, 0);
-  printf("\tcounter: %i\n", *counter);
+  printf("file #%i:\n", *counter + 1);
+  printf("\tpath: %s\n", path);
+  printf("\tname: %s\n", name);
+  printf("\text:  %s\n", ext);
+
+  uint32_t size;
+  char *buffer = io_load_small_file_to_ram(path, &size, 1);
   printf("\tsize: %i\n", size);
   free(buffer);
 }

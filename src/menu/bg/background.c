@@ -1,33 +1,21 @@
 #include "background.h"
+#include "../../common/io/io.h"
 #include <SDL2/SDL_image.h>
 #include <string.h>
 
-bg_t *bg_load_single(const char *name) {
+void bg_load_single(char *path, char *name, char *ext, void *userdata) {
   bg_t *bg = malloc(sizeof(bg_t));
-  bg->name = name;
+  bg->name = io_get_filename_without_ext(name, ext);
   bg->next = NULL;
 
-  // Custom backgrounds have a "g2hr_" prefix
-  char is_custom =
-      (name[0] == 'g' && name[1] == '2' && name[2] == 'h' && name[3] == 'r');
-
-  // Generate the full file path.
-  char path_buffer[100];
-  if (is_custom)
-    snprintf(path_buffer, sizeof(path_buffer), "data/frontend/%s.png", name);
-  else
-    snprintf(path_buffer, sizeof(path_buffer), "GTA2/data/frontend/%s.tga",
-             name);
-
   // actually load the file
-  printf("loading %s...\n", path_buffer);
-  SDL_Surface *surface = IMG_Load(path_buffer);
+  SDL_Surface *surface = IMG_Load(path);
   if (!surface)
-    exit(printf("File read error!\n"));
+    exit(printf("ERROR: couldn't read image '%s'!\n", path));
 
   // Workaround for upstream TGA bug:
-  //		https://bugzilla.libsdl.org/show_bug.cgi?id=2840
-  if (!is_custom) {
+  // https://bugzilla.libsdl.org/show_bug.cgi?id=2840
+  if (!strcmp(ext, "tga")) {
     char *pixels = surface->pixels;
     for (int y = 0; y < surface->h; y++)
       for (int x = 0; x < surface->w; x++) {
@@ -38,23 +26,29 @@ bg_t *bg_load_single(const char *name) {
         pixels[left_byte_addr + 1] = left_old;
       }
   }
-
   bg->surface = surface;
-  return bg;
+
+  // attach it to the list
+  bg_init_t *list = (bg_init_t *)userdata;
+  if (list->first)
+    list->last->next = bg;
+  else
+    list->first = bg;
+  list->last = bg;
 }
 
-bg_t *bg_init(const char **tgas, int count) {
-  bg_t *first = NULL;
-  bg_t *last = NULL;
+bg_t *bg_init() {
+  bg_init_t *userdata = calloc(1, sizeof(bg_init_t));
 
-  for (int i = 0; i < count; i++) {
-    bg_t *new = bg_load_single(tgas[i]);
-    if (!first)
-      first = new;
-    else
-      last->next = new;
-    last = new;
-  }
+  io_iterate_over_files_in_folder("GTA2/data/frontend", "tga", bg_load_single,
+                                  (void *)userdata, 0);
+
+  io_iterate_over_files_in_folder("data/frontend", "png", bg_load_single,
+                                  (void *)userdata, 0);
+
+  bg_t *first = userdata->first;
+  free(userdata);
+
   return first;
 }
 

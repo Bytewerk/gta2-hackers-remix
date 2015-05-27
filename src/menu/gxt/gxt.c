@@ -116,8 +116,6 @@ gxt_t *gxt_load(char *filename) {
     exit(printf("ERROR: expected TKEY as first chunk!\n"));
   uint32_t tkey_size = *(uint32_t *)(buffer + 10);
 
-  printf("tkey_size: %i, size: %i\n", tkey_size, size);
-
   // check the TDAT chunk header
   char *tdatbuf = 6 /* file header */ + 8 /* chunk header */
                   + tkey_size + buffer;

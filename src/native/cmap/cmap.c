@@ -217,11 +217,10 @@ void cmap_map_deadzone_stick(cfg_t *cfg, char *cfg_key, cmap_deadzone_t *d) {
   cmap_map_deadzone_stick(cfg, "driving/deadzone-" str(NAME),                  \
                           &(cmap->driving.dead_##NAME))
 
-void cmap_load_file(char *filename, void *userdata) {
-  cmap_init_t *list = (cmap_init_t *)userdata;
+void cmap_load_file(char *path, char *name, char *ext, void *userdata) {
   cmap_t *cmap = calloc(1, sizeof(cmap_t));
 
-  cfg_t *cfg = cfg_load(filename, 0);
+  cfg_t *cfg = cfg_load(path, 0);
 
   MAPPING(1, WALKING_FORWARD);
   MAPPING(1, WALKING_BACKWARD);
@@ -252,6 +251,7 @@ void cmap_load_file(char *filename, void *userdata) {
   cfg_cleanup(cfg);
 
   // add it to the list
+  cmap_init_t *list = (cmap_init_t *)userdata;
   if (list->first)
     list->last->next = cmap;
   else
