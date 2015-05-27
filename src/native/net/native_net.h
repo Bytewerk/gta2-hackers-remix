@@ -1,6 +1,6 @@
 #pragma once
-#include "../../common/common.h"
-#include "../../common/net_message_macros_SDL.h"
+#include "../../common/headers/common.h"
+#include "../../common/headers/net_message_macros_SDL.h"
 #include "../native.h"
 #include <SDL2/SDL_net.h>
 

@@ -1,5 +1,5 @@
 #include "toolkit.h"
-#include "../../common/tk_actions.h"
+#include "../../common/headers/tk_actions.h"
 
 tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *pref_path,
               char *title) {

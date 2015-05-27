@@ -1,5 +1,5 @@
 #include "inmenu.h"
-#include "../../common/api_native2menu.h"
+#include "../../common/headers/api_native2menu.h"
 
 inmenu_t *inmenu_init(net_t *net, pads_t *pads) {
   inmenu_t *inmenu = calloc(1, sizeof(inmenu_t));

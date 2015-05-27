@@ -1,5 +1,5 @@
 #pragma once
-#include "../../common/common.h"
+#include "../../common/headers/common.h"
 #include "../cmap/cmap.h"
 #include "../inmenu/inmenu.h"
 #include "../net/native_net.h"

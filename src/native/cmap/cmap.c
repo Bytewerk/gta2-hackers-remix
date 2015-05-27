@@ -1,6 +1,6 @@
 #include "cmap.h"
 #include "../../common/cfg/cfg.h"
-#include "../../common/common.h"
+#include "../../common/headers/common.h"
 #include <stdio.h>
 #include <string.h>
 

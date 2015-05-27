@@ -1,5 +1,5 @@
 #include "rpc.h"
-#include "../../common/common.h"
+#include "../../common/headers/common.h"
 #include <stdio.h>
 #include <stdio.h>
 #include <stdlib.h>

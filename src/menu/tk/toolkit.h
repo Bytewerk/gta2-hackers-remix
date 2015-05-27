@@ -1,5 +1,5 @@
 #pragma once
-#include "../../common/tk_actions.h"
+#include "../../common/headers/tk_actions.h"
 #include "../bg/background.h"
 #include "../gxt/gxt.h"
 #include "../sfx/sfx.h"

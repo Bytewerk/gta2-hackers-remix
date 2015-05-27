@@ -1,4 +1,4 @@
-#include "../../../common/common.h"
+#include "../../../common/headers/common.h"
 #include "../../gxt/gxt.h"
 #include "../../tk/ctrl/controls.h"
 #include "../../tk/toolkit.h"

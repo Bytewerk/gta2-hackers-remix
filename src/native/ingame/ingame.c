@@ -1,7 +1,6 @@
 #include "ingame.h"
-#include "../../common/api_native2injected.h"
-#include "../../common/api_native2menu.h"
-#include "../../common/common.h"
+#include "../../common/headers/api_native2injected.h"
+#include "../../common/headers/api_native2menu.h"
 
 ingame_t *ingame_init(net_t *net, cmap_t *cmap, pads_t *pads,
                       inmenu_t *inmenu) {

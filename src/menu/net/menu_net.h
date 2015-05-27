@@ -1,5 +1,5 @@
 #pragma once
-#include "../../common/net_message_macros_SDL.h"
+#include "../../common/headers/net_message_macros_SDL.h"
 #include <SDL2/SDL_net.h>
 
 #define G2HR_MENU_SERVER_PORT_START 20150

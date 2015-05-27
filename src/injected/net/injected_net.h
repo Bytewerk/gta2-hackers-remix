@@ -1,5 +1,5 @@
 #pragma once
-#include "../../common/api_native2injected.h"
+#include "../../common/headers/api_native2injected.h"
 
 /*
         The message macros are identically to the ones in

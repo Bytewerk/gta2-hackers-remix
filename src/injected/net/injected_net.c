@@ -1,5 +1,5 @@
 #include "injected_net.h"
-#include "../../common/common.h"
+#include "../../common/headers/common.h"
 #include <stdio.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>

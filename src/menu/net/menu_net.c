@@ -1,6 +1,6 @@
 #include "menu_net.h"
-#include "../../common/api_native2menu.h"
-#include "../../common/common.h"
+#include "../../common/headers/api_native2menu.h"
+#include "../../common/headers/common.h"
 #include <SDL2/SDL_net.h>
 
 net_t *net_init() {
