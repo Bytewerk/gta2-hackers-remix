@@ -33,10 +33,9 @@ void net_accept_localhost_only(net_t *net) {
   }
 
   // the first socket is always the menu socket!
-  if (!net->sock_menu) {
-    printf("[native] connected to menu\n");
+  if (!net->sock_menu)
     net->sock_menu = new;
-  } else if (net->injected_count < GTA2_PLAYER_COUNT - 1) {
+  else if (net->injected_count < GTA2_PLAYER_COUNT - 1) {
     net_injected_instance_t *instance =
         calloc(1, sizeof(net_injected_instance_t));
 

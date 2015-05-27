@@ -16,6 +16,11 @@
 
 #define G2HR_MENU_FPS 20
 
+/*
+        NOTE: the net sub-component connects to the native component on
+                startup. When it fails, it shows a message box and quits.
+*/
+
 int main(int argc, char *argv[]) {
   if (argc != 2 && !strcmp(SDL_GetPlatform(), "Windows"))
     exit(SDL_ShowSimpleMessageBox(
