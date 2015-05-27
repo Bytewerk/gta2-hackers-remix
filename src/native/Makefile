@@ -74,8 +74,12 @@ obj/ingame.o: $(call DEPS,ingame/ingame.c)
 obj/cmap.o:$(call DEPS,cmap/cmap.c)
 	$(CC) -c -o $@ $<
 
-# CFG (maybe put this in a 'common' Makefile?)
-obj/cfg.o: $(call DEPS,../common/cfg/cfg.c)
+# COMMON CFG (depends on IO)
+obj/common_cfg.o: $(call DEPS,../common/cfg/cfg.c)
+	$(CC) -c -o $@ $<
+
+# COMMON IO
+obj/common_io.o: $(call DEPS,../common/io/io.c)
 	$(CC) -c -o $@ $<
 
 # OTHER

@@ -8,7 +8,7 @@ run: $(BIN_FILE)
 
 
 $(BIN_FILE): *.c *.h
-	LANG=C gcc -std=c99 -Wall -g -Werror -o $@ *.c
+	LANG=C gcc -std=c99 -Wall -g -Werror -o $@ *.c ../io/io.c
 
 
 valgrind: $(BIN_FILE)

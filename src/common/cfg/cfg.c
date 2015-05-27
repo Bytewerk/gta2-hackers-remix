@@ -1,4 +1,6 @@
 #include "cfg.h"
+#include "../io/io.h"
+
 #include <ctype.h>
 #include <dirent.h>
 #include <stdio.h>
@@ -54,7 +56,7 @@ char *cfg_trim(char *str, int from) {
   return realloc(str, trimmed_end - offset_start + 1);
 }
 
-cfg_t *cfg_parse(char *buffer, int size) {
+cfg_t *cfg_parse(char *buffer, uint16_t size) {
   cfg_t *first = NULL;
   cfg_t *last = NULL;
 
@@ -127,24 +129,8 @@ cfg_t *cfg_parse(char *buffer, int size) {
 }
 
 cfg_t *cfg_load(char *filename, char quiet) {
-  if (!quiet)
-    printf("loading %s...\n", filename);
-  FILE *handle = fopen(filename, "rb");
-  if (!handle)
-    exit(printf("ERROR: Couldn't read '%s'!\n", filename));
-
-  // calculate file size
-  int size;
-  fseek(handle, 0, SEEK_END);
-  size = ftell(handle);
-
-  // read the whole file into RAM (<<10 MB) and close it
-  char *buffer;
-  rewind(handle);
-  buffer = (char *)malloc(size);
-  if (fread(buffer, 1, size, handle) != size)
-    exit(printf("Read error while reading '%s'!\n", filename));
-  fclose(handle);
+  uint16_t size;
+  char *buffer = io_load_small_file_to_ram(filename, &size, quiet);
 
   cfg_t *cfg = cfg_parse(buffer, size);
   free(buffer);
