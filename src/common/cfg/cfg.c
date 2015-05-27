@@ -187,3 +187,43 @@ void cfg_split_cleanup(cfg_split_t *split) {
   free(split->values);
   free(split);
 }
+
+void cfg_save(cfg_t *cfg, char *filename, char quiet) {
+  if (!quiet)
+    printf("saving %s...\n", filename);
+  FILE *handle = fopen(filename, "w");
+  fputs("; Pro-tip: don't modify this file, it gets generated"
+        " automatically!\n",
+        handle);
+
+  char *last_section = NULL;
+
+  while (cfg) {
+    // extract key and section
+    char *key = strchr(cfg->key, '/') + 1;
+    uint16_t section_size = key - cfg->key;
+    char *section = malloc(section_size - 1);
+    strncpy(section, cfg->key, section_size - 1);
+
+    // write it to the file
+    if (!last_section || strcmp(section, last_section)) {
+      fputc('[', handle);
+      fputs(section, handle);
+      fputs("]\n", handle);
+    }
+    fputs(key, handle);
+    fputc('=', handle);
+    fputs(cfg->value, handle);
+    fputc('\n', handle);
+
+    cfg = cfg->next;
+
+    if (last_section)
+      free(last_section);
+    last_section = section;
+  }
+
+  if (last_section)
+    free(last_section);
+  fclose(handle);
+}

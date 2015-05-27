@@ -18,3 +18,5 @@ void cfg_cleanup(cfg_t *cfg);
 
 cfg_split_t *cfg_split_value(cfg_t *cfg, char *key, char delimeter);
 void cfg_split_cleanup(cfg_split_t *split);
+
+void cfg_save(cfg_t *cfg, char *filename, char quiet);

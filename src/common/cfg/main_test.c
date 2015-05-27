@@ -18,5 +18,7 @@ int main(int argc, const char **argv) {
     printf("    %i/%i: '%s'\n", i + 1, time->count, time->values[i]);
   cfg_split_cleanup(time);
 
+  cfg_save(cfg, "output.cfg", 0);
+
   cfg_cleanup(cfg);
 }
