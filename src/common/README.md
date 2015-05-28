@@ -1,1 +1,2 @@
-The api headers are named after the component that hosts the server.
+Here are subcomponents and headers, that get used in more than one
+component.
