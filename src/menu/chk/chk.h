@@ -4,6 +4,7 @@ typedef struct {
   char *settings_path;
   char *latest_version;
   char is_version_set;
+  char is_running;
 } chk_t;
 
 chk_t *chk_init(char *settings_path);

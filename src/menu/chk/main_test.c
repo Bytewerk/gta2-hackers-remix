@@ -7,11 +7,14 @@ int main(int argc, char **argv) {
 
   while (1) {
     SDL_Delay(100);
-    if (chk->is_version_set)
+    if (!chk->is_running)
       break;
   }
 
-  printf("version: %s\n", chk->latest_version);
+  if (!chk->is_version_set)
+    printf("couldn't get the latest version!\n");
+  else
+    printf("version: %s\n", chk->latest_version);
 
   chk_cleanup(chk);
 

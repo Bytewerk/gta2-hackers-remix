@@ -10,11 +10,14 @@ int chk_thread(void *userdata) {
 
   // resulve the hostname, open the socket
   IPaddress ip;
-  if (SDLNet_ResolveHost(&ip, "localhost", 80) < 0)
+  if (SDLNet_ResolveHost(&ip, "localhost", 80) < 0) {
+    chk->is_running = 0;
     return -1;
+  }
   TCPsocket sock = SDLNet_TCP_Open(&ip);
   if (!sock) {
     SDLNet_TCP_Close(sock);
+    chk->is_running = 0;
     return -2;
   }
 
@@ -35,6 +38,7 @@ int chk_thread(void *userdata) {
   if (strcmp(buffer, "version")) {
     free(buffer);
     SDLNet_TCP_Close(sock);
+    chk->is_running = 0;
     return -3;
   }
 
@@ -49,12 +53,14 @@ int chk_thread(void *userdata) {
 
   // mark it as set, clean up the socket
   chk->is_version_set = 1;
+  chk->is_running = 0;
   SDLNet_TCP_Close(sock);
   return 0;
 }
 
 chk_t *chk_init(char *settings_path) {
   chk_t *chk = calloc(1, sizeof(chk_t));
+  chk->is_running = 1;
   SDL_DetachThread(SDL_CreateThread(&chk_thread, "updatecheck", (void *)chk));
 
   return chk;
