@@ -8,29 +8,44 @@ int chk_thread(void *userdata) {
 
   // TODO: load settings and read the last update check date
 
-  // resulve the IP
+  // resulve the hostname, open the socket
   IPaddress ip;
   if (SDLNet_ResolveHost(&ip, "localhost", 80) < 0)
     return -1;
-
-  // open the socket
   TCPsocket sock = SDLNet_TCP_Open(&ip);
-  if (!sock)
-    return -1;
+  if (!sock) {
+    SDLNet_TCP_Close(sock);
+    return -2;
+  }
 
-  // request the version
+  // request the version, write it into a buffer
+  // (expected format: version\n1.2.3.4\n)
   char *get = "GET /v\n";
   SDLNet_TCP_Send(sock, get, strlen(get) + 1);
-
-  // save the version number
-  chk->latest_version = malloc(CHK_BUFFER_MAXLEN + 1);
-  SDLNet_TCP_Recv(sock, chk->latest_version, CHK_BUFFER_MAXLEN);
-  chk->latest_version[CHK_BUFFER_MAXLEN] = '\0';
+  char *buffer = malloc(CHK_BUFFER_MAXLEN + 1);
+  SDLNet_TCP_Recv(sock, buffer, CHK_BUFFER_MAXLEN);
+  buffer[CHK_BUFFER_MAXLEN] = '\0';
 
   // replace all new lines with '\0'
   for (int i = 0; i < CHK_BUFFER_MAXLEN; i++)
-    if (chk->latest_version[i] == '\n')
-      chk->latest_version[i] = '\0';
+    if (buffer[i] == '\n')
+      buffer[i] = '\0';
+
+  // the first line should be "version", fail otherwise
+  if (strcmp(buffer, "version")) {
+    free(buffer);
+    SDLNet_TCP_Close(sock);
+    return -3;
+  }
+
+  // save the actual version number (second line) in the chk struct
+  // and free the buffer
+  char *version = buffer + strlen("version") + 1;
+  uint16_t version_len = strlen(version);
+  chk->latest_version = malloc(version_len + 1);
+  strncpy(chk->latest_version, version, version_len + 1);
+  chk->latest_version[version_len] = '\0';
+  free(buffer);
 
   // mark it as set, clean up the socket
   chk->is_version_set = 1;
