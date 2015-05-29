@@ -25,7 +25,7 @@ void ini_save(ini_t *ini, char *fullpath, bool noprotip, bool quiet) {
 
     ini_entry_t *entry = section->entries;
     while (entry) {
-      WRITE_LINE(entry->key, "=", entry->value, "\n");
+      WRITE_LINE(entry->key, " = ", entry->value, "\n");
 
       entry = entry->next;
     }
