@@ -29,8 +29,9 @@ void ini_parse(ini_t *ini, char *buffer, uint32_t size) {
                     "without '[' in the same line!"));
       ini_section_t *new = calloc(1, sizeof(ini_section_t));
       uint16_t len = i - bracket_left;
-      new->name = malloc(len);
+      new->name = malloc(len + 1);
       memcpy(new->name, buffer + bracket_left, len);
+      new->name[len] = '\0';
 
       // attach it to the list
       if (section)
@@ -57,9 +58,9 @@ void ini_parse(ini_t *ini, char *buffer, uint32_t size) {
         cstr_trim(new->key);
 
         // set the value
-        uint32_t value_len = i - equals_pos;
+        uint32_t value_len = i - equals_pos - 1;
         new->value = malloc(value_len + 1);
-        memcpy(new->value, buffer + equals_pos, value_len);
+        memcpy(new->value, buffer + equals_pos + 1, value_len);
         new->value[value_len] = '\0';
         cstr_trim(new->value);
       }

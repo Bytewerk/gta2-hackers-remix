@@ -7,9 +7,18 @@ int main(int argc, char **argv) {
 
   ini_t *ini = ini_open(argv[1], 0);
 
+  ini_section_t *section = ini->sections;
+  while (section) {
+    printf("\t'%s':\n", section->name);
+    ini_entry_t *entry = section->entries;
+    while (entry) {
+      printf("\t\t'%s': '%s'\n", entry->key, entry->value);
+      entry = entry->next;
+    }
+    section = section->next;
+  }
+
   printf("cleaning up...\n");
-
   ini_cleanup(ini);
-
   printf("done!\n");
 }
