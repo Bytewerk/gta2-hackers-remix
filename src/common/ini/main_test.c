@@ -7,6 +7,7 @@ int main(int argc, char **argv) {
 
   ini_t *ini = ini_open(argv[1], 0);
 
+  printf("full dump:\n");
   ini_section_t *section = ini->sections;
   while (section) {
     printf("\t'%s':\n", section->name);
@@ -17,6 +18,9 @@ int main(int argc, char **argv) {
     }
     section = section->next;
   }
+
+  printf("only accessing slotmachine/enabled:\n");
+  printf("\t'%s'\n", ini_read(ini, "slotmachine", "enabled"));
 
   printf("cleaning up...\n");
   ini_cleanup(ini);
