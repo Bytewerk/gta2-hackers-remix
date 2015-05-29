@@ -6,6 +6,7 @@ build/wineprefix
 
 # core dumps. this rule never hits anything of course.
 core.*
+vgcore.*
 
 
 # PKGBUILDs

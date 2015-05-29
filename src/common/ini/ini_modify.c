@@ -1,4 +1,6 @@
+#include "../cstr/cstr.h"
 #include "ini.h"
+#include <stdio.h> // debug: printf
 
 void ini_modify(ini_t *ini, char *section_name, char *key, char *value,
                 bool overwrite) {
@@ -15,12 +17,13 @@ void ini_modify(ini_t *ini, char *section_name, char *key, char *value,
 
   // ...or add a new one
   if (!section) {
-    ini_section_t *section = calloc(1, sizeof(ini_section_t));
+    section = calloc(1, sizeof(ini_section_t));
     section->next = ini->sections;
-    section->name = section_name;
+    section->name = cstr_copy(section_name);
     ini->sections = section;
   } else // find the entry
   {
+    entry = section->entries;
     while (entry) {
       if (strcmp(entry->key, key))
         entry = entry->next;
@@ -32,12 +35,15 @@ void ini_modify(ini_t *ini, char *section_name, char *key, char *value,
       return;
   }
 
-  // add a new entry if necessary
-  if (!entry) {
+  if (entry)
+    free(entry->value);
+  else // add a new entry
+  {
     entry = calloc(1, sizeof(ini_entry_t));
     entry->next = section->entries;
-    entry->key = key;
+    entry->key = cstr_copy(key);
     section->entries = entry;
   }
-  entry->value = value;
+
+  entry->value = cstr_copy(value);
 }
