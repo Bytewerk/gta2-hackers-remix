@@ -1,8 +1,8 @@
 #include "../cstr/cstr.h"
 #include "ini.h"
 
-void ini_modify(ini_t *ini, char *section_name, char *key, char *value,
-                bool overwrite) {
+char *ini_modify(ini_t *ini, char *section_name, char *key, char *value,
+                 bool overwrite) {
   ini_entry_t *entry = NULL;
 
   // find the section
@@ -31,7 +31,7 @@ void ini_modify(ini_t *ini, char *section_name, char *key, char *value,
     }
 
     if (entry && !overwrite)
-      return;
+      return entry->value;
   }
 
   if (entry)
@@ -44,5 +44,7 @@ void ini_modify(ini_t *ini, char *section_name, char *key, char *value,
     section->entries = entry;
   }
 
-  entry->value = cstr_copy(value);
+  char *ret = cstr_copy(value);
+  entry->value = ret;
+  return ret;
 }

@@ -15,5 +15,5 @@ char *ini_read(ini_t *ini, char *section_name, char *key) {
     section = section->next;
   }
 
-  return "";
+  return NULL;
 }

@@ -22,10 +22,14 @@ typedef struct { ini_section_t *sections; } ini_t;
 // struct gets initialized.
 ini_t *ini_open(char *fullpath, bool quiet);
 
+// returns NULL if the key was not found. If you need a default value,
+// set it with ini_modify first.
 char *ini_read(ini_t *ini, char *section, char *key);
 
-void ini_modify(ini_t *ini, char *section_name, char *key, char *value,
-                bool overwrite);
+// returns a reference to the new buffer that holds a copy of value.
+// this buffer is part of the ini_t struct then.
+char *ini_modify(ini_t *ini, char *section_name, char *key, char *value,
+                 bool overwrite);
 
 void ini_save(ini_t *ini, char *fullpath, bool noprotip, bool quiet);
 
