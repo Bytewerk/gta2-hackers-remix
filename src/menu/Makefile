@@ -134,12 +134,21 @@ obj/sfx.o: $(call DEPS,sfx/sfx.c)
 obj/gxt.o: $(call DEPS,gxt/gxt.c)
 	$(CC) -c -o $@ $<
 
-# COMMON CFG (depends on IO)
+# COMMON
+obj/common_io.o: $(call DEPS,../common/io/io.c)
+	$(CC) -c -o $@ $<
+obj/common_cstr.o: $(call DEPS,../common/cstr/cstr.c)
+	$(CC) -c -o $@ $<
+obj/common_ini.o: $(call DEPS,../common/ini/ini.c)
+	$(CC) -c -o $@ $<
+
+# COMMON - OBSOLETE (use ini instead!)
 obj/common_cfg.o: $(call DEPS,../common/cfg/cfg.c)
 	$(CC) -c -o $@ $<
 
-# COMMON IO
-obj/common_io.o: $(call DEPS,../common/io/io.c)
+
+# CHK
+obj/chk.o: $(call DEPS,chk/chk.c)
 	$(CC) -c -o $@ $<
 
 # MMP

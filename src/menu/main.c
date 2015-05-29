@@ -1,4 +1,5 @@
 #include "bg/background.h"
+#include "chk/chk.h"
 #include "gxt/gxt.h"
 #include "mmp/mmp.h"
 #include "net/menu_net.h"
@@ -11,6 +12,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_net.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -39,17 +41,18 @@ int main(int argc, char *argv[]) {
   IMG_Init(IMG_INIT_PNG);
   net_t *net = net_init();
 
+  // load configs
+  char *pref_path = SDL_GetPrefPath("bytewerk", "G2HR");
+  chk_t *chk = NULL; // chk_init(pref_path, true);
+  sl_t *sl = sl_init("data/screen_layouts.cfg");
+  cfg_t *g2hr_config = cfg_load("data/g2hr.cfg", 0);
+
   // load GTA2 files
   gxt_t *gxt = gxt_load("GTA2/data/e.gxt");
   sty_t *fsty = sty_load("GTA2/data/fstyle.sty");
   sfx_t *sfx = sfx_init();
   mmp_t *mmp = mmp_init("GTA2/data");
   bg_t *bg = bg_init();
-
-  // load configs
-  char *pref_path = SDL_GetPrefPath("bytewerk", "G2HR");
-  sl_t *sl = sl_init("data/screen_layouts.cfg");
-  cfg_t *g2hr_config = cfg_load("data/g2hr.cfg", 0);
 
   tk_t *tk = tk_init(gxt, fsty, sfx, bg, pref_path, "G2HR");
   ui_t *ui = ui_init(tk, mmp, net, sl, g2hr_config);
@@ -94,6 +97,7 @@ int main(int argc, char *argv[]) {
   tk_cleanup(tk);
   cfg_cleanup(g2hr_config);
   sl_cleanup(sl);
+  chk_cleanup(chk);
   free(pref_path);
   mmp_cleanup(mmp);
   bg_cleanup(bg);
