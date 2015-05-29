@@ -27,6 +27,6 @@ char *ini_read(ini_t *ini, char *section, char *key);
 void ini_modify(ini_t *ini, char *section_name, char *key, char *value,
                 bool overwrite);
 
-void ini_save(ini_t *ini, char *fullpath, bool quiet);
+void ini_save(ini_t *ini, char *fullpath, bool noprotip, bool quiet);
 
 void ini_cleanup(ini_t *ini);

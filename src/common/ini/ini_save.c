@@ -9,18 +9,19 @@
     free(line);                                                                \
   }
 
-void ini_save(ini_t *ini, char *fullpath, bool quiet) {
+void ini_save(ini_t *ini, char *fullpath, bool noprotip, bool quiet) {
   if (!quiet)
     printf("writing %s...\n", fullpath);
 
   FILE *handle = fopen(fullpath, "w");
-  fputs("; PROTIP: Don't modify this file, it gets written"
-        " automagically!\n",
-        handle);
+  if (!noprotip)
+    fputs("; PROTIP: Don't modify this file, it gets"
+          " written automagically!\n\n",
+          handle);
 
   ini_section_t *section = ini->sections;
   while (section) {
-    WRITE_LINE("\n[", section->name, "]\n");
+    WRITE_LINE("[", section->name, "]\n");
 
     ini_entry_t *entry = section->entries;
     while (entry) {
@@ -28,6 +29,8 @@ void ini_save(ini_t *ini, char *fullpath, bool quiet) {
 
       entry = entry->next;
     }
+
+    fputc('\n', handle);
     section = section->next;
   }
 

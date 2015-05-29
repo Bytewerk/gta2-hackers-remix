@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
   printf("only accessing slotmachine/enabled:\n");
   printf("\t'%s'\n", ini_read(ini, "slotmachine", "enabled"));
 
-  ini_save(ini, "test_output_file.ini", false);
+  ini_save(ini, "test_output_file.ini", true, false);
 
   printf("cleaning up...\n");
   ini_cleanup(ini);
