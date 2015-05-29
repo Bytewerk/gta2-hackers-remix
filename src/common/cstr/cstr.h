@@ -1,13 +1,37 @@
+#pragma once
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
 /*
-        SPLIT
+        COPY
 
-        Syntax:
-                cstr_split(cstr, delimeter, boolean_trim)
-                cstr_split_free(split)
+        Description:
+                Fully copies one string into another buffer. Free the new buffer
+                manually after usage.
+
+        Example Usage:
+                char* hello = cstr_copy("hello world"); // hello now contains
+                // the string "hello world" - but it can be modified without
+                // "bad permissions" errors.
+*/
+char *cstr_copy(char *cstr);
+
+/*
+        TRIM
+
+        Description:
+                Removes additional white spaces and tabs ('isspace'-chars) at
+                the beginning and end of the _original_ string buffer.
+
+        Example Usage:
+                char* trimmed = cstr_trim(cstr_copy("    hello world   "));
+                printf(trimmed); // "hello world"
+*/
+char *cstr_trim(char *cstr);
+
+/*
+        SPLIT
 
         Description:
                 Creates a cstr_split_t struct by cutting the supplied cstr in

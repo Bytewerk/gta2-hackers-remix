@@ -26,7 +26,8 @@ cstr_split_t *cstr_split(char *cstr, char delimeter, bool trim /*todo*/) {
       memcpy(pieces[filled], cstr + pos_cut, len_substr);
       pieces[filled][len_substr] = '\0';
 
-      // TODO: trim
+      if (trim)
+        cstr_trim(pieces[filled]);
 
       filled++;
       pos_cut = i;
