@@ -7,6 +7,9 @@ int main(int argc, char **argv) {
 
   ini_t *ini = ini_open(argv[1], 0);
 
+  // set a default value
+  ini_modify(ini, "slotmachine", "enabled", "1234", 0);
+
   printf("full dump:\n");
   ini_section_t *section = ini->sections;
   while (section) {
