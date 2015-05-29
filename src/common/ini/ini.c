@@ -4,3 +4,4 @@
 #include "ini_modify.c"
 #include "ini_open.c"
 #include "ini_read.c"
+#include "ini_save.c"

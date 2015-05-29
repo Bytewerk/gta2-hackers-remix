@@ -1,0 +1,37 @@
+#include "../cstr/cstr.h"
+#include "ini.h"
+#include <stdio.h>
+
+#define WRITE_LINE(...)                                                        \
+  {                                                                            \
+    char *line = cstr_merge(__VA_ARGS__);                                      \
+    fputs(line, handle);                                                       \
+    free(line);                                                                \
+  }
+
+void ini_save(ini_t *ini, char *fullpath, bool quiet) {
+  if (!quiet)
+    printf("writing %s...\n", fullpath);
+
+  FILE *handle = fopen(fullpath, "w");
+  fputs("; PROTIP: Don't modify this file, it gets written"
+        " automagically!\n",
+        handle);
+
+  ini_section_t *section = ini->sections;
+  while (section) {
+    WRITE_LINE("\n[", section->name, "]\n");
+
+    ini_entry_t *entry = section->entries;
+    while (entry) {
+      WRITE_LINE(entry->key, "=", entry->value, "\n");
+
+      entry = entry->next;
+    }
+    section = section->next;
+  }
+
+  fclose(handle);
+}
+
+#undef WRITE_LINE
