@@ -8,12 +8,12 @@ int main(int argc, char **argv) {
   ini_t *ini = ini_open(argv[1], 0);
 
   // set a default values
-  ini_modify(ini, "slotmachine", "enabled", "false", 0);
-  ini_modify(ini, "new section", "new value", "default value", 0);
-  ini_modify(ini, "multiplayer", "cops_enabled", "true", 0);
+  ini_modify(ini, "slotmachine", "enabled", "false", false);
+  ini_modify(ini, "new section", "new value", "default value", false);
+  ini_modify(ini, "multiplayer", "cops_enabled", "true", false);
 
   // overwrite a value
-  ini_modify(ini, "slotmachine", "cmd_reboot", "overwritten!", 1);
+  ini_modify(ini, "slotmachine", "cmd_reboot", "overwritten!", true);
 
   printf("full dump:\n");
   ini_section_t *section = ini->sections;

@@ -1,6 +1,5 @@
 #include "../cstr/cstr.h"
 #include "ini.h"
-#include <stdio.h> // debug: printf
 
 void ini_modify(ini_t *ini, char *section_name, char *key, char *value,
                 bool overwrite) {

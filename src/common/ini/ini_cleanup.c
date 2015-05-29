@@ -1,5 +1,4 @@
 #include "ini.h"
-#include <stdio.h> // printf debug!
 #include <stdlib.h>
 
 void ini_cleanup(ini_t *ini) {
