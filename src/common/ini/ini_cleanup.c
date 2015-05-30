@@ -18,6 +18,7 @@ void ini_cleanup(ini_t *ini) {
     free(old->name);
     free(old);
   }
-  free(ini->fullpath);
+  if (ini->fullpath)
+    free(ini->fullpath);
   free(ini);
 }

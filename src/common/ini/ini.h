@@ -23,7 +23,9 @@ typedef struct {
 } ini_t;
 
 // if fullpath is NULL or the file can not be read, an empty ini_t
-// struct gets initialized.
+// struct gets initialized. The fullpath pointer gets stored in the
+// struct and free'd on cleanup. If you wish to store a copy instead,
+// set copy_fullpath to true.
 ini_t *ini_open(char *fullpath, bool copy_fullpath, bool quiet);
 
 // returns NULL if the key was not found. If you need a default value,
