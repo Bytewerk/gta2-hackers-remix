@@ -72,7 +72,12 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
   ui->scores->back = ui->play;
   ui->levels->back = ui->splitscreen;
 
-  tk->screen_active = ui->main;
+  // ask if updates should be enabled on first run
+  if (strcmp(ini_read(ui->ini_settings, "ui", "update_check_enabled"), "ask"))
+    tk->screen_active = ui->main;
+  else
+    tk->screen_active = ui_screen_first_run(tk, ui);
+
   return ui;
 }
 

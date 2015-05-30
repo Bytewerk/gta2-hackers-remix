@@ -73,6 +73,9 @@ obj/screen_levels.o: $(call DEPS,ui/screens/levelselect.c)
 
 obj/screen_ready.o: $(call DEPS,ui/screens/ready.c)
 	$(CC) -c -o $@ $<
+
+obj/screen_first_run.o: $(call DEPS,ui/screens/first_run.c)
+	$(CC) -c -o $@ $<
 	
 # UI
 obj/ui.o: $(call DEPS,ui/ui.c)

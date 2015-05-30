@@ -63,6 +63,7 @@ void ui_callback_for_native(TCPsocket sock, char header, void *userdata);
 void ui_cleanup(ui_t *ui);
 
 // screens
+tk_screen_t *ui_screen_first_run(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_scores(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui);
