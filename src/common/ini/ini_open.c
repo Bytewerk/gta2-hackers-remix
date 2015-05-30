@@ -74,9 +74,10 @@ void ini_parse(ini_t *ini, char *buffer, uint32_t size) {
   }
 }
 
-ini_t *ini_open(char *fullpath, bool quiet) {
+ini_t *ini_open(char *fullpath, bool copy_fullpath, bool quiet) {
   // immediatelly return if the file doesn't exist
   ini_t *ini = calloc(1, sizeof(ini_t));
+  ini->fullpath = copy_fullpath ? cstr_copy(fullpath) : fullpath;
   if (!fullpath || access(fullpath, 0))
     return ini;
 

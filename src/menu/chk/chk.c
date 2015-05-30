@@ -50,15 +50,15 @@ int chk_thread(void *userdata) {
   chk->latest_version =
       ini_modify(chk->ini, "updatecheck", "latest_version", version, true);
   chk->version_readable = true;
-  ini_save(chk->ini, chk->fullpath, false, true);
+  ini_save(chk->ini, NULL, false, true);
   return 0;
 }
 
 chk_t *chk_init(char *settings_path_with_trailing_slash, bool in_background) {
   chk_t *chk = calloc(1, sizeof(chk_t));
-  chk->fullpath =
-      cstr_merge(settings_path_with_trailing_slash, G2HR_CHK_SETTINGS_FILE);
-  chk->ini = ini_open(chk->fullpath, false);
+  chk->ini = ini_open(
+      cstr_merge(settings_path_with_trailing_slash, G2HR_CHK_SETTINGS_FILE),
+      false, false);
   chk->latest_version = ini_read(chk->ini, "updatecheck", "latest_version");
   chk->version_readable = true;
 
@@ -82,7 +82,6 @@ void chk_cleanup(chk_t *chk) {
 
   SDLNet_TCP_Close(chk->sock);
   SDL_WaitThread(chk->thread, NULL);
-  free(chk->fullpath);
   ini_cleanup(chk->ini);
   free(chk);
 }

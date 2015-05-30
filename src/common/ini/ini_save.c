@@ -10,6 +10,12 @@
   }
 
 void ini_save(ini_t *ini, char *fullpath, bool noprotip, bool quiet) {
+  if (!fullpath)
+    fullpath = ini->fullpath;
+  if (!fullpath)
+    printf("ERROR: Can't save the ini-file, because it"
+           " has no fullpath inside the struct, and no fullpath was passed"
+           " to ini_save()!\n");
   if (!quiet)
     printf("writing %s...\n", fullpath);
 

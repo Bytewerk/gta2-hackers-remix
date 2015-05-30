@@ -9,7 +9,6 @@
 #define G2HR_CHK_INTERVAL (3600 * 24) // one day
 
 typedef struct {
-  char *fullpath;
   ini_t *ini;
 
   char *latest_version;

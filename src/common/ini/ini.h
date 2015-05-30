@@ -16,11 +16,15 @@ typedef struct ini_section_t {
 
 } ini_section_t;
 
-typedef struct { ini_section_t *sections; } ini_t;
+typedef struct {
+  ini_section_t *sections;
+  char *fullpath;
+
+} ini_t;
 
 // if fullpath is NULL or the file can not be read, an empty ini_t
 // struct gets initialized.
-ini_t *ini_open(char *fullpath, bool quiet);
+ini_t *ini_open(char *fullpath, bool copy_fullpath, bool quiet);
 
 // returns NULL if the key was not found. If you need a default value,
 // set it with ini_modify first.
@@ -31,6 +35,9 @@ char *ini_read(ini_t *ini, char *section, char *key);
 char *ini_modify(ini_t *ini, char *section_name, char *key, char *value,
                  bool overwrite);
 
+// pass NULL as fullpath to use the one specified in ini_open.
+// protip writes a comment, that the file should not be modified by the
+// user.
 void ini_save(ini_t *ini, char *fullpath, bool noprotip, bool quiet);
 
 void ini_cleanup(ini_t *ini);
