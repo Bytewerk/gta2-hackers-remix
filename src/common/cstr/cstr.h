@@ -36,7 +36,8 @@ char *cstr_trim(char *cstr);
         Description:
                 Creates a cstr_split_t struct by cutting the supplied cstr in
                 pieces. Multiple occurrences of the delimeter in a row get
-                ignored.
+                ignored - this means trim will not be necessary in most cases,
+                when the delimeter is ' '.
 
         Example Usage:
                 cstr_split_t* split = cstr_split("hello world! :D", ' ', 0);

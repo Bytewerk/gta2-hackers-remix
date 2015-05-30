@@ -45,7 +45,6 @@ int main(int argc, char *argv[]) {
   char *pref_path = SDL_GetPrefPath("bytewerk", "G2HR");
   chk_t *chk = NULL; // chk_init(pref_path, true);
   sl_t *sl = sl_init("data/screen_layouts.cfg");
-  cfg_t *g2hr_config = cfg_load("data/g2hr.cfg", 0);
 
   // load GTA2 files
   gxt_t *gxt = gxt_load("GTA2/data/e.gxt");
@@ -55,7 +54,7 @@ int main(int argc, char *argv[]) {
   bg_t *bg = bg_init();
 
   tk_t *tk = tk_init(gxt, fsty, sfx, bg, pref_path, "G2HR");
-  ui_t *ui = ui_init(tk, mmp, net, sl, g2hr_config);
+  ui_t *ui = ui_init(tk, mmp, net, sl);
 
   // run registry path changer
   rpc_init(pref_path);
@@ -95,7 +94,6 @@ int main(int argc, char *argv[]) {
   // cleanup all
   ui_cleanup(ui);
   tk_cleanup(tk);
-  cfg_cleanup(g2hr_config);
   sl_cleanup(sl);
   chk_cleanup(chk);
   free(pref_path);

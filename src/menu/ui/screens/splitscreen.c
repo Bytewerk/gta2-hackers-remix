@@ -162,7 +162,7 @@ void splitscreen_start(ud_splitscreen_t *ud) {
 
   char *time =
       ud->ui->multiplayer_time_values
-          ->values[((ud_arrowtext_t *)(ud->time->userdata))->entry_selected];
+          ->pieces[((ud_arrowtext_t *)(ud->time->userdata))->entry_selected];
 
   int cops_enabled = ((ud_arrowtext_t *)ud->cops->userdata)->entry_selected;
 
@@ -259,7 +259,7 @@ tk_screen_t *ui_screen_splitscreen(tk_t *tk, ui_t *ui) {
           // time
           ud->time =
               tk_ctrl_arrowtext(tk, TK_PARENT, NULL /*bg*/, 0,
-                                ui->multiplayer_time_values->values,
+                                ui->multiplayer_time_values->pieces,
                                 ui->multiplayer_time_values->count, "TIME: ",
                                 " MIN", NULL, NULL, NULL, NULL /*bottom text*/);
 

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-cstr_split_t *cstr_split(char *cstr, char delimeter, bool trim /*todo*/) {
+cstr_split_t *cstr_split(char *cstr, char delimeter, bool trim) {
   size_t len = strlen(cstr);
 
   // count all occurences

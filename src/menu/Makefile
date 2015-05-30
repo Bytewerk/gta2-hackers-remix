@@ -79,6 +79,8 @@ obj/ui.o: $(call DEPS,ui/ui.c)
 	$(CC) -c -o $@ $<
 obj/ui_callbacks.o: $(call DEPS,ui/ui_callbacks.c)
 	$(CC) -c -o $@ $<
+obj/ui_configs.o: $(call DEPS,ui/ui_configs.c)
+	$(CC) -c -o $@ $<
 
 # TK: CTRL
 obj/ctrl_arrow.o: $(call DEPS,tk/ctrl/arrow.c)
@@ -141,11 +143,6 @@ obj/common_cstr.o: $(call DEPS,../common/cstr/cstr.c)
 	$(CC) -c -o $@ $<
 obj/common_ini.o: $(call DEPS,../common/ini/ini.c)
 	$(CC) -c -o $@ $<
-
-# COMMON - OBSOLETE (use ini instead!)
-obj/common_cfg.o: $(call DEPS,../common/cfg/cfg.c)
-	$(CC) -c -o $@ $<
-
 
 # CHK
 obj/chk.o: $(call DEPS,chk/chk.c)

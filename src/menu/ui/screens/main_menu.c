@@ -8,7 +8,9 @@ tk_screen_t *ui_screen_main_menu(tk_t *tk, ui_t *ui) {
   tk_screen_t *main_menu = tk_screen(tk, ui->credits, NULL);
 
   TK_STACK_SCREEN(
-      main_menu, tk_el_padding(TK_PARENT, 300, 250, 0, 0);
+      main_menu,
+
+      tk_el_padding(TK_PARENT, 300, 250, 0, 0);
       TK_PARENT->bottom_text_low = "G2HR V" G2HR_VERSION;
 
       tk_ctrl_button(tk, TK_PARENT, "CAMPAIGN",
@@ -20,7 +22,14 @@ tk_screen_t *ui_screen_main_menu(tk_t *tk, ui_t *ui) {
       tk_ctrl_button(tk, TK_PARENT, "OPTIONS",
                      bg_mashup(tk->bg, NULL, "1_options", "1", NULL), NULL);
 
-      if (ui->slotmachine_enabled) {
+      if (strcmp(ini_read(ui->ini_usersettings, "slotmachine", "enabled"),
+                 "true")) // normal mode
+      {
+        tk_ctrl_button(tk, TK_PARENT, "QUIT",
+                       bg_mashup(tk->bg, NULL, "1_quit", "1", NULL),
+                       ui->credits);
+      } else // slotmachine mode
+      {
         tk_el_t *credits = tk_ctrl_button(
             tk, TK_PARENT, "CREDITS",
             bg_mashup(tk->bg, NULL, "1_quit", "1", NULL), ui->credits);
@@ -30,11 +39,9 @@ tk_screen_t *ui_screen_main_menu(tk_t *tk, ui_t *ui) {
         tk_ctrl_button(tk, TK_PARENT, "POWER OFF",
                        bg_mashup(tk->bg, NULL, "1_quit", "1", NULL),
                        ui->credits);
-      } else {
-        tk_ctrl_button(tk, TK_PARENT, "QUIT",
-                       bg_mashup(tk->bg, NULL, "1_quit", "1", NULL),
-                       ui->credits);
-      });
+      }
+
+      );
 
   return main_menu;
 }

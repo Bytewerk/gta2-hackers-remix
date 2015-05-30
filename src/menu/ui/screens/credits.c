@@ -36,11 +36,15 @@ void credits_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 
   if (action == TK_ACTION_BACKSPACE || action == TK_ACTION_ESC ||
       action == TK_ACTION_ENTER) {
-    if (ui->slotmachine_enabled) {
+    if (strcmp(ini_read(ui->ini_usersettings, "slotmachine", "enabled"),
+               "true")) // normal mode
+    {
+      tk->quit = 1;
+    } else // slotmachine mode
+    {
       tk->screen_active = ui->main;
       ud->scrolling->scroll_top = 0;
-    } else
-      tk->quit = 1;
+    }
   }
 
   if (action == TK_ACTION_FRAMETIME) {

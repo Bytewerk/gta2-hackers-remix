@@ -1,5 +1,6 @@
 #pragma once
-#include "../../common/cfg/cfg.h"
+#include "../../common/cstr/cstr.h"
+#include "../../common/ini/ini.h"
 #include "../mmp/mmp.h"
 #include "../net/menu_net.h"
 #include "../sl/sl.h"
@@ -26,6 +27,12 @@ typedef struct {
   mmp_t *mmp;
   sl_t *sl;
 
+  // configs - the settings file gets written automatically, the user-
+  // settings file does only get modified by the user.
+  ini_t *ini_usersettings;
+  ini_t *ini_settings;
+  cstr_split_t *multiplayer_time_values;
+
   // these are used with the arrowtext control and a prefix
   char **letters;
   char **numbers;
@@ -43,13 +50,13 @@ typedef struct {
 
   // synced from the native component
   uint16_t controllers_connected;
-
-  cfg_t *g2hr_config;
-  cfg_split_t *multiplayer_time_values;
-  char slotmachine_enabled;
 } ui_t;
 
-ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl, cfg_t *g2hr_config);
+ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl);
+
+// configs related
+void ui_init_configs(ui_t *ui);
+void ui_cleanup_configs(ui_t *ui);
 
 void ui_callback_for_meta(char *msg, void *userdata);
 void ui_callback_for_native(TCPsocket sock, char header, void *userdata);

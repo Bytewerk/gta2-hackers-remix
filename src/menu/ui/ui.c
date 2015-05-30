@@ -2,8 +2,10 @@
 #include "../tk/toolkit.h"
 #include "ui_text.h"
 
-ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl, cfg_t *g2hr_config) {
+ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
   ui_t *ui = calloc(1, sizeof(ui_t));
+
+  // put all arguments in the struct
   ui->tk = tk;
   ui->net = net;
   ui->net->meta_recv_callback = (void *)ui_callback_for_meta;
@@ -11,16 +13,8 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl, cfg_t *g2hr_config) {
   ui->net->userdata = (void *)ui;
   ui->mmp = mmp;
   ui->sl = sl;
-  ui->g2hr_config = g2hr_config;
-  ui->multiplayer_time_values =
-      cfg_split_value(g2hr_config, "multiplayer/time", ' ');
-  ui->slotmachine_enabled =
-      !strcmp(cfg_read(g2hr_config, "slotmachine/enabled"), "true");
 
-  if (!ui->multiplayer_time_values)
-    exit(printf("ERROR: missing the 'multiplayer/time' variable in"
-                " your g2hr.cfg! Please add it, you can look at the default"
-                " config for reference.\n"));
+  ui_init_configs(ui);
 
   // letters
   ui->letters = malloc(sizeof(char *) * G2HR_UI_LETTERS_COUNT);
@@ -98,6 +92,7 @@ void ui_cleanup(ui_t *ui) {
   free(ui->maps);
   free(ui->game_types);
 
-  cfg_split_cleanup(ui->multiplayer_time_values);
+  ui_cleanup_configs(ui);
+
   free(ui);
 }
