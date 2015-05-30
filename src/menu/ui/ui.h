@@ -1,6 +1,7 @@
 #pragma once
 #include "../../common/cstr/cstr.h"
 #include "../../common/ini/ini.h"
+#include "../chk/chk.h"
 #include "../mmp/mmp.h"
 #include "../net/menu_net.h"
 #include "../sl/sl.h"
@@ -23,6 +24,7 @@ typedef struct {
   tk_screen_t *levels;
   tk_screen_t *ready;
 
+  chk_t *chk;
   net_t *net;
   mmp_t *mmp;
   sl_t *sl;

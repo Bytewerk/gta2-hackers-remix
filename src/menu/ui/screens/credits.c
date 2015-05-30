@@ -15,13 +15,13 @@ typedef struct {
 uint32_t credits_argb(char color) {
   switch (color) {
   case 'W':
-    return 0xffffffff; // white
+    return GTA2_FONT_COLOR_WHITE;
   case 'C':
-    return 0xffffee00; // yellow
+    return GTA2_FONT_COLOR_YELLOW;
   case 'B':
-    return 0xff52ceff; // cyan
+    return GTA2_FONT_COLOR_CYAN;
   case 'G':
-    return 0xff52ce00; // green
+    return GTA2_FONT_COLOR_GREEN;
   }
 
   printf("credits - unknown color char: %c\n", color);

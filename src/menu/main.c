@@ -1,5 +1,4 @@
 #include "bg/background.h"
-#include "chk/chk.h"
 #include "gxt/gxt.h"
 #include "mmp/mmp.h"
 #include "net/menu_net.h"
@@ -43,7 +42,6 @@ int main(int argc, char *argv[]) {
 
   // load configs
   char *pref_path = SDL_GetPrefPath("bytewerk", "G2HR");
-  chk_t *chk = NULL; // chk_init(pref_path, true);
   sl_t *sl = sl_init("data/screen_layouts.cfg");
 
   // load GTA2 files
@@ -95,7 +93,6 @@ int main(int argc, char *argv[]) {
   ui_cleanup(ui);
   tk_cleanup(tk);
   sl_cleanup(sl);
-  chk_cleanup(chk);
   free(pref_path);
   mmp_cleanup(mmp);
   bg_cleanup(bg);

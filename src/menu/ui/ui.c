@@ -16,6 +16,12 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
 
   ui_init_configs(ui);
 
+  // do update check in background, if the user has enabled it
+  if (!strcmp(ini_read(ui->ini_settings, "ui", "update_check_enabled"),
+              "true")) {
+    ui->chk = chk_init(tk->pref_path, true);
+  }
+
   // letters
   ui->letters = malloc(sizeof(char *) * G2HR_UI_LETTERS_COUNT);
   for (int i = 0; i < G2HR_UI_LETTERS_COUNT; i++) {
@@ -98,6 +104,7 @@ void ui_cleanup(ui_t *ui) {
   free(ui->game_types);
 
   ui_cleanup_configs(ui);
+  chk_cleanup(ui->chk);
 
   free(ui);
 }
