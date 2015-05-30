@@ -38,7 +38,7 @@ void first_run_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   if (el_selected == ud->yes) {
     ini_modify(ud->ui->ini_settings, "ui", "update_check_enabled", "true",
                true);
-    chk_init(ud->ui->tk->pref_path, true);
+    ud->ui->chk = chk_init(ud->ui->tk->pref_path, true);
     tk->screen_active = ud->ui->main;
   } else if (el_selected == ud->no) {
     ini_modify(ud->ui->ini_settings, "ui", "update_check_enabled", "false",

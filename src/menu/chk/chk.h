@@ -21,4 +21,5 @@ typedef struct {
 } chk_t;
 
 chk_t *chk_init(char *settings_path_with_trailing_slash, bool in_background);
+char *chk_latest_version(chk_t *chk);
 void chk_cleanup(chk_t *chk);

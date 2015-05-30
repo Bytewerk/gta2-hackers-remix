@@ -44,8 +44,12 @@ typedef struct tk_el_t {
   void *actionfunc;       // (tk, el, el_selected, action, key)
   void *userdata;
   bg_mashup_t *bg_mashup;
-  const char *bottom_text_high;
-  const char *bottom_text_low;
+
+  // note: these do not get free'd! either use const chars, or free
+  // these strings yourself, like the update notification in the main
+  // menu screen.
+  char *bottom_text_high;
+  char *bottom_text_low;
 
   // set these with the macros in el_flags.h
   uint16_t flags;
