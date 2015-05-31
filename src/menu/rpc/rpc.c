@@ -9,7 +9,7 @@
 #define RPC_SEARCH_STR "\\DMA Design Ltd\\GTA2\\"
 void rpc_replace(char *exe_buffer, uint32_t size, char *cache_file,
                  int player_num, rpc_pos_t *pos) {
-  printf("caching %s...\n", cache_file);
+  printf("writing %s...\n", cache_file);
 
   // generate the replaced-string
   char *original = RPC_SEARCH_STR;
