@@ -7,7 +7,7 @@
 
 typedef struct {
   tk_el_t *content;
-  chk_t *chk;
+  ui_t *ui;
 } ud_main_t;
 
 void main_menu_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
@@ -19,7 +19,7 @@ void main_menu_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   }
 
   if (action == TK_ACTION_DRAW_BEFORE_CONTROLS) {
-    char *latest_version = chk_latest_version(ud->chk);
+    char *latest_version = chk_latest_version(ud->ui->chk);
 
     if (ud->content->bottom_text_high)
       free(ud->content->bottom_text_high);
@@ -36,7 +36,7 @@ void main_menu_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 tk_screen_t *ui_screen_main_menu(tk_t *tk, ui_t *ui) {
   tk_screen_t *main_menu = tk_screen(tk, ui->credits, NULL);
   ud_main_t *ud = malloc(sizeof(ud_main_t));
-  ud->chk = ui->chk;
+  ud->ui = ui;
 
   TK_STACK_SCREEN(
       main_menu,
