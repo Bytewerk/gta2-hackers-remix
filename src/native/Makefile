@@ -74,11 +74,11 @@ obj/ingame.o: $(call DEPS,ingame/ingame.c)
 obj/cmap.o:$(call DEPS,cmap/cmap.c)
 	$(CC) -c -o $@ $<
 
-# COMMON CFG (depends on IO)
-obj/common_cfg.o: $(call DEPS,../common/cfg/cfg.c)
+# COMMON
+obj/common_ini.o: $(call DEPS,../common/ini/ini.c)
 	$(CC) -c -o $@ $<
-
-# COMMON IO
+obj/common_cstr.o: $(call DEPS,../common/cstr/cstr.c)
+	$(CC) -c -o $@ $<
 obj/common_io.o: $(call DEPS,../common/io/io.c)
 	$(CC) -c -o $@ $<
 

@@ -3,6 +3,49 @@
 #include <stddef.h>
 #include <stdint.h>
 
+// when adding new functions, consult this Wikipedia (english) article:
+// Comparison_of_programming_languages_(string_functions)
+
+/*
+        LOWER & UPPER
+
+        Description:
+                Converts all characters to lowercase or uppercase.
+
+        Example Usage:
+                char* low = cstr_lower("MiXeD CaSe", true);
+                char* up  = cstr_upper(low, true);
+                printf("%s, %s\n", low, up); //  mixed case MIXED CASE
+                free(low);
+                free(up);
+*/
+#define cstr_lower(CSTR, BOOL_COPY) cstr_lower_upper(CSTR, BOOL_COPY, true)
+#define cstr_upper(CSTR, BOOL_COPY) cstr_lower_upper(CSTR, BOOL_COPY, false)
+char *cstr_lower_upper(char *cstr, bool copy, bool lower);
+
+/*
+        REPLACE
+
+        Description:
+                Replaces all instances of 'find' with the 'replace' character.
+                Depending on the copy-boolean, this happens inline or on a copy
+                of the cstr-buffer. The function always returns a reference to
+                the replaced string (must be free'd when copy is true!)
+
+                Count can be 0 to replace all instances, or the maximum number
+                of chars that should be replaced.
+
+                Replace can also be the null terminator to cut off the string.
+
+        Example Usage:
+                char* hello = "hello world!";
+                char* heeeo = cstr_replace(hello, 'l', 'e', 2, true);
+                printf(heeeo); // "heeeo world"
+                free(heeeo);
+*/
+char *cstr_replace(char *cstr, char find, char replace, uint16_t count,
+                   bool copy);
+
 /*
         COPY
 

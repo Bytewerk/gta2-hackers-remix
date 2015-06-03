@@ -5,11 +5,12 @@ run: ../out/$(COMPONENT)_test.bin
 	cd ../../../ &&  src/native/out/$(COMPONENT)_test.bin
 
 
-../out/$(COMPONENT)_test.bin: *.c *.h ../../common/cfg/cfg.*
+../out/$(COMPONENT)_test.bin: *.c *.h
 	mkdir -p ../out/
 	LANG=C gcc -std=c99 -Wall -Werror -g \
 		`pkg-config --cflags --libs $(LIBS)` -o $@ *.c \
-			../../common/cfg/cfg.c ../../common/io/io.c
+			../../common/ini/ini.c ../../common/io/io.c \
+			../../common/cstr/cstr.c
 
 
 valgrind: ../out/$(COMPONENT)_test.bin

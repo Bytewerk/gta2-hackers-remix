@@ -28,4 +28,18 @@ int main(int argc, char **argv) {
   for (int i = 0; i < split->count; i++)
     printf("\tpiece %i: \"%s\"\n", i, split->pieces[i]);
   cstr_split_free(split);
+
+  printf("REPLACE:\n");
+  char *hello = "hello world!";
+  char *heeeo = cstr_replace(hello, 'l', 'e', 2, true);
+  printf("\t%s => %s\n", hello, heeeo);
+  free(heeeo);
+
+  printf("LOWER & UPPER:\n");
+  char *mixed = "HeLlO WoRlD";
+  char *low = cstr_lower(mixed, true);
+  char *up = cstr_upper(low, true);
+  printf("\t%s => %s => %s\n", mixed, low, up);
+  free(low);
+  free(up);
 }
