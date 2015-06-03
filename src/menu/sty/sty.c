@@ -1,5 +1,5 @@
 #include "sty.h"
-#include "../../common/io/io.h"
+#include "../../common/fs/fs.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -130,7 +130,7 @@ uint32_t sty_parser_read_next_chunk(sty_t *sty, char *buffer, uint32_t offset,
 
 sty_t *sty_load(char *filename) {
   uint32_t size;
-  char *buffer = io_load_small_file_to_ram(filename, &size, 0);
+  char *buffer = fs_load_small_file_to_ram(filename, &size, 0);
 
   // check the file header
   if (buffer[0] != 'G' || buffer[1] != 'B' || buffer[2] != 'S' ||

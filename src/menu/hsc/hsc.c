@@ -1,5 +1,5 @@
 #include "hsc.h"
-#include "../../common/io/io.h"
+#include "../../common/fs/fs.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -14,7 +14,7 @@ hsc_t *hsc_load(hsc_t *hsc, char *filename) {
   }
 
   uint16_t size;
-  char *buffer = io_load_small_file_to_ram(filename, &size, 0);
+  char *buffer = fs_load_small_file_to_ram(filename, &size, 0);
 
   for (int i = 0; i < GTA2_LEVEL_COUNT; i++) {
     for (int j = 0; j < 5; j++) // entries

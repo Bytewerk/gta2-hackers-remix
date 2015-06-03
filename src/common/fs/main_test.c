@@ -12,7 +12,7 @@ void callback(char *path, char *name, char *ext, void *userdata) {
   printf("\text:  %s\n", ext);
 
   uint32_t size;
-  char *buffer = io_load_small_file_to_ram(path, &size, 1);
+  char *buffer = fs_load_small_file_to_ram(path, &size, 1);
   printf("\tsize: %i\n", size);
   free(buffer);
 }
@@ -20,6 +20,6 @@ void callback(char *path, char *name, char *ext, void *userdata) {
 int main(int argc, const char **argv) {
   int counter = 0;
 
-  io_iterate_over_files_in_folder("../../../GTA2/data/frontend", "tga",
+  fs_iterate_over_files_in_folder("../../../GTA2/data/frontend", "tga",
                                   callback, &counter, 0);
 }

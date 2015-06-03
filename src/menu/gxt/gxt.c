@@ -28,7 +28,7 @@
 */
 
 #include "gxt.h"
-#include "../../common/io/io.h"
+#include "../../common/fs/fs.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -101,7 +101,7 @@ void gxt_parse(gxt_t *gxt, char *tkey, char *tdat, uint32_t tkey_size,
 
 gxt_t *gxt_load(char *filename) {
   uint32_t size;
-  char *buffer = io_load_small_file_to_ram(filename, &size, 0);
+  char *buffer = fs_load_small_file_to_ram(filename, &size, 0);
   gxt_t *gxt = malloc(sizeof(gxt_t));
 
   // check file header ("GBL", lang, 0x6400)

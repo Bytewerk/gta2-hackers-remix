@@ -1,11 +1,11 @@
 #include "background.h"
-#include "../../common/io/io.h"
+#include "../../common/fs/fs.h"
 #include <SDL2/SDL_image.h>
 #include <string.h>
 
 void bg_load_single(char *path, char *name, char *ext, void *userdata) {
   bg_t *bg = malloc(sizeof(bg_t));
-  bg->name = io_get_filename_without_ext(name, ext);
+  bg->name = fs_get_filename_without_ext(name, ext);
   bg->next = NULL;
 
   // actually load the file
@@ -40,10 +40,10 @@ void bg_load_single(char *path, char *name, char *ext, void *userdata) {
 bg_t *bg_init() {
   bg_init_t *userdata = calloc(1, sizeof(bg_init_t));
 
-  io_iterate_over_files_in_folder("GTA2/data/frontend", "tga", bg_load_single,
+  fs_iterate_over_files_in_folder("GTA2/data/frontend", "tga", bg_load_single,
                                   (void *)userdata, 0);
 
-  io_iterate_over_files_in_folder("data/frontend", "png", bg_load_single,
+  fs_iterate_over_files_in_folder("data/frontend", "png", bg_load_single,
                                   (void *)userdata, 0);
 
   bg_t *first = userdata->first;

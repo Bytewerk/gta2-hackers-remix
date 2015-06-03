@@ -1,5 +1,5 @@
 #include "../cstr/cstr.h"
-#include "../io/io.h"
+#include "../fs/fs.h"
 #include "ini.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -82,7 +82,7 @@ ini_t *ini_open(char *fullpath, bool copy_fullpath, bool quiet) {
     return ini;
 
   uint32_t size;
-  char *buffer = io_load_small_file_to_ram(fullpath, &size, quiet);
+  char *buffer = fs_load_small_file_to_ram(fullpath, &size, quiet);
 
   ini_parse(ini, buffer, size);
 

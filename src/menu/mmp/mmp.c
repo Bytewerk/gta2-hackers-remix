@@ -1,6 +1,6 @@
 #include "mmp.h"
 #include "../../common/cstr/cstr.h"
-#include "../../common/io/io.h"
+#include "../../common/fs/fs.h"
 
 #include <ctype.h>
 #include <dirent.h>
@@ -65,7 +65,7 @@ void mmp_load(char *path, char *name, char *ext, void *userdata) {
 mmp_t *mmp_init(char *path) {
   // read all files into a temporary list
   mmp_list_t *list_temp = NULL;
-  io_iterate_over_files_in_folder(path, "mmp", mmp_load, &list_temp, false);
+  fs_iterate_over_files_in_folder(path, "mmp", mmp_load, &list_temp, false);
 
   // struct that we'll return
   mmp_t *mmp = malloc(sizeof(mmp_t));

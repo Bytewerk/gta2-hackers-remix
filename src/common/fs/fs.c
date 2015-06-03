@@ -1,4 +1,4 @@
-#include "io.h"
+#include "fs.h"
 #include <dirent.h>
 #include <stdio.h>
 #include <stdio.h>
@@ -7,7 +7,7 @@
 
 // read small files (<<10 MB) into RAM
 // returned buffer must be free'd after usage!
-char *io_load_small_file_to_ram(char *filename, uint32_t *size, char quiet) {
+char *fs_load_small_file_to_ram(char *filename, uint32_t *size, char quiet) {
   if (!quiet)
     printf("loading %s...\n", filename);
 
@@ -30,7 +30,7 @@ char *io_load_small_file_to_ram(char *filename, uint32_t *size, char quiet) {
 
 // the returned substring is the end of the filename, and gets free'd
 // when filename gets free'd!
-char *io_get_file_ext(char *filename) {
+char *fs_get_file_ext(char *filename) {
   uint16_t len = strlen(filename);
   char *pos = strrchr(filename, '.');
   if (!pos || pos - filename > len)
@@ -38,9 +38,9 @@ char *io_get_file_ext(char *filename) {
   return pos + 1;
 }
 
-// ext may be NULL. use io_get_file_ext to get it, if necessary.
+// ext may be NULL. use fs_get_file_ext to get it, if necessary.
 // the return value must be free'd after usage!
-char *io_get_filename_without_ext(char *filename, char *ext) {
+char *fs_get_filename_without_ext(char *filename, char *ext) {
   uint16_t len = strlen(filename);
 
   if (ext)
@@ -57,7 +57,7 @@ char *io_get_filename_without_ext(char *filename, char *ext) {
 // its contents!
 //
 // ext can also be NULL to iterate over all files in a folder
-void io_iterate_over_files_in_folder(char *folder, char *ext, void *callback,
+void fs_iterate_over_files_in_folder(char *folder, char *ext, void *callback,
                                      void *userdata, char quiet) {
   if (!quiet)
     printf("loading %s/*.%s...\n", folder, ext);
@@ -76,7 +76,7 @@ void io_iterate_over_files_in_folder(char *folder, char *ext, void *callback,
     // check if the file has the specified extension
     char *file_name = entry->d_name;
     uint16_t len_name = strlen(file_name);
-    char *file_ext = io_get_file_ext(file_name);
+    char *file_ext = fs_get_file_ext(file_name);
 
     // skip if the extension is not the one we want
     if (ext && (!file_ext || strcmp(file_ext, ext)))

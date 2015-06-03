@@ -1,5 +1,5 @@
 #include "sl.h"
-#include "../../common/io/io.h"
+#include "../../common/fs/fs.h"
 
 #include <stdint.h>
 #include <stdio.h>
@@ -181,7 +181,7 @@ sl_entry_t **sl_parse(char *buffer, size_t buffer_size) {
 
 sl_t *sl_init(char *filename) {
   uint32_t size;
-  char *buffer = io_load_small_file_to_ram(filename, &size, 0);
+  char *buffer = fs_load_small_file_to_ram(filename, &size, 0);
 
   // parse the file
   sl_entry_t **entries = sl_parse(buffer, size);

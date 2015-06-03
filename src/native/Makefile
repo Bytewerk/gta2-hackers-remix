@@ -79,7 +79,7 @@ obj/common_ini.o: $(call DEPS,../common/ini/ini.c)
 	$(CC) -c -o $@ $<
 obj/common_cstr.o: $(call DEPS,../common/cstr/cstr.c)
 	$(CC) -c -o $@ $<
-obj/common_io.o: $(call DEPS,../common/io/io.c)
+obj/common_fs.o: $(call DEPS,../common/fs/fs.c)
 	$(CC) -c -o $@ $<
 
 # OTHER

@@ -1,8 +1,8 @@
 #include "cmap.h"
 #include "../../common/cstr/cstr.h"
+#include "../../common/fs/fs.h"
 #include "../../common/headers/common.h"
 #include "../../common/ini/ini.h"
-#include "../../common/io/io.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -258,7 +258,7 @@ void cmap_load_file(char *path, char *name, char *ext, void *userdata) {
 cmap_t *cmap_init() {
   cmap_init_t *userdata = calloc(1, sizeof(cmap_init_t));
 
-  io_iterate_over_files_in_folder("data/controller-mappings", "ini",
+  fs_iterate_over_files_in_folder("data/controller-mappings", "ini",
                                   cmap_load_file, (void *)userdata, 1);
 
   cmap_t *first = userdata->first;

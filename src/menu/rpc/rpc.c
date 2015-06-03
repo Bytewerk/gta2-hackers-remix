@@ -1,6 +1,6 @@
 #include "rpc.h"
+#include "../../common/fs/fs.h"
 #include "../../common/headers/common.h"
-#include "../../common/io/io.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -97,7 +97,7 @@ void rpc_init(char *prefpath) {
 
     // read GTA2.exe, if that hasn't been done already
     if (!exe_buffer) {
-      exe_buffer = io_load_small_file_to_ram("GTA2/gta2.exe", &size, 0);
+      exe_buffer = fs_load_small_file_to_ram("GTA2/gta2.exe", &size, 0);
 
       // find the registry strings we'll replace
       first = rpc_search(exe_buffer, size);
