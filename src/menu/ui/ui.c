@@ -47,7 +47,7 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
   // maps
   ui->maps = malloc(sizeof(char *) * mmp->file_count);
   for (size_t i = 0; i < mmp->file_count; i++)
-    ui->maps[i] = cfg_read(mmp->files[i]->data, "MapFiles/Description");
+    ui->maps[i] = ini_read(mmp->files[i]->data, "MapFiles", "Description");
 
   // player names
   ui->player_names = malloc(sizeof(char *) * GTA2_SAVEGAME_COUNT);

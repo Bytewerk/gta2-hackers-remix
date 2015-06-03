@@ -1,5 +1,7 @@
 #include "mmp.h"
-#include "../../common/cfg/cfg.h"
+#include "../../common/cstr/cstr.h"
+#include "../../common/io/io.h"
+
 #include <ctype.h>
 #include <dirent.h>
 #include <stdio.h>
@@ -7,100 +9,95 @@
 #include <string.h>
 #include <sys/types.h>
 
-// qsort_r isn't in C99, so we'll just store the sorting key globally.
-char *GLOBAL_SORT_KEY = G2HR_MMP_DEFAULT_SORT_KEY;
+// qsort_r isn't in C99, so we'll just store the sorting key and section
+// globally.
+char *GLOBAL_MMP_SORT_SECTION;
+char *GLOBAL_MMP_SORT_KEY;
 
 int mmp_comparator(const void *a, const void *b) {
-  return strcmp(cfg_read(((mmp_file_t *)a)->data, GLOBAL_SORT_KEY),
-                cfg_read(((mmp_file_t *)b)->data, GLOBAL_SORT_KEY));
+
+  char *one = ini_read((*(mmp_file_t **)a)->data, GLOBAL_MMP_SORT_SECTION,
+                       GLOBAL_MMP_SORT_KEY);
+  char *two = ini_read((*(mmp_file_t **)b)->data, GLOBAL_MMP_SORT_SECTION,
+                       GLOBAL_MMP_SORT_KEY);
+
+  if (!one || !two)
+    printf("ERROR: file %s doesn't contain key %s in section %s!\n",
+           (*(mmp_file_t **)a)->source, GLOBAL_MMP_SORT_SECTION,
+           GLOBAL_MMP_SORT_KEY);
+
+  if (!one)
+    one = "";
+  if (!two)
+    two = "";
+
+  return strcmp(one, two);
 }
 
-void mmp_sort(mmp_t *mmp, char *key) {
-  GLOBAL_SORT_KEY = key;
+void mmp_sort(mmp_t *mmp, char *section, char *key) {
+  GLOBAL_MMP_SORT_KEY = key;
+  GLOBAL_MMP_SORT_SECTION = section;
+
   qsort(mmp->files, mmp->file_count, sizeof(mmp_file_t *), mmp_comparator);
 }
 
-mmp_file_t *mmp_load(char *filename) {
-  mmp_file_t *file = malloc(sizeof(mmp_file_t));
-  file->source = filename;
-  file->data = cfg_load(filename, 1);
-  return file;
+// temporary list format, that only gets used while parsing the
+// directory. after that, an array gets created (so it can be sorted
+// with qsort!)
+typedef struct mmp_list_t {
+  struct mmp_list_t *next;
+  mmp_file_t *file;
+} mmp_list_t;
+
+void mmp_load(char *path, char *name, char *ext, void *userdata) {
+  mmp_list_t *new = malloc(sizeof(mmp_list_t));
+  new->file = malloc(sizeof(mmp_file_t));
+  new->file->data = ini_open(path, true, true);
+  new->file->source = cstr_copy(name);
+
+  // attach it to the head of the temporary list (gets sorted later)
+  new->next = *((mmp_list_t **)userdata);
+  *((mmp_list_t **)userdata) = new;
 }
 
 // load all files in the data/ folder and sort them by the
 // description field (which is something like the display title).
-mmp_t *mmp_init(const char *path) {
-  printf("loading %s/*.mmp...\n", path);
-  DIR *dir = opendir(path);
-  if (!dir)
-    exit(printf("Couldn't find path '%s'!\n", path));
+mmp_t *mmp_init(char *path) {
+  // read all files into a temporary list
+  mmp_list_t *list_temp = NULL;
+  io_iterate_over_files_in_folder(path, "mmp", mmp_load, &list_temp, false);
 
   // struct that we'll return
   mmp_t *mmp = malloc(sizeof(mmp_t));
   mmp->file_count = 0;
 
-  // temporary list structs
-  mmp_list_t *first = NULL;
-  mmp_list_t *current = NULL;
-
-  size_t len_path = strlen(path);
-  while (1) {
-    struct dirent *entry = readdir(dir);
-    if (!entry)
-      break;
-
-    // skip non-.mmp-files
-    char *name = entry->d_name;
-    size_t len = strlen(name);
-    if (len < 4 || name[len - 4] != '.' ||
-        (name[len - 3] != 'm' && name[len - 3] != 'M') ||
-        (name[len - 2] != 'm' && name[len - 2] != 'M') ||
-        (name[len - 1] != 'p' && name[len - 1] != 'P'))
-      continue;
-
-    // load the file (the full path gets free'd on cleanup!)
-    char *fullpath = malloc(len_path + len + 2);
-    snprintf(fullpath, len_path + len + 2, "%s/%s", path, name);
-    mmp_list_t *new = malloc(sizeof(mmp_list_t));
-    new->next = NULL;
-    new->file = mmp_load(fullpath);
-
-    // add it to the temporary list
-    if (first)
-      current->next = new;
-    else
-      first = new;
-    current = new;
+  // count the list entries
+  mmp_list_t *current = list_temp;
+  while (current) {
     mmp->file_count++;
+    current = current->next;
   }
-  closedir(dir);
 
   // transform the list into an array
   mmp->files = malloc(sizeof(mmp_file_t *) * mmp->file_count);
-  current = first;
+  current = list_temp;
   for (size_t i = 0; i < mmp->file_count; i++) {
-    first = current;
-    mmp->files[i] = first->file;
-    current = first->next;
-    free(first);
+    mmp->files[i] = current->file;
+
+    mmp_list_t *old = current;
+    current = current->next;
+    free(old);
   }
 
   // sort the maps by the description field
-  mmp_sort(mmp, G2HR_MMP_DEFAULT_SORT_KEY);
+  mmp_sort(mmp, G2HR_MMP_DEFAULT_SORT_SECTION, G2HR_MMP_DEFAULT_SORT_KEY);
   return mmp;
-}
-
-mmp_file_t *mmp_file_by_value(mmp_t *mmp, char *key, char *value) {
-  for (size_t i = 0; i < mmp->file_count; i++)
-    if (!strcmp(cfg_read(mmp->files[i]->data, key), value))
-      return mmp->files[i];
-  return NULL;
 }
 
 void mmp_cleanup(mmp_t *mmp) {
   for (size_t i = 0; i < mmp->file_count; i++) {
     mmp_file_t *file = mmp->files[i];
-    cfg_cleanup(file->data);
+    ini_cleanup(file->data);
     free(file->source);
     free(file);
   }

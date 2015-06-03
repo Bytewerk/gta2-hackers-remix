@@ -147,11 +147,6 @@ obj/common_cstr.o: $(call DEPS,../common/cstr/cstr.c)
 obj/common_ini.o: $(call DEPS,../common/ini/ini.c)
 	$(CC) -c -o $@ $<
 
-# COMMON - OBSOLETE (use ini instead!)
-obj/common_cfg.o: $(call DEPS,../common/cfg/cfg.c)
-	$(CC) -c -o $@ $<
-
-
 # CHK
 obj/chk.o: $(call DEPS,chk/chk.c)
 	$(CC) -c -o $@ $<

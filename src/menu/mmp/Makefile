@@ -7,10 +7,20 @@ run: ../out/mmp_test.bin
 	../out/mmp_test.bin $(INPUT_FILE)
 
 
-../out/mmp_test.bin: *.c *.h ../../common/cfg/cfg.h
-	LANG=C gcc -std=c99 -Wall -g -Werror -o $@ *.c ../../common/cfg/cfg.c
+../out/mmp_test.bin: *.c *.h
+	LANG=C gcc -std=c99 -Wall -g -Werror -o $@ *.c \
+		../../common/ini/ini.c ../../common/io/io.c \
+		../../common/cstr/cstr.c
 
 
 valgrind: ../out/mmp_test.bin
 	valgrind --leak-check=full ../out/mmp_test.bin \
 	$(INPUT_FILE)
+
+
+
+clean:
+	rm ../out/mmp_test.bin
+
+
+.PHONY: clean

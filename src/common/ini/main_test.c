@@ -15,17 +15,7 @@ int main(int argc, char **argv) {
   // overwrite a value
   ini_modify(ini, "slotmachine", "cmd_reboot", "overwritten!", true);
 
-  printf("full dump:\n");
-  ini_section_t *section = ini->sections;
-  while (section) {
-    printf("\t'%s':\n", section->name);
-    ini_entry_t *entry = section->entries;
-    while (entry) {
-      printf("\t\t'%s': '%s'\n", entry->key, entry->value);
-      entry = entry->next;
-    }
-    section = section->next;
-  }
+  ini_dump(ini);
 
   printf("only accessing slotmachine/enabled:\n");
   printf("\t'%s'\n", ini_read(ini, "slotmachine", "enabled"));

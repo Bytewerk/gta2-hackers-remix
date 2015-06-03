@@ -1,6 +1,6 @@
-# INPUT_FILE := "../../../GTA2/data/mp1-6p.mmp"
+INPUT_FILE := "../../../GTA2/data/mp1-6p.mmp"
 # INPUT_FILE := "test.mmp"
-INPUT_FILE := "../../../data/g2hr.cfg"
+# INPUT_FILE := "../../../data/g2hr.cfg"
 BIN_FILE := "../../../bin/debug_ini.bin"
 
 run: $(BIN_FILE)

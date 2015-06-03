@@ -43,3 +43,6 @@ char *ini_modify(ini_t *ini, char *section_name, char *key, char *value,
 void ini_save(ini_t *ini, char *fullpath, bool noprotip, bool quiet);
 
 void ini_cleanup(ini_t *ini);
+
+// debug function for dumping ini contents with printf
+void ini_dump(ini_t *ini);
