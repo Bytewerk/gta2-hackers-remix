@@ -121,7 +121,11 @@ Func move_until_it_works($hwnd, $geo)
 	Wend
 Endfunc
 
-
+Func regwrite_if_empty($keyname, $valuename, $type, $value)
+	RegRead($keyname, $valuename)
+	If @Error Then _
+		RegWrite($keyname, $valuename, $type, $value)
+EndFunc
 
 
 

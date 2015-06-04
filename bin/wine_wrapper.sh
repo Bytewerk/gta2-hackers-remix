@@ -15,4 +15,18 @@ fi
 export WINEDEBUG=-all
 export WINEPREFIX="$PWD/build/wineprefix/"
 
+
+METALOG=meta_errors.log
+[ -e $METALOG ] && rm $METALOG
+
 wine explorer /desktop=G2HR,640x480 bin/menu.exe $native_port
+
+
+if [ -e $METALOG ]; then
+	echo ""
+	echo "-------------------------------------"
+	cat $METALOG
+	rm $METALOG
+	echo "-------------------------------------"
+	echo ""
+fi

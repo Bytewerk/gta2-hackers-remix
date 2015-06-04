@@ -19,6 +19,16 @@ Func prepare_common_registry_network_settings($root)
 	RegWrite($root&"\Network", "UseProtocold", "REG_BINARY", _
 		Binary("0xE05EE9367785CF11960C0080C7534E82"))
 	RegWrite($root&"\Network", "UseProtocols", "REG_DWORD", 16)
+	
+	regwrite_if_empty($root&"\Network", "f_limit", "REG_DWORD", 0x03)
+	regwrite_if_empty($root&"\Network", "game_speed", "REG_DWORD", 0x01)
+	regwrite_if_empty($root&"\Network", "game_time_limit", _
+		"REG_DWORD", 0x0e)
+	regwrite_if_empty($root&"\Network", "game_type", "REG_DWORD", 0x01)
+	regwrite_if_empty($root&"\Network", "map_index", "REG_DWORD", 0x00)
+	regwrite_if_empty($root&"\Network", "police", "REG_DWORD", 0x00)
+	regwrite_if_empty($root&"\Network", "show_player_names", _
+		"REG_DWORD", 0x01)
 Endfunc
 
 Func prepare_common_registry_settings($i) ;$i: 1...6
@@ -62,6 +72,9 @@ Func prepare_common_registry_settings($i) ;$i: 1...6
 	RegWrite($root&"\Screen", "videodevice", "REG_DWORD", 0x01)
 	RegWrite($root&"\Screen", "videoname", "REG_SZ", "dmavideo.dll")
 	RegWrite($root&"\Screen", "special_recognition", "REG_DWORD", 0x01)
+	
+	
+	
 Endfunc
 
 
@@ -75,6 +88,7 @@ Func prepare_host_registry($cmd)
 	; couldn't change that in the exe files yet)
 	Local $root_original = "HKCU\Software\DMA Design Ltd\GTA2"
 	prepare_common_registry_network_settings($root_original)
+	; FIXME: probably need t load more registry settings here!
 	
 	RegWrite($root_original&"\Network", "map_index", "REG_DWORD", _
 		$map_id)

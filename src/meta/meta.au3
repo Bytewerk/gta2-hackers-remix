@@ -4,17 +4,15 @@
 #include "cmds/splitscreen.au3"
 #include <Array.au3>
 
-If $CmdLine[0] <> 1 Then
+If $CmdLine[0] < 1 Then
 	Exit Msgbox(16,"G2HR","Syntax: meta.exe menu_port")
 Endif
-
 
 ; Connect to the menu
 TCPStartup()
 $global_sock = TCPConnect("127.0.0.1", $CmdLine[1])
 If @ERROR Then Exit ConsoleWrite("[meta] connection refused" & @CRLF)
 re("CONNECTED! CAN YOU GIVE ME THE CONFIG PATH?")
-
 
 ; Handle incoming commands. Format:
 ; 	COMMAND_NAME [PARAMETER1 [PARAMETER2] ... ]

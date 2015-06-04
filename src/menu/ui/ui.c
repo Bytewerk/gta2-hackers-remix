@@ -23,10 +23,11 @@ void ui_start_meta(ui_t *ui) {
     cmd = cstr_merge("start bin/meta.exe ", port_str);
   } else {
     // launch the interpreter
-    cmd = cstr_merge("start \"", ini_read(ini, "debug-meta", "autoit3_path"),
+    cmd = cstr_merge("start /min cmd /c \"",
+                     ini_read(ini, "debug-meta", "autoit3_path"),
                      "AutoIt3.exe\" /ErrorStdOut \"",
                      ini_read(ini, "debug-meta", "meta_path"), "meta.au3\" ",
-                     port_str);
+                     port_str, " ^> meta_errors.log");
   }
 
   printf("starting the meta component:\n");
