@@ -16,17 +16,18 @@ export WINEDEBUG=-all
 export WINEPREFIX="$PWD/build/wineprefix/"
 
 
+# Attach to the meta logfile
+# TODO: also attach to the injected logfile
 METALOG=meta_errors.log
 [ -e $METALOG ] && rm $METALOG
+touch $METALOG
+tail -f $METALOG &
+TAIL_META=$!
 
+# Actually start wine in a virtual desktop
 wine explorer /desktop=G2HR,640x480 bin/menu.exe $native_port
 
 
-if [ -e $METALOG ]; then
-	echo ""
-	echo "-------------------------------------"
-	cat $METALOG
-	rm $METALOG
-	echo "-------------------------------------"
-	echo ""
-fi
+# Clean up the logfiles
+rm $METALOG
+kill $TAIL_META

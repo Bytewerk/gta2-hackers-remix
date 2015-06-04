@@ -27,3 +27,7 @@ fi
 # FIXME: winetricks doesn't verify the files, it downloads :-\
 echo "Setting up 'directplay' and 'vb6run' with winetricks..."
 winetricks -q directplay vb6run
+
+
+# Set a black background
+regedit wine_registry_setup.txt
