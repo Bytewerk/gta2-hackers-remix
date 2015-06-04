@@ -57,18 +57,6 @@ int main(int argc, char *argv[]) {
   // run registry path changer
   rpc_init(pref_path);
 
-  // start the meta component
-  if (!strcmp(SDL_GetPlatform(), "Windows")) {
-    int buffer_size = 30;
-    char *buffer = malloc(buffer_size + 1);
-    snprintf(buffer, buffer_size, "start bin/meta.exe %i", net->server_port);
-    system(buffer);
-    free(buffer);
-  } else
-    printf("NOTE: You have not compiled the menu for win32, so the 'meta' "
-           "component will not be started. The commands that *would* be sent "
-           "to it are shown in the terminal anyway. Enjoy debugging :)\n");
-
   // main loop
   uint32_t previous = 0;
   while (!tk->quit) {
