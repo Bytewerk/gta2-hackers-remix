@@ -18,7 +18,8 @@ void ui_start_meta(ui_t *ui) {
   // set up the full launch command
   char *cmd;
   ini_t *ini = ui->ini_usersettings;
-  if (strcmp(ini_read(ini, "debug-meta", "enabled"), "true")) {
+  bool debug_meta = !strcmp(ini_read(ini, "debug-meta", "enabled"), "true");
+  if (!debug_meta) {
     // launch the binary
     cmd = cstr_merge("start bin/meta.exe ", port_str);
   } else {
@@ -119,6 +120,8 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
   else
     tk->screen_active = ui_screen_first_run(tk, ui);
 
+  SDL_ShowWindow(ui->tk->window);
+  SDL_RaiseWindow(ui->tk->window);
   return ui;
 }
 

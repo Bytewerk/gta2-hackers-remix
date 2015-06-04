@@ -27,7 +27,7 @@ tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *pref_path,
 
   // create the SDL window
   tk->window = SDL_CreateWindow(title, 0, 0, tk->mode.w, tk->mode.h,
-                                SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS);
+                                SDL_WINDOW_BORDERLESS);
   if (!tk->window)
     exit(printf("SDL_ERROR: %s\n", SDL_GetError()));
 
