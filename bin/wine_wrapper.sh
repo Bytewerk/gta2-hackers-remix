@@ -1,15 +1,9 @@
 #!/bin/bash
 
-# This is just a stub!
-# TODO:
-# - set up an extra wine prefix
-# - install required DLLs in that prefix (like winetricks, but with
-#		checksum checking)
-# - use that wine prefix!
-# - support fullscreen mode
-# - (overkill: show a native wine prefix setup progress screen with the
-#		g2hr toolkit :>)
-
+# This is just a stub file for developing. For the next release, there
+# should be a seperate script for configuring the chroot and one for
+# running. Maybe we'll add a nice progress screen that runs natively
+# with the G2HR toolkit? :>
 
 native_port="$1"
 
@@ -18,4 +12,7 @@ if [ "$native_port" == "" ]; then
 	exit 1
 fi
 
-WINEDEBUG=-all wine explorer /desktop=G2HR,640x480 bin/menu.exe $native_port
+export WINEDEBUG=-all
+export WINEPREFIX="$PWD/build/wineprefix/"
+
+wine explorer /desktop=G2HR,640x480 bin/menu.exe $native_port
