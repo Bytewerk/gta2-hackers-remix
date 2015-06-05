@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 
 /*
         These are the IDs of the GTA2 sounds in fstyle.raw.
