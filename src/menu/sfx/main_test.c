@@ -10,6 +10,7 @@ int main() {
   // sfx_play(sfx, SFX_FSTYLE_CHEAT);
 
   Mix_Init(0);
+  Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024);
   Mix_AllocateChannels(2);
 
   Mix_Music *song = Mix_LoadMUS("GTA2/data/GTAudio/D.wav");
