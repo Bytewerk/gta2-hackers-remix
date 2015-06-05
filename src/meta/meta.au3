@@ -8,6 +8,8 @@ If $CmdLine[0] < 1 Then
 	Exit Msgbox(16,"G2HR","Syntax: meta.exe menu_port")
 Endif
 
+If Not @Compiled Then WinActivate("G2HR")
+
 ; Connect to the menu
 TCPStartup()
 $global_sock = TCPConnect("127.0.0.1", $CmdLine[1])

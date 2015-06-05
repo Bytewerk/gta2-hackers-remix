@@ -35,6 +35,9 @@ void ui_start_meta(ui_t *ui) {
   printf("> %s\n", cmd);
   system(cmd);
   free(cmd);
+
+  if (debug_meta)
+    SDL_Delay(1000);
 }
 
 ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
