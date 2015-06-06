@@ -134,6 +134,8 @@ obj/sty.o: $(call DEPS,sty/sty.c)
 # SFX
 obj/sfx.o: $(call DEPS,sfx/sfx.c)
 	$(CC) -c -o $@ $<
+obj/sfx_sdt.o: $(call DEPS,sfx/sdt.c)
+	$(CC) -c -o $@ $<
 
 # GXT
 obj/gxt.o: $(call DEPS,gxt/gxt.c)

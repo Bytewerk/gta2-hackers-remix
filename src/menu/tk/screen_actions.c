@@ -30,6 +30,8 @@ void down(tk_screen_t *screen, tk_el_t *selected, tk_el_t *first) {
 void back(tk_t *tk, tk_screen_t *screen) {
   if (!screen->back)
     return;
+  sfx_play_sample(tk->sfx, SFX_FSTYLE_BACK);
+
   tk->screen_active = screen->back;
 }
 

@@ -22,7 +22,13 @@ sfx_t *sfx_init() {
   sfx_t *sfx = calloc(1, sizeof(sfx_t));
 
   Mix_Init(0);
-  Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024);
+  if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
+    printf("ERROR while opening audio device: '%s' - sound will be"
+           " disabled!\n",
+           Mix_GetError());
+    sfx->sound_works = false;
+    return sfx;
+  }
   Mix_AllocateChannels(1);
 
   // load all songs
@@ -31,11 +37,14 @@ sfx_t *sfx_init() {
 
   // load all menu samples
   sfx->sdt = sfx_sdt_load("GTA2/data/audio/", "fstyle");
-
+  sfx->sound_works = true;
   return sfx;
 }
 
 void sfx_play_song(sfx_t *sfx, const char *filename) {
+  if (!sfx->sound_works)
+    return;
+
   sfx_song_t *current = sfx->songs;
   while (current) {
     if (!strcmp(current->filename, filename))
@@ -51,6 +60,8 @@ void sfx_play_song(sfx_t *sfx, const char *filename) {
 }
 
 void sfx_play_sample(sfx_t *sfx, uint8_t sample_id) {
+  if (!sfx->sound_works)
+    return;
   Mix_PlayChannel(0, sfx->sdt->chunks[sample_id], 0);
 }
 
