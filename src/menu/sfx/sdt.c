@@ -15,11 +15,13 @@ typedef struct {
 } sfx_sdt_chunk_t;
 
 // based on Black_Phoenix' sdt2wav tool: http://git.io/g2hr-std2wav
+// FIXME: actually give the strings the right data type to make the code
+// less cryptic
 typedef struct {
   int32_t riff;
   int32_t header_size;
-  int32_t wave;
-  int32_t fmt;
+  int32_t wave; // string
+  int32_t fmt;  // string
   int32_t fixed1;
   int16_t format_tag;
   int16_t channels;
@@ -27,8 +29,7 @@ typedef struct {
   int32_t bytes_per_second;
   int16_t bytes_per_sample;
   int16_t bits_per_sample;
-  int32_t data; //?
-  int32_t audio_data_size;
+  int32_t data; // string
   int32_t size;
 } sfx_sdt_wave_header_t;
 
@@ -74,7 +75,18 @@ sfx_sdt_t *sfx_sdt_load(const char *path, const char *name) {
     // copy the raw audio data after the header (wav+1!)
     memcpy(wav + 1, raw + meta->start_offset, meta->size);
 
+    /*
+            debug code for dumping the file:
+
+            FILE* handle = fopen("test.wav", "wb");
+            fwrite(wav , 1, full_size, handle);
+            fclose(handle);
+            printf("debug, exiting here after writing test.wav!\n");
+            exit(1);
+    */
+
     ret->chunks[i] = Mix_LoadWAV_RW(SDL_RWFromMem(wav, full_size), true);
+
     if (!ret->chunks[i])
       printf("Mix_LoadWAV_RW: %s\n", Mix_GetError());
 

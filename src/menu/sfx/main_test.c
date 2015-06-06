@@ -10,7 +10,7 @@ int main() {
   // FIXME: this is just playing silence right now!
   for (int i = 0; i < sfx->sdt->count; i++) {
     printf("playing sample #%i...\n", i);
-    if (Mix_PlayChannel(0, sfx->sdt->chunks[i], 1) == -1) {
+    if (Mix_PlayChannel(0, sfx->sdt->chunks[i], 0) == -1) {
       printf("Mix_PlayChannel: %s\n", Mix_GetError());
     } else
       SDL_Delay(5000);
