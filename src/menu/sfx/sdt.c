@@ -58,10 +58,10 @@ sfx_sdt_t *sfx_sdt_load(const char *path, const char *name) {
     sfx_sdt_chunk_t *meta = &sdt[i];
     uint32_t full_size = sizeof(sfx_sdt_wave_header_t) + meta->size;
     sfx_sdt_wave_header_t *wav = malloc(full_size);
-    wav->riff = 0x46464952;
+    wav->riff = *((int32_t *)"RIFF");
     wav->header_size = meta->size + 36;
-    wav->wave = 0x45564157;
-    wav->fmt = 0x20746D66;
+    wav->wave = *((int32_t *)"WAVE");
+    wav->fmt = *((int32_t *)"fmt ");
     wav->fixed1 = 16;
     wav->format_tag = 1;
     wav->channels = 1; // mono
@@ -69,7 +69,7 @@ sfx_sdt_t *sfx_sdt_load(const char *path, const char *name) {
     wav->bytes_per_second = meta->freq * 2;
     wav->bytes_per_sample = 2;
     wav->bits_per_sample = 16;
-    wav->data = 0x61746164;
+    wav->data = *((int32_t *)"data");
     wav->size = meta->size;
 
     // copy the raw audio data after the header (wav+1!)
