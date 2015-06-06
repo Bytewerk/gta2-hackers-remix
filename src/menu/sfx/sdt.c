@@ -75,22 +75,11 @@ sfx_sdt_t *sfx_sdt_load(const char *path, const char *name) {
     // copy the raw audio data after the header (wav+1!)
     memcpy(wav + 1, raw + meta->start_offset, meta->size);
 
-    /*
-            debug code for dumping the file:
-
-            FILE* handle = fopen("test.wav", "wb");
-            fwrite(wav , 1, full_size, handle);
-            fclose(handle);
-            printf("debug, exiting here after writing test.wav!\n");
-            exit(1);
-    */
-
     ret->chunks[i] = Mix_LoadWAV_RW(SDL_RWFromMem(wav, full_size), true);
 
     if (!ret->chunks[i])
       printf("Mix_LoadWAV_RW: %s\n", Mix_GetError());
 
-    // should we free this here?
     free(wav);
   }
 
