@@ -5,6 +5,7 @@ run: ../out/sfx_test.bin
 ../out/sfx_test.bin: *.c *.h
 	mkdir -p ../out
 	LANG=C gcc -std=c99 -Wall -g -Werror -o $@ *.c \
+		../../common/fs/fs.c ../../common/cstr/cstr.c \
 		`pkg-config --cflags --libs sdl2 SDL2_mixer`
 
 

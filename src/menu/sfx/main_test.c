@@ -7,10 +7,19 @@ int main() {
 
   sfx_t *sfx = sfx_init();
 
+  // FIXME: this is just playing silence right now!
+  for (int i = 0; i < sfx->sdt->count; i++) {
+    printf("playing sample #%i...\n", i);
+    Mix_PlayChannel(0, sfx->sdt->chunks[i], 1);
+    SDL_Delay(5000);
+  }
+
+  /*
   sfx_play_song(sfx, SFX_SONG_MAINMENU);
   SDL_Delay(4000);
   sfx_play_song(sfx, SFX_SONG_CREDITS);
   SDL_Delay(4000);
+  */
 
   sfx_cleanup(sfx);
   SDL_Quit();

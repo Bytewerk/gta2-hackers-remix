@@ -29,6 +29,9 @@ sfx_t *sfx_init() {
   sfx_load_song(sfx, SFX_SONG_MAINMENU);
   sfx_load_song(sfx, SFX_SONG_CREDITS);
 
+  // load all menu samples
+  sfx->sdt = sfx_sdt_load("GTA2/data/audio/", "fstyle");
+
   return sfx;
 }
 
@@ -56,7 +59,9 @@ void sfx_cleanup(sfx_t *sfx) {
     Mix_FreeMusic(old->music);
     free(old);
   }
-  free(sfx);
 
+  sfx_sdt_cleanup(sfx->sdt);
+  free(sfx);
+  Mix_CloseAudio();
   Mix_Quit();
 }
