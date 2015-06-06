@@ -19,4 +19,6 @@ sfx_t *sfx_init();
 // filenames are in songs.h!
 void sfx_play_song(sfx_t *sfx, const char *filename);
 
+void sfx_play_sample(sfx_t *sfx, uint8_t sample_id);
+
 void sfx_cleanup(sfx_t *sfx);

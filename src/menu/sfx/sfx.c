@@ -50,6 +50,10 @@ void sfx_play_song(sfx_t *sfx, const char *filename) {
   Mix_PlayMusic(current->music, -1);
 }
 
+void sfx_play_sample(sfx_t *sfx, uint8_t sample_id) {
+  Mix_PlayChannel(0, sfx->sdt->chunks[sample_id], 0);
+}
+
 void sfx_cleanup(sfx_t *sfx) {
   // free all songs
   sfx_song_t *current = sfx->songs;
