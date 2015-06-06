@@ -44,6 +44,7 @@ void credits_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     {
       tk->screen_active = ui->main;
       ud->scrolling->scroll_top = 0;
+      sfx_play_song(ui->tk->sfx, SFX_SONG_MAINMENU);
     }
   }
 
@@ -61,6 +62,10 @@ void credits_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 
   if (action == TK_ACTION_DOWN) {
     ud->scrolling->scroll_top += CREDITS_MANUAL_SCROLL_OFFSET;
+  }
+
+  if (action == TK_ACTION_BEFORE_FIRST_SCREEN_FRAME) {
+    sfx_play_song(ui->tk->sfx, SFX_SONG_CREDITS);
   }
 }
 
