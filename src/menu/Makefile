@@ -1,7 +1,7 @@
 # Build environment (see also env_win)
 CC:=LANG=C gcc -std=c99 -Wall -g -Werror
 PKGCONFIG:=pkg-config
-LIBS:=sdl2 SDL2_image SDL2_net
+LIBS:=sdl2 SDL2_image SDL2_net SDL2_mixer
 
 # FIXME: get this with pkg-config?
 MINGWFLAGS:=-static -lmingw32 -lSDL2main -lSDL2 -mwindows -lm -ldinput8 -ldxguid -ldxerr8 -luser32 -lgdi32 -lwinmm -limm32 -lole32 -loleaut32 -lshell32 -lversion -luuid -static-libgcc
@@ -39,7 +39,7 @@ Windows: env_win obj ../../bin/menu.exe
 env_win:
 	$(eval CC = $(shell echo "$(CC)" | sed 's/gcc/i686-w64-mingw32-gcc $(MINGWFLAGS)/'))
 	$(eval PKGCONFIG = i686-w64-mingw32-pkg-config)
-	$(eval LIBS = sdl2 SDL2_image SDL2_net libpng zlib)
+	$(eval LIBS = sdl2 SDL2_image SDL2_net SDL2_mixer libpng zlib)
 
 
 # MENU

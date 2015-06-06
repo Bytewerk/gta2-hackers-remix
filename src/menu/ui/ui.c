@@ -125,6 +125,7 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
 
   SDL_ShowWindow(ui->tk->window);
   SDL_RaiseWindow(ui->tk->window);
+  sfx_play_song(ui->tk->sfx, SFX_SONG_MAINMENU);
   return ui;
 }
 

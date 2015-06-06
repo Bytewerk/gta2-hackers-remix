@@ -1,0 +1,41 @@
+# based on the AUR package
+# https://aur.archlinux.org/packages/mingw-w64-sdl2_mixer/
+#
+# changes:
+# - i686 only
+# - static only
+# - WAV support only
+
+
+pkgname=mingw-w64-sdl2_mixer-g2hr
+pkgver=2.0.0
+pkgrel=1
+conflicts=("mingw-w64-sdl2_mixer")
+pkgdesc="SDL2 mixer libraries (mingw-w64)"
+arch=(any)
+url="http://www.libsdl.org/projects/SDL_mixer"
+license=("MIT")
+depends=(mingw-w64-sdl2)
+makedepends=(mingw-w64-configure)
+options=(staticlibs !strip !buildflags)
+source=("http://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-$pkgver.tar.gz")
+md5sums=('65f6d80df073a1fb3bb537fbda031b50')
+
+_arch="i686-w64-mingw32"
+
+build() {
+	cd "${srcdir}/SDL2_mixer-${pkgver}"
+	mkdir -p build-${_arch} && pushd build-${_arch}
+	${_arch}-configure \
+		--disable-shared --enable-static \
+		--disable-sdltest --disable-music-cmd --enable-music-wave \
+		--disable-music-mod --disable-music-midi --disable-music-ogg \
+		--disable-music-flac --disable-music-mp3 --disable-smpegtest
+	make
+}
+
+package() {
+	cd "${srcdir}/SDL2_mixer-${pkgver}/build-${_arch}"
+	make DESTDIR="$pkgdir" install
+	${_arch}-strip -g "$pkgdir"/usr/${_arch}/lib/*.a
+}
