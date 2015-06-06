@@ -7,23 +7,10 @@ int main() {
 
   sfx_t *sfx = sfx_init();
 
-  // sfx_play(sfx, SFX_FSTYLE_CHEAT);
-
-  Mix_Init(0);
-  Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 1024);
-  Mix_AllocateChannels(2);
-
-  Mix_Music *song = Mix_LoadMUS("GTA2/data/GTAudio/D.wav");
-  if (!song)
-    exit(printf("Mix_LoadWAV: %s\n", Mix_GetError()));
-
-  Mix_PlayMusic(song, -1);
-
-  printf("sleeping 10s...\n");
-  SDL_Delay(10000);
-
-  Mix_FreeMusic(song);
-  Mix_Quit();
+  sfx_play_song(sfx, SFX_SONG_MAINMENU);
+  SDL_Delay(4000);
+  sfx_play_song(sfx, SFX_SONG_CREDITS);
+  SDL_Delay(4000);
 
   sfx_cleanup(sfx);
   SDL_Quit();
