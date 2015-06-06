@@ -55,8 +55,8 @@ sfx_sdt_t *sfx_sdt_load(const char *path, const char *name) {
   // SDL2_mixer
   for (int i = 0; i < ret->count; i++) {
     sfx_sdt_chunk_t *meta = &sdt[i];
-    sfx_sdt_wave_header_t *wav =
-        malloc(sizeof(sfx_sdt_wave_header_t) + meta->size);
+    uint32_t full_size = sizeof(sfx_sdt_wave_header_t) + meta->size;
+    sfx_sdt_wave_header_t *wav = malloc(full_size);
     wav->riff = 0x46464952;
     wav->header_size = meta->size + 36;
     wav->wave = 0x45564157;
@@ -74,7 +74,12 @@ sfx_sdt_t *sfx_sdt_load(const char *path, const char *name) {
     // copy the raw audio data after the header (wav+1!)
     memcpy(wav + 1, raw + meta->start_offset, meta->size);
 
-    ret->chunks[i] = Mix_QuickLoad_WAV((uint8_t *)wav);
+    ret->chunks[i] = Mix_LoadWAV_RW(SDL_RWFromMem(wav, full_size), true);
+    if (!ret->chunks[i])
+      printf("Mix_LoadWAV_RW: %s\n", Mix_GetError());
+
+    // should we free this here?
+    free(wav);
   }
 
   // finish up
