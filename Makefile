@@ -50,6 +50,8 @@ regsniff: GTA2/gta2manager.exe
 
 clean:
 	rm bin/*.exe bin/*.bin || true
+	rm build/wineprefix/drive_c/users/*/Application\ Data/bytewerk -r \
+		|| true
 	$(MAKE) -s -C src/menu clean
 	
 .PHONY: clean all bin/menu.exe bin/meta.exe bin/native.bin bin/proxy.dll GTA2/dmavideo.dll regsniff winecfg
