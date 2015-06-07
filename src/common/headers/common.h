@@ -6,3 +6,5 @@
 #define GTA2_PLAYER_COUNT 6
 
 #define MIN(A, B) (A < B ? A : B)
+
+#define str(x) #x

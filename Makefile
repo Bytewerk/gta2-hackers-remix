@@ -26,24 +26,21 @@ run: bin/menu.exe bin/meta.exe bin/native.bin GTA2/dmavideo.dll
 	bin/native.bin
 	wineboot -e -f
 
-# Testing the wine msstyle theme
-winecfg:
-	$(MAKE) -C wine-theme-no-window-borders
-	WINEDEBUG=-all wine explorer /desktop=Test,800x600 winecfg
-
-
 GTA2/dmavideo.dll: bin/proxy.dll
 	cp bin/proxy.dll GTA2/dmavideo.dll
 
 
-# Run native.bin with gdb and print a stack trace, when it
-# fails. The very short "--debug-menu-with-gdb-on-linux"
-# parameter makes the native component run the linux-binary
-# (usually we run the windows binary!) with the same gdb
-# options.
-gdb: bin/menu.bin bin/meta.exe bin/native.bin
+# Run native.bin with gdb and print a stack trace, when it fails. The
+# parameter makes the native component run the linux-binary (usually we
+# run the windows binary!) with the same gdb options.
+gdb-mixed: bin/menu.bin bin/meta.exe bin/native.bin
 	gdb -batch -ex run -ex bt --args bin/native.bin \
-		--debug-menu-with-gdb-on-linux
+		--menu-gdb-mixed
+
+gdb-wine: bin/menu.exe bin/meta.exe bin/native.bin
+	gdb -batch -ex run -ex bt --args bin/native.bin \
+		--menu-gdb-wine
+
 
 # Sniff registry changes performed by the GTA2 manager
 # You should install the 'power patch' registry key, which will

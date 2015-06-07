@@ -6,6 +6,7 @@
 # with the G2HR toolkit? :>
 
 native_port="$1"
+gdb="/usr/i686-w64-mingw32/bin/gdb.exe"
 
 if [ "$native_port" == "" ]; then
 	echo "This script gets executed by 'native.bin', run that instead!"
@@ -25,9 +26,19 @@ tail -f $METALOG &
 TAIL_META=$!
 
 # Actually start wine in a virtual desktop
-wine explorer /desktop=G2HR,640x480 bin/menu.exe $native_port
+cmd="bin/menu.exe $native_port"
 
+if [ "$2" == "--gdb" ]; then
+	cmd="$gdb -batch -ex run -ex bt --args $cmd"
+fi
+
+cmd="wine explorer /desktop=G2HR,640x480 $cmd"
+echo "> $cmd"
+$cmd
 
 # Clean up the logfiles
 rm $METALOG
 kill $TAIL_META
+
+
+

@@ -7,25 +7,34 @@
 #include <stdio.h>
 #include <string.h>
 
+#define CMDBUF_LEN 100
 // TODO: split the Linux part up: run the wine prefix setup
 // as blocking process, then run the menu in the background
-void menu_start(int server_port, char menu_compiled_for_linux) {
-  char *buffer = malloc(100);
+void menu_start(char *arg) {
+  char cmdline[CMDBUF_LEN];
 
-  if (menu_compiled_for_linux) {
-    // run the menu with gdb, print a stack trace when it fails
-    snprintf(buffer, 100,
-             "gdb -batch -ex run -ex bt --args src/menu/out/menu.bin %i &",
-             server_port);
-  } else if (!strcmp(SDL_GetPlatform(), "Windows"))
-    snprintf(buffer, 100, "start bin/menu.exe %i", server_port);
+  if (!strcmp(arg, "--menu-gdb-mixed"))
+    snprintf(cmdline, CMDBUF_LEN, "gdb -batch -ex run -ex bt"
+                                  " --args src/menu/out/menu.bin %i &",
+             G2HR_NATIVE_SERVER_PORT);
+
+  else if (!strcmp(arg, "--menu-gdb-wine"))
+    snprintf(cmdline, CMDBUF_LEN, "bin/wine_wrapper.sh %i --gdb"
+                                  " &",
+             G2HR_NATIVE_SERVER_PORT);
+
+  else if (!strcmp(SDL_GetPlatform(), "Windows"))
+    snprintf(cmdline, CMDBUF_LEN, "start bin/menu.exe %i",
+             G2HR_NATIVE_SERVER_PORT);
   else
-    snprintf(buffer, 100, "bin/wine_wrapper.sh %i &", server_port);
+    snprintf(cmdline, CMDBUF_LEN, "bin/wine_wrapper.sh %i &",
+             G2HR_NATIVE_SERVER_PORT);
 
   printf("[native] starting menu component...\n");
-  system(buffer);
-  free(buffer);
+  printf("> %s\n", cmdline);
+  system(cmdline);
 }
+#undef CMDBUF_LEN
 
 int main(int argc, char **argv) {
   // initialize everything
@@ -39,8 +48,7 @@ int main(int argc, char **argv) {
 
   // wait up to 20 seconds for the menu connection. If it fails,
   // quit (the menu will show an error message)
-  menu_start(G2HR_NATIVE_SERVER_PORT,
-             (argc == 2 && !strcmp(argv[1], "--debug-menu-with-gdb-on-linux")));
+  menu_start((argc == 2) ? argv[1] : "");
   net_block_until_connected(net, 20000);
   if (!net->sock_menu) {
     printf("[native] not connected to menu!\n");

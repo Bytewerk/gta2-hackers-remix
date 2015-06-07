@@ -1,0 +1,46 @@
+# based on the AUR package
+# https://aur.archlinux.org/packages/mingw-w64-gdb
+#
+# changes:
+# - i686 only
+# - update to latest version
+#
+
+pkgname=mingw-w64-gdb-g2hr
+pkgver=7.9.1
+pkgrel=1
+conflicts=("mingw-w64-gdb")
+pkgdesc="The GNU Debugger (mingw-w64)"
+arch=(any)
+url="http://www.gnu.org/software/gdb/"
+license=('LGPL')
+depends=('mingw-w64-crt')
+makedepends=('mingw-w64-gcc' 'texinfo' 'mingw-w64-expat' 'mingw-w64-zlib' 'mingw-w64-readline')
+options=('staticlibs' '!buildflags' '!strip')
+source=("http://ftp.gnu.org/gnu/gdb/gdb-${pkgver}.tar.gz")
+md5sums=('f3b97de919a9dba84490b2e076ec4cb0')
+
+
+_arch="i686-w64-mingw32"
+
+build() {
+  cd "$srcdir/gdb-$pkgver"
+    unset LDFLAGS
+	mkdir -p build-${_arch} && pushd build-${_arch}
+	../configure --prefix=/usr/${_arch} \
+				 --host=${_arch} \
+				 --target=${_arch} \
+				 --enable-lto \
+				 --with-system-readline \
+				 --with-expat
+	make
+}
+
+package() {
+	cd "$srcdir"/gdb-${pkgver}/build-${_arch}
+	make install DESTDIR="$pkgdir"
+	rm -rf "$pkgdir"/usr/${_arch}/share/{man,info,locale}
+	rm -rf "$pkgdir"/usr/${_arch}/lib
+	rm -rf "$pkgdir"/usr/${_arch}/include
+	${_arch}-strip "$pkgdir"/usr/${_arch}/bin/*.exe
+}
