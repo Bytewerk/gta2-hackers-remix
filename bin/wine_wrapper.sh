@@ -13,7 +13,7 @@ if [ "$native_port" == "" ]; then
 	exit 1
 fi
 
-export WINEDEBUG=-all+reg
+export WINEDEBUG=-all
 export WINEPREFIX="$PWD/build/wineprefix/"
 
 
