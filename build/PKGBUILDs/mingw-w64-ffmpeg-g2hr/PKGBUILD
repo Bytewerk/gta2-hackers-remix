@@ -1,0 +1,108 @@
+# WORK IN PROGRESS!
+#
+#
+# based on the AUR package
+# https://aur.archlinux.org/packages/mingw-w64-ffmpeg
+#
+# changes:
+# - i686 only
+# - bik playback only (TODO!)
+#
+#
+# ffprobe Movie/intro.bik:
+# ...
+# Input #0, bink, from 'Movie/intro.bik':
+#  Duration: 00:01:50.85, start: 0.000000, bitrate: 1931 kb/s
+#	Stream #0:0[0x0]: Video: binkvideo (BIKf / 0x664B4942), yuv420p,
+#		640x480, 14.98 fps, 14.98 tbr, 14.98 tbn, 14.98 tbc
+#	Stream #0:1[0x0]: Audio: binkaudio_rdft, 44100 Hz, stereo, flt
+#
+
+pkgname=mingw-w64-ffmpeg-g2hr
+pkgver=2.6.2
+pkgrel=1
+epoch=1
+conflicts=("mingw-w64-ffmpeg")
+pkgdesc="Complete and free Internet live audio and video broadcasting solution for Linux/Unix (mingw-w64)"
+arch=('any')
+url="http://ffmpeg.org/"
+license=('GPL')
+depends=('mingw-w64-crt')
+
+# removed dependencies
+#'mingw-w64-bzip2' 'mingw-w64-fontconfig' 'mingw-w64-gnutls'
+#'mingw-w64-gsm' 'mingw-w64-lame' 'mingw-w64-libass' 'mingw-w64-libbluray' 'mingw-w64-libmodplug'
+#'mingw-w64-libtheora' 'mingw-w64-libvorbis' 'mingw-w64-libvpx' 'mingw-w64-opencore-amr'
+#'mingw-w64-openjpeg' 'mingw-w64-opus' 'mingw-w64-libssh' 'mingw-w64-schroedinger'
+#'mingw-w64-sdl' 'mingw-w64-speex' 'mingw-w64-x264' 'mingw-w64-xvidcore' 'mingw-w64-zlib' 'mingw-w64-x265' 'mingw-w64-fribidi'
+
+options=(!strip !buildflags staticlibs)
+makedepends=('mingw-w64-gcc' 'mingw-w64-pkg-config' 'yasm')
+source=(http://ffmpeg.org/releases/ffmpeg-$pkgver.tar.bz2{,.asc})
+validpgpkeys=('FCF986EA15E6E293A5644F10B4322F04D67658D8') # ffmpeg-devel
+md5sums=('e75d598921285d6775f20164a91936ac'
+         'SKIP')
+_arch="i686-w64-mingw32"
+
+build() {
+	mkdir -p "${srcdir}"/build-${_arch} && cd "${srcdir}"/build-${_arch}
+
+	# TODO: enable everything needed for bik
+	"${srcdir}"/ffmpeg-$pkgver/configure --enable-gpl \
+		--disable-nonfree --enable-static --disable-shared \
+		--enable-small --disable-gray --disable-swscale-alpha \
+		--disable-all 
+	exit 1
+	\
+	  --prefix=/usr/${_arch} \
+	  --enable-cross-compile \
+	  --cross-prefix="${_arch}-" \
+	  --target-os=mingw32 \
+	  --arch=${_arch%%-*} \
+	  --disable-debug \
+	  --enable-static \
+	  --disable-stripping \
+	  --enable-avisynth \
+	  --enable-avresample \
+	  --enable-fontconfig \
+	  --enable-gnutls \
+	  --enable-gpl \
+	  --enable-libass \
+	  --enable-libbluray \
+	  --enable-libfreetype \
+	  --enable-libfribidi \
+	  --enable-libgsm \
+	  --enable-libmodplug \
+	  --enable-libmp3lame \
+	  --enable-libopencore_amrnb \
+	  --enable-libopencore_amrwb \
+	  --enable-libopenjpeg \
+	  --enable-libopus \
+	  --enable-libschroedinger \
+	  --enable-libspeex \
+	  --enable-libssh \
+	  --enable-libtheora \
+	  --enable-libvorbis \
+	  --enable-libvpx \
+	  --enable-libx264 \
+	  --enable-libx265 \
+	  --enable-libxvid \
+	  --enable-zlib \
+	  --enable-runtime-cpudetect \
+	  --enable-shared \
+	  --enable-swresample \
+	  --enable-version3 \
+	  --disable-doc \
+	  --disable-programs
+}
+
+package() {
+	cd "${srcdir}"/build-${_arch}
+	make DESTDIR="$pkgdir" install
+
+	${_arch}-strip -g "${pkgdir}"/usr/${_arch}/lib/*.a
+
+	mv "${pkgdir}"/usr/${_arch}/bin/*.lib "${pkgdir}"/usr/${_arch}/lib/
+}
+
+# vim:set ts=2 sw=2 et:
