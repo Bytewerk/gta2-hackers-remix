@@ -33,6 +33,8 @@ void circle_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
       ud->value_str[0] = ud->max;
     else if (value > ud->min)
       ud->value_str[0]--;
+
+    sfx_play_sample(tk->sfx, SFX_FSTYLE_LEFT_RIGHT);
   }
 
   // right arrow
@@ -44,6 +46,8 @@ void circle_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
       ud->value_str[0] = ud->min2;
     else if (value < ud->max2 && ud->min2)
       ud->value_str[0]++;
+
+    sfx_play_sample(tk->sfx, SFX_FSTYLE_LEFT_RIGHT);
   }
   circle_arrow_visibility(ud);
 }
