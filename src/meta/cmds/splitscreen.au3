@@ -124,7 +124,7 @@ Func cmd_splitscreen($cmd)
 		
 		$global_game_process_ids[$i-1] =  Run($global_config_path _
 			& "\G2HR_PLAYER" & $i & ".exe " _
-			& $param, @ScriptDir & "\..\GTA2", @SW_SHOW)
+			& $param, "GTA2", @SW_SHOW)
 	Next
 	send_pid_table()
 	
