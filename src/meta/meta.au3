@@ -1,7 +1,6 @@
 #NoTrayIcon
 #include "common.au3"
-#include "cmds/singleplayer.au3"
-#include "cmds/splitscreen.au3"
+#include "handle_msg.au3"
 #include <Array.au3>
 
 If $CmdLine[0] < 1 Then
@@ -16,51 +15,39 @@ $global_sock = TCPConnect("127.0.0.1", $CmdLine[1])
 If @ERROR Then Exit ConsoleWrite("[meta] connection refused" & @CRLF)
 re("CONNECTED! CAN YOU GIVE ME THE CONFIG PATH?")
 
-; Handle incoming commands. Format:
-; 	COMMAND_NAME [PARAMETER1 [PARAMETER2] ... ]
+
 Global $exit = 0
 While Not $exit
-	Global $data = BinaryToString(TCPRecv($global_sock,200,1))
-	If @Error == -1 Then
-		ConsoleWrite("[meta] unexpected disconnect from menu, " _
-			& "shutting down..." & @CRLF)
-		ExitLoop
-	Endif
 	
-	If StringLen($data) > 0 Then
-		ConsoleWrite("[menu] " & $data & "" & @CRLF)
-		
-		; The first message from the menu is always the config path
-		If Not $global_config_path Then
-			$global_config_path = $data
-			If Not FileExists($global_config_path) Then
-				Exit Msgbox(16, "G2HR", "ERROR: Config path doesn't" _
-					& "exist: " & @CRLF & $global_config_path & @CRLF _
-					& "This shouldn't have happened, please report a " _
-					& "bug at:" & @CRLF &  "http://git.io/g2hr-bugs")
-			Endif
-			re("LOOKS VALID")
+	; Get new messages (they must have an "(END)"-suffix!)
+	Global $data = ""
+	Do
+		Global $new = BinaryToString(TCPRecv($global_sock, 200, 1))
+		If @Error == -1 Then
+			ConsoleWrite("[meta] unexpected disconnect from menu," _
+				& "shutting down!" & @CRLF)
+			Exitloop 2
+		Elseif StringLen($new) == 0 Then
+			If StringLen($data) > 0 Then _
+				ConsoleWrite("[meta]: unexpected end of message from" _
+					& " menu: '" & $data & "'" & @CRLF)
+			Exitloop
 		Endif
 		
-		Global $cmd = StringSplit($data," ",2)
-		Switch $cmd[0]
-			Case "CLEANUP"
-				$exit = 1
-			Case "SINGLEPLAYER"
-				cmd_singleplayer($cmd)
-				Sleep(500)
-				re("HIDE GET READY SCREEN")
-			Case "SCREENLAYOUT"
-				Global $geo[4] = [$cmd[2], $cmd[3], $cmd[4], $cmd[5]]
-				$global_game_screen_layouts[$cmd[1]] = $geo
-			Case "SPLITSCREEN"
-				cmd_splitscreen($cmd)
-				Sleep(500)
-				re("HIDE GET READY SCREEN")
-			Case "QUIT"
-				ProcessClose($global_game_process_ids[$cmd[1]])
-		EndSwitch
-	EndIf
+		$data &= $new
+		Sleep(10) ; ms
+		
+	Until StringRight($data, 5) == "(END)"
+	
+	
+	; Handle all received messages, if any
+	If StringLen($data) > 0 Then
+		Global $messages = StringSplit($data,"(END)",1)
+		For $i=1 To $messages[0]
+			If handle_msg($messages[$i]) == False Then _
+				Exitloop 2
+		Next
+	Endif
 	
 	
 	; Check if the game is still open
@@ -76,7 +63,6 @@ While Not $exit
 			Endif
 		Next
 	Endif
-	
 	
 	
 	sleep(100) ; TCPRecv is non-blocking!

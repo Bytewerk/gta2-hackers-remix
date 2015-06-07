@@ -146,13 +146,6 @@ void splitscreen_start(ud_splitscreen_t *ud) {
              geo.x, geo.y, geo.w, geo.h);
 
     net_send_to_meta(ui->net, buffer, 0);
-
-    // FIXME: currently the messaging protocol between meta and menu
-    // can't handle too many messages at once, so we simply wait.
-    // For six players, this makes a total delay of 0.6 seconds.
-    // NOTE: the menu can't show the 'get ready...' screen during
-    // this period, so it looks like the GUI hangs!
-    SDL_Delay(100);
   }
 
   // Build and send the start command
