@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
 
   // set a default values
   ini_modify(ini, "slotmachine", "enabled", "false", false);
-  ini_modify(ini, "new section", "new value", "default value", false);
+  ini_modify(ini, "new section", "new key", "delete me", false);
   ini_modify(ini, "multiplayer", "cops_enabled", "true", false);
 
   // overwrite a value
@@ -19,6 +19,10 @@ int main(int argc, char **argv) {
 
   printf("only accessing slotmachine/enabled:\n");
   printf("\t'%s'\n", ini_read(ini, "slotmachine", "enabled"));
+
+  printf("deleted 'new key':\n");
+  ini_delete_key(ini, "new section", "new key");
+  ini_dump(ini);
 
   ini_save(ini, "test_output_file.ini", true, false);
 
