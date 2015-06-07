@@ -8,7 +8,6 @@ typedef struct { uint16_t movement; } IA_MOVEMENT_t;
 #define IA_PLAYER_ID 0xa1
 typedef struct { int id; } IA_PLAYER_ID_t;
 
-// TODO
 #define IA_ESC_TEXT_HIDE 0xa2
 #define IA_ESC_TEXT_SHOW 0xa3
 typedef struct {

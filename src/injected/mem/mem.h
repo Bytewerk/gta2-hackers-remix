@@ -1,4 +1,5 @@
 #pragma once
+#include <stdbool.h>
 #include <strings.h>
 
 typedef struct {
@@ -9,6 +10,7 @@ typedef struct {
   char *line2; // len: 33
   char *line3; // len: 33
 
+  bool driving;
 } mem_t;
 
 mem_t *mem_init();

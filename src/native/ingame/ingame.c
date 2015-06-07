@@ -41,8 +41,8 @@ void ingame_recv_callback(unsigned char msg_id,
 
       if (player_id > -1 && player_id < GTA2_PLAYER_COUNT) {
         ud_instance->player_id = player_id;
-        printf("[native] got pid: %i => must be player %i\n", data->pid,
-               player_id);
+        printf("[native:p%i] assigned player id by pid: %i\n", player_id + 1,
+               data->pid);
 
         MESSAGESEND(sock, IA_PLAYER_ID, data->id = ud_instance->player_id);
 
@@ -57,6 +57,11 @@ void ingame_recv_callback(unsigned char msg_id,
                " the associated player ID!\n",
                data->pid);
     });
+    MESSAGECASE(sock, IA_VEHICLE_INFO,
+                printf("[native:p%i] %s a vehicle\n",
+                       ud_instance->player_id + 1,
+                       data->in_vehicle ? "entered" : "left");
+                ud_instance->driving = data->in_vehicle;);
   }
 }
 
@@ -66,7 +71,7 @@ void ingame_send_movement_data(ingame_t *ingame,
   ingame_instance_userdata_t *ud =
       (ingame_instance_userdata_t *)instance->userdata;
   cmap_state_t *state =
-      ud->is_driving ? &(ingame->cmap->driving) : &(ingame->cmap->walking);
+      ud->driving ? &(ingame->cmap->driving) : &(ingame->cmap->walking);
 
   uint16_t movement = 0;
 
@@ -137,7 +142,7 @@ void ingame_handle_buttonpress(ingame_t *ingame,
     }
   } else {
     if (button == SDL_CONTROLLER_BUTTON_START) {
-      printf("[player %i] next layout STUB\n", player_id + 1);
+      printf("[native:p%i] next layout STUB\n", player_id + 1);
     }
     if (button == SDL_CONTROLLER_BUTTON_BACK) {
       // TODO: put this in a macro, so we don't use strncpy wrong

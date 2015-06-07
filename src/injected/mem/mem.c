@@ -5,10 +5,13 @@
 #include <stdlib.h>
 
 void mem_frame(mem_t *mem) {
-  // if "is in vehicle" has changed, send it to the
-  // native component!
+  // send a message when the player has "borrowed" a vehicle, or
+  // left it
+  if (*GTA2_ADDR_PLAYER_IN_VEHICLE != mem->driving)
+    MESSAGESEND(IA_VEHICLE_INFO, data->in_vehicle = mem->driving =
+                                     *GTA2_ADDR_PLAYER_IN_VEHICLE;);
 
-  // send the score, if it has changed
+  // TODO: send the score, if it has changed
 }
 
 void mem_recv_callback(unsigned char msg_id, void *userdata) {
