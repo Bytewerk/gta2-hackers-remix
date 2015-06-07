@@ -1,6 +1,6 @@
 #include "sfx.h"
 
-int main() {
+int main(int argc, char **argv) {
 
   if (SDL_Init(SDL_INIT_AUDIO))
     exit(printf("SDL ERROR: %s\n", SDL_GetError()));
@@ -31,4 +31,6 @@ int main() {
 
   sfx_cleanup(sfx);
   SDL_Quit();
+
+  return 0;
 }
