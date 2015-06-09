@@ -126,6 +126,7 @@ Func cmd_splitscreen($cmd)
 			& "\G2HR_PLAYER" & $i & ".exe " _
 			& $param, "GTA2", @SW_SHOW)
 	Next
+	$global_game_instances_open = $player_count + 1
 	send_pid_table()
 	
 	
@@ -148,5 +149,4 @@ Func cmd_splitscreen($cmd)
 		
 		move_until_it_works($hwnd, $geo)
 	Next
-	re("splitscreen game initialized.")
 Endfunc
