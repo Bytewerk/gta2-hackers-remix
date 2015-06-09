@@ -106,13 +106,21 @@ Func wait_for_listview_entry_count($hwnd, $ctrl_id, $count)
 	Wend
 Endfunc
 
-
 Func move_until_it_works($hwnd, $geo)
+
+	; Calculate the window border size
+	Local $pos = WinGetPos($hwnd)
+	ConsoleWrite($pos[0] & "," & $pos[1] & "," & $pos[2] & "," _
+		& $pos[3] & @CRLF)
+	
+	; TODO: Get current window border size, add it as offset, so the
+	; borders are drawn off-screen!
+	
 	While True
 		_WinAPI_SetWindowPos($hwnd, $HWND_TOP, $geo[0], $geo[1], _
 			$geo[2], $geo[3], $SWP_NOSIZE)
 		
-		Local $pos = WinGetPos($hwnd)
+		$pos = WinGetPos($hwnd)
 		If $pos[0] == $geo[0] And $pos[1] == $geo[1] Then _
 			Return
 			

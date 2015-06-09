@@ -142,11 +142,12 @@ Func cmd_splitscreen($cmd)
 	
 	; Move the window
 	; (TODO: natively on Windows: attach it to the G2HR menu window)
-	For $i = $player_count To $i = 0 Step -1
-		Local $geo = $global_game_screen_layouts[$i]
+	For $i = $player_count To 0 Step -1
 		$hwnd = wait_until_only_one_hwnd_left( _
 			$global_game_process_ids[$i])
 		
-		move_until_it_works($hwnd, $geo)
+		; FIXME: the function above doesn't work as expected!
+		; Local $geo = $global_game_screen_layouts[$i]
+		; move_until_it_works($hwnd, $geo)
 	Next
 Endfunc
