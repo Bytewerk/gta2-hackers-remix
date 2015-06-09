@@ -1,8 +1,15 @@
 #include "ui.h"
 
+// load the ini file, set default values and split strings where
+// necessary
 void ui_init_configs(ui_t *ui) {
   ini_t *user = ini_open("data/g2hr.ini", true, false);
+
   ini_modify(user, "debug-meta", "enabled", "false", false);
+  ini_modify(user, "debug-meta", "autoit3_path", "c:\\Program Files\\AutoIt3\\",
+             false);
+  ini_modify(user, "debug-meta", "meta_path", "src/meta/", false);
+
   ini_modify(user, "slotmachine", "enabled", "false", false);
   ini_modify(user, "slotmachine", "cmd_shutdown", "poweroff", false);
   ini_modify(user, "slotmachine", "cmd_shutdown", "reboot", false);
