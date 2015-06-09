@@ -107,26 +107,24 @@ Func wait_for_listview_entry_count($hwnd, $ctrl_id, $count)
 Endfunc
 
 Func move_until_it_works($hwnd, $geo)
-
-	; Calculate the window border size
-	Local $pos = WinGetPos($hwnd)
-	ConsoleWrite($pos[0] & "," & $pos[1] & "," & $pos[2] & "," _
-		& $pos[3] & @CRLF)
+	; WinGetPos doesn't work here (because the window isn't visible
+	; yet?). However, these functions do work. We measure the window-
+	; border to put it off-screen.
+	Local $current_width = _WinAPI_GetWindowWidth($hwnd)
+	Local $current_height = _WinAPI_GetWindowHeight($hwnd)
 	
-	; TODO: Get current window border size, add it as offset, so the
-	; borders are drawn off-screen!
+	; left, bottom, right
+	Local $border_lbr = ($current_width - $geo[2]) / 2
+	Local $border_top = $current_height - $geo[3] - $border_lbr
 	
-	While True
-		_WinAPI_SetWindowPos($hwnd, $HWND_TOP, $geo[0], $geo[1], _
-			$geo[2], $geo[3], $SWP_NOSIZE)
-		
-		$pos = WinGetPos($hwnd)
-		If $pos[0] == $geo[0] And $pos[1] == $geo[1] Then _
-			Return
-			
-		re("moving window " & $hwnd & " failed, tying again...")
-		Sleep(100)
-	Wend
+	Local $x = $geo[0] - $border_lbr
+	Local $y = $geo[1] - $border_top
+	
+	; ConsoleWrite("x: " & $x & ", y: " & $y & @CRLF)
+	
+	; FIXME: this doesn't work as expected in wine (top offset ignored?)
+	_WinAPI_SetWindowPos($hwnd, $HWND_TOP, $x, $y, $current_width, _
+		$current_height, $SWP_NOSIZE)
 Endfunc
 
 Func regwrite_if_empty($keyname, $valuename, $type, $value)

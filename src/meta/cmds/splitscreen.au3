@@ -146,8 +146,7 @@ Func cmd_splitscreen($cmd)
 		$hwnd = wait_until_only_one_hwnd_left( _
 			$global_game_process_ids[$i])
 		
-		; FIXME: the function above doesn't work as expected!
-		; Local $geo = $global_game_screen_layouts[$i]
-		; move_until_it_works($hwnd, $geo)
+		Local $geo = $global_game_screen_layouts[$i]
+		move_until_it_works($hwnd, $geo)
 	Next
 Endfunc
