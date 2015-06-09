@@ -5,7 +5,7 @@
 
 void ui_callback_for_meta(char *msg, void *userdata) {
   ui_t *ui = (ui_t *)userdata;
-  int pids[5];
+  int pids[6];
 
   if (!strcmp(msg, "CONNECTED! CAN YOU GIVE ME THE CONFIG PATH?"))
     net_send_to_meta(ui->net, ui->tk->pref_path, 0);
