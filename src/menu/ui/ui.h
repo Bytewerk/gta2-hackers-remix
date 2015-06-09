@@ -13,6 +13,9 @@
 #define G2HR_UI_NUMBERS_COUNT 10
 #define G2HR_UI_GAME_TYPES_COUNT 3
 
+// maybe add this as option to g2hr.ini?
+#define G2HR_MUSIC_FADE_OUT_TIME_MS 500
+
 typedef struct {
   tk_t *tk;
   tk_screen_t *main;

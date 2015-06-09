@@ -24,15 +24,13 @@ Func handle_msg($msg)
 			Return False
 		Case "SINGLEPLAYER"
 			cmd_singleplayer($cmd)
-			Sleep(500)
-			re("HIDE GET READY SCREEN")
+			re("SHUT UP, THE GAME HAS BEEN STARTED!")
 		Case "SCREENLAYOUT"
 			Local $geo[4] = [$cmd[2], $cmd[3], $cmd[4], $cmd[5]]
 			$global_game_screen_layouts[$cmd[1]] = $geo
 		Case "SPLITSCREEN"
 			cmd_splitscreen($cmd)
-			Sleep(500)
-			re("HIDE GET READY SCREEN")
+			re("SHUT UP, THE GAME HAS BEEN STARTED!")
 		Case "QUIT"
 			ProcessClose($global_game_process_ids[$cmd[1]])
 	EndSwitch

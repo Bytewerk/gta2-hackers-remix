@@ -9,8 +9,14 @@ void ui_callback_for_meta(char *msg, void *userdata) {
 
   if (!strcmp(msg, "CONNECTED! CAN YOU GIVE ME THE CONFIG PATH?"))
     net_send_to_meta(ui->net, ui->tk->pref_path, 0);
-  else if (!strcmp(msg, "HIDE GET READY SCREEN"))
+  else if (!strcmp(msg, "SHUT UP, THE GAME HAS BEEN STARTED!")) {
+    Mix_FadeOutMusic(G2HR_MUSIC_FADE_OUT_TIME_MS);
+
+    // hide the 'get ready...' screen
     ui->tk->screen_active = ui->ready->back;
+  } else if (!strcmp(msg, "INSTANCE CLOSED 0"))
+    sfx_play_song(ui->tk->sfx, SFX_SONG_MAINMENU);
+
   else if (sscanf(msg, "PID_TABLE %i %i %i %i %i %i", &pids[0], &pids[1],
                   &pids[2], &pids[3], &pids[4], &pids[5])) {
     // FIXME: use a more generic send macro here!
