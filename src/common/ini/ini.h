@@ -37,6 +37,9 @@ char *ini_read(ini_t *ini, char *section, char *key);
 char *ini_modify(ini_t *ini, char *section_name, char *key, char *value,
                  bool overwrite);
 
+// true: success, false: didn't even exist
+bool ini_delete_key(ini_t *ini, char *section_name, char *key);
+
 // pass NULL as fullpath to use the one specified in ini_open.
 // protip writes a comment, that the file should not be modified by the
 // user.

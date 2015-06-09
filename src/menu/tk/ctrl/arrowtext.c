@@ -153,6 +153,8 @@ void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
         ud->entry_selected++;
       else if (ud->entry_count == 2) // toggle
         ud->entry_selected = 0;
+
+      sfx_play_sample(tk->sfx, SFX_FSTYLE_LEFT_RIGHT);
     }
 
     // left arrow
@@ -162,6 +164,8 @@ void arrowtext_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
         ud->entry_selected--;
       else if (ud->entry_count == 2) // toggle
         ud->entry_selected = 1;
+
+      sfx_play_sample(tk->sfx, SFX_FSTYLE_LEFT_RIGHT);
     }
   }
 

@@ -16,6 +16,8 @@ build/PKGBUILDs/*/src
 build/PKGBUILDs/*/*.xz
 build/PKGBUILDs/*/*.gz
 build/PKGBUILDs/*/*.part
+build/PKGBUILDs/*/*.bz2
+build/PKGBUILDs/*/*.asc
 
 
 # GTA2 files

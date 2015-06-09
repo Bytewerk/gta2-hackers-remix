@@ -9,8 +9,10 @@ void button_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
   if (action == TK_ACTION_CLEANUP)
     el->userdata = NULL;
 
-  if (action == TK_ACTION_ENTER && el == el_selected && el->userdata)
+  if (action == TK_ACTION_ENTER && el == el_selected && el->userdata) {
+    sfx_play_sample(tk->sfx, SFX_FSTYLE_ENTER);
     tk->screen_active = (tk_screen_t *)el->userdata;
+  }
 }
 
 tk_el_t *tk_ctrl_button(tk_t *tk, tk_el_t *TK_PARENT, char *text,

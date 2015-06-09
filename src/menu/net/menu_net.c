@@ -120,8 +120,10 @@ void net_send_to_meta(net_t *net, char *message, char do_free) {
   printf("[menu => meta%s]: %s\n", net->sock_meta ? "" : " (disconnected)",
          message);
 
-  if (net->sock_meta)
+  if (net->sock_meta) {
     SDLNet_TCP_Send(net->sock_meta, message, strlen(message));
+    SDLNet_TCP_Send(net->sock_meta, "(END)", 5);
+  }
 
   if (do_free)
     free(message);
