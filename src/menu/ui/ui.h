@@ -76,6 +76,7 @@ tk_screen_t *ui_screen_play(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_main_menu(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_ready(tk_t *tk, ui_t *ui);
+tk_screen_t *ui_screen_options(tk_t *tk, ui_t *ui);
 
 // screen functions required else where
 void splitscreen_set_players(ui_t *ui);

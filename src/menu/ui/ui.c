@@ -109,11 +109,13 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
   ui->scores = ui_screen_scores(tk, ui);
   ui->play = ui_screen_play(tk, ui);
   ui->splitscreen = ui_screen_splitscreen(tk, ui);
+  ui->options = ui_screen_options(tk, ui);
   ui->main = ui_screen_main_menu(tk, ui);
 
   // back links
   ui->play->back = ui->main;
   ui->splitscreen->back = ui->main;
+  ui->options->back = ui->main;
   ui->scores->back = ui->play;
   ui->levels->back = ui->splitscreen;
 

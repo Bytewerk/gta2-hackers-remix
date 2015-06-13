@@ -76,7 +76,10 @@ obj/screen_ready.o: $(call DEPS,ui/screens/ready.c)
 
 obj/screen_first_run.o: $(call DEPS,ui/screens/first_run.c)
 	$(CC) -c -o $@ $<
-	
+
+obj/screen_options.o: $(call DEPS,ui/screens/options.c)
+	$(CC) -c -o $@ $<
+
 # UI
 obj/ui.o: $(call DEPS,ui/ui.c)
 	$(CC) -c -o $@ $<

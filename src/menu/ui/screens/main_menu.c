@@ -50,7 +50,8 @@ tk_screen_t *ui_screen_main_menu(tk_t *tk, ui_t *ui) {
           bg_mashup(tk->bg, NULL, "1_options", "1", "g2hr_splitscreen"),
           ui->splitscreen);
       tk_ctrl_button(tk, TK_PARENT, "OPTIONS",
-                     bg_mashup(tk->bg, NULL, "1_options", "1", NULL), NULL);
+                     bg_mashup(tk->bg, NULL, "1_options", "1", NULL),
+                     ui->options);
 
       if (strcmp(ini_read(ui->ini_usersettings, "slotmachine", "enabled"),
                  "true")) // normal mode
