@@ -3,6 +3,7 @@
 #include "../../common/headers/net_message_macros_SDL.h"
 #include "../native.h"
 #include <SDL2/SDL_net.h>
+#include <stdbool.h>
 
 typedef struct net_injected_instance_t {
   TCPsocket sock;
@@ -12,6 +13,10 @@ typedef struct net_injected_instance_t {
   // ingame->instance_by_player_id - so that the value there can be
   // set to NULL on disconnect!
   struct net_injected_instance_t **sorted_array_location;
+
+  // TODO: maybe this is better placed in ingame.h?
+  SDL_TimerID msg_clear_timer;
+  bool msg_clear_flag;
 
 } net_injected_instance_t;
 
@@ -59,5 +64,10 @@ char net_frame(net_t *net, void *inmenu_recv_callback, void *inmenu_userdata,
                void *ingame_recv_callback, void *ingame_userdata);
 
 void net_injected_instance_cleanup(net_t *net, int id);
+
+void net_injected_msg_clear(net_injected_instance_t *instance);
+void net_injected_msg_set(net_injected_instance_t *instance, bool autoclear,
+                          char *line1_max11, char *line2_max33,
+                          char *line3_max33);
 
 void net_cleanup(net_t *net);

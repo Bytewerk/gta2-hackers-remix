@@ -33,6 +33,5 @@ ingame_t *ingame_init(net_t *net, cmap_t *cmap, pads_t *pads, inmenu_t *inmenu);
 void ingame_recv_callback(unsigned char msg_id,
                           net_injected_instance_t *instance, void *userdata);
 
-// TODO: add SDL_Event, like in inmenu.h?
 void ingame_frame(ingame_t *ingame, SDL_Event *event);
 void ingame_cleanup(ingame_t *ingame);

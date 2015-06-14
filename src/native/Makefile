@@ -57,6 +57,8 @@ obj/net.o: $(call DEPS,net/native_net.c)
 	$(CC) -c -o $@ $<
 obj/net_frame.o: $(call DEPS,net/native_net_frame.c)
 	$(CC) -c -o $@ $<
+obj/net_msg.o: $(call DEPS,net/native_net_injected_msg.c)
+	$(CC) -c -o $@ $<
 
 # Game Controllers
 obj/pads.o: $(call DEPS,pads/pads.c)

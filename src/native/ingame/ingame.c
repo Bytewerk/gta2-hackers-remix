@@ -130,15 +130,7 @@ void ingame_handle_buttonpress(ingame_t *ingame,
                   data->player_id = player_id);
     }
     if (button == SDL_CONTROLLER_BUTTON_BACK) {
-      // TODO: put this in a macro, so we don't use strncpy wrong
-      // by accident!
-      // somehow it only works for sure when sending this twice.
-      MESSAGESEND(instance->sock, IA_ESC_TEXT_SHOW,
-                  strncpy(data->line1, "", 11);
-                  strncpy(data->line2, "", 33); strncpy(data->line3, "", 33););
-      MESSAGESEND(instance->sock, IA_ESC_TEXT_SHOW,
-                  strncpy(data->line1, "", 11);
-                  strncpy(data->line2, "", 33); strncpy(data->line3, "", 33););
+      net_injected_msg_clear(instance);
       ud->is_in_quit_dialog = 0;
     }
   } else {
@@ -147,16 +139,15 @@ void ingame_handle_buttonpress(ingame_t *ingame,
           ud->cmap_selected->next ? ud->cmap_selected->next : ingame->cmap;
       printf("[native:p%i] next layout selected: %s (%p)\n", player_id + 1,
              ud->cmap_selected->description, ud->cmap_selected);
+      net_injected_msg_set(instance, true, "",
+                           "Next controller layout selected!",
+                           "(You've just pressed START.)");
     }
     if (button == SDL_CONTROLLER_BUTTON_BACK) {
-      // TODO: put this in a macro, so we don't use strncpy wrong
-      // by accident!
-      MESSAGESEND(instance->sock, IA_ESC_TEXT_SHOW,
-                  strncpy(data->line1, "Is that it?", 11);
-                  strncpy(data->line2, "Press START to quit play.", 33);
-                  strncpy(data->line3, "Press BACK to continue.", 33););
+      net_injected_msg_set(instance, false, "Is that it?",
+                           "Press START to quit play.",
+                           "Press BACK to continue.");
 
-      MESSAGESENDSHORT(instance->sock, IA_ESC_TEXT_SHOW);
       ud->is_in_quit_dialog = 1;
     }
   }

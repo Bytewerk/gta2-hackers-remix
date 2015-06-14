@@ -38,7 +38,7 @@ void menu_start(char *arg) {
 
 int main(int argc, char **argv) {
   // initialize everything
-  if (SDL_Init(SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC) < 0)
+  if (SDL_Init(SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC | SDL_INIT_TIMER) < 0)
     return printf("ERROR from SDL: %s\n", SDL_GetError());
   cmap_t *cmap = cmap_init();
   pads_t *pads = pads_init(0);

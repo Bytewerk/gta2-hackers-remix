@@ -2,6 +2,13 @@
 
 char net_frame(net_t *net, void *inmenu_recv_callback, void *inmenu_userdata,
                void *ingame_recv_callback, void *ingame_userdata) {
+  // hide the "esc message", when the flag is set
+  for (int i = 0; i < net->injected_count; i++) {
+    net_injected_instance_t *instance = net->injected_instances[i];
+    if (instance->msg_clear_flag)
+      net_injected_msg_clear(instance);
+  }
+
   // check for new sockets from injected GTA2 instances
   net_accept_localhost_only(net);
 
@@ -25,6 +32,7 @@ char net_frame(net_t *net, void *inmenu_recv_callback, void *inmenu_userdata,
   for (int i = 0; i < net->injected_count; i++) {
     net_injected_instance_t *instance = net->injected_instances[i];
     TCPsocket sock = instance->sock;
+
     if (!SDLNet_SocketReady(sock))
       continue;
 
