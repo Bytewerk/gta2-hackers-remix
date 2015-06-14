@@ -22,6 +22,10 @@ typedef struct {
   tk_screen_t *credits;
   tk_screen_t *play;
   tk_screen_t *options;
+  tk_screen_t *opt_audio;
+  tk_screen_t *opt_video;
+  tk_screen_t *opt_controls;
+  tk_screen_t *opt_network;
   tk_screen_t *splitscreen;
   tk_screen_t *scores;
   tk_screen_t *levels;
@@ -77,6 +81,7 @@ tk_screen_t *ui_screen_main_menu(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_ready(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_options(tk_t *tk, ui_t *ui);
+tk_screen_t *ui_screen_opt_audio(tk_t *tk, ui_t *ui);
 
 // screen functions required else where
 void splitscreen_set_players(ui_t *ui);

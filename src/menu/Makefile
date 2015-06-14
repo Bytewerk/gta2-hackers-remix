@@ -55,29 +55,23 @@ obj/menu.o: $(call DEPS,main.c)
 # UI: SCREENS
 obj/screen_main.o: $(call DEPS,ui/screens/main_menu.c)
 	$(CC) -c -o $@ $<
-
 obj/screen_play.o: $(call DEPS,ui/screens/play.c)
 	$(CC) -c -o $@ $<
-
 obj/screen_credits.o: $(call DEPS,ui/screens/credits.c)
 	$(CC) -c -o $@ $<
-
 obj/screen_scores.o: $(call DEPS,ui/screens/scores.c)
 	$(CC) -c -o $@ $<
-
 obj/screen_splitscreen.o: $(call DEPS,ui/screens/splitscreen.c)
 	$(CC) -c -o $@ $<
-
 obj/screen_levels.o: $(call DEPS,ui/screens/levelselect.c)
 	$(CC) -c -o $@ $<
-
 obj/screen_ready.o: $(call DEPS,ui/screens/ready.c)
 	$(CC) -c -o $@ $<
-
 obj/screen_first_run.o: $(call DEPS,ui/screens/first_run.c)
 	$(CC) -c -o $@ $<
-
 obj/screen_options.o: $(call DEPS,ui/screens/options.c)
+	$(CC) -c -o $@ $<
+obj/screen_opt_audio.o: $(call DEPS,ui/screens/opt_audio.c)
 	$(CC) -c -o $@ $<
 
 # UI
