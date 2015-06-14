@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
 
   while (!inmenu->has_quit) {
     SDL_Event e;
-    if (SDL_WaitEventTimeout(&e, 50)) {
+    if (SDL_WaitEventTimeout(&e, 10)) {
       pads_frame(pads, &e, 0);
 
       if (net->injected_count)

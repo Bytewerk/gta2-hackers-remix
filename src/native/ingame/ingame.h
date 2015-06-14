@@ -21,8 +21,8 @@ typedef struct {
   int instance_pid; // 0 if unset
   bool driving;     // 0: walking, 1: driving
   char is_in_quit_dialog;
+  cmap_t *cmap_selected;
 
-  // TODO: put selected game controller layout here
 } ingame_instance_userdata_t;
 
 ingame_t *ingame_init(net_t *net, cmap_t *cmap, pads_t *pads, inmenu_t *inmenu);

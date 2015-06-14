@@ -30,6 +30,7 @@ void ingame_recv_callback(unsigned char msg_id,
   if (!ud_instance) {
     ud_instance = calloc(1, sizeof(ingame_instance_userdata_t));
     ud_instance->player_id = -1;
+    ud_instance->cmap_selected = ingame->cmap;
     instance->userdata = (void *)ud_instance;
   }
 
@@ -70,8 +71,8 @@ void ingame_send_movement_data(ingame_t *ingame,
                                pad_controller_t *pad) {
   ingame_instance_userdata_t *ud =
       (ingame_instance_userdata_t *)instance->userdata;
-  cmap_state_t *state =
-      ud->driving ? &(ingame->cmap->driving) : &(ingame->cmap->walking);
+  cmap_state_t *state = ud->driving ? &(ud->cmap_selected->driving)
+                                    : &(ud->cmap_selected->walking);
 
   uint16_t movement = 0;
 
@@ -142,7 +143,10 @@ void ingame_handle_buttonpress(ingame_t *ingame,
     }
   } else {
     if (button == SDL_CONTROLLER_BUTTON_START) {
-      printf("[native:p%i] next layout STUB\n", player_id + 1);
+      ud->cmap_selected =
+          ud->cmap_selected->next ? ud->cmap_selected->next : ingame->cmap;
+      printf("[native:p%i] next layout selected: %s (%p)\n", player_id + 1,
+             ud->cmap_selected->description, ud->cmap_selected);
     }
     if (button == SDL_CONTROLLER_BUTTON_BACK) {
       // TODO: put this in a macro, so we don't use strncpy wrong
