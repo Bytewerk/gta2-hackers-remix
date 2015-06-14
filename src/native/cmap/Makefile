@@ -9,7 +9,7 @@ run: ../out/$(COMPONENT)_test.bin
 	mkdir -p ../out/
 	LANG=C gcc -std=c99 -Wall -Werror -g \
 		`pkg-config --cflags --libs $(LIBS)` -o $@ *.c \
-			../../common/ini/ini.c ../../common/io/io.c \
+			../../common/ini/ini.c ../../common/fs/fs.c \
 			../../common/cstr/cstr.c
 
 

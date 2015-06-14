@@ -21,6 +21,9 @@ typedef enum {
   G2HR_CMAP_WALKING_WEAPON_PREV,
   G2HR_CMAP_WALKING_WEAPON_NEXT,
 
+  // must be in the same order as the walking actions, otherwise the
+  // function cmap_copy_walking2driving() will fail!
+
   G2HR_CMAP_DRIVING_FORWARD,
   G2HR_CMAP_DRIVING_BACKWARD,
   G2HR_CMAP_DRIVING_LEFT,

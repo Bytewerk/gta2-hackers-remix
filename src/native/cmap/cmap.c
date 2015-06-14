@@ -98,25 +98,11 @@ void cmap_map_action(cmap_t *cmap, ini_t *ini, char *str_action,
         exit(printf("ERROR: invalid value '%s' (in '%s':'%s')!" DOCU,
                     cmap_value, section, key));
 
-      // actually map the buttons, if they have not been used in this
-      // state (walking/driving) yet.
-      char failed = 0;
-      if (button != SDL_CONTROLLER_BUTTON_INVALID) {
-        if (state->buttons[button])
-          failed = 1;
-        else
-          state->buttons[button] = cmap_action;
-      } else {
-        if (STATE_AXIS[axis])
-          failed = 1;
-        else
-          STATE_AXIS[axis] = cmap_action;
-      }
-
-      if (failed)
-        exit(printf("ERROR: '%s' has been mapped twice in the '%s' section"
-                    " of this config!" DOCU,
-                    cmap_value, section));
+      // actually map the buttons
+      if (button != SDL_CONTROLLER_BUTTON_INVALID)
+        state->buttons[button] = cmap_action;
+      else
+        STATE_AXIS[axis] = cmap_action;
     }
     cstr_split_free(value_split);
 
@@ -210,6 +196,30 @@ void cmap_map_deadzone_stick(ini_t *ini, char *ini_key, char *ini_section,
   cmap_map_deadzone_stick(ini, "driving", "deadzone-" str(NAME),               \
                           &(cmap->driving.dead_##NAME))
 
+void cmap_copy_walking2driving(cmap_t *cmap) {
+  for (int i = 0; i < 3; i++) {
+    cmap_action_t *w;
+    cmap_action_t *d;
+    int max = i ? SDL_CONTROLLER_AXIS_MAX : SDL_CONTROLLER_BUTTON_MAX;
+
+    if (i == 0) {
+      w = cmap->walking.buttons;
+      d = cmap->driving.buttons;
+    }
+    if (i == 1) {
+      w = cmap->walking.axis_positive;
+      d = cmap->driving.axis_positive;
+    }
+    if (i == 2) {
+      w = cmap->walking.axis_negative;
+      d = cmap->driving.axis_negative;
+    }
+    for (int j = 0; j < max; j++)
+      if (w[j])
+        d[j] = w[j] - G2HR_CMAP_WALKING_FORWARD + G2HR_CMAP_DRIVING_FORWARD;
+  }
+}
+
 void cmap_load_file(char *path, char *name, char *ext, void *userdata) {
   cmap_t *cmap = calloc(1, sizeof(cmap_t));
 
@@ -225,8 +235,10 @@ void cmap_load_file(char *path, char *name, char *ext, void *userdata) {
   MAPPING(1, WALKING_WEAPON_PREV);
   MAPPING(1, WALKING_WEAPON_NEXT);
 
-  // all driving keys are optional. fallback is: using the same
-  // controls as for walking (not implemented that way yet though)
+  // make all driving keys optional by copying over the walking
+  // controls
+  cmap_copy_walking2driving(cmap);
+
   MAPPING(0, DRIVING_FORWARD);
   MAPPING(0, DRIVING_BACKWARD);
   MAPPING(0, DRIVING_LEFT);
