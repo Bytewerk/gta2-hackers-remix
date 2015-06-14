@@ -224,6 +224,9 @@ void cmap_load_file(char *path, char *name, char *ext, void *userdata) {
   cmap_t *cmap = calloc(1, sizeof(cmap_t));
 
   ini_t *ini = ini_open(path, true, false);
+  cmap->description = cstr_copy(ini_read(ini, "info", "description"));
+  cmap->author = cstr_copy(ini_read(ini, "info", "author"));
+  cmap->version = cstr_copy(ini_read(ini, "info", "version"));
 
   MAPPING(1, WALKING_FORWARD);
   MAPPING(1, WALKING_BACKWARD);
@@ -314,6 +317,13 @@ void cmap_cleanup(cmap_t *cmap) {
   while (cmap) {
     cmap_t *old = cmap;
     cmap = cmap->next;
+
+    if (old->description)
+      free(old->description);
+    if (old->author)
+      free(old->author);
+    if (old->version)
+      free(old->version);
     free(old);
   }
 }

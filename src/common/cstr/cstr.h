@@ -51,7 +51,8 @@ char *cstr_replace(char *cstr, char find, char replace, uint16_t count,
 
         Description:
                 Fully copies one string into another buffer. Free the new buffer
-                manually after usage.
+                manually after usage. When NULL gets passed as cstr, it simply
+                returns NULL.
 
         Example Usage:
                 char* hello = cstr_copy("hello world"); // hello now contains

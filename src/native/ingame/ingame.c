@@ -139,9 +139,8 @@ void ingame_handle_buttonpress(ingame_t *ingame,
           ud->cmap_selected->next ? ud->cmap_selected->next : ingame->cmap;
       printf("[native:p%i] next layout selected: %s (%p)\n", player_id + 1,
              ud->cmap_selected->description, ud->cmap_selected);
-      net_injected_msg_set(instance, true, "",
-                           "Next controller layout selected!",
-                           "(You've just pressed START.)");
+      net_injected_msg_set(instance, true, "Layout:",
+                           ud->cmap_selected->description, NULL);
     }
     if (button == SDL_CONTROLLER_BUTTON_BACK) {
       net_injected_msg_set(instance, false, "Is that it?",

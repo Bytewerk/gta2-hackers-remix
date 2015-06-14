@@ -20,9 +20,9 @@ void net_injected_msg_set(net_injected_instance_t *instance, bool autoclear,
                           char *line1_max11, char *line2_max33,
                           char *line3_max33) {
   MESSAGESEND(instance->sock, IA_ESC_TEXT_SHOW,
-              strncpy(data->line1, line1_max11, 11);
-              strncpy(data->line2, line2_max33, 33);
-              strncpy(data->line3, line3_max33, 33););
+              strncpy(data->line1, line1_max11 ? line1_max11 : "", 11);
+              strncpy(data->line2, line2_max33 ? line2_max33 : "", 33);
+              strncpy(data->line3, line3_max33 ? line3_max33 : "", 33););
 
   if (autoclear)
     net_injected_msg_clear_timer(instance);
