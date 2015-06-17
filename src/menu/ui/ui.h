@@ -6,6 +6,7 @@
 #include "../net/menu_net.h"
 #include "../sl/sl.h"
 #include "../tk/toolkit.h"
+#include <stdbool.h>
 
 #define GTA2_SAVEGAME_COUNT 8
 #define GTA2_PLAYERNAME_MAXLEN 8
@@ -56,6 +57,10 @@ typedef struct {
 
   // used for the play screen
   char **player_names;
+
+  // is the running game a singleplayer game? gets set at the start
+  // of a new game
+  bool singleplayer;
 
   // synced from the native component
   uint16_t controllers_connected;

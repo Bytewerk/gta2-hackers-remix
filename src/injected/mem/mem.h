@@ -3,7 +3,8 @@
 #include <strings.h>
 
 typedef struct {
-  int player_id; // -1: unknown
+  int player_id;     // -1: unknown
+  bool singleplayer; // only set, when the player_id != -1
 
   // see also: mem_init() and http://git.io/g2hr-esc-text
   char *line1; // len: 11

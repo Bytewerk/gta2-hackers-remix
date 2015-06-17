@@ -12,6 +12,8 @@ typedef struct {
 void play_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                      tk_action_t action) {
   ud_play_t *ud = (ud_play_t *)el->userdata;
+  ud->ui->singleplayer = true;
+
   if (action == TK_ACTION_ENTER &&
       (el_selected == ud->start || el_selected == ud->bonus)) {
     ui_show_ready_screen(ud->ui, play);

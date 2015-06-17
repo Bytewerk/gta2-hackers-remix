@@ -134,10 +134,11 @@ void splitscreen_start(ud_splitscreen_t *ud) {
   sl_t *sl = ui->sl;
   tk_t *tk = ui->tk;
 
+  ui->singleplayer = false;
+
   char buffer[SPLITSCREEN_BUFFER_LEN + 1];
   uint16_t screen_w = tk->mode.w;
   uint16_t screen_h = tk->mode.h;
-
   for (int i = 0; i <= player_count; i++) {
     sl_geo_t geo;
     sl_calc(sl, screen_w, screen_h, player_count, layout_id, i, &geo);

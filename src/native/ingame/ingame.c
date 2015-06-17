@@ -45,7 +45,10 @@ void ingame_recv_callback(unsigned char msg_id,
         printf("[native:p%i] assigned player id by pid: %i\n", player_id + 1,
                data->pid);
 
-        MESSAGESEND(sock, IA_PLAYER_ID, data->id = ud_instance->player_id);
+        MESSAGESEND(sock, IA_PLAYER_ID,
+                    // todo: set the singleplayer mode boolean!
+                    // data->singleplayer = ingame->singleplayer
+                    data->id = ud_instance->player_id);
 
         ingame->instance_by_player_id[player_id] = instance;
 

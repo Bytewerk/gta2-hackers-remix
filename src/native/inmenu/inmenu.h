@@ -7,6 +7,8 @@ typedef struct {
   pads_t *pads;
   uint16_t pids[6];
   char has_quit;
+
+  bool singleplayer;
 } inmenu_t;
 
 inmenu_t *inmenu_init(net_t *net, pads_t *pads);

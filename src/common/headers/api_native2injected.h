@@ -1,12 +1,16 @@
 #pragma once
 #include <inttypes.h>
+#include <stdbool.h>
 
 // Native to injected messages
 #define IA_MOVEMENT 0xa0
 typedef struct { uint16_t movement; } IA_MOVEMENT_t;
 
 #define IA_PLAYER_ID 0xa1
-typedef struct { int id; } IA_PLAYER_ID_t;
+typedef struct {
+  int id;
+  bool singleplayer;
+} IA_PLAYER_ID_t;
 
 #define IA_ESC_TEXT_HIDE 0xa2
 #define IA_ESC_TEXT_SHOW 0xa3

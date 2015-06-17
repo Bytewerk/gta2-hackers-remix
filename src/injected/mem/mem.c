@@ -18,7 +18,10 @@ void mem_recv_callback(unsigned char msg_id, void *userdata) {
   mem_t *mem = (mem_t *)userdata;
 
   switch (msg_id) {
-    MESSAGECASE(IA_PLAYER_ID, { mem->player_id = data->id; });
+    MESSAGECASE(IA_PLAYER_ID, {
+      mem->player_id = data->id;
+      mem->singleplayer = data->singleplayer;
+    });
 
     MESSAGECASE(IA_MOVEMENT, { *GTA2_ADDR_MOVEMENT = data->movement; });
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "tk_actions.h"
+#include <stdbool.h>
 /*
         NA: native api
 */
@@ -12,7 +13,10 @@
 #define NA_CLEANUP 0x01
 
 #define NA_PID_TABLE 0x02
-typedef struct { uint16_t pids[6]; } NA_PID_TABLE_t;
+typedef struct {
+  uint16_t pids[6];
+  bool singleplayer;
+} NA_PID_TABLE_t;
 
 // only possible, when in slotmachine mode
 #define NA_POWEROFF 0x20

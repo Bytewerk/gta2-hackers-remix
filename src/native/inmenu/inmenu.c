@@ -30,7 +30,9 @@ void inmenu_recv_callback(unsigned char msg_id, TCPsocket sock,
       printf("[native] got pid table:");
       for (int i = 0; i < 6; i++)
         printf(" %i", data->pids[i]);
-      printf("\n");
+      printf("; SP: %i\n", data->singleplayer);
+
+      inmenu->singleplayer = data->singleplayer;
     });
   }
 }
