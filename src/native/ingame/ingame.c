@@ -76,7 +76,7 @@ void ingame_recv_callback(unsigned char msg_id,
         // TODO: add an option in the menu to deactivate this
         net_injected_msg_set(instance, 5000, "Layout:",
                              ud_instance->cmap_selected->description,
-                             "(START: Next, BACK: Quit)"););
+                             "START: Next         BACK: Quit"););
   }
 }
 
