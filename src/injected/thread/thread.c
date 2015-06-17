@@ -12,6 +12,10 @@ void injected_thread(void *param) {
 
   mem_t *mem = mem_init();
 
+  // send the init message, so the native process can display
+  // the controller layout etc.
+  MESSAGESENDSHORT(IA_INIT_COMPLETE);
+
   // net_recv_blocking is blocking until new data arrives, but the
   // native component sends the controller input at a constant rate
   while (net_recv_blocking(mem_recv_callback, (void *)mem)) {

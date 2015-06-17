@@ -30,6 +30,12 @@
     net_send(buffer, sizeof(buffer));                                          \
   }
 
+#define MESSAGESENDSHORT(MSG_ID)                                               \
+  {                                                                            \
+    char header = MSG_ID;                                                      \
+    net_send(&header, 1);                                                      \
+  }
+
 // see mem_recv_callback() in mem/mem.c for example usage
 #define MESSAGECASE(MSG_ID, CODE)                                              \
   case MSG_ID: {                                                               \

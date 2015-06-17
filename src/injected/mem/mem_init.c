@@ -20,10 +20,8 @@ void mem_init_find_is_that_it(mem_t *mem) {
     }
     tries++;
 
-    if (!mem->line1) {
-      printf("quit string not found, try #%i...\n", tries);
+    if (!mem->line1)
       Sleep(100);
-    }
   }
 
   if (mem->line1) {

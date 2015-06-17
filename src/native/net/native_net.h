@@ -66,8 +66,10 @@ char net_frame(net_t *net, void *inmenu_recv_callback, void *inmenu_userdata,
 void net_injected_instance_cleanup(net_t *net, int id);
 
 void net_injected_msg_clear(net_injected_instance_t *instance);
-void net_injected_msg_set(net_injected_instance_t *instance, bool autoclear,
-                          char *line1_max11, char *line2_max33,
-                          char *line3_max33);
+
+// set the timeout to 0 to never clear the message automatically
+void net_injected_msg_set(net_injected_instance_t *instance,
+                          uint16_t autoclear_timeout_ms, char *line1_max11,
+                          char *line2_max33, char *line3_max33);
 
 void net_cleanup(net_t *net);

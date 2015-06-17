@@ -53,16 +53,27 @@ void ingame_recv_callback(unsigned char msg_id,
         // disconnect by net_frame().
         instance->sorted_array_location =
             &(ingame->instance_by_player_id[player_id]);
+
       } else
         printf("[native] ERROR: got pid %i, but can't find"
                " the associated player ID!\n",
                data->pid);
+
     });
     MESSAGECASE(sock, IA_VEHICLE_INFO,
                 printf("[native:p%i] %s a vehicle\n",
                        ud_instance->player_id + 1,
                        data->in_vehicle ? "entered" : "left");
                 ud_instance->driving = data->in_vehicle;);
+    MESSAGECASESHORT(
+        IA_INIT_COMPLETE,
+        printf("[native:p%i] initialized!\n", ud_instance->player_id + 1);
+
+        // show the gamepad layout after the game has started
+        // TODO: add an option in the menu to deactivate this
+        net_injected_msg_set(instance, 5000, "Layout:",
+                             ud_instance->cmap_selected->description,
+                             "(START: Next, BACK: Quit)"););
   }
 }
 
@@ -139,7 +150,7 @@ void ingame_handle_buttonpress(ingame_t *ingame,
           ud->cmap_selected->next ? ud->cmap_selected->next : ingame->cmap;
       printf("[native:p%i] next layout selected: %s (%p)\n", player_id + 1,
              ud->cmap_selected->description, ud->cmap_selected);
-      net_injected_msg_set(instance, true, "Layout:",
+      net_injected_msg_set(instance, 1000, "Layout:",
                            ud->cmap_selected->description, NULL);
     }
     if (button == SDL_CONTROLLER_BUTTON_BACK) {

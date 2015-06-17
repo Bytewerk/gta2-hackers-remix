@@ -36,3 +36,5 @@ typedef struct {
   int score[6];
   int money[6];
 } IA_SCOREBOARD_t;
+
+#define IA_INIT_COMPLETE 0x06
