@@ -108,11 +108,12 @@ void credits_add_original(tk_t *tk, tk_el_t *TK_PARENT) {
   }
 }
 
-#define ADD(FONT, PADDING_TOP, PADDING_BOTTOM, TEXT)                           \
+#define ADD(FONT, PADDING_TOP, PADDING_BOTTOM, TEXT, COLOR)                    \
   {                                                                            \
     tk_el_t *el = tk_label(tk, TK_PARENT, TEXT, FONT, 0);                      \
     el->padding_top = PADDING_TOP;                                             \
     el->padding_bottom = PADDING_BOTTOM;                                       \
+    el->argb_normal = COLOR;                                                   \
     tk_el_center(el);                                                          \
   }
 
@@ -136,19 +137,121 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
       tk_el_t *hr_text =
           tk_label(tk, TK_PARENT, "HACKER'S REMIX V" G2HR_VERSION,
                    GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0);
-      hr_text->padding_bottom = 5;
-      // hr_text->argb_normal = credits_argb('C');
       tk_el_center(hr_text);
+
+      tk_el_t *url = tk_label(tk, TK_PARENT, "G2HR.ORG",
+                              GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0);
+      url->padding_bottom = 10; tk_el_center(url);
 
       // scrolling part
       TK_STACK(ud->scrolling = TK_PARENT; tk_el_scrollable(TK_PARENT);
 
                // G2HR credits
-               // ...
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 200, 0, "CREATED BY",
+                   GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "ROBOTANARCHY",
+                   GTA2_FONT_COLOR_CYAN);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0,
+                   "ROBOTANARCHY.SPACE", GTA2_FONT_COLOR_WHITE);
+
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 20, 0, "AS A",
+                   GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "BYTEWERK",
+                   GTA2_FONT_COLOR_CYAN);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "PROJECT",
+                   GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0, "BYTEWERK.ORG",
+                   GTA2_FONT_COLOR_WHITE);
+
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 30, 0,
+                   "PRO-TIP: PRESS UP/DOWN TO", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0,
+                   "SCROLL THESE CREDITS", GTA2_FONT_COLOR_WHITE);
+
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 30, 0,
+                   "BASED ON LOTS OF", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "ASM PATCHING BY",
+                   GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "VIKE THE HUBE",
+                   GTA2_FONT_COLOR_CYAN);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0, "GTAMP.COM/GTA2",
+                   GTA2_FONT_COLOR_WHITE);
+
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 30, 0,
+                   "AUDIO, SPRITES AND", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0,
+                   "FONT PARSING BASED", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0,
+                   "ON OPENGBH/OPENGTA2", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "TOOLS BY",
+                   GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "BLACK PHOENIX",
+                   GTA2_FONT_COLOR_CYAN);
+
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 30, 0,
+                   "LOTS OF HELP WITH", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0,
+                   "PORTING THE PROXYDLL", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "CODE TO MINGW",
+                   GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "JESTER",
+                   GTA2_FONT_COLOR_CYAN);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0,
+                   "JESTER01 AT FREENODE IRC", GTA2_FONT_COLOR_WHITE);
+
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 30, 0, "SOME SMART",
+                   GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0,
+                   "AUTOIT3/WINAPI HACKS", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "SQOZZ",
+                   GTA2_FONT_COLOR_CYAN);
+
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 30, 0,
+                   "REMEMBER: YOUR NAME COULD", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0,
+                   "BE ALONG THESE LINES. IT'S", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0,
+                   "FREE SOFTWARE, JUST FORK IT!", GTA2_FONT_COLOR_WHITE);
+
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 30, 0,
+                   "TESTING AND FEEDBACK", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "CUBAN-PETE",
+                   GTA2_FONT_COLOR_CYAN);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "CFR34K",
+                   GTA2_FONT_COLOR_CYAN);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "RANOMIER",
+                   GTA2_FONT_COLOR_CYAN);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "SEKTOR",
+                   GTA2_FONT_COLOR_CYAN);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "SQOZZ",
+                   GTA2_FONT_COLOR_CYAN);
+
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 30, 0, "MENU ARTWORK",
+                   GTA2_FONT_COLOR_GREEN);
+
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 30, 0,
+                   "FINDING AND EDITING OF", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0,
+                   "COOL CC-LICENSED PICS", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "CUBAN-PETE",
+                   GTA2_FONT_COLOR_CYAN);
+
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 30, 0,
+                   "GUNS AND PEARLS", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "MAKEUPSIREN",
+                   GTA2_FONT_COLOR_CYAN);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0,
+                   "MAKEUPSIREN.DEVIANTART.COM", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0,
+                   "LICENSE: CC BY 3.0", GTA2_FONT_COLOR_WHITE);
 
                // original credits
-               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_HUGE, 200, 0, "ORIGINAL");
-               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_HUGE, 0, 20, "GTA2 CREDITS");
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_HUGE, 40, 0, "ORIGINAL",
+                   GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_HUGE, 0, 0, "GTA2 CREDITS",
+                   GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 40,
+                   "FROM THE LAST CENTURY", GTA2_FONT_COLOR_WHITE);
                credits_add_original(tk, TK_PARENT);));
 
   return credits;
