@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This is just a stub file for developing. For the next release, there
-# should be a seperate script for configuring the chroot and one for
+# should be a seperate script for configuring the wineprefix and one for
 # running. Maybe we'll add a nice progress screen that runs natively
 # with the G2HR toolkit? :>
 
