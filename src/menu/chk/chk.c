@@ -18,26 +18,40 @@ int chk_thread(void *userdata) {
 
   // prepare the socket
   IPaddress ip;
-  if (SDLNet_ResolveHost(&ip, "localhost", 80) < 0)
+  if (SDLNet_ResolveHost(&ip, G2HR_CHK_HOST, 80) < 0)
     return 1;
   chk->sock = SDLNet_TCP_Open(&ip);
   if (!chk->sock)
     return 2;
 
-  // request the version (expected format: version\n1.2.3.4\n)
-  // and replace new lines with '\0'
-  char *get = "GET /v\n";
+  // request the version
+  char *get = "GET /v HTTP/1.1\r\nHost: " G2HR_CHK_HOST "\r\n\r\n";
   SDLNet_TCP_Send(chk->sock, get, strlen(get) + 1);
   if (SDLNet_TCP_Recv(chk->sock, chk->net_buffer, G2HR_CHK_NET_BUFFER_SIZE) < 1)
     return 3;
-  for (int i = 0; i < G2HR_CHK_NET_BUFFER_SIZE; i++)
-    if (chk->net_buffer[i] == '\n')
-      chk->net_buffer[i] = '\0';
 
-  // verify the "version" line, get a pointer to the real version
-  if (strcmp(chk->net_buffer, "version"))
-    return 4;
-  char *version = chk->net_buffer + strlen("version") + 1;
+  // find the version in the response (format: V=1.2.3)
+  char *iterator = chk->net_buffer;
+  char *end = chk->net_buffer + G2HR_CHK_NET_BUFFER_SIZE;
+  char *version = NULL;
+  while (*iterator && iterator < end) {
+    if (iterator[0] == 'V' && iterator[1] == '=') {
+      char *version_start = iterator + 2;
+      while (*iterator && iterator - version_start < G2HR_CHK_VERSION_MAXLEN) {
+        if (*iterator == '\n') {
+          *iterator = '\0';
+          version = version_start;
+          break;
+        }
+        iterator++;
+      }
+    }
+    if (version)
+      break;
+    iterator++;
+  }
+  if (!version)
+    return 3;
 
   // ini: save the current timestamp
   char *new_str = malloc(50);

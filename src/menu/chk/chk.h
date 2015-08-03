@@ -4,9 +4,11 @@
 #include <SDL2/SDL_net.h>
 #include <stdbool.h>
 
-#define G2HR_CHK_NET_BUFFER_SIZE 20
+#define G2HR_CHK_NET_BUFFER_SIZE 500
 #define G2HR_CHK_SETTINGS_FILE "updatecheck.ini"
 #define G2HR_CHK_INTERVAL (3600 * 24) // one day
+#define G2HR_CHK_HOST "g2hr.org"
+#define G2HR_CHK_VERSION_MAXLEN 7
 
 typedef struct {
   ini_t *ini;
