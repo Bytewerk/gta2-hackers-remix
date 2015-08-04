@@ -10,7 +10,7 @@ void mem_init_find_is_that_it(mem_t *mem) {
   Sleep(1000);
 
   int tries = 0;
-  while (!mem->line1 && tries < 100) {
+  while (!mem->line1 && tries < 6) {
     for (int i = 0; i < 10000 && !mem->line1; i++) {
       char *addr = GTA2_ADDR_ESC_TEXT_ALIGNMENT + i * 0x00010000;
 
