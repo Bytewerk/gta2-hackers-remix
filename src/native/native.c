@@ -86,4 +86,5 @@ int main(int argc, char **argv) {
   pads_cleanup(pads);
   cmap_cleanup(cmap);
   SDL_Quit();
+  return 0;
 }
