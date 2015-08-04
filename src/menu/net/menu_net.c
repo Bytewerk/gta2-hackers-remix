@@ -13,11 +13,12 @@ net_t *net_init() {
   if (!net->sock_native && !strcmp(SDL_GetPlatform(), "Windows"))
     exit(SDL_ShowSimpleMessageBox(
         SDL_MESSAGEBOX_ERROR, "G2HR",
-        "Menu: Can't connect to the 'native' component!\nGTA2: Hacker's Remix "
-        "is divided into multiple\ncomponents, which need to connect to each "
-        "other over TCP\nvia localhost in order to do their unholy vodoo "
-        "magic.\nCheck your firewall settings!\n\nMore info: "
-        "http://git.io/g2hr-firewall",
+        "Menu: Can't connect to the 'native' component!\n"
+        " GTA2: Hacker's Remix is divided into multiple\n"
+        " components, which need to connect to each other over"
+        " TCP\nvia localhost in order to do their unholy vodoo"
+        " magic.\nCheck your firewall settings!\n\nMore info:"
+        " http://git.io/g2hr-firewall",
         NULL));
 
   if (net->sock_native)

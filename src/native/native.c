@@ -5,6 +5,7 @@
 #include "net/native_net.h"
 #include "pads/pads.h"
 #include <stdio.h>
+#include <stdio.h>
 #include <string.h>
 
 #define CMDBUF_LEN 100
@@ -24,7 +25,7 @@ void menu_start(char *arg) {
              G2HR_NATIVE_SERVER_PORT);
 
   else if (!strcmp(SDL_GetPlatform(), "Windows"))
-    snprintf(cmdline, CMDBUF_LEN, "start bin/menu.exe %i",
+    snprintf(cmdline, CMDBUF_LEN, "start bin\\menu.exe %i",
              G2HR_NATIVE_SERVER_PORT);
   else
     snprintf(cmdline, CMDBUF_LEN, "bin/wine_wrapper.sh %i &",
@@ -37,6 +38,9 @@ void menu_start(char *arg) {
 #undef CMDBUF_LEN
 
 int main(int argc, char **argv) {
+  if (!strcmp(SDL_GetPlatform(), "Windows"))
+    freopen("native.log", "a", stdout);
+
   // initialize everything
   if (SDL_Init(SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC | SDL_INIT_TIMER) < 0)
     return printf("ERROR from SDL: %s\n", SDL_GetError());
