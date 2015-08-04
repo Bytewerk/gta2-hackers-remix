@@ -12,17 +12,21 @@ net_t *net_init() {
   SDLNet_ResolveHost(&(net->ip), NULL, G2HR_NATIVE_SERVER_PORT);
   net->sock_listen = SDLNet_TCP_Open(&(net->ip));
 
-  if (!net->sock_listen)
-    exit(SDL_ShowSimpleMessageBox(
-        SDL_MESSAGEBOX_ERROR, "G2HR",
-        "Can't start the native TCP server!\nGTA2: Hacker's"
-        " Remix is divided into multiple\ncomponents, which need to"
-        " connect to each other over TCP\nvia localhost in order to"
-        " do their unholy vodoo magic.\nCheck your firewall"
-        " settings!\n\nMore info: http://git.io/g2hr-firewall",
-        NULL));
+  if (net->sock_listen)
+    return net;
 
-  return net;
+  SDL_ShowSimpleMessageBox(
+      SDL_MESSAGEBOX_ERROR, "G2HR",
+      "Can't start the native TCP server!\nGTA2: Hacker's"
+      " Remix is divided into multiple\ncomponents, which need to"
+      " connect to each other over TCP\nvia localhost in order to"
+      " do their unholy vodoo magic.\nCheck your firewall"
+      " settings!\n\nMore info: http://git.io/g2hr-firewall",
+      NULL);
+  printf("SDL_net ERROR while starting native server on port %i:"
+         " %s\n",
+         G2HR_NATIVE_SERVER_PORT, SDLNet_GetError());
+  exit(1);
 }
 
 void net_accept_localhost_only(net_t *net) {

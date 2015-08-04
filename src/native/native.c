@@ -44,6 +44,8 @@ int main(int argc, char **argv) {
   // initialize everything
   if (SDL_Init(SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC | SDL_INIT_TIMER) < 0)
     return printf("ERROR from SDL: %s\n", SDL_GetError());
+  if (SDLNet_Init() == -1)
+    exit(printf("SDLNet ERROR: %s\n", SDLNet_GetError()));
   cmap_t *cmap = cmap_init();
   pads_t *pads = pads_init(0);
   net_t *net = net_init();
@@ -90,5 +92,6 @@ int main(int argc, char **argv) {
   pads_cleanup(pads);
   cmap_cleanup(cmap);
   SDL_Quit();
+  SDLNet_Quit();
   return 0;
 }
