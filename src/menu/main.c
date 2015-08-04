@@ -30,6 +30,9 @@ int main(int argc, char *argv[]) {
         " Linux). Start that instead!",
         NULL));
 
+  if (!strcmp(SDL_GetPlatform(), "Windows"))
+    freopen("menu.log", "a", stdout);
+
   // FIXME: attach gxt to ui instead of tk!
 
   // init all

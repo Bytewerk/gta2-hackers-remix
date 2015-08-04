@@ -21,7 +21,7 @@ void ui_start_meta(ui_t *ui) {
   bool debug_meta = !strcmp(ini_read(ini, "debug-meta", "enabled"), "true");
   if (!debug_meta) {
     // launch the binary
-    cmd = cstr_merge("start bin/meta.exe ", port_str);
+    cmd = cstr_merge("start bin\\meta.exe ", port_str);
   } else {
     // launch the interpreter
     cmd = cstr_merge("start /min cmd /c \"",
