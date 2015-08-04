@@ -6,18 +6,14 @@ int main(int argc, char **argv) {
     return printf("Syntax: main_test gta2_text_file string\n");
   gxt_t *gxt = gxt_load(argv[1]);
 
-  /*
-  gxt_entry_t* entry = gxt->entries;
-  int i=0;
-  while(entry)
-  {
-          printf("(%5i) %10s: %s\n", i, entry->id, entry->text);
+  gxt_entry_t *entry = gxt->entries;
+  int i = 0;
+  while (entry && i < 3) {
+    printf("(%5i) %10s: %s\n", i, entry->id, entry->text);
 
-
-          entry = entry->next;
-          i++;
+    entry = entry->next;
+    i++;
   }
-  */
 
   printf("finding gxt str for '%s'...\n", argv[2]);
   char *str = gxt_get(gxt, (char *)argv[2]);

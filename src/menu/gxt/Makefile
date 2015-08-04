@@ -3,7 +3,7 @@ run: ../out/gxt_test.bin
 
 
 ../out/gxt_test.bin: *.c *.h
-	LANG=C gcc -std=c99 -Wall -g -Werror -o $@ *.c ../../common/io/io.c
+	LANG=C gcc -std=c99 -Wall -g -Werror -o $@ *.c ../../common/fs/fs.c
 
 
 valgrind: ../out/gxt_test.bin
