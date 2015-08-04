@@ -9,7 +9,7 @@ native_port="$1"
 gdb="/usr/i686-w64-mingw32/bin/gdb.exe"
 
 if [ "$native_port" == "" ]; then
-	echo "This script gets executed by 'native.bin', run that instead!"
+	echo "This script gets executed by 'g2hr.bin', run that instead!"
 	exit 1
 fi
 
@@ -26,7 +26,7 @@ tail -f $METALOG &
 TAIL_META=$!
 
 # Actually start wine in a virtual desktop
-cmd="bin/menu.exe $native_port"
+cmd="bin/g2hr_menu.exe $native_port"
 
 if [ "$2" == "--gdb" ]; then
 	cmd="$gdb -batch -ex run -ex bt --args $cmd"

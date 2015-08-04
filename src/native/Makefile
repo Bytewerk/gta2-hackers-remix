@@ -24,18 +24,18 @@ info:
 
 
 # High level stuff at the top
-Linux: obj ../../bin ../../bin/native.bin
+Linux: obj ../../bin ../../bin/g2hr.bin
 valgrind: Linux
-	cd "../../" && valgrind bin/native.bin
+	cd "../../" && valgrind bin/g2hr.bin
 run: Linux
-	cd "../../" && bin/native.bin
+	cd "../../" && bin/g2hr.bin
 gdb: Linux
-	cd "../../" && gdb bin/native.bin
+	cd "../../" && gdb bin/g2hr.bin
 
 # WINDOWS (don't mix Windows/Linux objects, run make clean!)
 # Works on Arch Linux, install these packages from
 # the AUR: mingw-w64-{sdl2,sdl2_image,libpng,zlib}
-Windows: env_win obj ../../bin/native.exe
+Windows: env_win obj ../../bin/g2hr.exe
 env_win:
 	$(eval CC = $(shell echo "$(CC)" | sed 's/gcc/i686-w64-mingw32-gcc $(MINGWFLAGS)/'))
 	$(eval PKGCONFIG = i686-w64-mingw32-pkg-config)
@@ -43,10 +43,10 @@ env_win:
 
 
 # NATIVE
-../../bin/native.exe: $(OBJS)
+../../bin/g2hr.exe: $(OBJS)
 	$(CC) -o $@ obj/*.o `$(PKGCONFIG) --cflags --libs $(LIBS)` -lws2_32 -liphlpapi
 	
-../../bin/native.bin: $(OBJS)
+../../bin/g2hr.bin: $(OBJS)
 	$(CC) -o $@ obj/*.o `$(PKGCONFIG) --cflags --libs $(LIBS)`
 
 obj/native.o: $(call DEPS,native.c)
@@ -90,8 +90,8 @@ obj ../../bin:
 	mkdir -p $@
 	
 clean:
-	rm ../../bin/native.exe || true
-	rm ../../bin/native.bin || true
+	rm ../../bin/g2hr.exe || true
+	rm ../../bin/g2hr.bin || true
 	rm -r obj out || true
 
 .PHONY: clean win env_win run info Windows Linux

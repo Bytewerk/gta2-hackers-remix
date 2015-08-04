@@ -16,7 +16,7 @@ void menu_start(char *arg) {
 
   if (!strcmp(arg, "--menu-gdb-mixed"))
     snprintf(cmdline, CMDBUF_LEN, "gdb -batch -ex run -ex bt"
-                                  " --args src/menu/out/menu.bin %i &",
+                                  " --args src/menu/out/g2hr_menu.bin %i &",
              G2HR_NATIVE_SERVER_PORT);
 
   else if (!strcmp(arg, "--menu-gdb-wine"))
@@ -25,7 +25,7 @@ void menu_start(char *arg) {
              G2HR_NATIVE_SERVER_PORT);
 
   else if (!strcmp(SDL_GetPlatform(), "Windows"))
-    snprintf(cmdline, CMDBUF_LEN, "start bin\\menu.exe %i",
+    snprintf(cmdline, CMDBUF_LEN, "start bin\\g2hr_menu.exe %i",
              G2HR_NATIVE_SERVER_PORT);
   else
     snprintf(cmdline, CMDBUF_LEN, "bin/wine_wrapper.sh %i &",

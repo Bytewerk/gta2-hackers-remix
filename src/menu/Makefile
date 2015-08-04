@@ -35,7 +35,7 @@ gdb: Linux
 # WINDOWS (don't mix Windows/Linux objects, run make clean!)
 # Works on Arch Linux, install these packages from
 # the AUR: mingw-w64-{sdl2,sdl2_image,libpng,zlib}
-Windows: env_win obj ../../bin/menu.exe
+Windows: env_win obj ../../bin/g2hr_menu.exe
 env_win:
 	$(eval CC = $(shell echo "$(CC)" | sed 's/gcc/i686-w64-mingw32-gcc $(MINGWFLAGS)/'))
 	$(eval PKGCONFIG = i686-w64-mingw32-pkg-config)
@@ -43,10 +43,10 @@ env_win:
 
 
 # MENU
-../../bin/menu.exe: $(OBJS)
+../../bin/g2hr_menu.exe: $(OBJS)
 	$(CC) -o $@ obj/*.o `$(PKGCONFIG) --cflags --libs $(LIBS)` -lws2_32 -liphlpapi
 	
-out/menu.bin: $(OBJS)
+out/g2hr_menu.bin: $(OBJS)
 	$(CC) -o $@ obj/*.o `$(PKGCONFIG) --cflags --libs $(LIBS)`
 
 obj/menu.o: $(call DEPS,main.c)
@@ -188,7 +188,7 @@ out/minimal.bin: minimal.c $(OBJS)
 obj out:
 	mkdir -p $@
 clean:
-	rm ../../bin/menu.exe || true
+	rm ../../bin/g2hr_menu.exe || true
 	rm -r out obj || true
 
 .PHONY: clean win env_win run info Windows Linux

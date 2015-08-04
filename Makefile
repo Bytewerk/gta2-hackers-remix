@@ -1,29 +1,29 @@
-all: bin/menu.exe bin/meta.exe bin/native.bin bin/proxy.dll
+all: bin/g2hr_menu.exe bin/g2hr_meta.exe bin/g2hr.exe bin/proxy.dll
 
 
 # The four main components
 bin/proxy.dll:
 	$(MAKE) -C src/injected/
 
-bin/meta.exe:
+bin/g2hr_meta.exe:
 	$(MAKE) -C src/meta/
 
-bin/menu.exe:
+bin/g2hr_menu.exe:
 	$(MAKE) -C src/menu/ Windows
 
-bin/menu.bin:
+bin/g2hr_menu.bin:
 	$(MAKE) -C src/menu/ Linux
 
-bin/native.bin:
+bin/g2hr.bin:
 	$(MAKE) -C src/native/ Linux
 
-bin/native.exe:
+bin/g2hr.exe:
 	$(MAKE) -C src/native/ Windows
 
 
 # Additional targets for easy debugging
-run: bin/menu.exe bin/meta.exe bin/native.bin GTA2/dmavideo.dll
-	bin/native.bin
+run: bin/g2hr_menu.exe bin/g2hr_meta.exe bin/g2hr.bin GTA2/dmavideo.dll
+	bin/g2hr.bin
 	wineboot -e -f
 
 GTA2/dmavideo.dll: bin/proxy.dll
@@ -33,12 +33,12 @@ GTA2/dmavideo.dll: bin/proxy.dll
 # Run native.bin with gdb and print a stack trace, when it fails. The
 # parameter makes the native component run the linux-binary (usually we
 # run the windows binary!) with the same gdb options.
-gdb-mixed: bin/menu.bin bin/meta.exe bin/native.bin
-	gdb -batch -ex run -ex bt --args bin/native.bin \
+gdb-mixed: bin/g2hr_menu.bin bin/g2hr_meta.exe bin/g2hr.bin
+	gdb -batch -ex run -ex bt --args bin/g2hr.bin \
 		--menu-gdb-mixed
 
-gdb-wine: bin/menu.exe bin/meta.exe bin/native.bin
-	gdb -batch -ex run -ex bt --args bin/native.bin \
+gdb-wine: bin/g2hr_menu.exe bin/g2hr_meta.exe bin/g2hr.bin
+	gdb -batch -ex run -ex bt --args bin/g2hr.bin \
 		--menu-gdb-wine
 
 
@@ -54,4 +54,4 @@ clean:
 		|| true
 	$(MAKE) -s -C src/menu clean
 	
-.PHONY: clean all bin/menu.exe bin/meta.exe bin/native.bin bin/proxy.dll GTA2/dmavideo.dll regsniff winecfg
+.PHONY: clean all bin/g2hr_menu.exe bin/g2hr_meta.exe bin/g2hr.bin bin/proxy.dll GTA2/dmavideo.dll regsniff winecfg
