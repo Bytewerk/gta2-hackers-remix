@@ -40,11 +40,14 @@ env_win:
 	$(eval CC = $(shell echo "$(CC)" | sed 's/gcc/i686-w64-mingw32-gcc $(MINGWFLAGS)/'))
 	$(eval PKGCONFIG = i686-w64-mingw32-pkg-config)
 	$(eval LIBS = sdl2 SDL2_image SDL2_net SDL2_mixer libpng zlib)
+res/menu.res: res menu.rc
+	i686-w64-mingw32-windres menu.rc -O coff -o $@
 
 
 # MENU
-../../bin/g2hr_menu.exe: $(OBJS)
-	$(CC) -o $@ obj/*.o `$(PKGCONFIG) --cflags --libs $(LIBS)` -lws2_32 -liphlpapi
+../../bin/g2hr_menu.exe: $(OBJS) res/menu.res
+	$(CC) -o $@ obj/*.o res/menu.res \
+		`$(PKGCONFIG) --cflags --libs $(LIBS)` -lws2_32 -liphlpapi
 	
 out/g2hr_menu.bin: $(OBJS)
 	$(CC) -o $@ obj/*.o `$(PKGCONFIG) --cflags --libs $(LIBS)`
@@ -185,7 +188,7 @@ out/minimal.bin: minimal.c $(OBJS)
 	$(CC) `pkg-config --cflags --libs $(LIBS)` -o $@ obj/*.o $<
 	mv obj/menu.o_ obj/menu.o
 
-obj out:
+obj out res:
 	mkdir -p $@
 clean:
 	rm ../../bin/g2hr_menu.exe || true
