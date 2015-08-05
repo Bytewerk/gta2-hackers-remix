@@ -17,7 +17,7 @@ WINE := WINEPREFIX=$(WINEPREFIX) WINEDEBUG=-all wine
 	$(WINE) $(AU3CHECK) -q -d -w 1 -w 2 -w 3 -w 4 -w 5 -w 6 -w 7 \
 		meta.au3
 	$(WINE) $(AUT2EXE) \
-		/in meta.au3 /out $@ /x86 /gui
+		/in meta.au3 /out $@ /icon ../../data/g2hr.ico /x86 /gui
 
 wineprefix: $(WINEPREFIX)
 
