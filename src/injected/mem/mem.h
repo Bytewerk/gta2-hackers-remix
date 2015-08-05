@@ -16,6 +16,8 @@ typedef struct {
 
 mem_t *mem_init();
 
+void mem_debug_print(char *name, char *addr, int count);
+
 void mem_recv_callback(unsigned char msg_id, void *userdata);
 
 void mem_frame(mem_t *mem);

@@ -3,6 +3,19 @@
 #include "mem_gta2_addresses.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <windows.h> // IsBadReadPtr, Sleep
+
+void mem_debug_print(char *name, char *addr, int count) {
+  printf("%s at %p:\n", name, addr);
+  for (int i = 0; i < count; i++) {
+    if (IsBadReadPtr(addr + i, 1)) {
+      printf("%p: Bad pointer, stopping here.\n", addr + i);
+      return;
+    }
+
+    printf("\t%s+%03i: %02x %c\n", name, i, (unsigned char)addr[i], addr[i]);
+  }
+}
 
 void mem_frame(mem_t *mem) {
   // send a message when the player has "borrowed" a vehicle, or

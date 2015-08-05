@@ -8,13 +8,6 @@
 // documentation: http://git.io/g2hr-esc-text
 // TODO: fully rewrite that part!
 
-void debug_print(char *name, char *addr) {
-  printf("%s at %p:\n", name, addr);
-  for (int i = 0; i < 5; i++) {
-    printf("\t%s #%i: %c (%x)\n", name, i, addr[i], (unsigned char)addr[i]);
-  }
-}
-
 mem_t *mem_init() {
   // Get the base offset of GTA2.exe
   // see also: http://stackoverflow.com/a/17965759
@@ -30,9 +23,8 @@ mem_t *mem_init() {
   }
   printf("\n");
 
-  debug_print("GTA2_ADDR_STRING_TABLE", GTA2_ADDR_STRING_TABLE);
-  debug_print("GTA2_ADDR_STRING_OFFSET_1", GTA2_ADDR_STRING_OFFSET_1);
-  debug_print("GTA2_ADDR_STRING_OFFSET_2", GTA2_ADDR_STRING_OFFSET_2);
+  mem_debug_print("GTA2_ADDR_STRING_TABLE", GTA2_ADDR_STRING_TABLE, 100);
+  mem_debug_print("GTA2_ADDR_STRING_OFFSET", GTA2_ADDR_STRING_OFFSET, 100);
 
   return mem;
 }

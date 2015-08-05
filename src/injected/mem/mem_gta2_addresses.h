@@ -27,10 +27,9 @@ char MP_PLAYER_ID; // 0...5
 #define GTA2_ADDR_MOVEMENT (uint16_t *)0x5ecacc
 
 // the text is in unicode format (this means every second byte is 00!)
-#define GTA2_ADDR_STRING_TABLE (***((char ****)(EXE_OFFSET + 0x00281550)))
-#define GTA2_ADDR_STRING_OFFSET_1                                              \
-  (*((char **)(EXE_OFFSET + 0x001E81DC)) + 0x1C9C)
-#define GTA2_ADDR_STRING_OFFSET_2                                              \
+#define GTA2_ADDR_STRING_OFFSET (***((char ****)(EXE_OFFSET + 0x00281550)))
+#define GTA2_ADDR_STRING_TABLE (*((char **)(EXE_OFFSET + 0x001E81DC)) + 0x1C9C)
+#define GTA2_ADDR_STRING_TABLE_ALT                                             \
   (*((char **)(EXE_OFFSET + 0x001E85B0)) + 0x1C9C)
 
 // http://git.io/g2hr-rumble-byte
