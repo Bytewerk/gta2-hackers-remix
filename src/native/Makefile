@@ -41,10 +41,14 @@ env_win:
 	$(eval PKGCONFIG = i686-w64-mingw32-pkg-config)
 	$(eval LIBS = sdl2 SDL2_image SDL2_net libpng zlib)
 
+res/native.res: res native.rc
+	i686-w64-mingw32-windres native.rc -O coff -o $@
+
 
 # NATIVE
-../../bin/g2hr.exe: $(OBJS)
-	$(CC) -o $@ obj/*.o `$(PKGCONFIG) --cflags --libs $(LIBS)` -lws2_32 -liphlpapi
+../../bin/g2hr.exe: $(OBJS) res/native.res
+	$(CC) -o $@ res/native.res obj/*.o \
+		`$(PKGCONFIG) --cflags --libs $(LIBS)` -lws2_32 -liphlpapi
 	
 ../../bin/g2hr.bin: $(OBJS)
 	$(CC) -o $@ obj/*.o `$(PKGCONFIG) --cflags --libs $(LIBS)`
@@ -86,7 +90,7 @@ obj/common_fs.o: $(call DEPS,../common/fs/fs.c)
 
 # OTHER
 
-obj ../../bin:
+obj ../../bin res:
 	mkdir -p $@
 	
 clean:

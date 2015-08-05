@@ -40,6 +40,8 @@ GTA2/*
 
 # Compiled Object files
 *.o
+*.res
+
 
 # Precompiled Headers
 *.gch
