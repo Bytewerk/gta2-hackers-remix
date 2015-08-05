@@ -2,6 +2,8 @@
 #include <stdbool.h>
 #include <strings.h>
 
+#define G2HR_ESC_TEXT_MAXLEN_LINE 100
+
 typedef struct {
   int player_id;     // -1: unknown
   bool singleplayer; // only set, when the player_id != -1
@@ -19,6 +21,8 @@ mem_t *mem_init();
 void mem_debug_print(char *name, char *addr, int count);
 
 void mem_recv_callback(unsigned char msg_id, void *userdata);
+
+void mem_prepare_esc_text(mem_t *mem);
 
 void mem_frame(mem_t *mem);
 

@@ -30,6 +30,10 @@ obj/mem.o: $(call DEPS,mem/mem.c)
 obj/mem_init.o: $(call DEPS,mem/mem_init.c)
 	$(CC) -c -o $@ $<
 
+# Memory ESC Text
+obj/mem_esc.o: $(call DEPS,mem/mem_esc_text.c)
+	$(CC) -c -o $@ $<
+
 
 # OTHER
 obj ../../bin:
