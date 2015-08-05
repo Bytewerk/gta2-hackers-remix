@@ -5,6 +5,7 @@
 Global Const $GTA2_PLAYER_COUNT = 6
 Global Const $GTA2_LOBBY_CTRL_START = 1021
 Global Const $GTA2_LOBBY_CTRL_LIST  = 1024
+Global Const $WINE = is_running_in_wine()
 
 
 ; Global variables
@@ -133,6 +134,10 @@ Func regwrite_if_empty($keyname, $valuename, $type, $value)
 		RegWrite($keyname, $valuename, $type, $value)
 EndFunc
 
-
+Func is_running_in_wine()
+	RegRead("HKEY_CURRENT_USER\Software\Wine", "")
+	If @error > 0 Then Return False
+	Return True
+EndFunc
 
 

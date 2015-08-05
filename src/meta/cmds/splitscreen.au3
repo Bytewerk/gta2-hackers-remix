@@ -125,6 +125,8 @@ Func cmd_splitscreen($cmd)
 		$global_game_process_ids[$i-1] =  Run($global_config_path _
 			& "\G2HR_PLAYER" & $i & ".exe " _
 			& $param, "GTA2", @SW_SHOW)
+		; FIXME: set this to @SW_HIDE -- but right now something fails
+		; below then and the meta component just hangs!
 	Next
 	$global_game_instances_open = $player_count + 1
 	send_pid_table()
@@ -141,12 +143,40 @@ Func cmd_splitscreen($cmd)
 	ControlClick($hwnd,"",$GTA2_LOBBY_CTRL_START)
 	
 	; Move the window
-	; (TODO: natively on Windows: attach it to the G2HR menu window)
+	; Stuff above works okayish in Windows.
+	; TODO in wine: hide the network windows somehow (set the ontop
+	; attribute to the SDL window?)
+	
+	
+	; FIXME: match by class and pid / get rid of the sleep!
+	Local $hwnd_sdl = WinGetHandle("G2HR")
+	If Not $WINE Then Sleep(3000)
+	
 	For $i = $player_count To 0 Step -1
-		$hwnd = wait_until_only_one_hwnd_left( _
-			$global_game_process_ids[$i])
+	
+		; FIXME: get this to work in windows
+		If $WINE Then
+			$hwnd = wait_until_only_one_hwnd_left( _
+				$global_game_process_ids[$i])
+		Else
+			$hwnd = WinGetHandle("GTA2")
+		Endif
 		
-		Local $geo = $global_game_screen_layouts[$i]
-		move_until_it_works($hwnd, $geo)
+		If Not $WINE Then
+			_WinAPI_SetParent($hwnd, $hwnd_sdl)
+			
+			; FIXME: setting the parent window works - but the new
+			; window isn't in the foreground!
+			WinActivate($hwnd)
+			WinMove($hwnd, "", 0, 0)
+			WinSetOnTop($hwnd, "", 1)
+			WinSetState($hwnd, "", @SW_SHOW)
+		Endif
+		
+		; FIXME: Make this work on windows, too
+		If $WINE Then
+			Local $geo = $global_game_screen_layouts[$i]
+			move_until_it_works($hwnd, $geo)
+		Endif
 	Next
 Endfunc
