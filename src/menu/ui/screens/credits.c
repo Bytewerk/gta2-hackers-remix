@@ -225,6 +225,8 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
                    GTA2_FONT_COLOR_CYAN);
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "SQOZZ",
                    GTA2_FONT_COLOR_CYAN);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "THEBLACKCROW1",
+                   GTA2_FONT_COLOR_CYAN);
 
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 30, 0, "MENU ARTWORK",
                    GTA2_FONT_COLOR_GREEN);
@@ -251,7 +253,7 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_HUGE, 0, 0, "GTA2 CREDITS",
                    GTA2_FONT_COLOR_WHITE);
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 40,
-                   "FROM THE LAST CENTURY", GTA2_FONT_COLOR_WHITE);
+                   "FROM THE LAST MILLENIUM", GTA2_FONT_COLOR_WHITE);
                credits_add_original(tk, TK_PARENT);));
 
   return credits;
