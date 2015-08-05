@@ -5,6 +5,16 @@
 #include <stdlib.h>
 #include <windows.h> // IsBadReadPtr, Sleep
 
+/*
+        copied from: mbedtls_zeroize
+        Implementation that should never be optimized out by the compiler
+*/
+void mem_zeroize(void *v, size_t n) {
+  volatile unsigned char *p = v;
+  while (n--)
+    *p++ = 0;
+}
+
 void mem_debug_print(char *name, char *addr, int count) {
   printf("%s at %p:\n", name, addr);
   for (int i = 0; i < count; i++) {
@@ -39,15 +49,22 @@ void mem_recv_callback(unsigned char msg_id, void *userdata) {
     MESSAGECASE(IA_MOVEMENT, { *GTA2_ADDR_MOVEMENT = data->movement; });
 
     MESSAGECASE(IA_ESC_TEXT_SHOW, {
-      if (mem->line1) {
+      if (mem->text[0]) {
+        // FIXME: we can use far more characters than 11 and 33,
+        // but this needs to be specified in the
+        // injected<>native protocol first.
+
         for (int i = 0; i < 11; i++)
-          ((char *)mem->line1)[i * 2] = data->line1[i];
+          mem->text[0][i * 2] = data->line1[i];
 
         for (int i = 0; i < 33; i++)
-          ((char *)mem->line2)[i * 2] = data->line2[i];
+          mem->text[1][i * 2] = data->line2[i];
 
         for (int i = 0; i < 33; i++)
-          ((char *)mem->line3)[i * 2] = data->line3[i];
+          mem->text[2][i * 2] = data->line3[i];
+
+        for (int i = 0; i < 3; i++)
+          mem_debug_print("trash", (char *)mem->text[i], 20);
       }
     });
   }

@@ -9,7 +9,7 @@ all: obj ../../bin ../../bin/proxy.dll
 
 # PROXY.DLL
 ../../bin/proxy.dll: $(OBJS)
-	$(CC) -shared -o $@ obj/*.o -lws2_32
+	$(CC) -shared -o $@ obj/*.o -lws2_32 -O0
 
 obj/proxy.o: $(call DEPS,proxy.c)
 	$(CC) -c -o $@ $<
