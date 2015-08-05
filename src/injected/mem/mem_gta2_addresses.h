@@ -26,13 +26,12 @@ char MP_PLAYER_ID; // 0...5
 // See also: native/cmap/cmap_gta2_controls.h
 #define GTA2_ADDR_MOVEMENT (uint16_t *)0x5ecacc
 
-// works for english language. the text is in unicode format (this means
-// every second byte is 00!)
-
-// desktop: 0x02f3abb2
-// laptop:  0x03bbabb2
-#define GTA2_ADDR_ESC_TEXT_ALIGNMENT ((char *)0x0000abb2)
-#define GTA2_ESC_TEXT_QUIT1 L"Is that it?"
+// the text is in unicode format (this means every second byte is 00!)
+#define GTA2_ADDR_STRING_TABLE (***((char ****)(EXE_OFFSET + 0x00281550)))
+#define GTA2_ADDR_STRING_OFFSET_1                                              \
+  (*((char **)(EXE_OFFSET + 0x001E81DC)) + 0x1C9C)
+#define GTA2_ADDR_STRING_OFFSET_2                                              \
+  (*((char **)(EXE_OFFSET + 0x001E85B0)) + 0x1C9C)
 
 // http://git.io/g2hr-rumble-byte
 #define GTA2_ADDR_RUMBLE (char *)0x665770
