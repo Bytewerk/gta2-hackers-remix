@@ -25,16 +25,20 @@ bool mem_wait_for_string_table() {
   return false;
 }
 
+char GLOBAL_DEBUG_EMPTY[] = {'\0', '\0', '\0'};
+
 void mem_prepare_esc_text(mem_t *mem) {
   if (!mem_wait_for_string_table())
     return;
 
-  // TODO: malloc the new lines here
-  // TODO: then write the addresses in the index table
+  for (int i = 0; i < 3; i++) {
+    mem->text[i] = calloc(0, G2HR_ESC_TEXT_MAXLEN_LINE);
+  }
 
   char *pos = GTA2_ADDR_STRING_TABLE;
   while (pos <= GTA2_ADDR_STRING_OFFSET) {
     char *name = pos + 4;
+
     if (strncmp(name, "quit1", 8) == 0 || strncmp(name, "quit2", 8) == 0 ||
         strncmp(name, "quit3", 8) == 0) {
       printf("%s: ", name);
@@ -46,9 +50,14 @@ void mem_prepare_esc_text(mem_t *mem) {
       }
       printf("\n");
 
-      // TODO: replace the string!
-    }
+      SuspendThread(mem->main_thread);
+      *(char **)pos = GLOBAL_DEBUG_EMPTY;
 
+      // prevent GCC from optimizing this away.
+      printf("replaced with: %s\n", GLOBAL_DEBUG_EMPTY);
+
+      ResumeThread(mem->main_thread);
+    }
     pos += 12;
   }
 }

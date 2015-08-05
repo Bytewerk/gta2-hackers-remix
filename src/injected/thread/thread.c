@@ -10,7 +10,7 @@ void injected_thread(void *param) {
   // send the PID for identification
   MESSAGESEND(IA_PID, data->pid = GetCurrentProcessId());
 
-  mem_t *mem = mem_init();
+  mem_t *mem = mem_init((HANDLE)param);
 
   // send the init message, so the native process can display
   // the controller layout etc.

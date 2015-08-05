@@ -45,8 +45,11 @@ BOOL WINAPI DllMain(HINSTANCE dll_instance, DWORD reason, LPVOID userdata) {
     p[20] = GetProcAddress(original_dll, "Vid_ShutDown_SYS");
     p[21] = GetProcAddress(original_dll, "Vid_WindowProc");
 
+    HANDLE main_thread =
+        OpenThread(THREAD_ALL_ACCESS, FALSE, GetCurrentThreadId());
+
     // Start the injected thread (see thread/thread.c)
-    _beginthread(injected_thread, 0, NULL);
+    _beginthread(injected_thread, 0, (void *)main_thread);
   } else if (reason == DLL_PROCESS_DETACH) {
     net_cleanup();
     FreeLibrary(original_dll);
