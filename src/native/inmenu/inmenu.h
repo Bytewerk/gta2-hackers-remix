@@ -1,4 +1,5 @@
 #pragma once
+#include "../../common/headers/tk_actions.h"
 #include "../net/native_net.h"
 #include "../pads/pads.h"
 
@@ -7,6 +8,7 @@ typedef struct {
   pads_t *pads;
   uint16_t pids[6];
   char has_quit;
+  uint32_t analogstick_timer[TK_ACTION_LAST - 1];
 
   bool singleplayer;
 } inmenu_t;

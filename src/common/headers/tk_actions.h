@@ -29,4 +29,5 @@ typedef enum {
   TK_ACTION_FRAMETIME,
   TK_ACTION_CLEANUP,
 
+  TK_ACTION_LAST,
 } tk_action_t;

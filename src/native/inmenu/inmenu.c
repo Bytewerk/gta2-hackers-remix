@@ -37,36 +37,46 @@ void inmenu_recv_callback(unsigned char msg_id, TCPsocket sock,
   }
 }
 
-#define SEND_ACTION(TK_ACTION)                                                 \
+#define MAP_BUTTON(BUTTON, TK_ACTION)                                          \
+  if (b == SDL_CONTROLLER_BUTTON_##BUTTON)                                     \
   MESSAGESEND(inmenu->net->sock_menu, NA_ACTION, {                             \
     data->action = TK_ACTION_##TK_ACTION;                                      \
     data->redraw = 1;                                                          \
   })
-#define MAP_BUTTON(BUTTON, TK_ACTION)                                          \
-  if (b == SDL_CONTROLLER_BUTTON_##BUTTON)                                     \
-  SEND_ACTION(TK_ACTION)
 
-void inmenu_frame_timeout(inmenu_t *inmenu) {
-  if (inmenu->pads->count < 1)
+void inmenu_analogstick_action(inmenu_t *inmenu, tk_action_t action) {
+  uint32_t current_time = SDL_GetTicks();
+  if (current_time - inmenu->analogstick_timer[action] <
+      G2HR_ANALOG_STICK_MENU_LIMIT_RATE)
+    return;
+  inmenu->analogstick_timer[action] = current_time;
+
+  MESSAGESEND(inmenu->net->sock_menu, NA_ACTION, {
+    data->action = action;
+    data->redraw = 1;
+  });
+}
+
+void inmenu_frame_timeout(inmenu_t *in) {
+  if (in->pads->count < 1)
     return;
 
-  // TODO: save timestamps, so we don't send these actions too
-  // often!
+  // FIXME: do this just before sending / save timers per action
 
-  SDL_GameController *controller = inmenu->pads->first->controller;
+  SDL_GameController *controller = in->pads->first->controller;
 
   int16_t deadzone = 32767 / 2;
   int16_t x = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
   int16_t y = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY);
 
   if (x < -1 * deadzone)
-    SEND_ACTION(LEFT);
+    inmenu_analogstick_action(in, TK_ACTION_LEFT);
   if (x > deadzone)
-    SEND_ACTION(RIGHT);
+    inmenu_analogstick_action(in, TK_ACTION_RIGHT);
   if (y < -1 * deadzone)
-    SEND_ACTION(UP);
+    inmenu_analogstick_action(in, TK_ACTION_UP);
   if (y > deadzone)
-    SEND_ACTION(DOWN);
+    inmenu_analogstick_action(in, TK_ACTION_DOWN);
 
   return;
 }

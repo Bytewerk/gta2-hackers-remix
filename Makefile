@@ -54,4 +54,4 @@ clean:
 		|| true
 	$(MAKE) -s -C src/menu clean
 	
-.PHONY: clean all bin/g2hr_menu.exe bin/g2hr_meta.exe bin/g2hr.bin bin/proxy.dll GTA2/dmavideo.dll regsniff winecfg
+.PHONY: clean all bin/g2hr_menu.exe bin/g2hr_meta.exe bin/g2hr.exe bin/g2hr.bin bin/proxy.dll GTA2/dmavideo.dll regsniff winecfg
