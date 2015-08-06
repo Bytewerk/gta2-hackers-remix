@@ -9,8 +9,16 @@ net_t *net_init() {
 
   // join the 'native' component's server
   SDLNet_ResolveHost(&(net->ip), "localhost", G2HR_NATIVE_SERVER_PORT);
-  net->sock_native = SDLNet_TCP_Open(&(net->ip));
-  if (!net->sock_native && !strcmp(SDL_GetPlatform(), "Windows"))
+
+  // try to connect for 4 seconds
+  for (int i = 0; i < 400; i++) {
+    net->sock_native = SDLNet_TCP_Open(&(net->ip));
+    if (net->sock_native)
+      break;
+    SDL_Delay(10);
+  }
+
+  if (!net->sock_native)
     exit(SDL_ShowSimpleMessageBox(
         SDL_MESSAGEBOX_ERROR, "G2HR",
         "Menu: Can't connect to the 'native' component!\n"
@@ -21,8 +29,7 @@ net_t *net_init() {
         " http://git.io/g2hr-firewall",
         NULL));
 
-  if (net->sock_native)
-    SDLNet_TCP_AddSocket(net->set, net->sock_native);
+  SDLNet_TCP_AddSocket(net->set, net->sock_native);
 
   // listen on all addresses. Better would be localhost only,
   // but SDL2_net doesn't support this. We'll check for localhost

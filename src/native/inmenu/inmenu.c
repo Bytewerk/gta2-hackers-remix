@@ -61,8 +61,6 @@ void inmenu_frame_timeout(inmenu_t *in) {
   if (in->pads->count < 1)
     return;
 
-  // FIXME: do this just before sending / save timers per action
-
   SDL_GameController *controller = in->pads->first->controller;
 
   int16_t deadzone = 32767 / 2;

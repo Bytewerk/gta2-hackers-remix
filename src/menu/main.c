@@ -19,17 +19,11 @@
 
 /*
         NOTE: the net sub-component connects to the native component on
-                startup. When it fails, it shows a message box and quits.
+                startup. When it fails for 4 seconds, it shows a message box
+                and quits.
 */
 
 int main(int argc, char *argv[]) {
-  if (argc != 2 && !strcmp(SDL_GetPlatform(), "Windows"))
-    exit(SDL_ShowSimpleMessageBox(
-        SDL_MESSAGEBOX_ERROR, "G2HR",
-        "This file gets startet by 'g2hr.exe' (g2hr.bin on"
-        " Linux). Start that instead!",
-        NULL));
-
   if (!strcmp(SDL_GetPlatform(), "Windows"))
     freopen("menu.log", "a", stdout);
 
