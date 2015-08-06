@@ -159,9 +159,9 @@ Func cmd_splitscreen($cmd)
 		If Not $WINE Then
 			_WinAPI_SetParent($hwnd, $HWND_SDL)
 			
-			WinActivate($hwnd)
+			; WinActivate($hwnd)
 			WinMove($hwnd, "", -5, -10)
-			WinSetOnTop($hwnd, "", 1)
+			; WinSetOnTop($hwnd, "", 1)
 			WinSetState($hwnd, "", @SW_SHOW)
 		Endif
 		
