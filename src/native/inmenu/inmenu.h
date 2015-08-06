@@ -16,4 +16,6 @@ inmenu_t *inmenu_init(net_t *net, pads_t *pads);
 void inmenu_recv_callback(unsigned char msg_id, TCPsocket sock, void *userdata);
 
 void inmenu_frame(inmenu_t *inmenu, SDL_Event *event);
+void inmenu_frame_timeout(inmenu_t *inmenu);
+
 void inmenu_cleanup(inmenu_t *inmenu);

@@ -37,17 +37,41 @@ void inmenu_recv_callback(unsigned char msg_id, TCPsocket sock,
   }
 }
 
-#define MAP_BUTTON(BUTTON, TK_ACTION)                                          \
-  if (b == SDL_CONTROLLER_BUTTON_##BUTTON)                                     \
+#define SEND_ACTION(TK_ACTION)                                                 \
   MESSAGESEND(inmenu->net->sock_menu, NA_ACTION, {                             \
     data->action = TK_ACTION_##TK_ACTION;                                      \
     data->redraw = 1;                                                          \
   })
+#define MAP_BUTTON(BUTTON, TK_ACTION)                                          \
+  if (b == SDL_CONTROLLER_BUTTON_##BUTTON)                                     \
+  SEND_ACTION(TK_ACTION)
 
-void inmenu_frame(inmenu_t *inmenu, SDL_Event *event) {
-  if (!event)
+void inmenu_frame_timeout(inmenu_t *inmenu) {
+  if (inmenu->pads->count < 1)
     return;
 
+  // TODO: save timestamps, so we don't send these actions too
+  // often!
+
+  SDL_GameController *controller = inmenu->pads->first->controller;
+
+  int16_t deadzone = 32767 / 2;
+  int16_t x = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTX);
+  int16_t y = SDL_GameControllerGetAxis(controller, SDL_CONTROLLER_AXIS_LEFTY);
+
+  if (x < -1 * deadzone)
+    SEND_ACTION(LEFT);
+  if (x > deadzone)
+    SEND_ACTION(RIGHT);
+  if (y < -1 * deadzone)
+    SEND_ACTION(UP);
+  if (y > deadzone)
+    SEND_ACTION(DOWN);
+
+  return;
+}
+
+void inmenu_frame(inmenu_t *inmenu, SDL_Event *event) {
   SDL_EventType t = event->type;
 
   // send the controller count
@@ -71,5 +95,6 @@ void inmenu_frame(inmenu_t *inmenu, SDL_Event *event) {
   }
 }
 #undef MAP_BUTTON
+#undef SEND_ACTION
 
 void inmenu_cleanup(inmenu_t *inmenu) { free(inmenu); }

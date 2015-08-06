@@ -77,6 +77,8 @@ int main(int argc, char **argv) {
       // timeout then!!)
       if (net->injected_count)
         ingame_frame(ingame, NULL);
+      else
+        inmenu_frame_timeout(inmenu);
     }
 
     // check for incoming data
