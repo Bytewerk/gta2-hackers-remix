@@ -79,12 +79,23 @@ Func cmd_singleplayer($cmd)
 	RegWrite($reg_base, "start_mode", 0) ; Windowed mode
 	RegWrite($reg_base, "window_width", @DesktopWidth)
 	RegWrite($reg_base, "window_height", @DesktopHeight)
+	RegWrite($reg_base, "full_width", @DesktopWidth)
+	RegWrite($reg_base, "full_height", @DesktopHeight)
 	
 	; Start the game
 	$global_game_instances_open = 1
 	$global_game_process_ids[0] = Run($global_config_path _
-		& "G2HR_PLAYER1.exe", "GTA2")
+		& "G2HR_PLAYER1.exe", "GTA2", @SW_HIDE)
 	send_pid_table()
-	WinWait("GTA2")
-	WinActivate("GTA2")
+	
+	Local $hwnd = wait_for_hwnd_with_desc($global_game_process_ids[0], _
+			$GTA2_GAME_WINDOW_DESC)
+	
+	If Not $WINE Then
+		_WinAPI_SetParent($hwnd, $HWND_SDL)
+		WinMove($hwnd, "", -5, -20) ; FIXME: don't use hardcoded values!
+		WinSetState($hwnd, "", @SW_SHOW)
+	Else
+		WinActivate("GTA2")
+	Endif
 Endfunc
