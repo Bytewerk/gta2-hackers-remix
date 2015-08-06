@@ -5,6 +5,7 @@
 Global Const $GTA2_PLAYER_COUNT = 6
 Global Const $GTA2_LOBBY_CTRL_START = 1021
 Global Const $GTA2_LOBBY_CTRL_LIST  = 1024
+Global Const $GTA2_GAME_WINDOW_DESC = "[TITLE:GTA2;CLASS:WinMain]"
 Global Const $WINE = is_running_in_wine()
 Global Const $HWND_SDL = WinGetHandle("[TITLE:G2HR;CLASS:SDL_app]")
 
@@ -45,8 +46,8 @@ Endfunc
 ; 		$ret[0]: count of hwnds
 ; 		$ret[1]: first hwnd
 ; 		...
-Func get_all_hwnds_from_pid($pid)
-	Local $list = WinList()
+Func get_all_hwnds_from_pid($pid, $desc = "")
+	Local $list = WinList($desc)
 	Local $ret[1]
 	$ret[0] = 0
 	
@@ -84,6 +85,16 @@ Func wait_for_hwnd_with_control($pid, $ctrl_id)
 	Wend
 Endfunc
 
+Func wait_for_hwnd_with_desc($pid, $desc)
+	While True
+		Local $hwnds = get_all_hwnds_from_pid($pid, $desc)
+		If $hwnds[0] > 0 Then _
+			Return $hwnds[1]
+	
+		Sleep(100)
+	Wend
+Endfunc
+
 ; Returns the single hwnd id that is left
 Func wait_until_only_one_hwnd_left($pid)
 	While True
@@ -91,6 +102,7 @@ Func wait_until_only_one_hwnd_left($pid)
 		
 		If IsArray($hwnds) And $hwnds[0] == 1 Then _
 			Return $hwnds[1]
+		
 		
 		Sleep(100)
 	Wend

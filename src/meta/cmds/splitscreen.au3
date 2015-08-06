@@ -142,33 +142,15 @@ Func cmd_splitscreen($cmd)
 	; Press the start button!
 	ControlClick($hwnd,"",$GTA2_LOBBY_CTRL_START)
 	
-	; Move the window
-	; Stuff above works okayish in Windows.
-	If Not $WINE Then Sleep(100)
-	
 	For $i = $player_count To 0 Step -1
-	
-		; FIXME: get this to work in windows
-		If $WINE Then
-			$hwnd = wait_until_only_one_hwnd_left( _
-				$global_game_process_ids[$i])
-		Else
-			$hwnd = WinGetHandle("GTA2")
-		Endif
+		$hwnd = wait_for_hwnd_with_desc($global_game_process_ids[$i], _
+			$GTA2_GAME_WINDOW_DESC)
 		
-		If Not $WINE Then
-			_WinAPI_SetParent($hwnd, $HWND_SDL)
+		If Not $WINE Then _WinAPI_SetParent($hwnd, $HWND_SDL)
+		
+		Local $geo = $global_game_screen_layouts[$i]
+		move_until_it_works($hwnd, $geo)
 			
-			; WinActivate($hwnd)
-			WinMove($hwnd, "", -5, -10)
-			; WinSetOnTop($hwnd, "", 1)
-			WinSetState($hwnd, "", @SW_SHOW)
-		Endif
-		
-		; FIXME: Make this work on windows, too
-		If $WINE Then
-			Local $geo = $global_game_screen_layouts[$i]
-			move_until_it_works($hwnd, $geo)
-		Endif
+		If Not $WINE Then WinSetState($hwnd, "", @SW_SHOW)
 	Next
 Endfunc
