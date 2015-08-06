@@ -4,10 +4,18 @@
 #include <Array.au3>
 
 If $CmdLine[0] < 1 Then
-	Exit Msgbox(16,"G2HR","Syntax: meta.exe menu_port")
+	Exit Msgbox(16,"G2HR","This program gets opened internally by" _
+		& @CRLF & "GTA2: Hacker's Remix. Start g2hr.exe instead!")
 Endif
 
-If Not @Compiled Then WinActivate("G2HR")
+If Not WinExists($HWND_SDL) Then
+	Exit MsgBox(16,"G2HR","Meta: Couldn't find the SDL menu window!" _
+		& @CRLF & "Please report this here: http://git.io/g2hr-bugs")
+Endif
+
+If Not @Compiled Then WinActivate($HWND_SDL)
+
+
 
 ; Connect to the menu
 TCPStartup()

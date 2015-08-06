@@ -6,6 +6,7 @@ Global Const $GTA2_PLAYER_COUNT = 6
 Global Const $GTA2_LOBBY_CTRL_START = 1021
 Global Const $GTA2_LOBBY_CTRL_LIST  = 1024
 Global Const $WINE = is_running_in_wine()
+Global Const $HWND_SDL = WinGetHandle("[TITLE:G2HR;CLASS:SDL_app]")
 
 
 ; Global variables
@@ -64,7 +65,7 @@ Endfunc
 
 Func find_hwnd_with_control($hwnds, $ctrl_id)
 	For $i=1 To $hwnds[0]
-		If ControlCommand($hwnds[$i], "", $ctrl_id, "IsVisible") Then
+		If ControlCommand($hwnds[$i], "", $ctrl_id, "IsEnabled") Then
 			Return $hwnds[$i]
 		Endif
 	Next
