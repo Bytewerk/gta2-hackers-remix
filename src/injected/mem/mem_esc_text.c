@@ -32,7 +32,10 @@ void mem_prepare_esc_text(mem_t *mem) {
     return;
 
   for (int i = 0; i < 3; i++) {
-    mem->text[i] = calloc(0, G2HR_ESC_TEXT_MAXLEN_LINE);
+    mem->text[i] = malloc(G2HR_ESC_TEXT_MAXLEN_LINE);
+    mem_zeroize((char *)mem->text[i], G2HR_ESC_TEXT_MAXLEN_LINE);
+
+    mem_debug_print("trash", (char *)mem->text[i], 20);
   }
 
   char *pos = GTA2_ADDR_STRING_TABLE;
@@ -43,6 +46,12 @@ void mem_prepare_esc_text(mem_t *mem) {
         strncmp(name, "quit3", 8) == 0) {
       printf("%s: ", name);
       char *addr = *(char **)pos;
+      *(volatile char **)pos = mem->text[(name[4] - '1')];
+
+      // FIXME: this shouldn't be logged all the time. but without
+      // this statement, gcc "optimizes" mem->text away and it
+      // segfaults >_>
+      mem_debug_print("trash", (char *)mem->text[(name[4] - '1')], 20);
 
       while (*addr) {
         printf("%c", *addr);

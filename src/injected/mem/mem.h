@@ -17,7 +17,7 @@ typedef struct {
   char *line3; // len: 33
 
   // 3 lines of esc-text that are always displayed
-  char *text[3];
+  volatile char *text[3];
 
   bool driving;
 } mem_t;
@@ -33,3 +33,5 @@ void mem_prepare_esc_text(mem_t *mem);
 void mem_frame(mem_t *mem);
 
 void mem_cleanup(mem_t *mem);
+
+void mem_zeroize(void *v, size_t n);
