@@ -62,9 +62,6 @@ void mem_recv_callback(unsigned char msg_id, void *userdata) {
 
         for (int i = 0; i < 33; i++)
           mem->text[2][i * 2] = data->line3[i];
-
-        for (int i = 0; i < 3; i++)
-          mem_debug_print("trash", (char *)mem->text[i], 20);
       }
     });
   }
