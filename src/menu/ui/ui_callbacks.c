@@ -14,8 +14,12 @@ void ui_callback_for_meta(char *msg, void *userdata) {
 
     // hide the 'get ready...' screen
     ui->tk->screen_active = ui->ready->back;
-  } else if (!strcmp(msg, "INSTANCE CLOSED 0"))
+    ui->tk->disable_draw = true;
+  } else if (!strcmp(msg, "INSTANCE CLOSED 0")) {
     sfx_play_song(ui->tk->sfx, SFX_SONG_MAINMENU);
+    ui->tk->disable_draw = false;
+    // TODO: directly call the redraw function?
+  }
 
   else if (sscanf(msg, "PID_TABLE %i %i %i %i %i %i", &pids[0], &pids[1],
                   &pids[2], &pids[3], &pids[4], &pids[5])) {

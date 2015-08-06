@@ -6,6 +6,7 @@
 #include "../sty/sty.h"
 #include "elements.h"
 #include <SDL2/SDL.h>
+#include <stdbool.h>
 #include <stdint.h>
 
 /*
@@ -39,6 +40,8 @@ typedef struct {
   uint32_t action_time[TK_ACTION_LAST_LIMITED - 1];
   char redraw_needed;
   char debug_draw;
+
+  bool disable_draw;
 
   SDL_DisplayMode mode;
 } tk_t;

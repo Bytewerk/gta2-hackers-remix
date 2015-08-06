@@ -60,7 +60,7 @@ void tk_frame(tk_t *tk, SDL_Event *event) {
                          TK_ACTION_BEFORE_FIRST_SCREEN_FRAME, SDLK_UNKNOWN);
   }
 
-  if (tk->redraw_needed) {
+  if (!tk->disable_draw && tk->redraw_needed) {
     tk->redraw_needed = 0;
     SDL_RenderClear(tk->renderer);
     tk_screen_draw(tk);
