@@ -74,13 +74,14 @@ Func cmd_singleplayer($cmd)
 	RegWrite($reg_base, "scriptname",	"REG_SZ",		$scr&".scr")
 	RegWrite($reg_base, "stylename",	"REG_SZ",		$sty&".sty")
 	
-	; Debug: set windowed mode
+	
+	Local $geo = $global_game_screen_layouts[0]
 	$reg_base =	"HKEY_CURRENT_USER\Software\GTA2HackersRemix\P1\Screen"
-	RegWrite($reg_base, "start_mode", 0) ; Windowed mode
-	RegWrite($reg_base, "window_width", @DesktopWidth)
-	RegWrite($reg_base, "window_height", @DesktopHeight)
-	RegWrite($reg_base, "full_width", @DesktopWidth)
-	RegWrite($reg_base, "full_height", @DesktopHeight)
+	RegWrite($reg_base, "start_mode", "REG_DWORD", 0) ; Windowed mode
+	RegWrite($reg_base, "full_width", "REG_DWORD", $geo[2])
+	RegWrite($reg_base, "full_height","REG_DWORD",  $geo[3])
+	RegWrite($reg_base, "window_width","REG_DWORD",  $geo[2])
+	RegWrite($reg_base, "window_height","REG_DWORD",  $geo[3])
 	
 	; Start the game
 	$global_game_instances_open = 1

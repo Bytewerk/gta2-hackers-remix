@@ -18,7 +18,14 @@ void play_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
       (el_selected == ud->start || el_selected == ud->bonus)) {
     ui_show_ready_screen(ud->ui, play);
 
-    char *buffer = malloc(100);
+    char buffer[100];
+
+    // screen layout: full G2HR window size!
+    snprintf(buffer, 100, "SCREENLAYOUT 0 0 0 %i %i", ud->ui->tk->mode.w,
+             ud->ui->tk->mode.h);
+    net_send_to_meta(ud->ui->net, buffer, 1);
+
+    // start the game
     snprintf(buffer, 100, "SINGLEPLAYER GTA2 %s %c",
              (el_selected == ud->start) ? "NORMAL" : "BONUS",
              ((ud_circle_t *)el_selected->userdata)->value_str[0]);
