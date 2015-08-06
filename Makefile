@@ -1,11 +1,11 @@
-all: bin/g2hr_menu.exe bin/g2hr_meta.exe bin/g2hr.exe bin/proxy.dll
+all: bin/g2hr_menu.exe bin/g2hr_native.exe bin/g2hr.exe bin/proxy.dll
 
 
 # The four main components
 bin/proxy.dll:
 	$(MAKE) -C src/injected/
 
-bin/g2hr_meta.exe:
+bin/g2hr.exe:
 	$(MAKE) -C src/meta/
 
 bin/g2hr_menu.exe:
@@ -14,10 +14,10 @@ bin/g2hr_menu.exe:
 bin/g2hr_menu.bin:
 	$(MAKE) -C src/menu/ Linux
 
-bin/g2hr.bin:
+bin/g2hr_native.bin:
 	$(MAKE) -C src/native/ Linux
 
-bin/g2hr.exe:
+bin/g2hr_native.exe:
 	$(MAKE) -C src/native/ Windows
 
 
@@ -54,4 +54,4 @@ clean:
 		|| true
 	$(MAKE) -s -C src/menu clean
 	
-.PHONY: clean all bin/g2hr_menu.exe bin/g2hr_meta.exe bin/g2hr.exe bin/g2hr.bin bin/proxy.dll GTA2/dmavideo.dll regsniff winecfg
+.PHONY: clean all bin/g2hr_menu.exe bin/g2hr.exe bin/g2hr_native.exe bin/g2hr_native.bin bin/proxy.dll GTA2/dmavideo.dll regsniff winecfg

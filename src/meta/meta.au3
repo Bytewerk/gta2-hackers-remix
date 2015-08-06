@@ -2,25 +2,23 @@
 #include "common.au3"
 #include "handle_msg.au3"
 #include <Array.au3>
+#include "startup.au3"
 
-If $CmdLine[0] < 1 Then
-	Exit Msgbox(16,"G2HR","This program gets opened internally by" _
-		& @CRLF & "GTA2: Hacker's Remix. Start g2hr.exe instead!")
-Endif
 
-If Not WinExists($HWND_SDL) Then
-	Exit MsgBox(16,"G2HR","Meta: Couldn't find the SDL menu window!" _
-		& @CRLF & "Please report this here: http://git.io/g2hr-bugs")
-Endif
 
-If Not @Compiled Then WinActivate($HWND_SDL)
-
+startup()
 
 
 ; Connect to the menu
-TCPStartup()
-$global_sock = TCPConnect("127.0.0.1", $CmdLine[1])
-If @ERROR Then Exit ConsoleWrite("[meta] connection refused" & @CRLF)
+$global_sock = TCPConnect("127.0.0.1", 20150)
+If @ERROR Then Exit MsgBox(16,"G2HR", "Meta: Can't connect to the " _
+	& "'menu' component!" & @CRLF _
+	& "GTA2: Hacker's Remix is divided into multiple\n" & @CRLF _
+	& " components, which need to connect to each other over" _
+	& " TCP" & @CRLF & "via localhost in order to do their unholy" _
+	& " vodoo magic." & @CRLF & "Check your firewall settings!" _
+	& @CRLF & @CRLF & "More info: http://git.io/g2hr-firewall")
+
 re("CONNECTED! CAN YOU GIVE ME THE CONFIG PATH?")
 
 

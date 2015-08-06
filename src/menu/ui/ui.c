@@ -2,44 +2,6 @@
 #include "../tk/toolkit.h"
 #include "ui_text.h"
 
-void ui_start_meta(ui_t *ui) {
-  if (strcmp(SDL_GetPlatform(), "Windows")) {
-    printf("NOTE: You have not compiled the menu for win32, so the"
-           " 'meta' component will not be started. The commands that"
-           " *would* be sent to it are shown in the terminal anyway."
-           " Enjoy debugging :)\n");
-    return;
-  }
-
-  // transform the port into a string
-  char port_str[10];
-  snprintf(port_str, 9, "%i", ui->net->server_port);
-
-  // set up the full launch command
-  char *cmd;
-  ini_t *ini = ui->ini_usersettings;
-  bool debug_meta = !strcmp(ini_read(ini, "debug-meta", "enabled"), "true");
-  if (!debug_meta) {
-    // launch the binary
-    cmd = cstr_merge("start bin\\g2hr_meta.exe ", port_str);
-  } else {
-    // launch the interpreter
-    cmd = cstr_merge("start /min cmd /c \"",
-                     ini_read(ini, "debug-meta", "autoit3_path"),
-                     "AutoIt3.exe\" /ErrorStdOut \"",
-                     ini_read(ini, "debug-meta", "meta_path"), "meta.au3\" ",
-                     port_str, " ^> meta_errors.log");
-  }
-
-  printf("starting the meta component:\n");
-  printf("> %s\n", cmd);
-  system(cmd);
-  free(cmd);
-
-  if (debug_meta)
-    SDL_Delay(1000);
-}
-
 ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
   ui_t *ui = calloc(1, sizeof(ui_t));
 
@@ -53,7 +15,6 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
   ui->sl = sl;
 
   ui_init_configs(ui);
-  ui_start_meta(ui);
 
   // do update check in background, if the user has enabled it
   if (!strcmp(ini_read(ui->ini_settings, "ui", "update_check_enabled"),

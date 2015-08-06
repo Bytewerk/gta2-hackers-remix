@@ -13,7 +13,7 @@ WINEPREFIX := $(shell realpath ../../build/wineprefix)
 WINE := WINEPREFIX=$(WINEPREFIX) WINEDEBUG=-all wine
 
 
-../../bin/g2hr_meta.exe: *.au3 */*.au3
+../../bin/g2hr.exe: *.au3 */*.au3
 	$(WINE) $(AU3CHECK) -q -d -w 1 -w 2 -w 3 -w 4 -w 5 -w 6 -w 7 \
 		meta.au3
 	$(WINE) $(AUT2EXE) \
@@ -25,7 +25,7 @@ $(WINEPREFIX):
 	cd ../../build/ && ./setup_wineprefix.sh
 
 clean:
-	rm ../../bin/g2hr_meta.exe || true
+	rm ../../bin/g2hr.exe || true
 
 
 scite:

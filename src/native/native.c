@@ -8,35 +8,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define CMDBUF_LEN 100
-// TODO: split the Linux part up: run the wine prefix setup
-// as blocking process, then run the menu in the background
-void menu_start(char *arg) {
-  char cmdline[CMDBUF_LEN];
-
-  if (!strcmp(arg, "--menu-gdb-mixed"))
-    snprintf(cmdline, CMDBUF_LEN, "gdb -batch -ex run -ex bt"
-                                  " --args src/menu/out/g2hr_menu.bin %i &",
-             G2HR_NATIVE_SERVER_PORT);
-
-  else if (!strcmp(arg, "--menu-gdb-wine"))
-    snprintf(cmdline, CMDBUF_LEN, "bin/wine_wrapper.sh %i --gdb"
-                                  " &",
-             G2HR_NATIVE_SERVER_PORT);
-
-  else if (!strcmp(SDL_GetPlatform(), "Windows"))
-    snprintf(cmdline, CMDBUF_LEN, "start bin\\g2hr_menu.exe %i",
-             G2HR_NATIVE_SERVER_PORT);
-  else
-    snprintf(cmdline, CMDBUF_LEN, "bin/wine_wrapper.sh %i &",
-             G2HR_NATIVE_SERVER_PORT);
-
-  printf("[native] starting menu component...\n");
-  printf("> %s\n", cmdline);
-  system(cmdline);
-}
-#undef CMDBUF_LEN
-
 int main(int argc, char **argv) {
   if (!strcmp(SDL_GetPlatform(), "Windows"))
     freopen("native.log", "a", stdout);
@@ -52,12 +23,19 @@ int main(int argc, char **argv) {
   inmenu_t *inmenu = inmenu_init(net, pads);
   ingame_t *ingame = ingame_init(net, cmap, pads, inmenu);
 
-  // wait up to 20 seconds for the menu connection. If it fails,
-  // quit (the menu will show an error message)
-  menu_start((argc == 2) ? argv[1] : "");
-  net_block_until_connected(net, 20000);
+  // wait up to 4 seconds for the menu connection. If it fails, quit
+  net_block_until_connected(net, 4000);
   if (!net->sock_menu) {
-    printf("[native] not connected to menu!\n");
+    SDL_ShowSimpleMessageBox(
+        SDL_MESSAGEBOX_ERROR, "G2HR",
+        "Native: Can't connect to the 'menu' component!\n"
+        " GTA2: Hacker's Remix is divided into multiple\n"
+        " components, which need to connect to each other over"
+        " TCP\nvia localhost in order to do their unholy vodoo"
+        " magic.\nCheck your firewall settings!\n\nMore info:"
+        " http://git.io/g2hr-firewall",
+        NULL);
+
     inmenu->has_quit = 1;
   }
 
