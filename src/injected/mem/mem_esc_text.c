@@ -44,6 +44,8 @@ void mem_prepare_esc_text(mem_t *mem) {
 
     if (strncmp(name, "quit1", 8) == 0 || strncmp(name, "quit2", 8) == 0 ||
         strncmp(name, "quit3", 8) == 0) {
+      SuspendThread(mem->main_thread);
+
       printf("%s: ", name);
       char *addr = *(char **)pos;
       *(volatile char **)pos = mem->text[(name[4] - '1')];
@@ -59,11 +61,10 @@ void mem_prepare_esc_text(mem_t *mem) {
       }
       printf("\n");
 
-      SuspendThread(mem->main_thread);
-      *(char **)pos = GLOBAL_DEBUG_EMPTY;
+      // *(char**)pos = GLOBAL_DEBUG_EMPTY;
 
       // prevent GCC from optimizing this away.
-      printf("replaced with: %s\n", GLOBAL_DEBUG_EMPTY);
+      // printf("replaced with: %s\n", GLOBAL_DEBUG_EMPTY);
 
       ResumeThread(mem->main_thread);
     }
