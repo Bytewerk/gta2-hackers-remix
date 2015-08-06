@@ -22,9 +22,8 @@ bin/g2hr_native.exe:
 
 
 # Additional targets for easy debugging
-run: bin/g2hr_menu.exe bin/g2hr_meta.exe bin/g2hr.bin GTA2/dmavideo.dll
-	bin/g2hr.bin
-	wineboot -e -f
+run: bin/g2hr_menu.exe bin/g2hr.exe bin/g2hr_native.bin GTA2/dmavideo.dll
+	bin/g2hr.sh
 
 GTA2/dmavideo.dll: bin/proxy.dll
 	cp bin/proxy.dll GTA2/dmavideo.dll
