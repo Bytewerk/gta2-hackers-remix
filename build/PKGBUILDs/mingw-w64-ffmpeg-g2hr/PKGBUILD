@@ -37,9 +37,12 @@ depends=('mingw-w64-crt')
 #'mingw-w64-sdl' 'mingw-w64-speex' 'mingw-w64-x264' 'mingw-w64-xvidcore' 'mingw-w64-zlib' 'mingw-w64-x265' 'mingw-w64-fribidi'
 
 options=(!strip !buildflags staticlibs)
-makedepends=('mingw-w64-gcc' 'mingw-w64-pkg-config' 'yasm')
+makedepends=('mingw-w64-gcc' 'mingw-w64-pkg-config') # yasm
 source=(http://ffmpeg.org/releases/ffmpeg-$pkgver.tar.bz2{,.asc})
-validpgpkeys=('FCF986EA15E6E293A5644F10B4322F04D67658D8') # ffmpeg-devel
+
+# gpg --keyserver pool.sks-keyservers.net --recv-keys 0xD67658D8
+validpgpkeys=('FCF986EA15E6E293A5644F10B4322F04D67658D8')
+
 md5sums=('e75d598921285d6775f20164a91936ac'
          'SKIP')
 _arch="i686-w64-mingw32"
