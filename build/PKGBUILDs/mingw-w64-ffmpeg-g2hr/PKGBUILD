@@ -49,12 +49,35 @@ _arch="i686-w64-mingw32"
 
 build() {
 	mkdir -p "${srcdir}"/build-${_arch} && cd "${srcdir}"/build-${_arch}
-
-	# TODO: enable everything needed for bik
-	"${srcdir}"/ffmpeg-$pkgver/configure --enable-gpl \
-		--disable-nonfree --enable-static --disable-shared \
-		--enable-small --disable-gray --disable-swscale-alpha \
-		--disable-all 
+	
+	# guessing needed libraries from this tutorial:
+	# http://dranger.com/ffmpeg/tutorial05.html
+	
+	"${srcdir}"/ffmpeg-$pkgver/configure \
+		--enable-gpl \
+		--disable-nonfree \
+		\
+		--enable-static \
+		--disable-shared \
+		--enable-small \
+		--disable-runtime-cpudetect \
+		--disable-gray \
+		--disable-swscale-alpha \
+		--disable-all \
+		\
+		--disable-doc \
+		\
+		--enable-avcodec \
+		--enable-avformat \
+		--enable-avutil \
+		\
+		--enable-decoder=bink,binkaudio_rdft,yuv4 \
+		--enable-demuxer=bink \
+		
+		\
+	
+	
+	
 	exit 1
 	\
 	  --prefix=/usr/${_arch} \
