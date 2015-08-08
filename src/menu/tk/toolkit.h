@@ -42,6 +42,7 @@ typedef struct {
   char debug_draw;
 
   bool disable_draw;
+  bool wine;
 
   SDL_DisplayMode mode;
 } tk_t;

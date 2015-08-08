@@ -48,7 +48,7 @@ fi
 
 STEP "starting wine virtual desktop..."
 if [ -z "$h" ]; then
-	if command -v xrandr1 >/dev/null 2>&1 ; then
+	if command -v xrandr >/dev/null 2>&1 ; then
 		xrandr=$(xrandr --current | grep current)
 		w=$(echo $xrandr | cut -d ' ' -f 8)
 		h=$(echo $xrandr | cut -d ' ' -f 10 | cut -d',' -f 1)

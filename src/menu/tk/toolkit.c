@@ -1,6 +1,7 @@
 #include "toolkit.h"
 #include "../../common/headers/tk_actions.h"
 #include <SDL2/SDL_image.h>
+#include <stdlib.h>
 
 tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *pref_path,
               char *title) {
@@ -10,6 +11,8 @@ tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *pref_path,
   tk->bg = bg;
   tk->gxt = gxt;
   tk->pref_path = pref_path;
+  if (getenv("WINEPREFIX"))
+    tk->wine = true;
 
   // currently, just use the fullscreen display (fake fullscreen at
   // desktop resultion!)
@@ -22,9 +25,11 @@ tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *pref_path,
 
   printf("desktop resolution: %ix%i\n", tk->mode.w, tk->mode.h);
 
-  // DEBUG (for taking screenshots)
-  tk->mode.w = 640;
-  tk->mode.h = 480;
+  if (!tk->wine) {
+    // FIXME: in native windows, load the resolution from a config
+    tk->mode.w = 640;
+    tk->mode.h = 480;
+  }
 
   // create the SDL window
   tk->window = SDL_CreateWindow(title, 0, 0, tk->mode.w, tk->mode.h,
