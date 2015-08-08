@@ -36,9 +36,10 @@ tk_screen_t *ui_screen_opt_video(tk_t *tk, ui_t *ui) {
 
   TK_STACK_SCREEN(
       ret,
-      TK_STACK(TK_PARENT->bg_mashup =
-                   bg_mashup(tk->bg, NULL, "1_options", "1", NULL);
-               TK_PARENT->userdata = ud;
+      TK_PARENT->bg_mashup = bg_mashup(tk->bg, NULL, "1_options", "1", NULL);
+      TK_PARENT->bottom_text_low = "SEE ALSO: GIT.IO/G2HR_VIDEO";
+
+      TK_STACK(ret->el_content_container = TK_PARENT; TK_PARENT->userdata = ud;
                TK_PARENT->actionfunc = (void *)opt_video_actionfunc;
 
                tk_el_padding(TK_PARENT, 300, 150, 0, 0);
@@ -48,13 +49,7 @@ tk_screen_t *ui_screen_opt_video(tk_t *tk, ui_t *ui) {
 
                ((ud_arrowtext_t *)ud->fullscreen->userdata)->entry_selected =
                    (strcmp(ini_read(ui->ini_settings, "video", "fullscreen"),
-                           "true") == 0);
-
-               // TODO: put a container here that is non-selectable
-               // add some text like:
-               // Fullscreen always uses the desktop resolution.
-               // Set a custom window resolution: ...
-               ));
+                           "true") == 0);));
 
   return ret;
 }
