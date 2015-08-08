@@ -13,6 +13,7 @@ void ui_init_configs(ui_t *ui) {
   ini_modify(user, "video", "fullscreen", "true", false);
   ini_modify(user, "video", "window_width", "640", false);
   ini_modify(user, "video", "window_height", "480", false);
+  ini_modify(user, "video", "scale_quality", "linear", false);
 
   ini_t *settings =
       ini_open(cstr_merge(ui->tk->pref_path, "ui.ini"), false, false);

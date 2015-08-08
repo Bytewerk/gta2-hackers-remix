@@ -22,6 +22,7 @@ void ui_apply_video_config(ui_t *ui) {
     SDL_SetWindowBordered(tk->window, true);
   }
 
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, CFG_READ("scale_quality"));
   SDL_SetWindowSize(tk->window, tk->mode.w, tk->mode.h);
   SDL_SetWindowPosition(tk->window, SDL_WINDOWPOS_CENTERED,
                         SDL_WINDOWPOS_CENTERED);

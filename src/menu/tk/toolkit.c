@@ -24,7 +24,6 @@ tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *pref_path,
   tk->renderer = SDL_CreateRenderer(tk->window, -1, 0);
 
   // set the virtual resolution to 640x480
-  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "best");
   SDL_RenderSetLogicalSize(tk->renderer, 640, 480);
 
   // set the window icon
