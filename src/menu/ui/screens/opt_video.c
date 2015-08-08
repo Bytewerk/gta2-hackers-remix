@@ -39,6 +39,8 @@ tk_screen_t *ui_screen_opt_video(tk_t *tk, ui_t *ui) {
       TK_PARENT->bg_mashup = bg_mashup(tk->bg, NULL, "1_options", "1", NULL);
       TK_PARENT->bottom_text_low = "SEE ALSO: GIT.IO/G2HR_VIDEO";
 
+      if (tk->wine) TK_PARENT->bottom_text_high = "RESTART TO APPLY CHANGES";
+
       TK_STACK(ret->el_content_container = TK_PARENT; TK_PARENT->userdata = ud;
                TK_PARENT->actionfunc = (void *)opt_video_actionfunc;
 
