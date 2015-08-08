@@ -2,14 +2,16 @@
 #include "../tk/toolkit.h"
 #include "ui_text.h"
 
-#define CFG_READ(STR) ini_read(ui->ini_usersettings, "video", STR)
+#define USERCFG_READ(STR) ini_read(ui->ini_usersettings, "video", STR)
 void ui_apply_video_config(ui_t *ui) {
   // emulate a fake fullscreen mode, otherwise the splitscreen stuff
   // won't work. also always run fullscreen inside the wine virtual
   // desktop
 
   tk_t *tk = ui->tk;
-  bool fullscreen = (tk->wine || strcmp(CFG_READ("fullscreen"), "false"));
+  bool fullscreen =
+      (tk->wine ||
+       strcmp(ini_read(ui->ini_settings, "video", "fullscreen"), "false"));
 
   if (fullscreen) {
     net_send_to_meta(ui->net, "FULLSCREEN ON", 0);
@@ -18,18 +20,18 @@ void ui_apply_video_config(ui_t *ui) {
       exit(printf("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError()));
   } else {
     net_send_to_meta(ui->net, "FULLSCREEN OFF", 0);
-    tk->mode.w = atoi(CFG_READ("window_width"));
-    tk->mode.h = atoi(CFG_READ("window_height"));
+    tk->mode.w = atoi(USERCFG_READ("window_width"));
+    tk->mode.h = atoi(USERCFG_READ("window_height"));
   }
 
-  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, CFG_READ("scale_quality"));
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, USERCFG_READ("scale_quality"));
   SDL_SetWindowSize(tk->window, tk->mode.w, tk->mode.h);
   SDL_SetWindowBordered(tk->window, !fullscreen);
 
   SDL_SetWindowPosition(tk->window, fullscreen ? 0 : SDL_WINDOWPOS_CENTERED,
                         fullscreen ? 0 : SDL_WINDOWPOS_CENTERED);
 }
-#undef CFG_READ
+#undef USERCFG_READ
 
 ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
   ui_t *ui = calloc(1, sizeof(ui_t));
@@ -109,6 +111,7 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
   ui->splitscreen->back = ui->main;
   ui->options->back = ui->main;
   ui->opt_audio->back = ui->options;
+  ui->opt_video->back = ui->options;
   ui->scores->back = ui->play;
   ui->levels->back = ui->splitscreen;
 
