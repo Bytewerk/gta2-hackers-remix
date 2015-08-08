@@ -73,62 +73,25 @@ build() {
 		\
 		--enable-decoder=bink,binkaudio_rdft,yuv4 \
 		--enable-demuxer=bink \
-		
 		\
-	
-	
-	
-	exit 1
-	\
 	  --prefix=/usr/${_arch} \
 	  --enable-cross-compile \
 	  --cross-prefix="${_arch}-" \
 	  --target-os=mingw32 \
 	  --arch=${_arch%%-*} \
 	  --disable-debug \
-	  --enable-static \
-	  --disable-stripping \
-	  --enable-avisynth \
-	  --enable-avresample \
-	  --enable-fontconfig \
-	  --enable-gnutls \
-	  --enable-gpl \
-	  --enable-libass \
-	  --enable-libbluray \
-	  --enable-libfreetype \
-	  --enable-libfribidi \
-	  --enable-libgsm \
-	  --enable-libmodplug \
-	  --enable-libmp3lame \
-	  --enable-libopencore_amrnb \
-	  --enable-libopencore_amrwb \
-	  --enable-libopenjpeg \
-	  --enable-libopus \
-	  --enable-libschroedinger \
-	  --enable-libspeex \
-	  --enable-libssh \
-	  --enable-libtheora \
-	  --enable-libvorbis \
-	  --enable-libvpx \
-	  --enable-libx264 \
-	  --enable-libx265 \
-	  --enable-libxvid \
-	  --enable-zlib \
-	  --enable-runtime-cpudetect \
-	  --enable-shared \
-	  --enable-swresample \
-	  --enable-version3 \
-	  --disable-doc \
-	  --disable-programs
+	  --disable-stripping
+	
+	
 }
 
-package() {
+package()
+{
 	cd "${srcdir}"/build-${_arch}
 	make DESTDIR="$pkgdir" install
 
 	${_arch}-strip -g "${pkgdir}"/usr/${_arch}/lib/*.a
 
-	mv "${pkgdir}"/usr/${_arch}/bin/*.lib "${pkgdir}"/usr/${_arch}/lib/
 }
 
 # vim:set ts=2 sw=2 et:
