@@ -15,7 +15,6 @@ function UIOPT
 		| tr -c -d "[:graph:]"
 }
 
-
 # $ROOT is the path that SDL chooses to save local data in
 ROOT=~/.local/share/bytewerk/G2HR
 export WINEPREFIX=$ROOT/WINEPREFIX
@@ -82,9 +81,9 @@ else
 				echo "g2hr.sh width height"
 			fi
 		else
-			# fullscreen is disabled, read width and height from config
-			w=$(UIOPT window_width)
-			h=$(UIOPT window_height)
+			echo "You have disabled the fullscreen mode. If you want to"
+			echo "set a custom resolution, start g2hr.sh like this:"
+			echo "g2hr.sh width height"
 		fi
 	fi
 	
