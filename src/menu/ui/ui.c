@@ -9,23 +9,25 @@ void ui_apply_video_config(ui_t *ui) {
   // desktop
 
   tk_t *tk = ui->tk;
-  if (tk->wine || strcmp(CFG_READ("fullscreen"), "false")) {
+  bool fullscreen = (tk->wine || strcmp(CFG_READ("fullscreen"), "false"));
+
+  if (fullscreen) {
     net_send_to_meta(ui->net, "FULLSCREEN ON", 0);
 
     if (SDL_GetDesktopDisplayMode(0, &(tk->mode)) != 0)
       exit(printf("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError()));
-    SDL_SetWindowBordered(tk->window, false);
   } else {
     net_send_to_meta(ui->net, "FULLSCREEN OFF", 0);
     tk->mode.w = atoi(CFG_READ("window_width"));
     tk->mode.h = atoi(CFG_READ("window_height"));
-    SDL_SetWindowBordered(tk->window, true);
   }
 
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, CFG_READ("scale_quality"));
   SDL_SetWindowSize(tk->window, tk->mode.w, tk->mode.h);
-  SDL_SetWindowPosition(tk->window, SDL_WINDOWPOS_CENTERED,
-                        SDL_WINDOWPOS_CENTERED);
+  SDL_SetWindowBordered(tk->window, !fullscreen);
+
+  SDL_SetWindowPosition(tk->window, fullscreen ? 0 : SDL_WINDOWPOS_CENTERED,
+                        fullscreen ? 0 : SDL_WINDOWPOS_CENTERED);
 }
 #undef CFG_READ
 

@@ -15,9 +15,8 @@ tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *pref_path,
     tk->wine = true;
 
   // create the SDL window
-  tk->window =
-      SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                       640, 480, SDL_WINDOW_BORDERLESS);
+  tk->window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED,
+                                SDL_WINDOWPOS_CENTERED, 640, 480, 0);
   if (!tk->window)
     exit(printf("SDL_ERROR: %s\n", SDL_GetError()));
 
