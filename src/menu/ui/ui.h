@@ -71,6 +71,7 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl);
 // configs related
 void ui_init_configs(ui_t *ui);
 void ui_cleanup_configs(ui_t *ui);
+void ui_apply_video_config(ui_t *ui);
 
 void ui_callback_for_meta(char *msg, void *userdata);
 void ui_callback_for_native(TCPsocket sock, char header, void *userdata);
@@ -87,6 +88,7 @@ tk_screen_t *ui_screen_levels(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_ready(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_options(tk_t *tk, ui_t *ui);
 tk_screen_t *ui_screen_opt_audio(tk_t *tk, ui_t *ui);
+tk_screen_t *ui_screen_opt_video(tk_t *tk, ui_t *ui);
 
 // screen functions required else where
 void splitscreen_set_players(ui_t *ui);

@@ -76,6 +76,8 @@ obj/screen_options.o: $(call DEPS,ui/screens/options.c)
 	$(CC) -c -o $@ $<
 obj/screen_opt_audio.o: $(call DEPS,ui/screens/opt_audio.c)
 	$(CC) -c -o $@ $<
+obj/screen_opt_video.o: $(call DEPS,ui/screens/opt_video.c)
+	$(CC) -c -o $@ $<
 
 # UI
 obj/ui.o: $(call DEPS,ui/ui.c)

@@ -24,7 +24,7 @@
 */
 
 int main(int argc, char *argv[]) {
-  if (!strcmp(SDL_GetPlatform(), "Windows"))
+  if (!getenv("WINEPREFIX"))
     freopen("menu.log", "a", stdout);
 
   // FIXME: attach gxt to ui instead of tk!
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
   mmp_t *mmp = mmp_init("GTA2/data");
   bg_t *bg = bg_init();
 
-  tk_t *tk = tk_init(gxt, fsty, sfx, bg, pref_path, "G2HR");
+  tk_t *tk = tk_init(gxt, fsty, sfx, bg, pref_path, "GTA2: HACKER'S REMIX");
   ui_t *ui = ui_init(tk, mmp, net, sl);
 
   // run registry path changer

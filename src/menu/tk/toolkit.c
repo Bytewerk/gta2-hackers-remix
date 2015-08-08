@@ -14,33 +14,17 @@ tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *pref_path,
   if (getenv("WINEPREFIX"))
     tk->wine = true;
 
-  // currently, just use the fullscreen display (fake fullscreen at
-  // desktop resultion!)
-  // TODO:
-  //	- hide windows taskbar (in 'meta' component, while init)
-  //	- provide an option: run the mod in windowed mode
-  //	- provide as option: change display number
-  if (SDL_GetDesktopDisplayMode(0, &(tk->mode)) != 0)
-    exit(printf("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError()));
-
-  printf("desktop resolution: %ix%i\n", tk->mode.w, tk->mode.h);
-
-  if (!tk->wine) {
-    // FIXME: in native windows, load the resolution from a config
-    tk->mode.w = 640;
-    tk->mode.h = 480;
-  }
-
   // create the SDL window
-  tk->window = SDL_CreateWindow(title, 0, 0, tk->mode.w, tk->mode.h,
-                                SDL_WINDOW_BORDERLESS);
+  tk->window =
+      SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                       640, 480, SDL_WINDOW_BORDERLESS);
   if (!tk->window)
     exit(printf("SDL_ERROR: %s\n", SDL_GetError()));
 
   tk->renderer = SDL_CreateRenderer(tk->window, -1, 0);
 
   // set the virtual resolution to 640x480
-  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "best");
   SDL_RenderSetLogicalSize(tk->renderer, 640, 480);
 
   // set the window icon

@@ -23,7 +23,7 @@ bin/g2hr_native.exe:
 
 # Additional targets for easy debugging
 run: bin/g2hr_menu.exe bin/g2hr.exe bin/g2hr_native.bin GTA2/dmavideo.dll
-	bin/g2hr.sh
+	bin/g2hr.sh 640 480
 
 GTA2/dmavideo.dll: bin/proxy.dll
 	cp bin/proxy.dll GTA2/dmavideo.dll

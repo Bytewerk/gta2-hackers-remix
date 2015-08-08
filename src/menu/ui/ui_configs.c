@@ -5,15 +5,14 @@
 void ui_init_configs(ui_t *ui) {
   ini_t *user = ini_open("data/g2hr.ini", true, false);
 
-  ini_modify(user, "debug-meta", "enabled", "false", false);
-  ini_modify(user, "debug-meta", "autoit3_path", "c:\\Program Files\\AutoIt3\\",
-             false);
-  ini_modify(user, "debug-meta", "meta_path", "src/meta/", false);
-
   ini_modify(user, "slotmachine", "enabled", "false", false);
   ini_modify(user, "slotmachine", "cmd_shutdown", "poweroff", false);
   ini_modify(user, "slotmachine", "cmd_shutdown", "reboot", false);
   ini_modify(user, "multiplayer", "time", "3 5 10 15 20 25 30", false);
+
+  ini_modify(user, "video", "fullscreen", "true", false);
+  ini_modify(user, "video", "window_width", "640", false);
+  ini_modify(user, "video", "window_height", "480", false);
 
   ini_t *settings =
       ini_open(cstr_merge(ui->tk->pref_path, "ui.ini"), false, false);

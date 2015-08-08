@@ -7,7 +7,7 @@ Global Const $GTA2_LOBBY_CTRL_START = 1021
 Global Const $GTA2_LOBBY_CTRL_LIST  = 1024
 Global Const $GTA2_GAME_WINDOW_DESC = "[TITLE:GTA2;CLASS:WinMain]"
 Global Const $WINE = is_running_in_wine()
-Global Const $HWND_SDL_DESC = "[TITLE:G2HR;CLASS:SDL_app]"
+Global Const $HWND_SDL_DESC = "[TITLE:GTA2: HACKER'S REMIX;CLASS:SDL_app]"
 Global $HWND_SDL ; gets filled by startup()
 
 
