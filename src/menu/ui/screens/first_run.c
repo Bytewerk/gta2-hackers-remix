@@ -12,6 +12,9 @@ typedef struct {
 
 } ud_first_run_t;
 
+#define IS_NOT_FIRST_RUN                                                       \
+  strcmp(ini_read(ud->ui->ini_settings, "ui", "update_check_enabled"), "ask")
+
 void first_run_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
                           tk_action_t action) {
   ud_first_run_t *ud = (ud_first_run_t *)el->userdata;
@@ -26,12 +29,17 @@ void first_run_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     SDL_RenderFillRect(renderer, &r);
     SDL_Rect r2 = {0, 400, 640, 80};
     SDL_RenderFillRect(renderer, &r2);
+    ud->quit->text = IS_NOT_FIRST_RUN ? "BACK" : "QUIT";
   }
 
   // quit
   if (action == TK_ACTION_BACKSPACE || action == TK_ACTION_ESC ||
-      (action == TK_ACTION_ENTER && el_selected == ud->quit))
-    tk->quit = 1;
+      (action == TK_ACTION_ENTER && el_selected == ud->quit)) {
+    if (IS_NOT_FIRST_RUN)
+      tk->screen_active = ud->ui->options;
+    else
+      tk->quit = 1;
+  }
 
   if (action != TK_ACTION_ENTER)
     return;
@@ -39,11 +47,13 @@ void first_run_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     ini_modify(ud->ui->ini_settings, "ui", "update_check_enabled", "true",
                true);
     ud->ui->chk = chk_init(ud->ui->tk->pref_path, true);
-    tk->screen_active = ud->ui->main;
+    tk->screen_active = IS_NOT_FIRST_RUN ? ud->ui->options : ud->ui->main;
+    ini_save(ud->ui->ini_settings, NULL, false, false);
   } else if (el_selected == ud->no) {
     ini_modify(ud->ui->ini_settings, "ui", "update_check_enabled", "false",
                true);
-    tk->screen_active = ud->ui->main;
+    tk->screen_active = IS_NOT_FIRST_RUN ? ud->ui->options : ud->ui->main;
+    ini_save(ud->ui->ini_settings, NULL, false, false);
   }
 }
 

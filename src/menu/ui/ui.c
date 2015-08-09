@@ -104,6 +104,7 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
   ui->splitscreen = ui_screen_splitscreen(tk, ui);
   ui->opt_audio = ui_screen_opt_audio(tk, ui);
   ui->opt_video = ui_screen_opt_video(tk, ui);
+  ui->first_run = ui_screen_first_run(tk, ui);
   ui->options = ui_screen_options(tk, ui);
   ui->main = ui_screen_main_menu(tk, ui);
 
@@ -120,7 +121,7 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
   if (strcmp(ini_read(ui->ini_settings, "ui", "update_check_enabled"), "ask"))
     tk->screen_active = ui->main;
   else
-    tk->screen_active = ui_screen_first_run(tk, ui);
+    tk->screen_active = ui->first_run;
 
   ui_apply_video_config(ui);
   SDL_ShowWindow(ui->tk->window);

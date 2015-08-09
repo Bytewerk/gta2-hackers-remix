@@ -31,6 +31,7 @@ typedef struct {
   tk_screen_t *scores;
   tk_screen_t *levels;
   tk_screen_t *ready;
+  tk_screen_t *first_run;
 
   chk_t *chk;
   net_t *net;
