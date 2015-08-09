@@ -41,7 +41,12 @@ typedef struct {
   // settings file does only get modified by the user.
   ini_t *ini_usersettings;
   ini_t *ini_settings;
+
+  // values for arrowtext controls
   cstr_split_t *multiplayer_time_values;
+  cstr_split_t *menu_upscaling_values;
+  cstr_split_t *ingame_lighting_values;
+  cstr_split_t *gamma_values;
 
   // these are used with the arrowtext control and a prefix
   char **letters;

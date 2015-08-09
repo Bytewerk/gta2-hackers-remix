@@ -8,6 +8,10 @@
 typedef struct {
   ui_t *ui;
   tk_el_t *fullscreen;
+  tk_el_t *upscaling;
+  tk_el_t *lighting;
+  tk_el_t *gamma;
+  tk_el_t *exploding_scores;
 
 } ud_opt_video_t;
 
@@ -17,12 +21,14 @@ void opt_video_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 
   if (action == TK_ACTION_LEFT || action == TK_ACTION_RIGHT ||
       action == TK_ACTION_ENTER) {
-    bool is_fullscreen =
-        ((ud_arrowtext_t *)ud->fullscreen->userdata)->entry_selected;
+    if (el_selected == ud->fullscreen) {
+      bool is_fullscreen =
+          ((ud_arrowtext_t *)ud->fullscreen->userdata)->entry_selected;
 
-    ini_modify(ud->ui->ini_settings, "video", "fullscreen",
-               is_fullscreen ? "true" : "false", true);
-    ui_apply_video_config(ud->ui);
+      ini_modify(ud->ui->ini_settings, "video", "fullscreen",
+                 is_fullscreen ? "true" : "false", true);
+      ui_apply_video_config(ud->ui);
+    }
 
     ini_save(ud->ui->ini_settings, NULL, false, false);
   }
@@ -39,19 +45,45 @@ tk_screen_t *ui_screen_opt_video(tk_t *tk, ui_t *ui) {
       TK_PARENT->bg_mashup = bg_mashup(tk->bg, NULL, "1_options", "1", NULL);
       TK_PARENT->bottom_text_low = "SEE ALSO: GIT.IO/G2HR_VIDEO";
 
-      if (tk->wine) TK_PARENT->bottom_text_high = "RESTART TO APPLY CHANGES";
+      TK_STACK(
+          ret->el_content_container = TK_PARENT; TK_PARENT->userdata = ud;
+          TK_PARENT->actionfunc = (void *)opt_video_actionfunc;
+          tk_el_padding(TK_PARENT, 300, 150, 0, 0);
 
-      TK_STACK(ret->el_content_container = TK_PARENT; TK_PARENT->userdata = ud;
-               TK_PARENT->actionfunc = (void *)opt_video_actionfunc;
+          // create controls
+          ud->fullscreen = tk_ctrl_boolean(tk, TK_PARENT, NULL, "FULLSCREEN: ");
 
-               tk_el_padding(TK_PARENT, 300, 150, 0, 0);
+          ud->upscaling = tk_ctrl_arrowtext(
+              tk, TK_PARENT, NULL, 0, ui->menu_upscaling_values->pieces,
+              ui->menu_upscaling_values->count, "UPSCALING: ", NULL, NULL, NULL,
+              NULL, NULL);
 
-               ud->fullscreen =
-                   tk_ctrl_boolean(tk, TK_PARENT, NULL, "FULLSCREEN: ");
+          ud->lighting = tk_ctrl_arrowtext(
+              tk, TK_PARENT, NULL, 0, ui->ingame_lighting_values->pieces,
+              ui->ingame_lighting_values->count, "LIGHTING: ", NULL, NULL, NULL,
+              NULL, NULL);
 
-               ((ud_arrowtext_t *)ud->fullscreen->userdata)->entry_selected =
-                   (strcmp(ini_read(ui->ini_settings, "video", "fullscreen"),
-                           "true") == 0);));
+          ud->lighting = tk_ctrl_arrowtext(
+              tk, TK_PARENT, NULL, 0, ui->gamma_values->pieces,
+              ui->gamma_values->count, "GAMMA: ", NULL, NULL, NULL, NULL, NULL);
+
+          ud->exploding_scores =
+              tk_ctrl_boolean(tk, TK_PARENT, NULL, "SCORE EFFECTS: ");
+
+          // set bottom text
+          if (tk->wine) ud->fullscreen->bottom_text_high =
+              "RESTART TO APPLY CHANGES";
+
+          // set values from config
+          ((ud_arrowtext_t *)ud->fullscreen->userdata)->entry_selected =
+              (strcmp(ini_read(ui->ini_settings, "video", "fullscreen"),
+                      "true") == 0);
+
+          ((ud_arrowtext_t *)ud->exploding_scores->userdata)->entry_selected =
+              (strcmp(ini_read(ui->ini_settings, "video", "exploding_scores"),
+                      "true") == 0);
+
+          ));
 
   return ret;
 }

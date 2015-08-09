@@ -23,8 +23,8 @@ int main(int argc, char **argv) {
   inmenu_t *inmenu = inmenu_init(net, pads);
   ingame_t *ingame = ingame_init(net, cmap, pads, inmenu);
 
-  // wait up to 4 seconds for the menu connection. If it fails, quit
-  net_block_until_connected(net, 4000);
+  // wait up to 7 seconds for the menu connection. If it fails, quit
+  net_block_until_connected(net, 7000);
   if (!net->sock_menu) {
     SDL_ShowSimpleMessageBox(
         SDL_MESSAGEBOX_ERROR, "G2HR",

@@ -196,8 +196,8 @@ tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
   // set defaults for booleans
   if (!entry_count && !entries) {
     ud->entries = malloc(sizeof(char *) * 2);
-    ud->entries[0] = "DISABLED";
-    ud->entries[1] = "ENABLED";
+    ud->entries[0] = "OFF";
+    ud->entries[1] = "ON";
     ud->entry_count = 2;
     ud->free_bool_default_entries = 1;
   }
