@@ -14,7 +14,8 @@ void ui_apply_video_config(ui_t *ui) {
        strcmp(ini_read(ui->ini_settings, "video", "fullscreen"), "false"));
 
   if (fullscreen) {
-    net_send_to_meta(ui->net, "FULLSCREEN ON", 0);
+    if (!tk->wine)
+      net_send_to_meta(ui->net, "FULLSCREEN ON", 0);
 
     if (SDL_GetDesktopDisplayMode(0, &(tk->mode)) != 0)
       exit(printf("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError()));
@@ -126,6 +127,11 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
   ui_apply_video_config(ui);
   SDL_ShowWindow(ui->tk->window);
   SDL_RaiseWindow(ui->tk->window);
+
+  // apply the video config again, because some options only work
+  // when the window is visible
+  ui_apply_video_config(ui);
+
   sfx_play_song(ui->tk->sfx, SFX_SONG_MAINMENU);
   return ui;
 }

@@ -32,7 +32,7 @@ void ui_init_configs(ui_t *ui) {
   ui->multiplayer_time_values =
       cstr_split(ini_read(user, "multiplayer", "time"), ' ', false);
   ui->menu_upscaling_values = cstr_split("nearest linear best", ' ', false);
-  ui->ingame_lighting_values = cstr_split("dusk noon", ' ', false);
+  ui->ingame_lighting_values = cstr_split("dusk noon random", ' ', false);
   ui->gamma_values = cstr_split("0 5 10 15 20 25 30", ' ', false);
 
   ui->ini_usersettings = user;

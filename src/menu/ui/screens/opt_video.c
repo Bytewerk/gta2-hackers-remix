@@ -83,7 +83,7 @@ tk_screen_t *ui_screen_opt_video(tk_t *tk, ui_t *ui) {
                ud->lighting = tk_ctrl_arrowtext(
                    tk, TK_PARENT, NULL, 0, ui->ingame_lighting_values->pieces,
                    ui->ingame_lighting_values->count, "LIGHTING: ", NULL, NULL,
-                   "DEFAULT: NOON?", NULL, NULL);
+                   "DEFAULT: NOON", NULL, NULL);
 
                ud->gamma = tk_ctrl_arrowtext(
                    tk, TK_PARENT, NULL, 0, ui->gamma_values->pieces,
