@@ -27,6 +27,8 @@ void ui_init_configs(ui_t *ui) {
   ini_modify(settings, "video", "ingame_lighting", "noon", false);
   ini_modify(settings, "video", "gamma", "10", false);
   ini_modify(settings, "video", "exploding_scores", "true", false);
+  ini_modify(settings, "audio", "music", "5", false);
+  ini_modify(settings, "audio", "sfx", "5", false);
 
   // set values
   ui->multiplayer_time_values =

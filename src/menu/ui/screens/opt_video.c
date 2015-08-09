@@ -100,7 +100,7 @@ tk_screen_t *ui_screen_opt_video(tk_t *tk, ui_t *ui) {
                SET_OPT_VAL(ud->upscaling, "menu_upscaling");
                SET_OPT_VAL(ud->lighting, "ingame_lighting");
                SET_OPT_VAL(ud->gamma, "gamma");
-               SET_OPT_VAL_BOOL(ud->exploding_scores, "exploding_scores");));
+               SET_OPT_VAL_BOOL(ud->exploding_scores, "exploding_scores");););
 
   return ret;
 }
