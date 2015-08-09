@@ -23,6 +23,15 @@ void tk_ctrl_arrowtext_enabled(tk_el_t *ctrl) {
     tk_el_enabled(ud->text_suf);
 }
 
+void tk_ctrl_arrowtext_set_value_by_string(tk_el_t *ctrl, char *string) {
+  ud_arrowtext_t *ud = ((ud_arrowtext_t *)(ctrl->userdata));
+  for (uint16_t i = 0; i < ud->entry_count; i++)
+    if (!strcmp(ud->entries[i], string)) {
+      ud->entry_selected = i;
+      break;
+    }
+}
+
 void arrowtext_style(tk_t *tk, ud_arrowtext_t *ud) {
   char is_editing = (tk->exclusive_action_element == ud->container);
 

@@ -42,6 +42,10 @@ tk_el_t *tk_ctrl_arrowtext(tk_t *tk, tk_el_t *TK_PARENT, bg_mashup_t *bg_mashup,
 void tk_ctrl_arrowtext_disabled(tk_el_t *arrowtext_ctrl);
 void tk_ctrl_arrowtext_enabled(tk_el_t *arrowtext_ctrl);
 
+// tries to set the value mapped to the given string. if it can't be
+// found, the value doesn't get changed.
+void tk_ctrl_arrowtext_set_value_by_string(tk_el_t *ctrl, char *string);
+
 // Macro that simplifies ARROWTEXT:
 #define tk_ctrl_boolean(TK, TK_PARENT, BG_MASHUP, PREFIX)                      \
   tk_ctrl_arrowtext(TK, TK_PARENT, BG_MASHUP, 0, NULL, 0, PREFIX, NULL, NULL,  \
