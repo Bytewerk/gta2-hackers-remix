@@ -16,26 +16,19 @@
 tk_screen_t *ui_screen_opt_audio(tk_t *tk, ui_t *ui) {
   tk_screen_t *ret = tk_screen(tk, ui->credits, NULL);
 
-  TK_STACK_SCREEN(ret,
+  TK_STACK_SCREEN(
+      ret,
 
-                  TK_PARENT->bg_mashup =
-                      bg_mashup(tk->bg, NULL, "1_options", "1", NULL);
+      TK_PARENT->bg_mashup = bg_mashup(tk->bg, NULL, "1_options", "1", NULL);
 
-                  tk_el_padding(TK_PARENT, 300, 150, 0, 0);
+      tk_el_padding(TK_PARENT, 300, 250, 0, 0);
 
-                  tk_ctrl_circle(tk, TK_PARENT, "MENU SFX VOLUME", NULL, '0',
-                                 '9', 0, 0, '9');
+      tk_ctrl_circle(tk, TK_PARENT, "SOUND EFFECT VOLUME", NULL, '0', '9', 0, 0,
+                     '9');
 
-                  tk_ctrl_circle(tk, TK_PARENT, "MENU MUSIC VOLUME", NULL, '0',
-                                 '9', 0, 0, '9');
+      tk_ctrl_circle(tk, TK_PARENT, "MUSIC VOLUME", NULL, '0', '9', 0, 0, '9');
 
-                  tk_ctrl_circle(tk, TK_PARENT, "INGAME SFX VOLUME", NULL, '0',
-                                 '9', 0, 0, '9');
-
-                  tk_ctrl_circle(tk, TK_PARENT, "INGAME RADIO VOLUME", NULL,
-                                 '0', '9', 0, 0, '0');
-
-                  );
+      );
 
   return ret;
 }

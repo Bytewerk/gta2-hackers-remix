@@ -72,8 +72,8 @@ tk_screen_t *ui_screen_opt_video(tk_t *tk, ui_t *ui) {
                // create controls
                ud->fullscreen = tk_ctrl_arrowtext(
                    tk, TK_PARENT, NULL, 0, NULL, 0, "FULLSCREEN: ", NULL,
-                   "SEE ALSO: GIT.IO/G2HR_MENU",
-                   tk->wine ? "RESTART REQUIRED TO APPLY" : NULL, NULL, NULL);
+                   tk->wine ? "RESTART REQUIRED TO APPLY" : NULL,
+                   "SEE ALSO: GIT.IO/G2HR_MENU", NULL, NULL);
 
                ud->upscaling = tk_ctrl_arrowtext(
                    tk, TK_PARENT, NULL, 0, ui->menu_upscaling_values->pieces,
