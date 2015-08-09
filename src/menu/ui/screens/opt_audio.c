@@ -43,16 +43,19 @@ tk_screen_t *ui_screen_opt_audio(tk_t *tk, ui_t *ui) {
 
       TK_PARENT->bg_mashup = bg_mashup(tk->bg, NULL, "1_options", "1", NULL);
 
-      TK_STACK(
-          ret->el_content_container = TK_PARENT; TK_PARENT->userdata = ud;
-          TK_PARENT->actionfunc = (void *)opt_audio_actionfunc;
-          tk_el_padding(TK_PARENT, 300, 250, 0, 0);
+      TK_STACK(ret->el_content_container = TK_PARENT; TK_PARENT->userdata = ud;
+               TK_PARENT->actionfunc = (void *)opt_audio_actionfunc;
+               tk_el_padding(TK_PARENT, 300, 250, 0, 0);
 
-          ud->sfx = tk_ctrl_circle(tk, TK_PARENT, "SOUND EFFECT VOLUME", NULL,
-                                   '0', '9', 0, 0, GET_OPT_VAL("sfx"));
+               ud->sfx =
+                   tk_ctrl_circle(tk, TK_PARENT, "SOUND EFFECT VOLUME", NULL,
+                                  '0', '9', 0, 0, GET_OPT_VAL("sfx"));
 
-          ud->music = tk_ctrl_circle(tk, TK_PARENT, "MUSIC VOLUME", NULL, '0',
-                                     '9', 0, 0, GET_OPT_VAL("music"));););
+               ud->music = tk_ctrl_circle(tk, TK_PARENT, "MUSIC VOLUME", NULL,
+                                          '0', '9', 0, 0, GET_OPT_VAL("music"));
+
+               ud->music->bottom_text_high = "NOTE: RADIO IS ALWAYS MUTED";
+               ud->music->bottom_text_low = "IN SPLITSCREEN MODE!";););
 
   return ret;
 }
