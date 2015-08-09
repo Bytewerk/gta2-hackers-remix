@@ -43,7 +43,6 @@ tk_screen_t *ui_screen_opt_video(tk_t *tk, ui_t *ui) {
   TK_STACK_SCREEN(
       ret,
       TK_PARENT->bg_mashup = bg_mashup(tk->bg, NULL, "1_options", "1", NULL);
-      TK_PARENT->bottom_text_low = "SEE ALSO: GIT.IO/G2HR_VIDEO";
 
       TK_STACK(
           ret->el_content_container = TK_PARENT; TK_PARENT->userdata = ud;
@@ -51,28 +50,30 @@ tk_screen_t *ui_screen_opt_video(tk_t *tk, ui_t *ui) {
           tk_el_padding(TK_PARENT, 300, 150, 0, 0);
 
           // create controls
-          ud->fullscreen = tk_ctrl_boolean(tk, TK_PARENT, NULL, "FULLSCREEN: ");
+          ud->fullscreen = tk_ctrl_arrowtext(
+              tk, TK_PARENT, NULL, 0, NULL, 0, "FULLSCREEN: ", NULL,
+              "SEE ALSO: GIT.IO/G2HR_MENU",
+              tk->wine ? "RESTART REQUIRED TO APPLY" : NULL, NULL, NULL);
 
           ud->upscaling = tk_ctrl_arrowtext(
               tk, TK_PARENT, NULL, 0, ui->menu_upscaling_values->pieces,
-              ui->menu_upscaling_values->count, "UPSCALING: ", NULL, NULL, NULL,
-              NULL, NULL);
+              ui->menu_upscaling_values->count, "UPSCALING: ", NULL,
+              "ONLY FOR THE MENU", "DEFAULT: LINEAR", NULL, NULL);
 
           ud->lighting = tk_ctrl_arrowtext(
               tk, TK_PARENT, NULL, 0, ui->ingame_lighting_values->pieces,
-              ui->ingame_lighting_values->count, "LIGHTING: ", NULL, NULL, NULL,
-              NULL, NULL);
+              ui->ingame_lighting_values->count, "LIGHTING: ", NULL, NULL,
+              "DEFAULT: NOON?", NULL, NULL);
 
-          ud->lighting = tk_ctrl_arrowtext(
-              tk, TK_PARENT, NULL, 0, ui->gamma_values->pieces,
-              ui->gamma_values->count, "GAMMA: ", NULL, NULL, NULL, NULL, NULL);
+          ud->gamma = tk_ctrl_arrowtext(tk, TK_PARENT, NULL, 0,
+                                        ui->gamma_values->pieces,
+                                        ui->gamma_values->count, "GAMMA: ",
+                                        NULL, NULL, "DEFAULT: 10", NULL, NULL);
 
-          ud->exploding_scores =
-              tk_ctrl_boolean(tk, TK_PARENT, NULL, "SCORE EFFECTS: ");
-
-          // set bottom text
-          if (tk->wine) ud->fullscreen->bottom_text_high =
-              "RESTART TO APPLY CHANGES";
+          ud->exploding_scores = tk_ctrl_arrowtext(
+              tk, TK_PARENT, NULL, 0, NULL, 0, "SCORE EFFECTS: ", NULL,
+              "INGAME EXPLODING SCORES", tk->wine ? "DEFAULT: ON" : NULL, NULL,
+              NULL);
 
           // set values from config
           ((ud_arrowtext_t *)ud->fullscreen->userdata)->entry_selected =

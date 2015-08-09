@@ -24,7 +24,8 @@ void ui_apply_video_config(ui_t *ui) {
     tk->mode.h = atoi(USERCFG_READ("window_height"));
   }
 
-  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, USERCFG_READ("scale_quality"));
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY,
+              ini_read(ui->ini_settings, "video", "menu_upscaling"));
   SDL_SetWindowSize(tk->window, tk->mode.w, tk->mode.h);
   SDL_SetWindowBordered(tk->window, !fullscreen);
 

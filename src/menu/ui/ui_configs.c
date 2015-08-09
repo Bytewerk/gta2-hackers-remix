@@ -17,14 +17,15 @@ void ui_init_configs(ui_t *ui) {
 
   ini_modify(user, "video", "window_width", "640", false);
   ini_modify(user, "video", "window_height", "480", false);
-  ini_modify(user, "video", "scale_quality", "linear",
-             false); // FIXME, MOVE TO UI CONFIG!
 
   // ui settings
   ini_t *settings =
       ini_open(cstr_merge(ui->tk->pref_path, "ui.ini"), false, false);
   ini_modify(settings, "ui", "update_check_enabled", "ask", false);
   ini_modify(settings, "video", "fullscreen", "true", false);
+  ini_modify(settings, "video", "menu_upscaling", "linear", false);
+  ini_modify(settings, "video", "ingame_lighting", "noon", false);
+  ini_modify(settings, "video", "gamma", "10", false);
   ini_modify(settings, "video", "exploding_scores", "true", false);
 
   // set values
