@@ -1,6 +1,7 @@
 #include "ui.h"
 #include "../tk/toolkit.h"
 #include "ui_text.h"
+#include <SDL2/SDL_mixer.h>
 
 #define USERCFG_READ(STR) ini_read(ui->ini_usersettings, "video", STR)
 void ui_apply_video_config(ui_t *ui) {
@@ -34,6 +35,14 @@ void ui_apply_video_config(ui_t *ui) {
                         fullscreen ? 0 : SDL_WINDOWPOS_CENTERED);
 }
 #undef USERCFG_READ
+
+void ui_apply_audio_config(ui_t *ui) {
+  int sfx = atoi(ini_read(ui->ini_settings, "audio", "sfx"));
+  Mix_Volume(-1, MIX_MAX_VOLUME * (sfx / 9.0));
+
+  int music = atoi(ini_read(ui->ini_settings, "audio", "music"));
+  Mix_VolumeMusic(MIX_MAX_VOLUME * (music / 9.0));
+}
 
 ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
   ui_t *ui = calloc(1, sizeof(ui_t));
@@ -132,6 +141,7 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
   // when the window is visible
   ui_apply_video_config(ui);
 
+  ui_apply_audio_config(ui);
   sfx_play_song(ui->tk->sfx, SFX_SONG_MAINMENU);
   return ui;
 }

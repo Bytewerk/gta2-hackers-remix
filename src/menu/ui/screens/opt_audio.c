@@ -22,7 +22,7 @@ void opt_audio_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
     SAVE_OPT_VAL(ud->sfx, "sfx");
     SAVE_OPT_VAL(ud->music, "music");
 
-    // TODO: apply volume
+    ui_apply_audio_config(ud->ui);
     ini_save(ud->ui->ini_settings, NULL, false, false);
   }
 }
