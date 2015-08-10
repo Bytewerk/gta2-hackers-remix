@@ -32,7 +32,7 @@ Func cmd_config($cmd)
 			$folder = "Screen"
 			$key = "lighting"
 			$value = 1
-			If $value == "noon" Then $value = 0
+			If $cmd[2] == "noon" Then $value = 0
 		case "GAMMA"
 			$folder = "Screen"
 			$key = "gamma"
@@ -44,11 +44,11 @@ Func cmd_config($cmd)
 	EndSwitch
 	
 
-	Local $root = "HKCU\Software\DMA Design Ltd\GTA2"
+	Local $root = "HKEY_CURRENT_USER\Software\DMA Design Ltd\GTA2"
 	RegWrite($root&"\\"&$folder, $key, $type, $value)
 	
 	For $i=1 To 6
-		$root = "HKCU\Software\GTA2HackersRemix\P"&$i
+		$root = "HKEY_CURRENT_USER\Software\GTA2HackersRemix\P"&$i
 		RegWrite($root&"\\"&$folder, $key, $type, $value)
 	Next
 Endfunc

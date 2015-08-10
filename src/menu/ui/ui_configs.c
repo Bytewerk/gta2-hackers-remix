@@ -24,7 +24,7 @@ void ui_init_configs(ui_t *ui) {
   ini_modify(settings, "ui", "update_check_enabled", "ask", false);
   ini_modify(settings, "video", "fullscreen", "true", false);
   ini_modify(settings, "video", "menu_upscaling", "linear", false);
-  ini_modify(settings, "video", "ingame_lighting", "noon", false);
+  ini_modify(settings, "video", "ingame_lighting", "dusk", false);
   ini_modify(settings, "video", "gamma", "10", false);
   ini_modify(settings, "video", "exploding_scores", "true", false);
   ini_modify(settings, "audio", "music", "5", false);
