@@ -171,7 +171,7 @@ void ingame_frame(ingame_t *ingame, SDL_Event *event) {
   int count = MIN(ingame->net->injected_count, ingame->pads->count);
   pad_controller_t *pad = ingame->pads->first;
 
-  for (int i = 0; i < count; i++) {
+  for (int i = 0; i < count && pad; i++) {
     net_injected_instance_t *instance = ingame->instance_by_player_id[i];
 
     if (instance && !pad->disconnected) {
