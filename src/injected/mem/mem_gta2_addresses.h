@@ -26,10 +26,14 @@ char MP_PLAYER_ID; // 0...5
 // See also: native/cmap/cmap_gta2_controls.h
 #define GTA2_ADDR_MOVEMENT (uint16_t *)0x5ecacc
 
+// this is just for checking if the pointer is valid yet
+#define GTA2_ADDR_STRING_TABLE_BASE (EXE_OFFSET + 0x001E81DC)
+
 // table entry format (similar to in the GXT files):
 //		4 bytes: absolute (!) pointer to the unicode text in RAM
 // 		8 bytes: entry name
-#define GTA2_ADDR_STRING_TABLE (*((char **)(EXE_OFFSET + 0x001E81DC)) + 0x1C98)
+#define GTA2_ADDR_STRING_TABLE                                                 \
+  (*((char **)GTA2_ADDR_STRING_TABLE_BASE) + 0x1C98)
 #define GTA2_ADDR_STRING_TABLE_ALT                                             \
   (*((char **)(EXE_OFFSET + 0x001E85B0)) + 0x1C98)
 #define GTA2_ADDR_STRING_OFFSET (***((char ****)(EXE_OFFSET + 0x00281550)))

@@ -10,6 +10,8 @@
 bool mem_wait_for_string_table() {
   for (int i = 0; i < 100; i++) {
     Sleep(100);
+    if (IsBadReadPtr(GTA2_ADDR_STRING_TABLE_BASE, 10))
+      continue;
 
     char *table = GTA2_ADDR_STRING_TABLE;
     if (IsBadReadPtr(table, 10))
@@ -35,16 +37,24 @@ void mem_prepare_esc_text(mem_t *mem) {
     mem_zeroize((char *)mem->text[i], G2HR_ESC_TEXT_MAXLEN_LINE);
   }
 
-  char *pos = GTA2_ADDR_STRING_TABLE;
-  while (pos <= GTA2_ADDR_STRING_OFFSET) {
-    char *name = pos + 4;
+  for (int tries = 0; tries < 5; tries++) {
+    for (char *pos = GTA2_ADDR_STRING_TABLE; pos < GTA2_ADDR_STRING_OFFSET;
+         pos += 12) {
+      char *name = pos + 4;
+      if (IsBadReadPtr(name, 8))
+        break;
 
-    if (strncmp(name, "quit1", 8) == 0 || strncmp(name, "quit2", 8) == 0 ||
-        strncmp(name, "quit3", 8) == 0) {
-      SuspendThread(mem->main_thread);
-      *(volatile char **)pos = mem->text[(name[4] - '1')];
-      ResumeThread(mem->main_thread);
+      if (strncmp(name, "quit1", 8) == 0 || strncmp(name, "quit2", 8) == 0 ||
+          strncmp(name, "quit3", 8) == 0) {
+        int num = (name[4] - '1');
+        SuspendThread(mem->main_thread);
+        *(volatile char **)pos = mem->text[num];
+        ResumeThread(mem->main_thread);
+
+        if (num == 2)
+          return;
+      }
     }
-    pos += 12;
   }
+  printf("ERROR: failed to inject the custom esc-text!\n");
 }
