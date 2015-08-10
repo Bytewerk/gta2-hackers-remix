@@ -33,6 +33,10 @@ Func re($message)
 	TCPSend($global_sock, $message & Chr(0))
 Endfunc
 
+Func status($message)
+	re("STATUS " & $message)
+	ConsoleWrite("STATUS: " & $message & @CRLF)
+Endfunc
 
 Func send_pid_table()
 	Local $str = "PID_TABLE"
@@ -110,9 +114,17 @@ Func wait_until_only_one_hwnd_left($pid)
 Endfunc
 
 Func wait_for_listview_entry_count($hwnd, $ctrl_id, $count)
+
+	Local $last = -1
+	
 	While True
 		Local $current = ControlListView($hwnd, "", $ctrl_id, _
 			"GetItemCount")
+		
+		If $current <> $last And $count > 1 Then
+			$last = $current
+			status($last & " / " & $count & " PLAYERS JOINED")
+		Endif
 		
 		If $current == $count Then _
 			Return

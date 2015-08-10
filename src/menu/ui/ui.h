@@ -19,6 +19,7 @@
 
 typedef struct {
   tk_t *tk;
+  tk_el_t *ready_status;
   tk_screen_t *main;
   tk_screen_t *credits;
   tk_screen_t *play;
@@ -85,6 +86,7 @@ void ui_apply_video_config(ui_t *ui);
 void ui_apply_audio_config(ui_t *ui);
 void ui_send_game_config(ui_t *ui, bool splitscreen);
 
+void ui_ready_status(ui_t *ui, char *text); // text gets copied!
 void ui_callback_for_meta(char *msg, void *userdata);
 void ui_callback_for_native(TCPsocket sock, char header, void *userdata);
 void ui_cleanup(ui_t *ui);
@@ -107,6 +109,7 @@ void splitscreen_set_players(ui_t *ui);
 
 #define ui_show_ready_screen(UI, PREVIOUS_SCREEN_IN_UI_STRUCT)                 \
   {                                                                            \
+    ui_ready_status(UI, "");                                                   \
     UI->ready->back = UI->PREVIOUS_SCREEN_IN_UI_STRUCT;                        \
     UI->tk->screen_active = UI->ready;                                         \
   }

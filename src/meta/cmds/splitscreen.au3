@@ -124,6 +124,7 @@ Func cmd_splitscreen($cmd)
 	$global_game_instances_open = $player_count + 1
 	send_pid_table()
 	
+	status("WAITING FOR HOST WINDOW")
 	
 	; Wait until all instances are connected to the host
 	Local $host_pid = $global_game_process_ids[0]
@@ -138,6 +139,9 @@ Func cmd_splitscreen($cmd)
 	ControlClick($hwnd,"",$GTA2_LOBBY_CTRL_START)
 	
 	For $i = $player_count To 0 Step -1
+		status("WAITING FOR WINDOW " & ($player_count - $i + 1) _
+			& " / " & $player_count+1 )
+	
 		$hwnd = wait_for_hwnd_with_desc($global_game_process_ids[$i], _
 			$GTA2_GAME_WINDOW_DESC)
 		
@@ -145,7 +149,8 @@ Func cmd_splitscreen($cmd)
 		
 		Local $geo = $global_game_screen_layouts[$i]
 		move_until_it_works($hwnd, $geo)
-			
+		
+		; FIXME: show all windows at the same time?
 		If Not $WINE Then WinSetState($hwnd, "", @SW_SHOW)
 	Next
 Endfunc

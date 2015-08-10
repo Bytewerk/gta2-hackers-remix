@@ -6,6 +6,7 @@
 void ui_callback_for_meta(char *msg, void *userdata) {
   ui_t *ui = (ui_t *)userdata;
   int pids[6];
+  char buffer[200];
 
   if (!strcmp(msg, "CONNECTED! CAN YOU GIVE ME THE CONFIG PATH?"))
     net_send_to_meta(ui->net, ui->tk->pref_path, 0);
@@ -29,6 +30,11 @@ void ui_callback_for_meta(char *msg, void *userdata) {
                 for (int i = 0; i < 6; i++) data->pids[i] = pids[i];
 
                 data->singleplayer = ui->singleplayer;);
+  }
+
+  // FIXME: not sure if this works
+  else if (sscanf(msg, "STATUS %s", buffer)) {
+    ui_ready_status(ui, buffer);
   }
 }
 

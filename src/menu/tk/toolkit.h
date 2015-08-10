@@ -38,8 +38,8 @@ typedef struct {
   char *pref_path;
   tk_el_t *exclusive_action_element;
   uint32_t action_time[TK_ACTION_LAST_LIMITED - 1];
-  char redraw_needed;
-  char debug_draw;
+  bool redraw_needed;
+  bool debug_draw;
 
   bool disable_draw;
   bool wine;
