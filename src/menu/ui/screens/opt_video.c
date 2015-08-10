@@ -10,8 +10,10 @@ typedef struct {
   tk_el_t *fullscreen;
   tk_el_t *upscaling;
   tk_el_t *lighting;
-  tk_el_t *gamma;
   tk_el_t *exploding_scores;
+  tk_el_t *blood;
+  tk_el_t *text_speed;
+  tk_el_t *show_player_names;
 
 } ud_opt_video_t;
 
@@ -38,8 +40,10 @@ void opt_video_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
       SAVE_OPT_VAL_BOOL(ud->fullscreen, "fullscreen");
     SAVE_OPT_VAL(ud->upscaling, "menu_upscaling");
     SAVE_OPT_VAL(ud->lighting, "ingame_lighting");
-    SAVE_OPT_VAL(ud->gamma, "gamma");
     SAVE_OPT_VAL_BOOL(ud->exploding_scores, "exploding_scores");
+    SAVE_OPT_VAL_BOOL(ud->blood, "blood");
+    SAVE_OPT_VAL_BOOL(ud->show_player_names, "show_names");
+    SAVE_OPT_VAL(ud->text_speed, "text_speed");
 
     ui_apply_video_config(ud->ui);
     ini_save(ud->ui->ini_settings, NULL, false, false);
@@ -69,7 +73,7 @@ tk_screen_t *ui_screen_opt_video(tk_t *tk, ui_t *ui) {
       TK_STACK(
           ret->el_content_container = TK_PARENT; TK_PARENT->userdata = ud;
           TK_PARENT->actionfunc = (void *)opt_video_actionfunc;
-          tk_el_padding(TK_PARENT, 300, 250, 0, 0);
+          tk_el_padding(TK_PARENT, 300, 150, 0, 0);
 
           // create controls
           if (!ui->slotmachine) ud->fullscreen = tk_ctrl_arrowtext(
@@ -87,22 +91,32 @@ tk_screen_t *ui_screen_opt_video(tk_t *tk, ui_t *ui) {
               ui->ingame_lighting_values->count, "LIGHTING: ", NULL, NULL,
               "DEFAULT: DUSK", NULL, NULL);
 
-          ud->gamma = tk_ctrl_arrowtext(tk, TK_PARENT, NULL, 0,
-                                        ui->gamma_values->pieces,
-                                        ui->gamma_values->count, "GAMMA: ",
-                                        NULL, NULL, "DEFAULT: 10", NULL, NULL);
-
           ud->exploding_scores = tk_ctrl_arrowtext(
               tk, TK_PARENT, NULL, 0, NULL, 0, "SCORE EFFECTS: ", NULL,
-              "INGAME EXPLODING SCORES", tk->wine ? "DEFAULT: ON" : NULL, NULL,
-              NULL);
+              "INGAME EXPLODING SCORES", "DEFAULT: ON", NULL, NULL);
+
+          ud->blood =
+              tk_ctrl_arrowtext(tk, TK_PARENT, NULL, 0, NULL, 0, "BLOOD: ",
+                                NULL, "", "DEFAULT: ON", NULL, NULL);
+
+          ud->show_player_names =
+              tk_ctrl_arrowtext(tk, TK_PARENT, NULL, 0, NULL, 0, "SHOW NAMES: ",
+                                NULL, "NAMES ABOVE PLAYERS IN",
+                                "SPLITSCREEN MODE, DEFAULT: ON", NULL, NULL);
+
+          ud->text_speed = tk_ctrl_arrowtext(
+              tk, TK_PARENT, NULL, 0, ui->text_speed_values->pieces,
+              ui->text_speed_values->count, "TEXT SPEED: ", NULL, NULL,
+              "DEFAULT: 3", NULL, NULL);
 
           // set values from config
           if (!ui->slotmachine) SET_OPT_VAL_BOOL(ud->fullscreen, "fullscreen");
           SET_OPT_VAL(ud->upscaling, "menu_upscaling");
           SET_OPT_VAL(ud->lighting, "ingame_lighting");
-          SET_OPT_VAL(ud->gamma, "gamma");
           SET_OPT_VAL_BOOL(ud->exploding_scores, "exploding_scores");
+          SET_OPT_VAL_BOOL(ud->blood, "blood");
+          SET_OPT_VAL_BOOL(ud->show_player_names, "show_names");
+          SET_OPT_VAL(ud->text_speed, "text_speed");
 
           ););
 

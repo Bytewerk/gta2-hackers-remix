@@ -18,6 +18,7 @@ Func cmd_config($cmd)
 	Local $key = ""
 	Local $type = "REG_DWORD"
 	Local $value = $cmd[2]
+	Local $delete = false
 	
 	Switch $cmd[1]
 		case "MUSIC_VOL"
@@ -33,22 +34,40 @@ Func cmd_config($cmd)
 			$key = "lighting"
 			$value = 1
 			If $cmd[2] == "noon" Then $value = 0
-		case "GAMMA"
-			$folder = "Screen"
-			$key = "gamma"
-			$value = Number($value)
 		case "EXPLODING_SCORES"
 			$folder="Screen"
 			$key="exploding_on"
 			$value = opt_to_bool($value)
+		case "BLOOD"
+			$folder = "Debug"
+			$key = "do_blood"
+			$delete = ($value == "false")
+		case "SHOW_NAMES"
+			$folder = "Network"
+			$key = "show_player_names"
+			$value = opt_to_bool($value)
+		case "TEXT_SPEED"
+			$folder = "Option"
+			$key = "text_speed"
+			$value = Number($value)
 	EndSwitch
 	
 
+
 	Local $root = "HKEY_CURRENT_USER\Software\DMA Design Ltd\GTA2"
-	RegWrite($root&"\\"&$folder, $key, $type, $value)
+	If $delete Then
+		RegDelete($root&"\\"&$folder, $key)
+	Else
+		RegWrite($root&"\\"&$folder, $key, $type, $value)
+	Endif
 	
 	For $i=1 To 6
 		$root = "HKEY_CURRENT_USER\Software\GTA2HackersRemix\P"&$i
-		RegWrite($root&"\\"&$folder, $key, $type, $value)
+		
+		If $delete Then
+			RegDelete($root&"\\"&$folder, $key)
+		Else
+			RegWrite($root&"\\"&$folder, $key, $type, $value)
+		Endif
 	Next
 Endfunc

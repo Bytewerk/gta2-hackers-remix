@@ -48,6 +48,7 @@ typedef struct {
   cstr_split_t *menu_upscaling_values;
   cstr_split_t *ingame_lighting_values;
   cstr_split_t *gamma_values;
+  cstr_split_t *text_speed_values;
 
   // these are used with the arrowtext control and a prefix
   char **letters;

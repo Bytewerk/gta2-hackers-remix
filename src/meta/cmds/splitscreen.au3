@@ -27,8 +27,6 @@ Func prepare_common_registry_network_settings($root)
 	regwrite_if_empty($root&"\Network", "game_type", "REG_DWORD", 0x01)
 	regwrite_if_empty($root&"\Network", "map_index", "REG_DWORD", 0x00)
 	regwrite_if_empty($root&"\Network", "police", "REG_DWORD", 0x00)
-	regwrite_if_empty($root&"\Network", "show_player_names", _
-		"REG_DWORD", 0x01)
 Endfunc
 
 Func prepare_common_registry_settings($i) ;$i: 1...6
@@ -59,10 +57,7 @@ Func prepare_common_registry_settings($i) ;$i: 1...6
 	RegWrite($root&"\Control", "10", "REG_DWORD", 0x38)
 	RegWrite($root&"\Control", "11", "REG_DWORD", 0x36)
 	RegWrite($root&"\Debug", "replaynum", "REG_DWORD", 0x00)
-	RegWrite($root&"\Option", "text_speed", "REG_DWORD", 0x03)
-	RegWrite($root&"\Screen", "exploding_on", "REG_DWORD", 0x01)
 	RegWrite($root&"\Screen", "gamma", "REG_DWORD", 0x0a)
-	RegWrite($root&"\Screen", "lighting", "REG_DWORD", 0x01)
 	RegWrite($root&"\Screen", "max_frame_rate", "REG_DWORD", 0x01)
 	RegWrite($root&"\Screen", "min_frame_rate", "REG_DWORD", 0x00)
 	RegWrite($root&"\Screen", "renderdevice", "REG_DWORD", 0x01)

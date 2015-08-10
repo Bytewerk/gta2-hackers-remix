@@ -67,7 +67,6 @@ Func cmd_singleplayer($cmd)
 	
 	; Write everything to the registry
 	RegWrite($reg_base, "skip_frontend","REG_BINARY",	1)
-	RegWrite($reg_base, "do_blood", 	"REG_DWORD",	1)
 	RegWrite($reg_base, "replaynum", 	"REG_DWORD",	2)
 	RegWrite($reg_base, "savename",		"REG_DWORD",	0)
 	RegWrite($reg_base, "mapname", 		"REG_SZ",		$gmp&".gmp")

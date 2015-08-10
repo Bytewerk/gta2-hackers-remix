@@ -25,8 +25,11 @@ void ui_init_configs(ui_t *ui) {
   ini_modify(settings, "video", "fullscreen", "true", false);
   ini_modify(settings, "video", "menu_upscaling", "linear", false);
   ini_modify(settings, "video", "ingame_lighting", "dusk", false);
-  ini_modify(settings, "video", "gamma", "10", false);
   ini_modify(settings, "video", "exploding_scores", "true", false);
+  ini_modify(settings, "video", "blood", "true", false);
+  ini_modify(settings, "video", "text_speed", "3", false);
+  ini_modify(settings, "video", "show_names", "true", false);
+
   ini_modify(settings, "audio", "music", "5", false);
   ini_modify(settings, "audio", "sfx", "5", false);
 
@@ -35,7 +38,7 @@ void ui_init_configs(ui_t *ui) {
       cstr_split(ini_read(user, "multiplayer", "time"), ' ', false);
   ui->menu_upscaling_values = cstr_split("nearest linear best", ' ', false);
   ui->ingame_lighting_values = cstr_split("dusk noon random", ' ', false);
-  ui->gamma_values = cstr_split("0 5 10 15 20 25 30", ' ', false);
+  ui->text_speed_values = cstr_split("1 2 3 4 5", ' ', false);
 
   ui->ini_usersettings = user;
   ui->ini_settings = settings;
@@ -50,5 +53,5 @@ void ui_cleanup_configs(ui_t *ui) {
   cstr_split_free(ui->multiplayer_time_values);
   cstr_split_free(ui->menu_upscaling_values);
   cstr_split_free(ui->ingame_lighting_values);
-  cstr_split_free(ui->gamma_values);
+  cstr_split_free(ui->text_speed_values);
 }

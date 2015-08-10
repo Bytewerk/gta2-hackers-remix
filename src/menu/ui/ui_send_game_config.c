@@ -4,8 +4,6 @@
 #define BUFFER_LEN 200
 #define RANDBOOL (rand() > RAND_MAX / 2)
 
-// TODO: add parameter: is splitscreen game and then always mute music
-
 void ui_send_game_config(ui_t *ui, bool splitscreen) {
   char buffer[BUFFER_LEN + 1];
 
@@ -26,13 +24,23 @@ void ui_send_game_config(ui_t *ui, bool splitscreen) {
   snprintf(buffer, BUFFER_LEN, "CONFIG LIGHTING %s", lighting);
   net_send_to_meta(ui->net, buffer, 0);
 
-  // gamma
-  snprintf(buffer, BUFFER_LEN, "CONFIG GAMMA %s",
-           ini_read(ui->ini_settings, "video", "gamma"));
-  net_send_to_meta(ui->net, buffer, 0);
-
   // exploding scores
   snprintf(buffer, BUFFER_LEN, "CONFIG EXPLODING_SCORES %s",
            ini_read(ui->ini_settings, "video", "exploding_scores"));
+  net_send_to_meta(ui->net, buffer, 0);
+
+  // blood
+  snprintf(buffer, BUFFER_LEN, "CONFIG BLOOD %s",
+           ini_read(ui->ini_settings, "video", "blood"));
+  net_send_to_meta(ui->net, buffer, 0);
+
+  // show player names
+  snprintf(buffer, BUFFER_LEN, "CONFIG SHOW_NAMES %s",
+           ini_read(ui->ini_settings, "video", "show_names"));
+  net_send_to_meta(ui->net, buffer, 0);
+
+  // text speed
+  snprintf(buffer, BUFFER_LEN, "CONFIG TEXT_SPEED %s",
+           ini_read(ui->ini_settings, "video", "text_speed"));
   net_send_to_meta(ui->net, buffer, 0);
 }
