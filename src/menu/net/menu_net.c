@@ -148,7 +148,13 @@ void net_send_to_native(net_t *net, char message) {
 void net_cleanup(net_t *net) {
   // send cleanup to meta and native
   net_send_to_meta(net, "CLEANUP", 0);
-  net_send_to_native(net, NA_CLEANUP);
+
+  // slotmachine mode: send the quit command to native
+  // (reboot/shutdown)
+  MESSAGESEND(net->sock_native, NA_CLEANUP, if (net->exec_after_quit[0]) {
+    strncpy(data->exec_after_quit, net->exec_after_quit,
+            G2HR_EXEC_AFTER_QUIT_LEN - 1);
+  });
 
   if (net->sock_listen)
     SDLNet_TCP_Close(net->sock_listen);

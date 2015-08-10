@@ -1,3 +1,4 @@
+#include "../common/cstr/cstr.h"
 #include "bg/background.h"
 #include "gxt/gxt.h"
 #include "mmp/mmp.h"
@@ -88,7 +89,7 @@ int main(int argc, char *argv[]) {
   IMG_Quit();
   SDLNet_Quit();
   SDL_Quit();
-
   printf("cleaned up!\n");
+
   return 0;
 }

@@ -1,3 +1,5 @@
+#include "../common/cstr/cstr.h"
+#include "../common/headers/api_native2menu.h"
 #include "../common/headers/common.h"
 #include "cmap/cmap.h"
 #include "ingame/ingame.h"
@@ -65,6 +67,11 @@ int main(int argc, char **argv) {
       break;
   }
 
+  // copy the 'exec_after_quit' value from the inmenu struct
+  char exec_after_quit[G2HR_EXEC_AFTER_QUIT_LEN];
+  strncpy(exec_after_quit, inmenu->exec_after_quit,
+          G2HR_EXEC_AFTER_QUIT_LEN - 1);
+
   // clean up
   ingame_cleanup(ingame);
   inmenu_cleanup(inmenu);
@@ -73,5 +80,11 @@ int main(int argc, char **argv) {
   cmap_cleanup(cmap);
   SDL_Quit();
   SDLNet_Quit();
+
+  if (exec_after_quit[0]) {
+    printf("[native] executing command after quit:\n\t%s\n", exec_after_quit);
+    system(exec_after_quit);
+  }
+
   return 0;
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "../../common/headers/api_native2menu.h"
 #include "../../common/headers/net_message_macros_SDL.h"
 #include <SDL2/SDL_net.h>
 
@@ -24,6 +25,7 @@ typedef struct {
   SDLNet_SocketSet set;
 
   int server_port;
+  char exec_after_quit[G2HR_EXEC_AFTER_QUIT_LEN];
 } net_t;
 
 net_t *net_init();

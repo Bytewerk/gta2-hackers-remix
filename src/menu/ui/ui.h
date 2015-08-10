@@ -68,6 +68,9 @@ typedef struct {
   // of a new game
   bool singleplayer;
 
+  // is the game running in slotmachine mode?
+  bool slotmachine;
+
   // synced from the native component
   uint16_t controllers_connected;
 } ui_t;

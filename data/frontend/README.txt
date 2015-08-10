@@ -7,3 +7,13 @@ g2hr_splitscreen.png
                  http://creativecommons.org/licenses/by/3.0/
 
 	Modified by robotanarchy to fit the menu.
+
+g2hr_credits.png
+
+	Title:   untitled
+	Author:  Stuart McAlpine
+	Source:  https://www.flickr.com/photos/stuartmcalpine/16290792390
+	License: CC-BY-2.0
+		 https://creativecommons.org/licenses/by/2.0/
+
+	Modified by robotanarchy to fit the menu.

@@ -36,16 +36,12 @@ void credits_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 
   if (action == TK_ACTION_BACKSPACE || action == TK_ACTION_ESC ||
       action == TK_ACTION_ENTER) {
-    if (strcmp(ini_read(ui->ini_usersettings, "slotmachine", "enabled"),
-               "true")) // normal mode
-    {
-      tk->quit = 1;
-    } else // slotmachine mode
-    {
+    if (ui->slotmachine) {
       tk->screen_active = ui->main;
       ud->scrolling->scroll_top = 0;
       sfx_play_song(ui->tk->sfx, SFX_SONG_MAINMENU);
-    }
+    } else
+      tk->quit = 1;
   }
 
   if (action == TK_ACTION_FRAMETIME) {
@@ -146,7 +142,9 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
       // scrolling part
       TK_STACK(ud->scrolling = TK_PARENT; tk_el_scrollable(TK_PARENT);
 
-               // G2HR credits
+               /*
+                       G2HR CREDITS
+               */
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 200, 0, "CREATED BY",
                    GTA2_FONT_COLOR_WHITE);
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "ROBOTANARCHY",
@@ -189,6 +187,17 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
                    GTA2_FONT_COLOR_CYAN);
 
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 30, 0,
+                   "VERY USEFUL GTA2", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0,
+                   "TOOLS, RESOURCES, FORUMS", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0,
+                   "AND MEMORY ADDRESSES", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "SEKTOR",
+                   GTA2_FONT_COLOR_CYAN);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0, "GTAMP.COM",
+                   GTA2_FONT_COLOR_WHITE);
+
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 30, 0,
                    "LOTS OF HELP WITH", GTA2_FONT_COLOR_WHITE);
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0,
                    "PORTING THE PROXYDLL", GTA2_FONT_COLOR_WHITE);
@@ -206,13 +215,6 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "SQOZZ",
                    GTA2_FONT_COLOR_CYAN);
 
-               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 30, 0,
-                   "REMEMBER: YOUR NAME COULD", GTA2_FONT_COLOR_WHITE);
-               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0,
-                   "BE ALONG THESE LINES. IT'S", GTA2_FONT_COLOR_WHITE);
-               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0,
-                   "FREE SOFTWARE, JUST FORK IT!", GTA2_FONT_COLOR_WHITE);
-
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 30, 0,
                    "TESTING AND FEEDBACK", GTA2_FONT_COLOR_WHITE);
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "CUBAN-PETE",
@@ -228,6 +230,9 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "THEBLACKCROW1",
                    GTA2_FONT_COLOR_CYAN);
 
+               /*
+                       G2HR CREDITS: MENU ARTWORK SECTION
+               */
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 30, 0, "MENU ARTWORK",
                    GTA2_FONT_COLOR_GREEN);
 
@@ -247,13 +252,34 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0,
                    "LICENSE: CC BY 3.0", GTA2_FONT_COLOR_WHITE);
 
-               // original credits
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 30, 0, "UNTITLED",
+                   GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "STUART MCALPINE",
+                   GTA2_FONT_COLOR_CYAN);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0,
+                   "STUARTMCALPINE AT FLICKR", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0,
+                   "LICENSE: CC BY 2.0", GTA2_FONT_COLOR_WHITE);
+
+               /*
+                       FREE SOFTWARE, YO!
+               */
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 30, 0,
+                   "REMEMBER: YOUR NAME COULD", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0,
+                   "BE ALONG THESE LINES. IT'S", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 0,
+                   "FREE SOFTWARE, JUST FORK IT!", GTA2_FONT_COLOR_WHITE);
+
+               /*
+                       ORIGINAL CREDITS
+               */
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_HUGE, 40, 0, "ORIGINAL",
                    GTA2_FONT_COLOR_WHITE);
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_HUGE, 0, 0, "GTA2 CREDITS",
                    GTA2_FONT_COLOR_WHITE);
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_TINY, 0, 40,
-                   "FROM THE LAST MILLENIUM", GTA2_FONT_COLOR_WHITE);
+                   "FROM THE PREVIOUS MILLENIUM", GTA2_FONT_COLOR_WHITE);
                credits_add_original(tk, TK_PARENT);));
 
   return credits;

@@ -13,14 +13,10 @@ void inmenu_recv_callback(unsigned char msg_id, TCPsocket sock,
   inmenu_t *inmenu = (inmenu_t *)userdata;
 
   switch (msg_id) {
-    MESSAGECASESHORT(NA_CLEANUP, inmenu->has_quit = 1);
-    MESSAGECASESHORT(NA_POWEROFF, {
-      printf("[menu => native] POWEROFF (not implemented yet!)"
-             "\n");
-      inmenu->has_quit = 1;
-    });
-    MESSAGECASESHORT(NA_REBOOT, {
-      printf("[menu => native] REBOOT (not implemented yet!)\n");
+    MESSAGECASE(sock, NA_CLEANUP, {
+      if (data->exec_after_quit[0])
+        strncpy(inmenu->exec_after_quit, data->exec_after_quit,
+                G2HR_EXEC_AFTER_QUIT_LEN - 1);
       inmenu->has_quit = 1;
     });
 

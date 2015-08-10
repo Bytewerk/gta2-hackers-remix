@@ -5,22 +5,19 @@
         NA: native api
 */
 #define G2HR_NATIVE_API_VERSION 1
+#define G2HR_EXEC_AFTER_QUIT_LEN 300
 
 //
 // MENU TO NATIVE MESSAGES
-// they all have one byte length
 //
 #define NA_CLEANUP 0x01
+typedef struct { char exec_after_quit[G2HR_EXEC_AFTER_QUIT_LEN]; } NA_CLEANUP_t;
 
 #define NA_PID_TABLE 0x02
 typedef struct {
   uint16_t pids[6];
   bool singleplayer;
 } NA_PID_TABLE_t;
-
-// only possible, when in slotmachine mode
-#define NA_POWEROFF 0x20
-#define NA_REBOOT 0x21
 
 //
 // NATIVE TO MENU MESSAGES

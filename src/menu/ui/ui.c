@@ -57,6 +57,9 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
   ui->sl = sl;
 
   ui_init_configs(ui);
+  ui->slotmachine =
+      (strcmp(ini_read(ui->ini_usersettings, "slotmachine", "enabled"),
+              "true") == 0);
 
   // do update check in background, if the user has enabled it
   if (!strcmp(ini_read(ui->ini_settings, "ui", "update_check_enabled"),
@@ -143,6 +146,7 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
 
   ui_apply_audio_config(ui);
   sfx_play_song(ui->tk->sfx, SFX_SONG_MAINMENU);
+
   return ui;
 }
 

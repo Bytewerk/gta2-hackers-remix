@@ -1,4 +1,5 @@
 #pragma once
+#include "../../common/headers/api_native2menu.h"
 #include "../../common/headers/tk_actions.h"
 #include "../net/native_net.h"
 #include "../pads/pads.h"
@@ -9,6 +10,7 @@ typedef struct {
   uint16_t pids[6];
   char has_quit;
   uint32_t analogstick_timer[TK_ACTION_LAST - 1];
+  char exec_after_quit[G2HR_EXEC_AFTER_QUIT_LEN];
 
   bool singleplayer;
 } inmenu_t;

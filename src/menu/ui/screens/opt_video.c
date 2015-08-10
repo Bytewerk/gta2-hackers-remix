@@ -34,7 +34,8 @@ void opt_video_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 
   if (action == TK_ACTION_LEFT || action == TK_ACTION_RIGHT ||
       action == TK_ACTION_ENTER) {
-    SAVE_OPT_VAL_BOOL(ud->fullscreen, "fullscreen");
+    if (!ud->ui->slotmachine)
+      SAVE_OPT_VAL_BOOL(ud->fullscreen, "fullscreen");
     SAVE_OPT_VAL(ud->upscaling, "menu_upscaling");
     SAVE_OPT_VAL(ud->lighting, "ingame_lighting");
     SAVE_OPT_VAL(ud->gamma, "gamma");
@@ -65,42 +66,45 @@ tk_screen_t *ui_screen_opt_video(tk_t *tk, ui_t *ui) {
       ret,
       TK_PARENT->bg_mashup = bg_mashup(tk->bg, NULL, "1_options", "1", NULL);
 
-      TK_STACK(ret->el_content_container = TK_PARENT; TK_PARENT->userdata = ud;
-               TK_PARENT->actionfunc = (void *)opt_video_actionfunc;
-               tk_el_padding(TK_PARENT, 300, 250, 0, 0);
+      TK_STACK(
+          ret->el_content_container = TK_PARENT; TK_PARENT->userdata = ud;
+          TK_PARENT->actionfunc = (void *)opt_video_actionfunc;
+          tk_el_padding(TK_PARENT, 300, 250, 0, 0);
 
-               // create controls
-               ud->fullscreen = tk_ctrl_arrowtext(
-                   tk, TK_PARENT, NULL, 0, NULL, 0, "FULLSCREEN: ", NULL,
-                   tk->wine ? "RESTART REQUIRED TO APPLY" : NULL,
-                   "SEE ALSO: GIT.IO/G2HR_MENU", NULL, NULL);
+          // create controls
+          if (!ui->slotmachine) ud->fullscreen = tk_ctrl_arrowtext(
+              tk, TK_PARENT, NULL, 0, NULL, 0, "FULLSCREEN: ", NULL,
+              tk->wine ? "RESTART REQUIRED TO APPLY" : NULL,
+              "SEE ALSO: GIT.IO/G2HR_VIDEO", NULL, NULL);
 
-               ud->upscaling = tk_ctrl_arrowtext(
-                   tk, TK_PARENT, NULL, 0, ui->menu_upscaling_values->pieces,
-                   ui->menu_upscaling_values->count, "UPSCALING: ", NULL,
-                   "ONLY FOR THE MENU", "DEFAULT: LINEAR", NULL, NULL);
+          ud->upscaling = tk_ctrl_arrowtext(
+              tk, TK_PARENT, NULL, 0, ui->menu_upscaling_values->pieces,
+              ui->menu_upscaling_values->count, "UPSCALING: ", NULL,
+              "ONLY FOR THE MENU", "DEFAULT: LINEAR", NULL, NULL);
 
-               ud->lighting = tk_ctrl_arrowtext(
-                   tk, TK_PARENT, NULL, 0, ui->ingame_lighting_values->pieces,
-                   ui->ingame_lighting_values->count, "LIGHTING: ", NULL, NULL,
-                   "DEFAULT: NOON", NULL, NULL);
+          ud->lighting = tk_ctrl_arrowtext(
+              tk, TK_PARENT, NULL, 0, ui->ingame_lighting_values->pieces,
+              ui->ingame_lighting_values->count, "LIGHTING: ", NULL, NULL,
+              "DEFAULT: NOON", NULL, NULL);
 
-               ud->gamma = tk_ctrl_arrowtext(
-                   tk, TK_PARENT, NULL, 0, ui->gamma_values->pieces,
-                   ui->gamma_values->count, "GAMMA: ", NULL, NULL,
-                   "DEFAULT: 10", NULL, NULL);
+          ud->gamma = tk_ctrl_arrowtext(tk, TK_PARENT, NULL, 0,
+                                        ui->gamma_values->pieces,
+                                        ui->gamma_values->count, "GAMMA: ",
+                                        NULL, NULL, "DEFAULT: 10", NULL, NULL);
 
-               ud->exploding_scores = tk_ctrl_arrowtext(
-                   tk, TK_PARENT, NULL, 0, NULL, 0, "SCORE EFFECTS: ", NULL,
-                   "INGAME EXPLODING SCORES", tk->wine ? "DEFAULT: ON" : NULL,
-                   NULL, NULL);
+          ud->exploding_scores = tk_ctrl_arrowtext(
+              tk, TK_PARENT, NULL, 0, NULL, 0, "SCORE EFFECTS: ", NULL,
+              "INGAME EXPLODING SCORES", tk->wine ? "DEFAULT: ON" : NULL, NULL,
+              NULL);
 
-               // set values from config
-               SET_OPT_VAL_BOOL(ud->fullscreen, "fullscreen");
-               SET_OPT_VAL(ud->upscaling, "menu_upscaling");
-               SET_OPT_VAL(ud->lighting, "ingame_lighting");
-               SET_OPT_VAL(ud->gamma, "gamma");
-               SET_OPT_VAL_BOOL(ud->exploding_scores, "exploding_scores");););
+          // set values from config
+          if (!ui->slotmachine) SET_OPT_VAL_BOOL(ud->fullscreen, "fullscreen");
+          SET_OPT_VAL(ud->upscaling, "menu_upscaling");
+          SET_OPT_VAL(ud->lighting, "ingame_lighting");
+          SET_OPT_VAL(ud->gamma, "gamma");
+          SET_OPT_VAL_BOOL(ud->exploding_scores, "exploding_scores");
+
+          ););
 
   return ret;
 }
