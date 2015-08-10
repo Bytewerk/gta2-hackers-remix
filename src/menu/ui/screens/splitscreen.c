@@ -63,6 +63,9 @@ void splitscreen_draw_layout(ud_splitscreen_t *ud) {
     int num_x = r.x + r.w / 2 - num_w / 2;
     int num_y = r.y + r.h / 2 - num_h / 2;
     sty_text(renderer, fsty, font_id, 0xffffffff, num_x, num_y, 0, num_str);
+
+    // reset the render color to black
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0xff);
   }
 }
 
