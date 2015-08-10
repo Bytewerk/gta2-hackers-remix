@@ -73,7 +73,7 @@ tk_screen_t *ui_screen_opt_video(tk_t *tk, ui_t *ui) {
       TK_STACK(
           ret->el_content_container = TK_PARENT; TK_PARENT->userdata = ud;
           TK_PARENT->actionfunc = (void *)opt_video_actionfunc;
-          tk_el_padding(TK_PARENT, 300, 150, 0, 0);
+          tk_el_padding(TK_PARENT, 300, 200, 0, 0);
 
           // create controls
           if (!ui->slotmachine) ud->fullscreen = tk_ctrl_arrowtext(

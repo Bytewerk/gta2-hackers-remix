@@ -30,6 +30,7 @@ void ui_init_configs(ui_t *ui) {
   ini_modify(settings, "video", "text_speed", "3", false);
   ini_modify(settings, "video", "show_names", "true", false);
 
+  ini_modify(settings, "audio", "3d_sound", "false", false);
   ini_modify(settings, "audio", "music", "5", false);
   ini_modify(settings, "audio", "sfx", "5", false);
 

@@ -7,6 +7,11 @@
 void ui_send_game_config(ui_t *ui, bool splitscreen) {
   char buffer[BUFFER_LEN + 1];
 
+  // 3d sound
+  snprintf(buffer, BUFFER_LEN, "CONFIG 3D_SOUND %s",
+           ini_read(ui->ini_settings, "audio", "3d_sound"));
+  net_send_to_meta(ui->net, buffer, 0);
+
   // music volume
   snprintf(buffer, BUFFER_LEN, "CONFIG MUSIC_VOL %s",
            splitscreen ? "0" : ini_read(ui->ini_settings, "audio", "music"));

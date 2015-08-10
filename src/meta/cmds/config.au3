@@ -21,6 +21,10 @@ Func cmd_config($cmd)
 	Local $delete = false
 	
 	Switch $cmd[1]
+		case "3D_SOUND"
+			$folder = "Sound"
+			$key = "do_3d_sound"
+			$delete = ($value == "false")
 		case "MUSIC_VOL"
 			$folder = "Sound"
 			$key = "CDVol"
