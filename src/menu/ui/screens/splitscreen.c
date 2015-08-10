@@ -160,6 +160,7 @@ void splitscreen_start(ud_splitscreen_t *ud) {
 
   int cops_enabled = ((ud_arrowtext_t *)ud->cops->userdata)->entry_selected;
 
+  ui_send_game_config(ud->ui, true);
   snprintf(buffer, SPLITSCREEN_BUFFER_LEN, "SPLITSCREEN"
                                            " %i %i %i %s %i",
            player_count, map_id, game_type, time, cops_enabled);

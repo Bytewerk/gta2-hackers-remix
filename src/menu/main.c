@@ -15,6 +15,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define G2HR_MENU_FPS 20
 
@@ -27,6 +28,9 @@
 int main(int argc, char *argv[]) {
   if (!getenv("WINEPREFIX"))
     freopen("menu.log", "a", stdout);
+
+  // initialize the random seed
+  srand((unsigned int)time(NULL));
 
   // FIXME: attach gxt to ui instead of tk!
 

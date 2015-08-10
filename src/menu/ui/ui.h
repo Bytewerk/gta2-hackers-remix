@@ -82,6 +82,7 @@ void ui_init_configs(ui_t *ui);
 void ui_cleanup_configs(ui_t *ui);
 void ui_apply_video_config(ui_t *ui);
 void ui_apply_audio_config(ui_t *ui);
+void ui_send_game_config(ui_t *ui, bool splitscreen);
 
 void ui_callback_for_meta(char *msg, void *userdata);
 void ui_callback_for_native(TCPsocket sock, char header, void *userdata);

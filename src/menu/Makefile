@@ -86,6 +86,8 @@ obj/ui_callbacks.o: $(call DEPS,ui/ui_callbacks.c)
 	$(CC) -c -o $@ $<
 obj/ui_configs.o: $(call DEPS,ui/ui_configs.c)
 	$(CC) -c -o $@ $<
+obj/ui_send_cfg.o: $(call DEPS,ui/ui_send_game_config.c)
+	$(CC) -c -o $@ $<
 
 # TK: CTRL
 obj/ctrl_arrow.o: $(call DEPS,tk/ctrl/arrow.c)
