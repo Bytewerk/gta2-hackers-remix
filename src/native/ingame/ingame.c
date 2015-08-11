@@ -174,7 +174,7 @@ void ingame_frame(ingame_t *ingame, SDL_Event *event) {
   for (int i = 0; i < count && pad; i++) {
     net_injected_instance_t *instance = ingame->instance_by_player_id[i];
 
-    if (instance && !pad->disconnected) {
+    if (instance) {
       ingame_instance_userdata_t *ud =
           (ingame_instance_userdata_t *)instance->userdata;
 
