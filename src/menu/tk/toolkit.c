@@ -26,9 +26,17 @@ tk_t *tk_init(gxt_t *gxt, sty_t *fsty, sfx_t *sfx, bg_t *bg, char *pref_path,
   SDL_RenderSetLogicalSize(tk->renderer, 640, 480);
 
   // set the window icon
+  // FIXME: find a way (native windows api?) to set a 16x16 and 32x32
+  // icon, right now we can only have one resolution for both!
+
   SDL_Surface *icon = IMG_Load("data/g2hr.png");
   SDL_SetWindowIcon(tk->window, icon);
   SDL_FreeSurface(icon);
+
+  // TODO: maybe one day, a gta2-90s-style cursor could be set here,
+  // but that only makes sense when the menu can be used with a mouse
+  // (which is not the case now!)
+  SDL_ShowCursor(SDL_DISABLE);
 
   return tk;
 }
