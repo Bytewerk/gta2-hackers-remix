@@ -30,11 +30,8 @@ void ui_callback_for_meta(char *msg, void *userdata) {
                 for (int i = 0; i < 6; i++) data->pids[i] = pids[i];
 
                 data->singleplayer = ui->singleplayer;);
-  }
-
-  // FIXME: not sure if this works
-  else if (sscanf(msg, "STATUS %s", buffer)) {
-    ui_ready_status(ui, buffer);
+  } else if (sscanf(msg, "STATUS %s", buffer)) {
+    ui_ready_status(ui, msg + strlen("STATUS "));
   }
 }
 

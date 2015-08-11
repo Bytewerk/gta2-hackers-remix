@@ -38,17 +38,20 @@ tk_screen_t *ui_screen_ready(tk_t *tk, ui_t *ui) {
 
       // override screen action, because we have no controls
       TK_PARENT->actionfunc = ready_actionfunc;
-
       TK_PARENT->bg_mashup =
           bg_mashup(tk->bg, "levelcomplete", NULL, NULL, NULL);
+
+      // set a fixed with to the parent container, so centering
+      // child elements works
+      TK_PARENT->width = 640;
 
       // GET READY text
       tk_el_t *get_ready = tk_label(tk, TK_PARENT, "GET READY...",
                                     GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0);
-      tk_el_padding(get_ready, 236, 266, 0, 0);
+      tk_el_padding(get_ready, 0, 266, 0, 20); tk_el_center(get_ready);
 
       // a status line that can be set by the meta component over
-      // network
+      // network via ui_ready_status(ui, text)
       ui->ready_status =
           tk_label(tk, TK_PARENT, "", GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0);
       tk_el_center(ui->ready_status););
