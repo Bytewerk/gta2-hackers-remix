@@ -9,19 +9,6 @@
 startup()
 
 
-; Connect to the menu
-$global_sock = TCPConnect("127.0.0.1", 20150)
-If @ERROR Then Exit MsgBox(16,"G2HR", "Meta: Can't connect to the " _
-	& "'menu' component!" & @CRLF _
-	& "GTA2: Hacker's Remix is divided into multiple\n" & @CRLF _
-	& " components, which need to connect to each other over" _
-	& " TCP" & @CRLF & "via localhost in order to do their unholy" _
-	& " vodoo magic." & @CRLF & "Check your firewall settings!" _
-	& @CRLF & @CRLF & "More info: http://git.io/g2hr-firewall")
-
-re("CONNECTED! CAN YOU GIVE ME THE CONFIG PATH?")
-
-
 Global $exit = 0
 While Not $exit
 	

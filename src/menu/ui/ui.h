@@ -73,11 +73,16 @@ typedef struct {
   // is the game running in slotmachine mode?
   bool slotmachine;
 
+  // this flag gets set by ui_show(), which means that meta is
+  // connected and the UI is actually visible and can handle input
+  bool visible;
+
   // synced from the native component
   uint16_t controllers_connected;
 } ui_t;
 
 ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl);
+void ui_show(ui_t *ui);
 
 // configs related
 void ui_init_configs(ui_t *ui);

@@ -19,12 +19,23 @@ Func startup()
 	If Not $WINE Then Run("bin/g2hr_native.exe")
 
 	
+	; Try to connect to the menu for 7 seconds
 	TCPStartup()
+	For $i = 0 To 140
+		Sleep(50)
+		$global_sock = TCPConnect("127.0.0.1", 20150)
+		If $global_sock <> -1 And $global_sock <> 0 Then Exitloop
+	Next
 
-	; Wait 5 seconds for the menu window to appear
-	$HWND_SDL = WinWait($HWND_SDL_DESC, "", 5)
-	If Not $HWND_SDL Then
-		Exit MsgBox(16,"G2HR","Meta: Couldn't find the SDL menu window!" _
-			& @CRLF & "Please report this here: http://git.io/g2hr-bugs")
-	Endif
+	If $global_sock == -1 Or $global_sock == 0 Then _
+		Exit MsgBox(16,"G2HR", "Meta: Can't connect to the " _
+			& "'menu' component!" & @CRLF _
+			& "GTA2: Hacker's Remix is divided into multiple" & @CRLF _
+			& " components, which need to connect to each other over" _
+			& "	TCP" & @CRLF & "via localhost in order to do their unholy" _
+			& " vodoo magic." & @CRLF & "Check your firewall settings!" _
+			& @CRLF & @CRLF & "More info: http://git.io/g2hr-firewall")
+
+	re("CONNECTED! CAN YOU GIVE ME THE CONFIG PATH?")
+	
 Endfunc

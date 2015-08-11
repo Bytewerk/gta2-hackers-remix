@@ -59,6 +59,13 @@ int main(int argc, char *argv[]) {
   // run registry path changer
   rpc_init(pref_path);
 
+  // wait until the meta component is connected
+  printf("[menu] init complete, waiting for meta to connect...\n");
+  while (!ui->visible) {
+    net_frame(net);
+    SDL_Delay(50);
+  }
+
   // main loop
   uint32_t previous = 0;
   while (!tk->quit) {

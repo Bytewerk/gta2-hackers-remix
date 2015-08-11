@@ -15,6 +15,13 @@ Func handle_msg($msg)
 				& " bug at:" & @CRLF &  "http://git.io/g2hr-bugs")
 		Endif
 		re("LOOKS VALID :)")
+		
+		; Wait 5 seconds for the menu window to appear
+		$HWND_SDL = WinWait($HWND_SDL_DESC, "", 5)
+		If Not $HWND_SDL Then
+			Exit MsgBox(16,"G2HR","Meta: Couldn't find the SDL menu window!" _
+				& @CRLF & "Please report this here: http://git.io/g2hr-bugs")
+		Endif
 	Endif
 	
 	

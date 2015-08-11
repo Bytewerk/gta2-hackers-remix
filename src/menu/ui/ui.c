@@ -136,6 +136,17 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
   else
     tk->screen_active = ui->first_run;
 
+  if (strcmp(SDL_GetPlatform(), "Windows")) // string does NOT equal
+  {
+    printf("[menu] not compiled for Windows, showing the UI"
+           " directly, without any connection to the meta component."
+           " Enjoy debugging!\n");
+    ui_show(ui);
+  }
+  return ui;
+}
+
+void ui_show(ui_t *ui) {
   ui_apply_video_config(ui);
   SDL_ShowWindow(ui->tk->window);
   SDL_RaiseWindow(ui->tk->window);
@@ -146,8 +157,7 @@ ui_t *ui_init(tk_t *tk, mmp_t *mmp, net_t *net, sl_t *sl) {
 
   ui_apply_audio_config(ui);
   sfx_play_song(ui->tk->sfx, SFX_SONG_MAINMENU);
-
-  return ui;
+  ui->visible = true;
 }
 
 void ui_cleanup(ui_t *ui) {
