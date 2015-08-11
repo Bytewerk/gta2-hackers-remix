@@ -1,3 +1,7 @@
+#include <WinAPI.au3>
+#include <WinAPIConstants.au3>
+#include <WindowsConstants.au3> 
+
 ; We have this in an extra function, because we also need to do this
 ; for the normal registry path (Software\DMA Design Ltd\GTA2\). Although
 ; it is replaced in the exe files where it was found, somehow the net-
@@ -104,9 +108,14 @@ Endfunc
 Func cmd_splitscreen($cmd)
 	Local $player_count = $cmd[1] ; Zero based!
 	
-	status("PREPARING THE REGISTRY")
+	; both methods don't work in wine!
+	; If $WINE Then WinSetOnTop($HWND_SDL, "", 1)
+	; If $WINE Then _WinAPI_SetWindowLong ($HWND_SDL, $GWL_EXSTYLE, _
+	;	$WS_EX_TOPMOST)
+	
 	
 	; Host settings (map id, game type etc.)
+	status("PREPARING THE REGISTRY")
 	prepare_host_registry($cmd)
 	
 	; Client settings (such as resultions etc.)
@@ -155,10 +164,15 @@ Func cmd_splitscreen($cmd)
 	Next
 	
 	; Show all windows "at the same time"
-	For $i = $player_count To 0 Step -1
-		$hwnd = wait_for_hwnd_with_desc($global_game_process_ids[$i], _
-			$GTA2_GAME_WINDOW_DESC)
-		
-		If Not $WINE Then WinSetState($hwnd, "", @SW_SHOW)
-	Next
+	If $WINE Then
+		; this doesn't work in wine.
+		WinSetOnTop($HWND_SDL, "", 0)
+	Else	
+		For $i = $player_count To 0 Step -1
+			$hwnd = wait_for_hwnd_with_desc($global_game_process_ids[$i], _
+				$GTA2_GAME_WINDOW_DESC)
+			
+			If Not $WINE Then WinSetState($hwnd, "", @SW_SHOW)
+		Next
+	Endif
 Endfunc
