@@ -59,9 +59,11 @@ While Not $exit
 	
 	
 	sleep(100) ; TCPRecv is non-blocking!
+	hide_taskbar_when_menu_focused(); in case the user alt-tabbed away
 WEnd
 
 ; Clean up (sends a message, in case the clean up is unexpected by menu)
+taskbar_hide(false)
 re("CLEANING UP...")
 ProcessClose("dplaysvr.exe")
 For $i = 1 To $GTA2_PLAYER_COUNT
@@ -69,3 +71,5 @@ For $i = 1 To $GTA2_PLAYER_COUNT
 Next
 TCPCloseSocket($global_sock)
 TCPShutdown()
+
+

@@ -1,5 +1,6 @@
 #include "cmds/singleplayer.au3"
 #include "cmds/splitscreen.au3"
+#include "cmds/fullscreen.au3"
 #include "cmds/config.au3"
 #include "cmds/quit.au3"
 
@@ -42,6 +43,8 @@ Func handle_msg($msg)
 		Case "SPLITSCREEN"
 			cmd_splitscreen($cmd)
 			re("SHUT UP, THE GAME HAS BEEN STARTED!")
+		Case "FULLSCREEN"
+			cmd_fullscreen($cmd)
 		Case "QUIT"
 			cmd_quit()
 	EndSwitch

@@ -3,7 +3,9 @@ Func startup()
 		Exit Msgbox(16,"G2HR","This program gets opened internally on" _
 			& @CRLF & "Linux. Start g2hr.sh instead!")
 	Endif
-
+	
+	taskbar_hide(false)
+	
 	; Kill processes that are still open
 	; todo: find a way to kill g2hr.exe - without killing itself?
 	
