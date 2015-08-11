@@ -7,7 +7,7 @@ These are the licenses, that are used in "GTA2: Hacker's Remix":
 
 
 - GPLv2 (or higher)
-	- for all source code ('Makefile', all files in 'src'-folder)
+	- for all source code ('Makefile' and all files in 'src'-folder)
 	- for all config files (only '*.cfg'-files in the data folder)
 	- legal text: src/LICENSE
 
@@ -15,6 +15,11 @@ These are the licenses, that are used in "GTA2: Hacker's Remix":
 	- for artwork (pictures in 'data'-folder)
 	- exact license for each file is in the README.txt of the same
 		folder
+
+- 3rd party open source licenses
+	- each third party component has a LICENSE file, see the
+		src-3rdparty folder
+
 
 If you have any questions about the licensing, please ask here:
 https://github.com/Bytewerk/gta2-hackers-remix/issues
