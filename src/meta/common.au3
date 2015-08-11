@@ -123,7 +123,7 @@ Func wait_for_listview_entry_count($hwnd, $ctrl_id, $count)
 		
 		If $current <> $last And $count > 1 Then
 			$last = $current
-			status($last & " / " & $count & " PLAYERS JOINED")
+			status($last & "/" & $count & " PLAYERS JOINED")
 		Endif
 		
 		If $current == $count Then _

@@ -1,6 +1,7 @@
 #include "cmds/singleplayer.au3"
 #include "cmds/splitscreen.au3"
 #include "cmds/config.au3"
+#include "cmds/quit.au3"
 
 Func handle_msg($msg)
 
@@ -35,8 +36,7 @@ Func handle_msg($msg)
 			cmd_splitscreen($cmd)
 			re("SHUT UP, THE GAME HAS BEEN STARTED!")
 		Case "QUIT"
-			; FIXME: close ALL games!
-			ProcessClose($global_game_process_ids[$cmd[1]])
+			cmd_quit()
 	EndSwitch
 	Return True
 Endfunc

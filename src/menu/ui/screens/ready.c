@@ -54,7 +54,8 @@ tk_screen_t *ui_screen_ready(tk_t *tk, ui_t *ui) {
       // network via ui_ready_status(ui, text)
       ui->ready_status =
           tk_label(tk, TK_PARENT, "", GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0);
-      tk_el_center(ui->ready_status););
+      tk_el_center(ui->ready_status);
+      ui->ready_status->argb_normal = 0x99ffffff;);
 
   return ready;
 }
