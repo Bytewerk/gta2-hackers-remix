@@ -20,7 +20,7 @@ void ui_callback_for_meta(char *msg, void *userdata) {
   } else if (!strcmp(msg, "INSTANCE CLOSED 0")) {
     sfx_play_song(ui->tk->sfx, SFX_SONG_MAINMENU);
     ui->tk->disable_draw = false;
-    // TODO: directly call the redraw function?
+    MESSAGESENDSHORT(ui->net->sock_native, NA_BACK_IN_MENU);
   }
 
   else if (sscanf(msg, "PID_TABLE %i %i %i %i %i %i", &pids[0], &pids[1],

@@ -19,6 +19,8 @@ typedef struct {
   bool singleplayer;
 } NA_PID_TABLE_t;
 
+#define NA_BACK_IN_MENU 0x03
+
 //
 // NATIVE TO MENU MESSAGES
 //

@@ -30,6 +30,12 @@ void inmenu_recv_callback(unsigned char msg_id, TCPsocket sock,
 
       inmenu->singleplayer = data->singleplayer;
     });
+    MESSAGECASESHORT(NA_BACK_IN_MENU, {
+      // clean up all injected sockets.
+      net_t *net = inmenu->net;
+      while (net->injected_count)
+        net_injected_instance_cleanup(net, net->injected_count - 1);
+    });
   }
 }
 
