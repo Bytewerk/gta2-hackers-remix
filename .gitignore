@@ -10,6 +10,10 @@ core.*
 vgcore.*
 
 
+# uncompressed bsdiff patches
+*.bsdiff
+
+
 # PKGBUILDs
 build/PKGBUILDs/*/pkg
 build/PKGBUILDs/*/src
