@@ -1,5 +1,5 @@
 run: create_patch.bin
-	./create_patch.bin gta2.exe gta2_vike.exe
+	./create_patch.bin gta2.exe gta2_vike.exe vike.patch
 
 
 create_patch.bin: create_patch.c

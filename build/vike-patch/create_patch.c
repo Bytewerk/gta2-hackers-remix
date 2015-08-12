@@ -4,9 +4,12 @@
 #include <stdlib.h>
 
 int main(int argc, char **argv) {
-  if (argc < 3)
-    exit(printf("Syntax: %s gta2.exe gta2_vike.exe\n", argv[0]));
+  if (argc < 4)
+    exit(printf("Syntax: %s gta2.exe gta2_vike.exe"
+                " patch_output\n",
+                argv[0]));
 
+  // load the input files
   size_t size_patch;
   uint32_t size_old;
   uint32_t size_new;
@@ -18,12 +21,17 @@ int main(int argc, char **argv) {
   printf("starting patch...\n");
   BDELTAcode code = bdelta_diff(buffer_old, size_old, buffer_new, size_new,
                                 &buffer_patch, &size_patch);
-  printf("patch result: %i\n", code);
+  if (code)
+    exit(printf("ERROR: bdelta failed with code %i!\n", code));
 
-  /*
-          TODO: write the patch file and verify!
-  */
+  printf("writing to %s...\n", argv[3]);
+  FILE *handle = fopen(argv[3], "wb");
+  if (!handle)
+    exit(printf("ERROR: failed to open the file!\n"));
+  fwrite(buffer_patch, size_patch, 1, handle);
+  fclose(handle);
 
+  printf("cleaning up...\n");
   free(buffer_old);
   free(buffer_new);
   free(buffer_patch);
