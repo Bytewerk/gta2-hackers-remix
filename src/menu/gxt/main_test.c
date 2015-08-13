@@ -8,7 +8,7 @@ int main(int argc, char **argv) {
 
   gxt_entry_t *entry = gxt->entries;
   int i = 0;
-  while (entry && i < 3) {
+  while (entry) {
     printf("(%5i) %10s: %s\n", i, entry->id, entry->text);
 
     entry = entry->next;
