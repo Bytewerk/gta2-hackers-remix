@@ -3,7 +3,7 @@ ROOT=$PWD/../../
 TEMP=$PWD/temp_installer/
 OBJ=$PWD/obj_installer/
 HEADER=$PWD/c/packed_files.h
-OBJCOPY="objcopy --output elf64-x86-64 --binary-architecture i386"
+OBJCOPY="i686-w64-mingw32-objcopy --output i686-w64-mingw32 --binary-architecture i386"
 
 # prepare
 rm -rf $TEMP $HEADER $OBJ 2&> /dev/null
@@ -43,14 +43,14 @@ do
 	FILENAMES="${FILENAMES}
 	\"${f}\","
 	SYMBOLS_START="${SYMBOLS_START}
-	&_binary_${hash}_start,"
+	&binary_${hash}_start,"
 	SYMBOLS_END="${SYMBOLS_END}
-	&_binary_${hash}_end,"
+	&binary_${hash}_end,"
 	UNCOMPRESSED_SIZE="$UNCOMPRESSED_SIZE
 	${size},"
 	EXTERNS="$EXTERNS
-extern char _binary_${hash}_start;
-extern char _binary_${hash}_end;"
+extern char binary_${hash}_start;
+extern char binary_${hash}_end;"
 	
 
 done

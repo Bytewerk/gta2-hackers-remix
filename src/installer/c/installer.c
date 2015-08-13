@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct xz_dec xz_dec_t;
 typedef struct xz_buf xz_buf_t;
@@ -25,20 +26,20 @@ void extract_file(xz_dec_t *xz_dec, uint16_t index, char *output) {
   free(buffer);
 }
 
+uint16_t get_index(char *name) {
+  uint16_t i = 0;
+  for (char **pos = PACKED_FILENAMES; **pos; pos++) {
+    if (!strcmp(name, *pos))
+      return i;
+    i++;
+  }
+  printf("ERROR: couldn't find the index for %s!\n", name);
+  return 0;
+}
+
 int main() {
   xz_crc32_init();
   xz_dec_t *xz_dec = xz_dec_init(XZ_SINGLE, 0);
-
-  char **pos = PACKED_FILENAMES;
-  int i = 0;
-  while (**pos) {
-    printf("%s\n", *pos);
-    extract_file(xz_dec, i, "README.md");
-    pos++;
-    i++;
-
-    break; // debug
-  }
-
+  extract_file(xz_dec, get_index("bin/g2hr.exe"), "g2hr.exe");
   xz_dec_end(xz_dec);
 }

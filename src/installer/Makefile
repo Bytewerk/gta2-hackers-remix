@@ -1,11 +1,11 @@
-CC:=LANG=C gcc -Wall -Werror
-BIN:=../../bin/g2hr_installer.bin
+CC:=LANG=C i686-w64-mingw32-gcc -static -Wall -Werror
+BIN:=../../bin/g2hr_installer.exe
 
 
 
 
 run: $(BIN)
-	$(BIN)
+	wine $(BIN)
 
 $(BIN): c/installer.c c/packed_files.h obj/xz.o obj_installer
 	$(CC) -o $@ c/installer.c obj_installer/*.o obj/xz.o
