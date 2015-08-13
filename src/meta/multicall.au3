@@ -7,10 +7,8 @@
 
 If $CmdLine[0] >= 1 Then
 	If $CmdLine[1] == "install" Then
-		installer_main()
-		Exit 0
+		Exit installer_main()
 	ElseIf $CmdLine[1] == "uninstall" Then
-		uninstaller_main()
-		Exit 0
+		Exit uninstaller_main()
 	Endif
 Endif
