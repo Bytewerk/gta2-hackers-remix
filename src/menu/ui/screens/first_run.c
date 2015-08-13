@@ -43,16 +43,19 @@ void first_run_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
 
   if (action != TK_ACTION_ENTER)
     return;
+
+  if (el_selected == ud->yes || el_selected == ud->no) {
+    tk->screen_active = IS_NOT_FIRST_RUN ? ud->ui->options : ud->ui->main;
+  }
+
   if (el_selected == ud->yes) {
     ini_modify(ud->ui->ini_settings, "ui", "update_check_enabled", "true",
                true);
     ud->ui->chk = chk_init(ud->ui->tk->pref_path, true);
-    tk->screen_active = IS_NOT_FIRST_RUN ? ud->ui->options : ud->ui->main;
     ini_save(ud->ui->ini_settings, NULL, false, false);
   } else if (el_selected == ud->no) {
     ini_modify(ud->ui->ini_settings, "ui", "update_check_enabled", "false",
                true);
-    tk->screen_active = IS_NOT_FIRST_RUN ? ud->ui->options : ud->ui->main;
     ini_save(ud->ui->ini_settings, NULL, false, false);
   }
 }
