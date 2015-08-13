@@ -1,8 +1,28 @@
-BIN=../../bin/g2hr_installer.bin
+CC:=LANG=C gcc -Wall -Werror
+BIN:=../../bin/g2hr_installer.bin
 
-$(BIN): installer.c packed_files.h obj/xz.o
-	gcc -Wall -Werror -o $@ installer.c obj_installer/*.o obj/xz.o
+
+
+
+run: $(BIN)
+	$(BIN)
+
+$(BIN): installer.c packed_files.h obj/xz.o obj_installer
+	$(CC) -o $@ installer.c obj_installer/*.o obj/xz.o
+
+
+obj_installer:
+	./pack.sh
 
 
 obj/xz.o:
-	gcc -c -o $@ ../../src-3rdparty/xz-embedded/xz.c
+	$(CC) -c -o $@ ../../src-3rdparty/xz-embedded/xz.c
+
+
+clean:
+	rm obj/*
+	rm -r obj_installer
+
+
+
+.PHONY: clean run

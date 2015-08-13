@@ -36,7 +36,7 @@ do
 	echo "$hash $f ($size)"
 	
 	# create a compressed objects
-	xz $ROOT/$f --stdout > $TEMP/$hash
+	xz --check=crc32 $ROOT/$f --stdout > $TEMP/$hash
 	$OBJCOPY --input binary $hash $OBJ/$hash.o
 	
 	# save the header variables
