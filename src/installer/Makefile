@@ -7,8 +7,8 @@ BIN:=../../bin/g2hr_installer.exe
 run: $(BIN)
 	wine $(BIN)
 
-$(BIN): c/installer.c c/packed_files.h obj/xz.o obj_installer
-	$(CC) -o $@ c/installer.c obj_installer/*.o obj/xz.o
+$(BIN): c/installer.c c/packed_files.h obj/xz.o obj/cstr.o obj_installer
+	$(CC) -o $@ c/installer.c obj_installer/*.o obj/xz.o obj/cstr.o
 	du -h $(BIN)
 
 
@@ -18,6 +18,9 @@ obj_installer:
 
 obj/xz.o:
 	$(CC) -c -o $@ ../../src-3rdparty/xz-embedded/xz.c
+
+obj/cstr.o: ../common/cstr/*.c ../common/cstr/*.h
+	$(CC) -c -o $@ ../common/cstr/cstr.c
 
 
 clean:
