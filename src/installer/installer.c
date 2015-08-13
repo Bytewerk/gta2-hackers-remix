@@ -27,7 +27,7 @@ void extract_file(xz_dec_t *xz_dec, uint16_t index, char *output) {
 
 int main() {
   xz_crc32_init();
-  xz_dec_t *xz_dec = xz_dec_init(XZ_SINGLE, 1024 * 64);
+  xz_dec_t *xz_dec = xz_dec_init(XZ_SINGLE, 0);
 
   char **pos = PACKED_FILENAMES;
   int i = 0;
