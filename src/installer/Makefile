@@ -7,8 +7,9 @@ BIN:=../../bin/g2hr_installer.bin
 run: $(BIN)
 	$(BIN)
 
-$(BIN): installer.c packed_files.h obj/xz.o obj_installer
-	$(CC) -o $@ installer.c obj_installer/*.o obj/xz.o
+$(BIN): c/installer.c c/packed_files.h obj/xz.o obj_installer
+	$(CC) -o $@ c/installer.c obj_installer/*.o obj/xz.o
+	du -h $(BIN)
 
 
 obj_installer:

@@ -2,7 +2,7 @@
 ROOT=$PWD/../../
 TEMP=$PWD/temp_installer/
 OBJ=$PWD/obj_installer/
-HEADER=$PWD/packed_files.h
+HEADER=$PWD/c/packed_files.h
 OBJCOPY="objcopy --output elf64-x86-64 --binary-architecture i386"
 
 # prepare

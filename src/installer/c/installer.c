@@ -1,4 +1,4 @@
-#include "../../src-3rdparty/xz-embedded/xz.h"
+#include "../../../src-3rdparty/xz-embedded/xz.h"
 #include "packed_files.h"
 #include <stdint.h>
 #include <stdio.h>
