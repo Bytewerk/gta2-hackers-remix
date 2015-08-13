@@ -20,8 +20,7 @@ obj/xz.o:
 
 
 clean:
-	rm obj/*
-	rm -r obj_installer
+	rm -r obj/* obj_installer $(BIN) || true
 
 
 
