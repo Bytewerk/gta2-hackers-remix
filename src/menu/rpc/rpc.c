@@ -1,6 +1,8 @@
 #include "rpc.h"
+#include "../../../src-3rdparty/bsdiff/bspatch.c"
 #include "../../common/fs/fs.h"
 #include "../../common/headers/common.h"
+#include "../../common/headers/vike_patch.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -82,6 +84,37 @@ rpc_pos_t *rpc_search(char *exe_buffer, uint32_t size) {
   return first;
 }
 
+// returns 0 on success
+int bspatch_read(const bspatch_stream *stream, void *buffer, int size) {
+  fread(buffer, size, 1, (FILE *)stream->opaque);
+  return 0;
+}
+
+char *rpc_vike_patch(char *buffer, uint32_t *size) {
+  if (*size != G2HR_GTA2_EXE_SIZE)
+    exit(printf("unexpected GTA2.exe size, won't patch this!\n"));
+
+  uint32_t size_old = *size;
+  uint32_t size_new = G2HR_GTA2_EXE_SIZE_PATCHED;
+  char *buffer_old = buffer;
+  char *buffer_new = malloc(size_new);
+
+  FILE *handle = fopen(G2HR_VIKE_PATCH, "rb");
+  if (!handle)
+    printf("ERROR: couldn't open %s!\n", G2HR_VIKE_PATCH);
+
+  bspatch_stream stream;
+  stream.opaque = (void *)handle;
+  stream.read = bspatch_read;
+  bspatch((const uint8_t *)buffer_old, size_old, (uint8_t *)buffer_new,
+          size_new, &stream);
+
+  fclose(handle);
+  free(buffer_old);
+  *size = size_new;
+  return buffer_new;
+}
+
 #define RPC_CACHE_PATH_LENGTH 1000
 void rpc_init(char *prefpath) {
   char cache_file[RPC_CACHE_PATH_LENGTH + 1];
@@ -98,6 +131,9 @@ void rpc_init(char *prefpath) {
     // read GTA2.exe, if that hasn't been done already
     if (!exe_buffer) {
       exe_buffer = fs_load_small_file_to_ram("GTA2/gta2.exe", &size, 0);
+
+      // apply Vike the Hube's patch (this frees the old buffer)
+      exe_buffer = rpc_vike_patch(exe_buffer, &size);
 
       // find the registry strings we'll replace
       first = rpc_search(exe_buffer, size);
