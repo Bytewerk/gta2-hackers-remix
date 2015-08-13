@@ -11,7 +11,7 @@ vgcore.*
 
 
 # uncompressed bsdiff patches
-*.bsdiff
+*.plainbsdiff
 
 
 # PKGBUILDs

@@ -1,5 +1,5 @@
-PATCH:=../../data/vike_patch.bsdiff
-PATCH_XZ:=../../data/vike_patch.xz
+PATCH:=../../data/vike_patch/vike_patch.plainbsdiff
+PATCH_XZ:=../../data/vike_patch/vike_patch.xz
 
 
 # The patch file is bigger than gta2_vike.exe, because it contains
@@ -12,7 +12,7 @@ $(PATCH): $(PATCH_XZ)
 	unxz $(PATCH).xz
 
 $(PATCH_XZ): create_patch.bin gta2.exe gta2_vike.exe
-	./create_patch.bin gta2.exe gta2_vike.exe gta2_patched.exe $(PATCH)
+	./create_patch.bin gta2.exe gta2_vike.exe $(PATCH) gta2_patched.exe
 	md5sum gta2_vike.exe gta2_patched.exe
 	xz $(PATCH)
 	mv $(PATCH).xz $(PATCH_XZ)

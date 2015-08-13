@@ -1,4 +1,6 @@
-all: bin/g2hr_menu.exe bin/g2hr_native.exe bin/g2hr.exe bin/proxy.dll data/vike_patch.bsdiff
+PATCH:=data/vike_patch/vike_patch.plainbsdiff
+
+all: $(PATCH) bin/g2hr_menu.exe bin/g2hr_native.exe bin/g2hr.exe bin/proxy.dll
 
 
 # The four main components
@@ -20,8 +22,8 @@ bin/g2hr_native.bin:
 bin/g2hr_native.exe:
 	$(MAKE) -C src/native/ Windows
 
-data/vike_patch.bsdiff:
-	$(MAKE) -C build/vike-patch
+$(PATCH):
+	$(MAKE) -C build/vike_patch
 
 
 # Additional targets for easy debugging
