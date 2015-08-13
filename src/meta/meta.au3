@@ -1,4 +1,5 @@
 #NoTrayIcon
+#include "multicall.au3"
 #include "common.au3"
 #include "handle_msg.au3"
 #include <Array.au3>

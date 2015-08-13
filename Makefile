@@ -27,6 +27,13 @@ $(PATCH) $(PATCH_HEADER):
 	$(MAKE) -C build/vike_patch
 
 
+# installer
+
+installer: all
+	$(MAKE) -C src/installer/ clean
+	$(MAKE) -C src/installer/
+
+
 # Additional targets for easy debugging
 run: bin/g2hr_menu.exe bin/g2hr.exe bin/g2hr_native.bin GTA2/dmavideo.dll
 	bin/g2hr.sh 640 480
@@ -59,4 +66,4 @@ clean:
 		|| true
 	$(MAKE) -s -C src/menu clean
 	
-.PHONY: clean all bin/g2hr_menu.exe bin/g2hr.exe bin/g2hr_native.exe bin/g2hr_native.bin bin/proxy.dll GTA2/dmavideo.dll regsniff winecfg
+.PHONY: clean all bin/g2hr_menu.exe bin/g2hr.exe bin/g2hr_native.exe bin/g2hr_native.bin bin/proxy.dll GTA2/dmavideo.dll regsniff winecfg installer
