@@ -1,5 +1,6 @@
 PATCH:=../../data/vike_patch/vike_patch.plainbsdiff
 PATCH_XZ:=../../data/vike_patch/vike_patch.xz
+HEADER:=../../src/common/headers/vike_patch.h
 
 
 # The patch file is bigger than gta2_vike.exe, because it contains
@@ -7,13 +8,16 @@ PATCH_XZ:=../../data/vike_patch/vike_patch.xz
 # this is really only a patch and not a full exe file!
 
 
+all: $(PATCH) $(HEADER)
+
 $(PATCH): $(PATCH_XZ)
 	cp $(PATCH_XZ) $(PATCH).xz
 	unxz $(PATCH).xz
 
-$(PATCH_XZ): create_patch.bin gta2.exe gta2_vike.exe
-	./create_patch.bin gta2.exe gta2_vike.exe $(PATCH) gta2_patched.exe
-	md5sum gta2_vike.exe gta2_patched.exe
+$(PATCH_XZ) $(HEADER): create_patch.bin gta2.exe gta2_vike.exe
+	./create_patch.bin gta2.exe gta2_vike.exe $(PATCH) \
+		gta2_patched.exe ../../src/common/headers/vike_patch.h
+	md5sum -b gta2_vike.exe | sed s/_vike/_patched/ | md5sum -c
 	xz $(PATCH)
 	mv $(PATCH).xz $(PATCH_XZ)
 
@@ -25,9 +29,9 @@ create_patch.bin: create_patch.c
 		"../../src/common/fs/fs.c"
 
 clean:
-	rm create_patch.bin $(PATCH) $(PATCH_XZ) gta2_patched.exe || true
+	rm create_patch.bin $(PATCH) $(PATCH_XZ) gta2_patched.exe $(HEADER) || true
 	
 
 
 
-.PHONY: clean
+.PHONY: clean all

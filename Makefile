@@ -1,6 +1,7 @@
 PATCH:=data/vike_patch/vike_patch.plainbsdiff
+PATCH_HEADER:=src/common/headers/vike_patch.h
 
-all: $(PATCH) bin/g2hr_menu.exe bin/g2hr_native.exe bin/g2hr.exe bin/proxy.dll
+all: $(PATCH) bin/g2hr_menu.exe bin/g2hr_native.exe bin/g2hr.exe bin/proxy.dll $(PATCH_HEADER)
 
 
 # The four main components
@@ -22,7 +23,7 @@ bin/g2hr_native.bin:
 bin/g2hr_native.exe:
 	$(MAKE) -C src/native/ Windows
 
-$(PATCH):
+$(PATCH) $(PATCH_HEADER):
 	$(MAKE) -C build/vike_patch
 
 
