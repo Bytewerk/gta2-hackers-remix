@@ -18,6 +18,7 @@ EXTERNS=""
 FILENAMES=""
 SYMBOLS_START=""
 SYMBOLS_END=""
+UNCOMPRESSED_SIZE=""
 
 # cd into the temp folder, so objcopy doesn't add the path to the
 # symbol names
@@ -29,9 +30,10 @@ do
 	[[ "$f" == *vike_patch.xz ]] && continue
 	[[ "$f" == *.bin ]] && continue # linux files
 	
-	# create a hash
+	# create a hash and size
 	hash=$(md5sum $ROOT/$f | cut -f 1 -d " ")
-	echo $hash : $f
+	size=$(du -b $ROOT/$f | cut -f 1)
+	echo "$hash $f ($size)"
 	
 	# create a compressed objects
 	xz $ROOT/$f --stdout > $TEMP/$hash
@@ -44,18 +46,25 @@ do
 	&_binary_${hash}_start,"
 	SYMBOLS_END="${SYMBOLS_END}
 	&_binary_${hash}_end,"
+	UNCOMPRESSED_SIZE="$UNCOMPRESSED_SIZE
+	${size},"
 	EXTERNS="$EXTERNS
 extern char _binary_${hash}_start;
 extern char _binary_${hash}_end;"
+	
 
 done
 
 
 # create the header file
 cat <<EOF > $HEADER
-// this file gets generated automatically by pack.sh
+#pragma once
+#include <stddef.h>
+
+// this file gets generated automatically by pack.sh, do not modify.
 $EXTERNS
 
+// use this variable to iterate over all files, the last element is ""
 char* PACKED_FILENAMES[] =
 {${FILENAMES}
 	""
@@ -68,6 +77,11 @@ char* PACKED_START[] =
 char* PACKED_END[] =
 {${SYMBOLS_END}
 };
+
+size_t PACKED_UNCOMPRESSED_SIZE[] =
+{${UNCOMPRESSED_SIZE}
+};
+
 EOF
 
 # clean up
