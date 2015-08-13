@@ -9,6 +9,9 @@ build/wineprefix
 core.*
 vgcore.*
 
+# installer: automatically generated header file
+packed_files.h
+
 
 # uncompressed bsdiff patches
 *.plainbsdiff

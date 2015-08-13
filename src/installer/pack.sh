@@ -3,7 +3,7 @@ ROOT=$PWD/../../
 TEMP=$PWD/temp_installer/
 OBJ=$PWD/obj_installer/
 HEADER=$PWD/packed_files.h
-OBJCOPY="objcopy --output elf32-i386 --binary-architecture i386"
+OBJCOPY="objcopy --output elf64-x86-64 --binary-architecture i386"
 
 # prepare
 rm -rf $TEMP $HEADER $OBJ 2&> /dev/null
@@ -27,6 +27,7 @@ do
 	# skip some files
 	[[ "$f" == *g2hr.ini ]] && continue
 	[[ "$f" == *vike_patch.xz ]] && continue
+	[[ "$f" == *.bin ]] && continue # linux files
 	
 	# create a hash
 	hash=$(md5sum $ROOT/$f | cut -f 1 -d " ")
@@ -37,13 +38,15 @@ do
 	$OBJCOPY --input binary $hash $OBJ/$hash.o
 	
 	# save the header variables
-	FILENAMES="${FILENAMES}\"${hash}\","
-	SYMBOLS_START="${SYMBOLS_START}_binary_${hash}_start,"
-	SYMBOLS_END="${SYMBOLS_END}_binary_${hash}_end,"
+	FILENAMES="${FILENAMES}
+	\"${f}\","
+	SYMBOLS_START="${SYMBOLS_START}
+	&_binary_${hash}_start,"
+	SYMBOLS_END="${SYMBOLS_END}
+	&_binary_${hash}_end,"
 	EXTERNS="$EXTERNS
 extern char _binary_${hash}_start;
 extern char _binary_${hash}_end;"
-
 
 done
 
@@ -53,10 +56,18 @@ cat <<EOF > $HEADER
 // this file gets generated automatically by pack.sh
 $EXTERNS
 
-const char** PACKED_FILENAMES = { ${FILENAMES} NULL};
-const char*  PACKED_START = { ${SYMBOLS_START} '\0'};
-const char*  PACKED_END = { ${SYMBOLS_END} '\0'};
+char* PACKED_FILENAMES[] =
+{${FILENAMES}
+	""
+};
 
+char* PACKED_START[] =
+{${SYMBOLS_START}
+};
+
+char* PACKED_END[] =
+{${SYMBOLS_END}
+};
 EOF
 
 # clean up
