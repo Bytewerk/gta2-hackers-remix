@@ -3,6 +3,8 @@
 #include "../../../src-3rdparty/xz-embedded/xz.h"
 #include "../../common/cstr/cstr.h"
 #include "packed_files.h"
+#include <shlobj.h>
+#include <shlwapi.h> // PathRemoveFileSpec()
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,6 +28,8 @@ void extract_file(xz_dec_t *xz_dec, uint16_t index, char *output) {
   printf("extracting '%s' to '%s'...\n", PACKED_FILENAMES[index], output);
   xz_dec_run(xz_dec, &xz_buf);
   FILE *handle = fopen(output, "wb");
+  if (!handle)
+    exit(printf("failed to open output file!\n"));
   fwrite(buffer, size, 1, handle);
   fclose(handle);
   free(buffer);
@@ -85,17 +89,18 @@ int verify_hash(char *filename) {
 }
 
 int main(int argc, char **argv) {
-  char temp[200];
-  GetTempPath(199, temp);
-
   // default action: extract g2hr.exe and run the autoit installer,
   // which will show a nice gui and use this installer exe-file to
   // extract all other files, once the setup is configured.
   if (argc == 1) {
-    char *gui = cstr_merge(temp, "\\g2hr_installer_gui.exe");
+
+    char temp[200];
+    GetTempPath(199, temp);
+
+    char *gui = cstr_merge(temp, "g2hr_installer_gui.exe");
     xz_crc32_init();
     xz_dec_t *xz_dec = xz_dec_init(XZ_SINGLE, 0);
-    extract_file(xz_dec, get_index("bin/g2hr.exe"), gui);
+    extract_file(xz_dec, get_index("bin\\g2hr.exe"), gui);
 
     char *cmd = cstr_merge(gui, " install");
     printf("%s\n", cmd);
@@ -108,13 +113,28 @@ int main(int argc, char **argv) {
     return 0;
   }
 
-  // verify the sha512 hash of the original GTA2 installer
+  // verify the sha512 hash of the original GTA2 installer (2nd arg)
   if (argc == 3 && !strcmp(argv[1], "verify"))
     return verify_hash(argv[2]);
 
-  // extract the rest into the given folder (TODO)
+  // extract everything into the given folder (2nd arg)
   if (argc == 3 && !strcmp(argv[1], "extract")) {
-    printf("TODO!\n");
+    xz_crc32_init();
+    xz_dec_t *xz_dec = xz_dec_init(XZ_SINGLE, 0);
+    for (int i = 0; *PACKED_FILENAMES[i]; i++) {
+      char *target = cstr_merge(argv[2], "\\", PACKED_FILENAMES[i]);
+
+      // create the directory structure (FIXME: doesn't work yet!)
+      char *path = cstr_copy(target);
+      PathRemoveFileSpec(path);
+      printf("path without file: %s\n", path);
+      SHCreateDirectoryEx(NULL, path, NULL);
+      free(path);
+
+      extract_file(xz_dec, i, target);
+      free(target);
+    }
+    xz_dec_end(xz_dec);
     return 0;
   }
 

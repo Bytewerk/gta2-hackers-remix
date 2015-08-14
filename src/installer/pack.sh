@@ -40,6 +40,9 @@ do
 	xz --check=crc32 $ROOT/$f --stdout > $TEMP/$hash
 	$OBJCOPY --input binary $hash $OBJ/$hash.o
 	
+	# convert slashes to double backslashes in the .h file
+	f="$(echo "$f" | sed 's./.\\\\.g')"
+	
 	# save the header variables
 	FILENAMES="${FILENAMES}
 	\"${f}\","
