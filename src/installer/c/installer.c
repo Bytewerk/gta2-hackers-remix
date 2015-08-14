@@ -3,8 +3,6 @@
 #include "../../../src-3rdparty/xz-embedded/xz.h"
 #include "../../common/cstr/cstr.h"
 #include "packed_files.h"
-#include <shlobj.h>
-#include <shlwapi.h> // PathRemoveFileSpec()
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -88,6 +86,35 @@ int verify_hash(char *filename) {
   return 1;
 }
 
+// this simply tries to create every subfolder in the path
+void create_folder_structure(char *path) {
+  cstr_split_t *split = cstr_split(path, '\\', false);
+  for (int i = 0; i < split->count - 1; i++) {
+    char *partial = "";
+    for (int j = 0; j <= i; j++) {
+      char *old = partial;
+      partial = cstr_merge(partial, split->pieces[j], "\\");
+      free(old);
+    }
+    CreateDirectory(partial, NULL);
+    free(partial);
+  }
+  cstr_split_free(split);
+}
+
+int extract_everything(char *target_root) {
+  xz_crc32_init();
+  xz_dec_t *xz_dec = xz_dec_init(XZ_SINGLE, 0);
+  for (int i = 0; *PACKED_FILENAMES[i]; i++) {
+    char *target = cstr_merge(target_root, "\\", PACKED_FILENAMES[i]);
+    create_folder_structure(target);
+    extract_file(xz_dec, i, target);
+    free(target);
+  }
+  xz_dec_end(xz_dec);
+  return 0;
+}
+
 int main(int argc, char **argv) {
   // default action: extract g2hr.exe and run the autoit installer,
   // which will show a nice gui and use this installer exe-file to
@@ -118,25 +145,8 @@ int main(int argc, char **argv) {
     return verify_hash(argv[2]);
 
   // extract everything into the given folder (2nd arg)
-  if (argc == 3 && !strcmp(argv[1], "extract")) {
-    xz_crc32_init();
-    xz_dec_t *xz_dec = xz_dec_init(XZ_SINGLE, 0);
-    for (int i = 0; *PACKED_FILENAMES[i]; i++) {
-      char *target = cstr_merge(argv[2], "\\", PACKED_FILENAMES[i]);
-
-      // create the directory structure (FIXME: doesn't work yet!)
-      char *path = cstr_copy(target);
-      PathRemoveFileSpec(path);
-      printf("path without file: %s\n", path);
-      SHCreateDirectoryEx(NULL, path, NULL);
-      free(path);
-
-      extract_file(xz_dec, i, target);
-      free(target);
-    }
-    xz_dec_end(xz_dec);
-    return 0;
-  }
+  if (argc == 3 && !strcmp(argv[1], "extract"))
+    return extract_everything(argv[2]);
 
   printf("invalid commandline, see the source for more info.\n");
   return 1;

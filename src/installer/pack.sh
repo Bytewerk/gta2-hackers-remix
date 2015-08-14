@@ -29,6 +29,7 @@ do
 	[[ "$f" == *g2hr.ini ]] && continue
 	[[ "$f" == *vike_patch.xz ]] && continue
 	[[ "$f" == *.bin ]] && continue # linux files
+	[[ "$f" == *.sh ]] && continue # linux files
 	[[ "$f" == *_installer.exe ]] && continue # yay, recursion ;)
 	
 	# create a hash and size
@@ -36,7 +37,7 @@ do
 	size=$(du -b $ROOT/$f | cut -f 1)
 	echo "$hash $f ($size)"
 	
-	# create a compressed objects
+	# create a compressed object
 	xz --check=crc32 $ROOT/$f --stdout > $TEMP/$hash
 	$OBJCOPY --input binary $hash $OBJ/$hash.o
 	
