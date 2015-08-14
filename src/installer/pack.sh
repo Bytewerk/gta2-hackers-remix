@@ -29,6 +29,7 @@ do
 	[[ "$f" == *g2hr.ini ]] && continue
 	[[ "$f" == *vike_patch.xz ]] && continue
 	[[ "$f" == *.bin ]] && continue # linux files
+	[[ "$f" == *_installer.exe ]] && continue # yay, recursion ;)
 	
 	# create a hash and size
 	hash=$(md5sum $ROOT/$f | cut -f 1 -d " ")

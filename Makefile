@@ -30,7 +30,7 @@ $(PATCH) $(PATCH_HEADER):
 # installer
 
 installer: all
-	$(MAKE) -C src/installer/ clean
+	$(MAKE) -C src/installer/ force_repack
 	$(MAKE) -C src/installer/
 
 

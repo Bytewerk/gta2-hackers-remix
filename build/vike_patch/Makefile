@@ -8,9 +8,9 @@ HEADER:=../../src/common/headers/vike_patch.h
 # this is really only a patch and not a full exe file!
 
 
-all: $(PATCH) $(HEADER)
+all: $(PATCH)
 
-$(PATCH): $(PATCH_XZ)
+$(PATCH):
 	cp $(PATCH_XZ) $(PATCH).xz
 	unxz $(PATCH).xz
 

@@ -12,20 +12,24 @@ $(BIN): c/installer.c c/packed_files.h obj/xz.o obj/cstr.o obj_installer
 	du -h $(BIN)
 
 
-obj_installer:
+obj_installer c/packed_files.h:
 	./pack.sh
 
 
 obj/xz.o:
+	mkdir -p obj
 	$(CC) -c -o $@ ../../src-3rdparty/xz-embedded/xz.c
 
 obj/cstr.o: ../common/cstr/*.c ../common/cstr/*.h
+	mkdir -p obj
 	$(CC) -c -o $@ ../common/cstr/cstr.c
 
 
 clean:
 	rm -r obj/* obj_installer $(BIN) || true
 
+force_repack:
+	rm c/packed_files.h || true
 
 
-.PHONY: clean run
+.PHONY: clean run force_repack
