@@ -3,6 +3,7 @@
 #include "../../../src-3rdparty/xz-embedded/xz.h"
 #include "../../common/cstr/cstr.h"
 #include "packed_files.h"
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -115,30 +116,35 @@ int extract_everything(char *target_root) {
   return 0;
 }
 
-int main(int argc, char **argv) {
-  // default action: extract g2hr.exe and run the autoit installer,
-  // which will show a nice gui and use this installer exe-file to
-  // extract all other files, once the setup is configured.
-  if (argc == 1) {
-
-    char temp[200];
-    GetTempPath(199, temp);
-
-    char *gui = cstr_merge(temp, "g2hr_installer_gui.exe");
+int gui_installer(bool cleanup) {
+  char temp[200];
+  GetTempPath(199, temp);
+  char *gui = cstr_merge(temp, "g2hr_installer_gui.exe");
+  if (cleanup) {
+    Sleep(1000); // wait 1s for the gui process to quit
+    DeleteFile(gui);
+  } else {
     xz_crc32_init();
     xz_dec_t *xz_dec = xz_dec_init(XZ_SINGLE, 0);
     extract_file(xz_dec, get_index("bin\\g2hr.exe"), gui);
 
     char *cmd = cstr_merge(gui, " install");
     printf("%s\n", cmd);
-    system(cmd);
+    system(cmd); // TODO: add argv[0] as argument!
 
-    // clean up
     xz_dec_end(xz_dec);
-    free(gui);
     free(cmd);
-    return 0;
   }
+  free(gui);
+  return 0;
+}
+
+int main(int argc, char **argv) {
+  // default action: extract g2hr.exe and run the autoit installer,
+  // which will show a nice gui and use this installer exe-file to
+  // extract all other files, once the setup is configured.
+  if (argc == 1)
+    return gui_installer(false);
 
   // verify the sha512 hash of the original GTA2 installer (2nd arg)
   if (argc == 3 && !strcmp(argv[1], "verify"))
@@ -148,6 +154,11 @@ int main(int argc, char **argv) {
   if (argc == 3 && !strcmp(argv[1], "extract"))
     return extract_everything(argv[2]);
 
-  printf("invalid commandline, see the source for more info.\n");
+  // clean up the temp files extracted for the gui installer
+  if (argc == 2 && !strcmp(argv[1], "cleanup"))
+    return gui_installer(true);
+
+  printf("invalid commandline parameters, see the source for more"
+         " info: http://git.io/g2hr\n");
   return 1;
 }
