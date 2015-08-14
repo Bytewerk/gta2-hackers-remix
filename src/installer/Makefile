@@ -1,9 +1,9 @@
 CC:=LANG=C i686-w64-mingw32-gcc -static -Wall -Werror
 BIN:=../../bin/g2hr_installer.exe
 
-$(BIN): c/installer.h c/installer.c c/packed_files.h obj/xz.o obj/cstr.o obj_installer obj/sha512.o
+$(BIN): c/installer.h c/installer.c c/packed_files.h obj/xz.o obj/cstr.o obj_installer obj/sha512.o obj/icon.res
 	$(CC) -o $@ c/installer.c obj_installer/*.o obj/xz.o obj/cstr.o \
-		obj/sha512.o -mwindows
+		obj/sha512.o -mwindows obj/icon.res
 	du -h $(BIN)
 
 extract_test: $(BIN)
@@ -36,6 +36,9 @@ obj/cstr.o: ../common/cstr/*.c ../common/cstr/*.h
 	mkdir -p obj
 	$(CC) -c -o $@ ../common/cstr/cstr.c
 
+obj/icon.res: installer.rc
+	mkdir -p obj
+	i686-w64-mingw32-windres installer.rc -O coff -o $@
 
 clean:
 	rm -r obj/* obj_installer $(BIN) || true
