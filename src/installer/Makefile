@@ -3,7 +3,7 @@ BIN:=../../bin/g2hr_installer.exe
 
 $(BIN): c/installer.h c/installer.c c/packed_files.h obj/xz.o obj/cstr.o obj_installer obj/sha512.o
 	$(CC) -o $@ c/installer.c obj_installer/*.o obj/xz.o obj/cstr.o \
-		obj/sha512.o
+		obj/sha512.o -mwindows
 	du -h $(BIN)
 
 extract_test: $(BIN)

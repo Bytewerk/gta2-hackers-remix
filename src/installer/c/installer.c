@@ -116,7 +116,7 @@ int extract_everything(char *target_root) {
   return 0;
 }
 
-int gui_installer(bool cleanup) {
+int gui_installer(bool cleanup, char *installer_name) {
   char temp[200];
   GetTempPath(199, temp);
   char *gui = cstr_merge(temp, "g2hr_installer_gui.exe");
@@ -124,16 +124,26 @@ int gui_installer(bool cleanup) {
     Sleep(1000); // wait 1s for the gui process to quit
     DeleteFile(gui);
   } else {
+    // extract the gui
     xz_crc32_init();
     xz_dec_t *xz_dec = xz_dec_init(XZ_SINGLE, 0);
     extract_file(xz_dec, get_index("bin\\g2hr.exe"), gui);
-
-    char *cmd = cstr_merge(gui, " install");
-    printf("%s\n", cmd);
-    system(cmd); // TODO: add argv[0] as argument!
-
     xz_dec_end(xz_dec);
+
+    // launch the process (yes, it is that complicated)
+    char *cmd = cstr_merge(gui, " install ", installer_name);
+    printf("executing: %s\n", cmd);
+
+    STARTUPINFO *startup_info = calloc(1, sizeof(STARTUPINFO));
+    PROCESS_INFORMATION *process_info = calloc(1, sizeof(PROCESS_INFORMATION));
+    startup_info->cb = sizeof(STARTUPINFO);
+
+    CreateProcess(gui, cmd, NULL, NULL, false, 0, NULL, NULL, startup_info,
+                  process_info);
+
     free(cmd);
+    free(startup_info);
+    free(process_info);
   }
   free(gui);
   return 0;
@@ -144,7 +154,7 @@ int main(int argc, char **argv) {
   // which will show a nice gui and use this installer exe-file to
   // extract all other files, once the setup is configured.
   if (argc == 1)
-    return gui_installer(false);
+    return gui_installer(false, argv[0]);
 
   // verify the sha512 hash of the original GTA2 installer (2nd arg)
   if (argc == 3 && !strcmp(argv[1], "verify"))
@@ -156,7 +166,7 @@ int main(int argc, char **argv) {
 
   // clean up the temp files extracted for the gui installer
   if (argc == 2 && !strcmp(argv[1], "cleanup"))
-    return gui_installer(true);
+    return gui_installer(true, argv[0]);
 
   printf("invalid commandline parameters, see the source for more"
          " info: http://git.io/g2hr\n");
