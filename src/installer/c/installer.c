@@ -1,3 +1,5 @@
+#include "installer.h"
+#include "../../../src-3rdparty/mbedtls-sha512/sha512.h"
 #include "../../../src-3rdparty/xz-embedded/xz.h"
 #include "../../common/cstr/cstr.h"
 #include "packed_files.h"
@@ -40,6 +42,48 @@ uint16_t get_index(char *name) {
   return 0;
 }
 
+int verify_hash(char *filename) {
+  // open the file
+  FILE *handle = fopen(filename, "rb");
+  if (!handle)
+    exit(printf("ERROR: couldn't read %s!\n", filename));
+
+  // prepare the sha512 library
+  unsigned char hash[64];
+  mbedtls_sha512_context ctx;
+  mbedtls_sha512_init(&ctx);
+  mbedtls_sha512_starts(&ctx, 0);
+
+  // hash the file chunk by chunk
+  char *buffer = malloc(HASH_CHUNK_SIZE);
+  size_t buffer_len = HASH_CHUNK_SIZE;
+  while (buffer_len == HASH_CHUNK_SIZE) {
+    buffer_len = fread(buffer, 1, HASH_CHUNK_SIZE, handle);
+    mbedtls_sha512_update(&ctx, (const unsigned char *)buffer, buffer_len);
+  }
+
+  // finish up
+  free(buffer);
+  fclose(handle);
+  mbedtls_sha512_finish(&ctx, hash);
+  mbedtls_sha512_free(&ctx);
+
+  char hash_str[129];
+  for (int i = 0; i < 64; i++)
+    sprintf(hash_str + i * 2, "%02x", hash[i]);
+  hash_str[129] = '\0';
+
+  if (!strcmp(GTA2_INSTALLER_SHA512, hash_str)) {
+    printf("gta2 installer hash verified!\n");
+    return 2;
+  } else {
+    printf("hash could NOT be verified!\n");
+    printf("expected: %s\n", GTA2_INSTALLER_SHA512);
+    printf("actually: %s\n", hash_str);
+  }
+  return 1;
+}
+
 int main(int argc, char **argv) {
   char temp[200];
   GetTempPath(199, temp);
@@ -61,5 +105,19 @@ int main(int argc, char **argv) {
     xz_dec_end(xz_dec);
     free(gui);
     free(cmd);
+    return 0;
   }
+
+  // verify the sha512 hash of the original GTA2 installer
+  if (argc == 3 && !strcmp(argv[1], "verify"))
+    return verify_hash(argv[2]);
+
+  // extract the rest into the given folder (TODO)
+  if (argc == 3 && !strcmp(argv[1], "extract")) {
+    printf("TODO!\n");
+    return 0;
+  }
+
+  printf("invalid commandline, see the source for more info.\n");
+  return 1;
 }
