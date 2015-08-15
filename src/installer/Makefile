@@ -8,16 +8,13 @@ $(BIN): c/installer.h c/installer.c c/packed_files.h obj/xz.o obj/cstr.o obj_ins
 
 extract_test: $(BIN)
 	mkdir -p /tmp/g2hr_extract_test
-	wine $(BIN) extract /tmp/g2hr_extract_test
+	G2HR_INSTALL_ACTION=extract \
+		G2HR_EXTRACT_PATH=/tmp/g2hr_extract_test \
+		wine $(BIN) extract /tmp/g2hr_extract_test
 
 
 run: $(BIN)
 	wine $(BIN)
-
-
-hash_test: $(BIN)
-	sha512sum $(BIN)
-	wine $(BIN) verify $(BIN)
 
 
 obj_installer c/packed_files.h:
@@ -47,5 +44,5 @@ force_repack:
 	rm c/packed_files.h || true
 
 
-.PHONY: clean run force_repack hash_test extract_test
+.PHONY: clean run force_repack extract_test
 
