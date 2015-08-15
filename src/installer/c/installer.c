@@ -16,14 +16,19 @@
 // So we're using AutoIt3 anyway, let's create an invisible fake gui
 // that displays the status in the title and read that from within
 // AutoIt. FYI this "solution" is more common than you think :p
+// The prefix is needed, because we can't get the window handle from the
+// PID this time (it works in GTA2 though!)
 HWND win32_status_init() {
-  return CreateWindow(NULL, "", 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL);
+  return CreateWindow("STATIC", "<G2HR_INSTALLER_STATUS>hello!", 0, 0, 0, 100,
+                      100, NULL, NULL, NULL, NULL);
 }
 void win32_status_set(HWND status, char *text) {
-  SetWindowText(status, text);
   printf("%s\n", text); // only visible in wine!
+  text = cstr_merge("<G2HR_INSTALLER_STATUS>", text);
+  SetWindowText(status, text);
+  free(text);
 }
-#define win32_status_cleanup(STATUS) CloseWindow(STATUS)
+#define win32_status_cleanup(STATUS) CloseWindow(STATUS);
 
 typedef struct xz_dec xz_dec_t;
 typedef struct xz_buf xz_buf_t;
@@ -63,11 +68,13 @@ uint16_t get_index(char *name) {
 int verify_hash(char *filename, HWND status) {
   // open the file
   FILE *handle = fopen(filename, "rb");
-  if (!handle)
-    return printf("DONE: Couldn't read the file!\n");
+  if (!handle) {
+    win32_status_set(status, "DONE: Couldn't open the file!");
+    return 1;
+  }
   fseek(handle, 0, SEEK_END);
   if (ftell(handle) != GTA2_INSTALLER_SIZE) {
-    printf("DONE: File size does not match!\n");
+    win32_status_set(status, "DONE: File size does not match!");
     fclose(handle);
     return 1;
   }
@@ -86,9 +93,13 @@ int verify_hash(char *filename, HWND status) {
     buffer_len = fread(buffer, 1, HASH_CHUNK_SIZE, handle);
     mbedtls_sha512_update(&ctx, (const unsigned char *)buffer, buffer_len);
 
-    if (i % 3 == 0)
-      printf("PERCENT: %i\n",
-             (i * HASH_CHUNK_SIZE) / (GTA2_INSTALLER_SIZE / 100));
+    if (i % 3 == 0) {
+
+      char buffer[100];
+      snprintf(buffer, 99, "PERCENT: %i",
+               (i * HASH_CHUNK_SIZE) / (GTA2_INSTALLER_SIZE / 100));
+      win32_status_set(status, buffer);
+    }
   }
 
   // finish up
@@ -102,12 +113,17 @@ int verify_hash(char *filename, HWND status) {
     sprintf(hash_str + i * 2, "%02x", hash[i]);
   hash_str[129] = '\0';
 
-  if (!strcmp(GTA2_INSTALLER_SHA512, hash_str))
-    return printf("DONE; SHA-512 Hash verified!\n");
+  if (!strcmp(GTA2_INSTALLER_SHA512, hash_str)) {
+    win32_status_set(status, "DONE: SHA-512 hash verified!");
+    return 1;
+  }
 
   printf("expected: %s\n", GTA2_INSTALLER_SHA512);
   printf("actually: %s\n", hash_str);
-  printf("DONE: SHA-512 Hash could NOT be verified!\n");
+  win32_status_set(status,
+                   "DONE: SHA-512 hash could NOT be verified,"
+                   " the file you've downloaded seems to be corrupt. Try to"
+                   " download from another mirror!");
   return 1;
 }
 
@@ -135,10 +151,12 @@ int extract_everything(char *target_root, HWND status) {
     create_folder_structure(target);
     extract_file(xz_dec, i, target);
     free(target);
-    printf("PERCENT: %i\n", 100 * (i + 1) / PACKED_COUNT);
+    char buffer[100];
+    snprintf(buffer, 99, "PERCENT: %i", 100 * (i + 1) / PACKED_COUNT);
+    win32_status_set(status, buffer);
   }
   xz_dec_end(xz_dec);
-  printf("DONE: ALL OK\n");
+  win32_status_set(status, "DONE: ALL OK!");
   return 0;
 }
 
@@ -200,7 +218,7 @@ int main(int argc, char **argv) {
     win32_status_set(status, "invalid action!");
 
   // wait for the gui to parse the status before exit
-  Sleep(1000);
+  Sleep(5000);
 
   win32_status_cleanup(status);
   return 0;
