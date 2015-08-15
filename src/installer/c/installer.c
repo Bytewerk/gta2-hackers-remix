@@ -49,7 +49,14 @@ int verify_hash(char *filename) {
   // open the file
   FILE *handle = fopen(filename, "rb");
   if (!handle)
-    exit(printf("ERROR: couldn't read %s!\n", filename));
+    return printf("DONE: Couldn't read the file!\n");
+  fseek(handle, 0, SEEK_END);
+  if (ftell(handle) != GTA2_INSTALLER_SIZE) {
+    printf("DONE: File size does not match!\n");
+    fclose(handle);
+    return 1;
+  }
+  rewind(handle);
 
   // prepare the sha512 library
   unsigned char hash[64];
@@ -60,9 +67,13 @@ int verify_hash(char *filename) {
   // hash the file chunk by chunk
   char *buffer = malloc(HASH_CHUNK_SIZE);
   size_t buffer_len = HASH_CHUNK_SIZE;
-  while (buffer_len == HASH_CHUNK_SIZE) {
+  for (int i = 0; buffer_len == HASH_CHUNK_SIZE; i++) {
     buffer_len = fread(buffer, 1, HASH_CHUNK_SIZE, handle);
     mbedtls_sha512_update(&ctx, (const unsigned char *)buffer, buffer_len);
+
+    if (i % 3 == 0)
+      printf("PERCENT: %i\n",
+             (i * HASH_CHUNK_SIZE) / (GTA2_INSTALLER_SIZE / 100));
   }
 
   // finish up
@@ -76,14 +87,12 @@ int verify_hash(char *filename) {
     sprintf(hash_str + i * 2, "%02x", hash[i]);
   hash_str[129] = '\0';
 
-  if (!strcmp(GTA2_INSTALLER_SHA512, hash_str)) {
-    printf("gta2 installer hash verified!\n");
-    return 2;
-  } else {
-    printf("hash could NOT be verified!\n");
-    printf("expected: %s\n", GTA2_INSTALLER_SHA512);
-    printf("actually: %s\n", hash_str);
-  }
+  if (!strcmp(GTA2_INSTALLER_SHA512, hash_str))
+    return printf("DONE; SHA-512 Hash verified!\n");
+
+  printf("expected: %s\n", GTA2_INSTALLER_SHA512);
+  printf("actually: %s\n", hash_str);
+  printf("DONE: SHA-512 Hash could NOT be verified!\n");
   return 1;
 }
 
@@ -106,13 +115,15 @@ void create_folder_structure(char *path) {
 int extract_everything(char *target_root) {
   xz_crc32_init();
   xz_dec_t *xz_dec = xz_dec_init(XZ_SINGLE, 0);
-  for (int i = 0; *PACKED_FILENAMES[i]; i++) {
+  for (int i = 0; i < PACKED_COUNT; i++) {
     char *target = cstr_merge(target_root, "\\", PACKED_FILENAMES[i]);
     create_folder_structure(target);
     extract_file(xz_dec, i, target);
     free(target);
+    printf("PERCENT: %i\n", 100 * (i + 1) / PACKED_COUNT);
   }
   xz_dec_end(xz_dec);
+  printf("DONE: ALL OK\n");
   return 0;
 }
 
@@ -157,12 +168,18 @@ int main(int argc, char **argv) {
     return gui_installer(false, argv[0]);
 
   // verify the sha512 hash of the original GTA2 installer (2nd arg)
-  if (argc == 3 && !strcmp(argv[1], "verify"))
-    return verify_hash(argv[2]);
+  if (argc == 3 && !strcmp(argv[1], "verify")) {
+    verify_hash(argv[2]);
+    getchar(); // wait for the gui to parse stdout before exit
+    return 0;
+  }
 
   // extract everything into the given folder (2nd arg)
-  if (argc == 3 && !strcmp(argv[1], "extract"))
-    return extract_everything(argv[2]);
+  if (argc == 3 && !strcmp(argv[1], "extract")) {
+    extract_everything(argv[2]);
+    getchar(); // wait for the gui to parse stdout before exit
+    return 0;
+  }
 
   // clean up the temp files extracted for the gui installer
   if (argc == 2 && !strcmp(argv[1], "cleanup"))

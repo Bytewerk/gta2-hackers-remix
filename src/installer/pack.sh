@@ -12,6 +12,7 @@ mkdir $TEMP $OBJ
 # create a list of files
 cd $ROOT
 files=$(find data bin -type f)
+count=0
 
 # header variables
 EXTERNS=""
@@ -33,9 +34,10 @@ do
 	[[ "$f" == *_installer.exe ]] && continue # yay, recursion ;)
 	
 	# create a hash and size
+	(( count++ ))
 	hash=$(md5sum $ROOT/$f | cut -f 1 -d " ")
 	size=$(du -b $ROOT/$f | cut -f 1)
-	echo "$hash $f ($size)"
+	echo "$hash $f ($size, #$count)"
 	
 	# create a compressed object
 	xz --check=crc32 $ROOT/$f --stdout > $TEMP/$hash
@@ -56,8 +58,6 @@ do
 	EXTERNS="$EXTERNS
 extern char binary_${hash}_start;
 extern char binary_${hash}_end;"
-	
-
 done
 
 
@@ -69,7 +69,10 @@ cat <<EOF > $HEADER
 // this file gets generated automatically by pack.sh, do not modify.
 $EXTERNS
 
-// use this variable to iterate over all files, the last element is ""
+unsigned int PACKED_COUNT = ${count};
+
+// the last filename is "", so you can loop over the array like this:
+// for(char** pos=PACKED_FILENAMES; **pos; pos++) printf("%s\n",*pos);
 char* PACKED_FILENAMES[] =
 {${FILENAMES}
 	""
