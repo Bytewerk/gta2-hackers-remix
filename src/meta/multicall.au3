@@ -7,7 +7,7 @@
 
 If $CmdLine[0] >= 1 Then
 	If $CmdLine[1] == "install" Then
-		Exit installer_main()
+		Exit installer_main($CmdLine[2]) ; FIXME: use environment variable instead!
 	ElseIf $CmdLine[1] == "uninstall" Then
 		Exit uninstaller_main()
 	Endif
