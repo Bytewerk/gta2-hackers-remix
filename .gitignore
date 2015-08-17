@@ -1,6 +1,8 @@
 # g2hr usersettings
 data/g2hr.ini
 
+# releases
+rel
 
 # wine prefix
 build/wineprefix

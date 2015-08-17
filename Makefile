@@ -3,6 +3,8 @@ PATCH_HEADER:=src/common/headers/vike_patch.h
 
 all: $(PATCH) bin/g2hr_menu.exe bin/g2hr_native.exe bin/g2hr.exe bin/proxy.dll $(PATCH_HEADER)
 
+Linux: $(PATCH) bin/g2hr_menu.exe bin/g2hr_native.bin bin/g2hr.exe bin/proxy.dll $(PATCH_HEADER)
+
 
 # The four main components
 bin/proxy.dll:

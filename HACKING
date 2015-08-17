@@ -28,6 +28,10 @@ Please break code lines (also in AutoIt3 if possible) longer than 72
 columns, and never use multi-line (#cs, #ce) comments in AutoIt3, as the
 custom syntax highlighting can't handle those.
 
+Right now, the native component can either be built for Windows, or for
+Linux. Run "make -C src/native clean" before switching. The release.sh
+script does this automatically.
+
 
 Coding has been mostly a one-man-show, so pull-requests are really
 welcome :)
