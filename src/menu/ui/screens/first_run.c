@@ -82,11 +82,12 @@ tk_screen_t *ui_screen_first_run(tk_t *tk, ui_t *ui) {
                    GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0);
       tk_el_padding(hr_text, 0, 0, 0, 40); tk_el_center(hr_text);
 
-      ADD_LINE("Thanks for trying out this meta-mod! This version isn't "
-               "finished yet,");
       ADD_LINE(
-          "so please update it as soon as there is a new version. You'll get");
-      ADD_LINE("the latest greatest features and most gaming fun then ;)");
+          "Welcome and thanks for running the 0.4 release of this meta-mod!");
+      ADD_LINE("It is a technical preview that probably has lots of bugs, so "
+               "please");
+      ADD_LINE(
+          "contribute patches if you have the skillz at g2hr.org (github) :)");
       TK_FLOW(tk_el_padding(TK_PARENT, 0, 20, 0, 0);
               ADD_LINE("Do you wish to enable ");
               ADD_LINE("daily update checks")->argb_normal =
