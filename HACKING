@@ -1,0 +1,40 @@
+This file is about contributing to the code of GTA2: Hacker's Remix.
+
+Read on if you have some knowledge of GCC/MinGW, C and you would like
+to contribute to this mod. First of all, set up your development
+environment [1].
+
+The code is roughly divided into four components [2], not counting the
+unfinished windows installer [3] and the "src/common" folder, which has
+some shared c-code for strings and file operations.
+
+For the C code (that is, the native and menu components), each of these
+has a lot of sub-components. What they do is described in the README.md 
+hat can be found in src/native and src/menu. Most of these sub-
+components can be individually compiled (and therefore tested with
+valgrind), because they have a "main_test.c" and "Makefile" right inside
+their folder.
+
+Some of these testing Makefiles are probably broken, because they have
+not been used a long time and the code around that has been changed. But
+mostly they are easy to fix (eg. missing 'out' folder, using the
+obsolete 'src/common/cfg' code instead of the newer 'src/common/ini')!
+
+So when modifying these components, always (fix and) run the valgrind
+test and find all memory leaks (on Windows, drmemory[4] can be used
+instead)!
+
+Please break code lines (also in AutoIt3 if possible) longer than 72
+columns, and never use multi-line (#cs, #ce) comments in AutoIt3, as the
+custom syntax highlighting can't handle those.
+
+
+Coding has been mostly a one-man-show, so pull-requests are really
+welcome :)
+
+
+
+[1]: http://git.io/g2hr-dev-setup
+[2]: http://git.io/g2hr-post-alpha-structure
+[3]: http://git.io/g2hr-installer
+[4]: https://github.com/dynamorio/drmemory
