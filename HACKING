@@ -1,8 +1,22 @@
 This file is about contributing to the code of GTA2: Hacker's Remix.
 
-Read on if you have some knowledge of GCC/MinGW, C and you would like
-to contribute to this mod. First of all, set up your development
-environment [1].
+The source code is a mix of C and AutoIt3 (au3) code. While C is rather
+hard to learn, AutoIt3 is a simple scripting language, that is also well
+documented.
+
+Lots of the splitscreen code is written in au3, and it still needs lots
+of polishing at this state (for example: Windows Taskbar only gets
+hidden on Windows 7, the Window merging code doesn't always work, ...).
+If you want to get started with the AutoIt3 code, read this beginner-
+friendly guide [0].
+
+Please break code lines (also in AutoIt3 if possible) longer than 72
+columns, and never use multi-line (#cs, #ce) comments in AutoIt3, as the
+Geany custom syntax highlighting can't handle those.
+
+C coders can set up the G2HR development environment with this more
+advanced guide [1]. The rest of this article is more about C coding, so
+if you just do the AutoIt stuff, you might want to stop reading here.
 
 The code is roughly divided into four components [2], not counting the
 unfinished windows installer [3] and the "src/common" folder, which has
@@ -24,10 +38,6 @@ So when modifying these components, always (fix and) run the valgrind
 test and find all memory leaks (on Windows, drmemory[4] can be used
 instead)!
 
-Please break code lines (also in AutoIt3 if possible) longer than 72
-columns, and never use multi-line (#cs, #ce) comments in AutoIt3, as the
-custom syntax highlighting can't handle those.
-
 Right now, the native component can either be built for Windows, or for
 Linux. Run "make -C src/native clean" before switching. The release.sh
 script does this automatically.
@@ -38,6 +48,7 @@ welcome :)
 
 
 
+[0]: http://git.io/g2hr-autoit
 [1]: http://git.io/g2hr-dev-setup
 [2]: http://git.io/g2hr-post-alpha-structure
 [3]: http://git.io/g2hr-installer
