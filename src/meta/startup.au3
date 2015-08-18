@@ -9,8 +9,8 @@ Func startup()
 	
 	; Verify the GTA2 version
 	If Not Fileexists("GTA2/gta2.exe") Then
-		MsgBox(16,"G2HR", "Please put the latest official GTA2" _
-			& " release in the 'GTA2' folder!" & @CRLF _
+		MsgBox(16,"G2HR", "Please put all GTA2 files" _
+			& " in the 'GTA2' folder!" & @CRLF _
 			& " See http://git.io/g2hr-get-gta2 for more info!")
 		ProcessClose("g2hr_native.exe")
 		Exit 1

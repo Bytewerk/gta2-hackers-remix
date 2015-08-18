@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------
                       GTA2: Hacker's Remix (G2HR)
-                       0.4.0 (technical preview)
+                       0.4.1 (technical preview)
                                g2hr.org
 ------------------------------------------------------------------------
 
@@ -24,9 +24,8 @@ crash (maybe this will improve a bit with future versions?).
 INSTALLATION:
  - Extract the zip file wherever you want, write access during runtime
    IS REQUIRED (this has changed!)
- - Get the latest official GTA2 release, that is free for download, and
-   copy the game files in the GTA2 folder in the path where you have
-   extracted the mod. More info and download links: [2]
+ - Copy the GTA2 game files in the 'GTA2' folder in the path where you
+   have extracted the mod. More info and download links: [2]
  - Linux only: install wine, sdl2 and sdl2_net
  - Run g2hr.sh (Linux) or g2hr.exe (Windows) to start the meta-mod
  - Allow all G2HR programs (they all have G2HR as prefix) in your fire-
@@ -42,6 +41,12 @@ USAGE:
    troller code is handled outside of the GTA2 processes.
  - Pressing ESC will not show the 'Is that it?' text anymore, but you
    can still quit the game with ESC and ENTER if it has focus
+
+
+CHANGES in 0.4.1 (2015-08-18)
+	- Fix bugs reported by Sektor
+	- Realized that the patch code doesn't really work yet/anymore? and
+		made the GTAMP version the recommended one
 
 CHANGES in 0.4.0 (2015-08-18)
 	- Re-implemented the original GTA2 menu with SDL2 (not all screens
