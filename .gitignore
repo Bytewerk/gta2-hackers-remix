@@ -1,20 +1,63 @@
+# g2hr usersettings
+data/g2hr.ini
+
+# releases
+rel
+
+# wine prefix
+build/wineprefix
+
+# core dumps. this rule never hits anything of course.
+core.*
+vgcore.*
+
+# installer: automatically generated header file
+packed_files.h
+
+
+# uncompressed bsdiff patches
+*.plainbsdiff
+
+
+# PKGBUILDs
+build/PKGBUILDs/*/pkg
+build/PKGBUILDs/*/src
+build/PKGBUILDs/*/*.xz
+build/PKGBUILDs/*/*.gz
+build/PKGBUILDs/*/*.part
+build/PKGBUILDs/*/*.bz2
+build/PKGBUILDs/*/*.asc
+
+
+# GTA2 files
+GTA2/*
+!GTA2/README.md
+*.sty
+*.tga
+*.raw
+*.sdt
+*.wav
+*.hsc
+*.dat
+*.gxt
+
+# Converted some TGAs with imagemagick
+*.jpg
+
+# Logs, eg. from std2wav
+*.log
+
 # Compiled Object files
-*.slo
-*.lo
 *.o
-*.obj
+*.res
+
 
 # Precompiled Headers
 *.gch
 *.pch
 
 # Compiled Dynamic libraries
-*.so
-*.dylib
 *.dll
-
-# Fortran module files
-*.mod
 
 # Compiled Static libraries
 *.lai
@@ -24,30 +67,9 @@
 
 # Executables
 *.exe
-*.out
-*.app
 *.x86_64
 *.i686
+*.bin
 
-
-# Code::Blocks project files
-*.cbp
-*.depend
-*.layout
-
-# Visual Studio (2013, add others if you need) project files
-# see also: http://git.io/visual-studio-gitignore
-# VS project root
-Debug/
-Release/
-ipch/
-*.sdf
-*.sln
-*.suo
-*.opensdf
-
-# VS project: dmavideo folder
-*.vcxproj
-*.filters
-*.user
-*.def
+# Valgrind SDL2 init rule (make valgrind)
+*.sup

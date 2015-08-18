@@ -1,0 +1,10 @@
+To make the build system less complex, we simply add the common object
+files to each component of G2HR, where it gets used:
+
+# COMMON CFG (depends on IO)
+obj/common_cfg.o: $(call DEPS,../common/cfg/cfg.c)
+	$(CC) -c -o $@ $<
+
+# COMMON IO
+obj/common_io.o: $(call DEPS,../common/io/io.c)
+	$(CC) -c -o $@ $<

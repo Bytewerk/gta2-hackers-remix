@@ -1,0 +1,13 @@
+[MapFiles]
+GMPFile = trololo.gmp
+STYFile = trololo1.sty
+SCRFile = trololo2.scr
+Description = This is a test file!
+
+; SOME COMMENT HERE CHECK IT OUT = LOL
+
+broken line without equals sign
+
+[OtherSection]
+Custom=hey look, a custom value!
+  Custom Two   =  lots of padding, trim me away !!     

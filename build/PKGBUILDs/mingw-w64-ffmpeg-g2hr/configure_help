@@ -1,0 +1,334 @@
+Usage: configure [options]
+Options: [defaults in brackets after descriptions]
+
+Help options:
+  --help                   print this message
+  --list-decoders          show all available decoders
+  --list-encoders          show all available encoders
+  --list-hwaccels          show all available hardware accelerators
+  --list-demuxers          show all available demuxers
+  --list-muxers            show all available muxers
+  --list-parsers           show all available parsers
+  --list-protocols         show all available protocols
+  --list-bsfs              show all available bitstream filters
+  --list-indevs            show all available input devices
+  --list-outdevs           show all available output devices
+  --list-filters           show all available filters
+
+Standard options:
+  --logfile=FILE           log tests and output to FILE [config.log]
+  --disable-logging        do not log configure debug information
+  --fatal-warnings         fail if any configure warning is generated
+  --prefix=PREFIX          install in PREFIX []
+  --bindir=DIR             install binaries in DIR [PREFIX/bin]
+  --datadir=DIR            install data files in DIR [PREFIX/share/ffmpeg]
+  --docdir=DIR             install documentation in DIR [PREFIX/share/doc/ffmpeg]
+  --libdir=DIR             install libs in DIR [PREFIX/lib]
+  --shlibdir=DIR           install shared libs in DIR [LIBDIR]
+  --incdir=DIR             install includes in DIR [PREFIX/include]
+  --mandir=DIR             install man page in DIR [PREFIX/share/man]
+  --enable-rpath           use rpath to allow installing libraries in paths
+                           not part of the dynamic linker search path
+                           use rpath when linking programs [USE WITH CARE]
+
+Licensing options:
+  --enable-gpl             allow use of GPL code, the resulting libs
+                           and binaries will be under GPL [no]
+  --enable-version3        upgrade (L)GPL to version 3 [no]
+  --enable-nonfree         allow use of nonfree code, the resulting libs
+                           and binaries will be unredistributable [no]
+
+Configuration options:
+  --disable-static         do not build static libraries [no]
+  --enable-shared          build shared libraries [no]
+  --enable-small           optimize for size instead of speed
+  --disable-runtime-cpudetect disable detecting cpu capabilities at runtime (smaller binary)
+  --enable-gray            enable full grayscale support (slower color)
+  --disable-swscale-alpha  disable alpha channel support in swscale
+  --disable-all            disable building components, libraries and programs
+  --enable-incompatible-libav-abi enable incompatible Libav fork ABI [no]
+  --enable-raise-major     increase major version numbers in sonames [no]
+
+Program options:
+  --disable-programs       do not build command line programs
+  --disable-ffmpeg         disable ffmpeg build
+  --disable-ffplay         disable ffplay build
+  --disable-ffprobe        disable ffprobe build
+  --disable-ffserver       disable ffserver build
+
+Documentation options:
+  --disable-doc            do not build documentation
+  --disable-htmlpages      do not build HTML documentation pages
+  --disable-manpages       do not build man documentation pages
+  --disable-podpages       do not build POD documentation pages
+  --disable-txtpages       do not build text documentation pages
+
+Component options:
+  --disable-avdevice       disable libavdevice build
+  --disable-avcodec        disable libavcodec build
+  --disable-avformat       disable libavformat build
+  --disable-avutil         disable libavutil build
+  --disable-swresample     disable libswresample build
+  --disable-swscale        disable libswscale build
+  --disable-postproc       disable libpostproc build
+  --disable-avfilter       disable libavfilter build
+  --enable-avresample      enable libavresample build [no]
+  --disable-pthreads       disable pthreads [autodetect]
+  --disable-w32threads     disable Win32 threads [autodetect]
+  --disable-os2threads     disable OS/2 threads [autodetect]
+  --disable-network        disable network support [no]
+  --disable-dct            disable DCT code
+  --disable-dwt            disable DWT code
+  --disable-error-resilience disable error resilience code
+  --disable-lsp            disable LSP code
+  --disable-lzo            disable LZO decoder code
+  --disable-mdct           disable MDCT code
+  --disable-rdft           disable RDFT code
+  --disable-fft            disable FFT code
+  --disable-faan           disable floating point AAN (I)DCT code
+  --disable-pixelutils     disable pixel utils in libavutil
+
+Hardware accelerators:
+  --disable-dxva2          disable DXVA2 code [autodetect]
+  --disable-vaapi          disable VAAPI code [autodetect]
+  --disable-vda            disable VDA code [autodetect]
+  --disable-vdpau          disable VDPAU code [autodetect]
+
+Individual component options:
+  --disable-everything     disable all components listed below
+  --disable-encoder=NAME   disable encoder NAME
+  --enable-encoder=NAME    enable encoder NAME
+  --disable-encoders       disable all encoders
+  --disable-decoder=NAME   disable decoder NAME
+  --enable-decoder=NAME    enable decoder NAME
+  --disable-decoders       disable all decoders
+  --disable-hwaccel=NAME   disable hwaccel NAME
+  --enable-hwaccel=NAME    enable hwaccel NAME
+  --disable-hwaccels       disable all hwaccels
+  --disable-muxer=NAME     disable muxer NAME
+  --enable-muxer=NAME      enable muxer NAME
+  --disable-muxers         disable all muxers
+  --disable-demuxer=NAME   disable demuxer NAME
+  --enable-demuxer=NAME    enable demuxer NAME
+  --disable-demuxers       disable all demuxers
+  --enable-parser=NAME     enable parser NAME
+  --disable-parser=NAME    disable parser NAME
+  --disable-parsers        disable all parsers
+  --enable-bsf=NAME        enable bitstream filter NAME
+  --disable-bsf=NAME       disable bitstream filter NAME
+  --disable-bsfs           disable all bitstream filters
+  --enable-protocol=NAME   enable protocol NAME
+  --disable-protocol=NAME  disable protocol NAME
+  --disable-protocols      disable all protocols
+  --enable-indev=NAME      enable input device NAME
+  --disable-indev=NAME     disable input device NAME
+  --disable-indevs         disable input devices
+  --enable-outdev=NAME     enable output device NAME
+  --disable-outdev=NAME    disable output device NAME
+  --disable-outdevs        disable output devices
+  --disable-devices        disable all devices
+  --enable-filter=NAME     enable filter NAME
+  --disable-filter=NAME    disable filter NAME
+  --disable-filters        disable all filters
+
+External library support:
+  --enable-avisynth        enable reading of AviSynth script files [no]
+  --disable-bzlib          disable bzlib [autodetect]
+  --enable-fontconfig      enable fontconfig, useful for drawtext filter [no]
+  --enable-frei0r          enable frei0r video filtering [no]
+  --enable-gnutls          enable gnutls, needed for https support
+                           if openssl is not used [no]
+  --disable-iconv          disable iconv [autodetect]
+  --enable-ladspa          enable LADSPA audio filtering [no]
+  --enable-libaacplus      enable AAC+ encoding via libaacplus [no]
+  --enable-libass          enable libass subtitles rendering,
+                           needed for subtitles and ass filter [no]
+  --enable-libbluray       enable BluRay reading using libbluray [no]
+  --enable-libbs2b         enable bs2b DSP library [no]
+  --enable-libcaca         enable textual display using libcaca [no]
+  --enable-libcelt         enable CELT decoding via libcelt [no]
+  --enable-libcdio         enable audio CD grabbing with libcdio [no]
+  --enable-libdc1394       enable IIDC-1394 grabbing using libdc1394
+                           and libraw1394 [no]
+  --enable-libfaac         enable AAC encoding via libfaac [no]
+  --enable-libfdk-aac      enable AAC de/encoding via libfdk-aac [no]
+  --enable-libflite        enable flite (voice synthesis) support via libflite [no]
+  --enable-libfreetype     enable libfreetype, needed for drawtext filter [no]
+  --enable-libfribidi      enable libfribidi, improves drawtext filter [no]
+  --enable-libgme          enable Game Music Emu via libgme [no]
+  --enable-libgsm          enable GSM de/encoding via libgsm [no]
+  --enable-libiec61883     enable iec61883 via libiec61883 [no]
+  --enable-libilbc         enable iLBC de/encoding via libilbc [no]
+  --enable-libmfx          enable HW acceleration through libmfx
+  --enable-libmodplug      enable ModPlug via libmodplug [no]
+  --enable-libmp3lame      enable MP3 encoding via libmp3lame [no]
+  --enable-libnut          enable NUT (de)muxing via libnut,
+                           native (de)muxer exists [no]
+  --enable-libopencore-amrnb enable AMR-NB de/encoding via libopencore-amrnb [no]
+  --enable-libopencore-amrwb enable AMR-WB decoding via libopencore-amrwb [no]
+  --enable-libopencv       enable video filtering via libopencv [no]
+  --enable-libopenh264     enable H.264 encoding via OpenH264 [no]
+  --enable-libopenjpeg     enable JPEG 2000 de/encoding via OpenJPEG [no]
+  --enable-libopus         enable Opus de/encoding via libopus [no]
+  --enable-libpulse        enable Pulseaudio input via libpulse [no]
+  --enable-libquvi         enable quvi input via libquvi [no]
+  --enable-librtmp         enable RTMP[E] support via librtmp [no]
+  --enable-libschroedinger enable Dirac de/encoding via libschroedinger [no]
+  --enable-libshine        enable fixed-point MP3 encoding via libshine [no]
+  --enable-libsmbclient    enable Samba protocol via libsmbclient [no]
+  --enable-libsoxr         enable Include libsoxr resampling [no]
+  --enable-libspeex        enable Speex de/encoding via libspeex [no]
+  --enable-libssh          enable SFTP protocol via libssh [no]
+  --enable-libstagefright-h264  enable H.264 decoding via libstagefright [no]
+  --enable-libtheora       enable Theora encoding via libtheora [no]
+  --enable-libtwolame      enable MP2 encoding via libtwolame [no]
+  --enable-libutvideo      enable Ut Video encoding and decoding via libutvideo [no]
+  --enable-libv4l2         enable libv4l2/v4l-utils [no]
+  --enable-libvidstab      enable video stabilization using vid.stab [no]
+  --enable-libvo-aacenc    enable AAC encoding via libvo-aacenc [no]
+  --enable-libvo-amrwbenc  enable AMR-WB encoding via libvo-amrwbenc [no]
+  --enable-libvorbis       enable Vorbis en/decoding via libvorbis,
+                           native implementation exists [no]
+  --enable-libvpx          enable VP8 and VP9 de/encoding via libvpx [no]
+  --enable-libwavpack      enable wavpack encoding via libwavpack [no]
+  --enable-libwebp         enable WebP encoding via libwebp [no]
+  --enable-libx264         enable H.264 encoding via x264 [no]
+  --enable-libx265         enable HEVC encoding via x265 [no]
+  --enable-libxavs         enable AVS encoding via xavs [no]
+  --enable-libxcb          enable X11 grabbing using XCB [autodetect]
+  --enable-libxcb-shm      enable X11 grabbing shm communication [autodetect]
+  --enable-libxcb-xfixes   enable X11 grabbing mouse rendering [autodetect]
+  --enable-libxcb-shape    enable X11 grabbing shape rendering [autodetect]
+  --enable-libxvid         enable Xvid encoding via xvidcore,
+                           native MPEG-4/Xvid encoder exists [no]
+  --enable-libzmq          enable message passing via libzmq [no]
+  --enable-libzvbi         enable teletext support via libzvbi [no]
+  --disable-lzma           disable lzma [autodetect]
+  --enable-decklink        enable Blackmagick DeckLink I/O support [no]
+  --enable-nvenc           enable NVIDIA NVENC support [no]
+  --enable-openal          enable OpenAL 1.1 capture support [no]
+  --enable-opencl          enable OpenCL code
+  --enable-opengl          enable OpenGL rendering [no]
+  --enable-openssl         enable openssl, needed for https support
+                           if gnutls is not used [no]
+  --disable-sdl            disable sdl [autodetect]
+  --enable-x11grab         enable X11 grabbing (legacy) [no]
+  --disable-xlib           disable xlib [autodetect]
+  --disable-zlib           disable zlib [autodetect]
+
+Toolchain options:
+  --arch=ARCH              select architecture []
+  --cpu=CPU                select the minimum required CPU (affects
+                           instruction selection, may crash on older CPUs)
+  --cross-prefix=PREFIX    use PREFIX for compilation tools []
+  --progs-suffix=SUFFIX    program name suffix []
+  --enable-cross-compile   assume a cross-compiler is used
+  --sysroot=PATH           root of cross-build tree
+  --sysinclude=PATH        location of cross-build system headers
+  --target-os=OS           compiler targets OS []
+  --target-exec=CMD        command to run executables on target
+  --target-path=DIR        path to view of build directory on target
+  --target-samples=DIR     path to samples directory on target
+  --tempprefix=PATH        force fixed dir/prefix instead of mktemp for checks
+  --toolchain=NAME         set tool defaults according to NAME
+  --nm=NM                  use nm tool NM [nm -g]
+  --ar=AR                  use archive tool AR [ar]
+  --as=AS                  use assembler AS []
+  --windres=WINDRES        use windows resource compiler WINDRES [windres]
+  --yasmexe=EXE            use yasm-compatible assembler EXE [yasm]
+  --cc=CC                  use C compiler CC [gcc]
+  --cxx=CXX                use C compiler CXX [g++]
+  --dep-cc=DEPCC           use dependency generator DEPCC [gcc]
+  --ld=LD                  use linker LD []
+  --pkg-config=PKGCONFIG   use pkg-config tool PKGCONFIG [pkg-config]
+  --pkg-config-flags=FLAGS pass additional flags to pkgconf []
+  --ranlib=RANLIB          use ranlib RANLIB [ranlib -D]
+  --doxygen=DOXYGEN        use DOXYGEN to generate API doc [doxygen]
+  --host-cc=HOSTCC         use host C compiler HOSTCC
+  --host-cflags=HCFLAGS    use HCFLAGS when compiling for host
+  --host-cppflags=HCPPFLAGS use HCPPFLAGS when compiling for host
+  --host-ld=HOSTLD         use host linker HOSTLD
+  --host-ldflags=HLDFLAGS  use HLDFLAGS when linking for host
+  --host-libs=HLIBS        use libs HLIBS when linking for host
+  --host-os=OS             compiler host OS []
+  --extra-cflags=ECFLAGS   add ECFLAGS to CFLAGS []
+  --extra-cxxflags=ECFLAGS add ECFLAGS to CXXFLAGS []
+  --extra-ldflags=ELDFLAGS add ELDFLAGS to LDFLAGS []
+  --extra-ldexeflags=ELDFLAGS add ELDFLAGS to LDEXEFLAGS []
+  --extra-libs=ELIBS       add ELIBS []
+  --extra-version=STRING   version string suffix []
+  --optflags=OPTFLAGS      override optimization-related compiler flags
+  --build-suffix=SUFFIX    library name suffix []
+  --enable-pic             build position-independent code
+  --enable-thumb           compile for Thumb instruction set
+  --enable-lto             use link-time optimization
+
+Advanced options (experts only):
+  --malloc-prefix=PREFIX   prefix malloc and related names with PREFIX
+  --disable-symver         disable symbol versioning
+  --enable-hardcoded-tables use hardcoded tables instead of runtime generation
+  --disable-safe-bitstream-reader
+                           disable buffer boundary checking in bitreaders
+                           (faster, but may crash)
+  --enable-memalign-hack   emulate memalign, interferes with memory debuggers
+  --sws-max-filter-size=N  the max filter size swscale uses [256]
+
+Optimization options (experts only):
+  --disable-asm            disable all assembly optimizations
+  --disable-altivec        disable AltiVec optimizations
+  --disable-amd3dnow       disable 3DNow! optimizations
+  --disable-amd3dnowext    disable 3DNow! extended optimizations
+  --disable-mmx            disable MMX optimizations
+  --disable-mmxext         disable MMXEXT optimizations
+  --disable-sse            disable SSE optimizations
+  --disable-sse2           disable SSE2 optimizations
+  --disable-sse3           disable SSE3 optimizations
+  --disable-ssse3          disable SSSE3 optimizations
+  --disable-sse4           disable SSE4 optimizations
+  --disable-sse42          disable SSE4.2 optimizations
+  --disable-avx            disable AVX optimizations
+  --disable-xop            disable XOP optimizations
+  --disable-fma3           disable FMA3 optimizations
+  --disable-fma4           disable FMA4 optimizations
+  --disable-avx2           disable AVX2 optimizations
+  --disable-armv5te        disable armv5te optimizations
+  --disable-armv6          disable armv6 optimizations
+  --disable-armv6t2        disable armv6t2 optimizations
+  --disable-vfp            disable VFP optimizations
+  --disable-neon           disable NEON optimizations
+  --disable-inline-asm     disable use of inline assembly
+  --disable-yasm           disable use of nasm/yasm assembly
+  --disable-mipsdspr1      disable MIPS DSP ASE R1 optimizations
+  --disable-mipsdspr2      disable MIPS DSP ASE R2 optimizations
+  --disable-mipsfpu        disable floating point MIPS optimizations
+  --disable-fast-unaligned consider unaligned accesses slow
+
+Developer options (useful when working on FFmpeg itself):
+  --disable-debug          disable debugging symbols
+  --enable-debug=LEVEL     set the debug level []
+  --disable-optimizations  disable compiler optimizations
+  --enable-extra-warnings  enable more compiler warnings
+  --disable-stripping      disable stripping of executables and shared libraries
+  --assert-level=level     0(default), 1 or 2, amount of assertion testing,
+                           2 causes a slowdown at runtime.
+  --enable-memory-poisoning fill heap uninitialized allocated space with arbitrary data
+  --valgrind=VALGRIND      run "make fate" tests through valgrind to detect memory
+                           leaks and errors, using the specified valgrind binary.
+                           Cannot be combined with --target-exec
+  --enable-ftrapv          Trap arithmetic overflows
+  --samples=PATH           location of test samples for FATE, if not set use
+                           $FATE_SAMPLES at make invocation time.
+  --enable-neon-clobber-test check NEON registers for clobbering (should be
+                           used only for debugging purposes)
+  --enable-xmm-clobber-test check XMM registers for clobbering (Win64-only;
+                           should be used only for debugging purposes)
+  --enable-random          randomly enable/disable components
+  --disable-random
+  --enable-random=LIST     randomly enable/disable specific components or
+  --disable-random=LIST    component groups. LIST is a comma-separated list
+                           of NAME[:PROB] entries where NAME is a component
+                           (group) and PROB the probability associated with
+                           NAME (default 0.5).
+  --random-seed=VALUE      seed value for --enable/disable-random
+
+NOTE: Object files are built at the place where configure is launched.
