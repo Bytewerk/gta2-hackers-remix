@@ -30,7 +30,7 @@ void main_menu_actionfunc(tk_t *tk, tk_el_t *el, tk_el_t *el_selected,
       ud->content->bottom_text_high = NULL;
     } else {
       ud->content->bottom_text_high =
-          cstr_merge("UPDATE TO ", latest_version, " AVAILABLE!");
+          cstr_merge("UPDATE TO ", latest_version, " AT G2HR.ORG!");
     }
   }
 
