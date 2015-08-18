@@ -91,8 +91,11 @@ int bspatch_read(const bspatch_stream *stream, void *buffer, int size) {
 }
 
 char *rpc_vike_patch(char *buffer, uint32_t *size) {
-  if (*size != G2HR_GTA2_EXE_SIZE)
-    exit(printf("unexpected GTA2.exe size, won't patch this!\n"));
+  if (*size != G2HR_GTA2_EXE_SIZE) {
+    printf("unexpected GTA2.exe size, assuming that vike's patch"
+           " is already applied!\n");
+    return buffer;
+  }
 
   uint32_t size_old = *size;
   uint32_t size_new = G2HR_GTA2_EXE_SIZE_PATCHED;

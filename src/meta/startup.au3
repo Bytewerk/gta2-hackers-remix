@@ -15,14 +15,6 @@ Func startup()
 		ProcessClose("g2hr_native.exe")
 		Exit 1
 	Endif
-	If 0 <> _VersionCompare(Filegetversion("GTA2/gta2.exe"),"9.6.0.0") _
-		Then
-		MsgBox(16, "G2HR", "This is the wrong GTA2 version!" _
-			& @CRLF & "Only 9.6.0.0 is supported!" & @CRLF & "See " _
-			& "http://git.io/g2hr-get-gta2 for more info.")
-		ProcessClose("g2hr_native.exe")
-		Exit 1
-	Endif
 	
 	taskbar_hide(false)
 	
