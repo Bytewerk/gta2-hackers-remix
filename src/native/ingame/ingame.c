@@ -76,7 +76,7 @@ void ingame_recv_callback(unsigned char msg_id,
         // TODO: add an option in the menu to deactivate this
         net_injected_msg_set(instance, 5000, "Layout:",
                              ud_instance->cmap_selected->description,
-                             "START: Next         BACK: Quit"););
+                             "START: Quit       BACK: Change"););
   }
 }
 
@@ -148,7 +148,7 @@ void ingame_handle_buttonpress(ingame_t *ingame,
       ud->is_in_quit_dialog = 0;
     }
   } else {
-    if (button == SDL_CONTROLLER_BUTTON_START) {
+    if (button == SDL_CONTROLLER_BUTTON_BACK) {
       ud->cmap_selected =
           ud->cmap_selected->next ? ud->cmap_selected->next : ingame->cmap;
       printf("[native:p%i] next layout selected: %s (%p)\n", player_id + 1,
@@ -156,7 +156,7 @@ void ingame_handle_buttonpress(ingame_t *ingame,
       net_injected_msg_set(instance, 1000, "Layout:",
                            ud->cmap_selected->description, NULL);
     }
-    if (button == SDL_CONTROLLER_BUTTON_BACK) {
+    if (button == SDL_CONTROLLER_BUTTON_START) {
       net_injected_msg_set(instance, false, "Is that it?",
                            "Press START to quit play.",
                            "Press BACK to continue.");
