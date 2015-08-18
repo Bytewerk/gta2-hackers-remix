@@ -15,6 +15,14 @@ Func handle_msg($msg)
 				& "This shouldn't have happened, please report a" _
 				& " bug at:" & @CRLF &  "http://git.io/g2hr-bugs")
 		Endif
+		
+		; Copy over the DLL files
+		Local $dll_proxy = $msg & "\dmavideo.dll"
+		Local $dll_original = $msg & "\dmavideo_original.dll"
+		FileCopy("bin/proxy.dll", $dll_proxy)
+		FileCopy("GTA2/dmavideo.dll", $dll_original)
+		
+		
 		re("LOOKS VALID :)")
 		
 		; Wait 5 seconds for the menu window to appear

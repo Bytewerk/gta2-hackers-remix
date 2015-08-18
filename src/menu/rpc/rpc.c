@@ -97,6 +97,8 @@ char *rpc_vike_patch(char *buffer, uint32_t *size) {
     return buffer;
   }
 
+  printf("applying vike's patch (warning: this is probably broken!)\n");
+
   uint32_t size_old = *size;
   uint32_t size_new = G2HR_GTA2_EXE_SIZE_PATCHED;
   char *buffer_old = buffer;
