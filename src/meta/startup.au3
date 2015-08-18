@@ -27,8 +27,6 @@ Func startup()
 	taskbar_hide(false)
 	
 	; Kill processes that are still open
-	; todo: find a way to kill g2hr.exe - without killing itself?
-	
 	ProcessClose("g2hr_native.exe")
 	ProcessClose("g2hr_menu.exe")
 	For $i=1 To 6
