@@ -106,6 +106,17 @@ Endfunc
 ; join it. After starting it, the windows get attached to the main
 ; window and moved in the right positions.
 Func cmd_splitscreen($cmd)
+	Local $ini = "data/g2hr.ini"
+	Local $ini_hide_network_windows = IniRead($ini, "splitscreen", _
+		"hide_network_windows", "true") == "true"
+	Local $ini_merge_windows = IniRead($ini, "splitscreen", _
+		"merge_windows", "true") == "true"
+	Local $ini_sleep_before_merge_ms = IniRead($ini, "splitscreen", _
+		"merge_windows", 0000)
+	Local $ini_move_windows = IniRead($ini, "splitscreen", _
+		"move_windows", "true") == "true"
+	Local $ini_activate_last_player_window = IniRead($ini, _
+		"splitscreen", "activate_last_player_window", "true") == true
 	Local $player_count = $cmd[1] ; Zero based!
 	
 	; both methods don't work in wine!
@@ -132,7 +143,8 @@ Func cmd_splitscreen($cmd)
 		
 		$global_game_process_ids[$i-1] =  Run($global_config_path _
 			& "\G2HR_PLAYER" & $i & ".exe " _
-			& $param, "GTA2", @SW_HIDE)
+			& $param, "GTA2", $ini_hide_network_windows ? @SW_HIDE _
+			: @SW_SHOW)
 	Next
 	$global_game_instances_open = $player_count + 1
 	send_pid_table()
@@ -158,7 +170,7 @@ Func cmd_splitscreen($cmd)
 	;
 	
 	; Try to avoid directx errors, when we move the window too early
-	Sleep(2000)
+	Sleep($ini_sleep_before_merge_ms)
 	
 	; Wait for all windows and move them to the right place
 	For $i = $player_count To 0 Step -1
@@ -168,29 +180,39 @@ Func cmd_splitscreen($cmd)
 		$hwnd = wait_for_hwnd_with_desc($global_game_process_ids[$i], _
 			$GTA2_GAME_WINDOW_DESC)
 		
-		If Not $WINE Then _WinAPI_SetParent($hwnd, $HWND_SDL)
+		If Not $WINE And $ini_merge_windows Then _
+			_WinAPI_SetParent($hwnd, $HWND_SDL)
 		
 		Local $geo = $global_game_screen_layouts[$i]
-		move_until_it_works($hwnd, $geo) ; FIXME
+		
+		If $ini_move_windows Then
+			move_until_it_works($hwnd, $geo) ; FIXME
+		Endif
 	Next
 	
-	status("SHOWING ALL WINDOWS")
-	
-	; Show all windows "at the same time"
-	If $WINE Then
-		; this doesn't work in wine.
-		; WinSetOnTop($HWND_SDL, "", 0)
-	Else	
-		For $i = $player_count To 0 Step -1
-			$hwnd = wait_for_hwnd_with_desc($global_game_process_ids[$i], _
-				$GTA2_GAME_WINDOW_DESC)
-			
-			If Not $WINE Then WinSetState($hwnd, "", @SW_SHOW)
-		Next
+	If $ini_hide_network_windows Then
+		
+		status("SHOWING ALL WINDOWS")
+		
+		; Show all windows "at the same time"
+		If $WINE Then
+			; this doesn't work in wine.
+			; WinSetOnTop($HWND_SDL, "", 0)
+		Else	
+			For $i = $player_count To 0 Step -1
+				$hwnd = wait_for_hwnd_with_desc($global_game_process_ids[$i], _
+					$GTA2_GAME_WINDOW_DESC)
+				
+				If Not $WINE Then WinSetState($hwnd, "", @SW_SHOW)
+			Next
+		Endif
 	Endif
 	
-	; Activate the last player's window, so it could be played with
-	; the keyboard
-	WinActivate(wait_for_hwnd_with_desc( _
-		$global_game_process_ids[$player_count],$GTA2_GAME_WINDOW_DESC))
+	If $ini_activate_last_player_window Then
+		; Activate the last player's window, so it could be played with
+		; the keyboard
+		WinActivate(wait_for_hwnd_with_desc( _
+			$global_game_process_ids[$player_count], _
+			$GTA2_GAME_WINDOW_DESC))
+	Endif
 Endfunc
