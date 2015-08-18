@@ -31,6 +31,8 @@ build/PKGBUILDs/*/*.asc
 
 # GTA2 files
 GTA2/*
+GTA2_/
+GTA2
 !GTA2/README.md
 *.sty
 *.tga

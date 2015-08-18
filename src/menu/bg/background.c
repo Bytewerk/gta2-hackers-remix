@@ -1,11 +1,13 @@
 #include "background.h"
+#include "../../common/cstr/cstr.h"
 #include "../../common/fs/fs.h"
 #include <SDL2/SDL_image.h>
 #include <string.h>
 
 void bg_load_single(char *path, char *name, char *ext, void *userdata) {
   bg_t *bg = malloc(sizeof(bg_t));
-  bg->name = fs_get_filename_without_ext(name, ext);
+  bg->name =
+      cstr_lower_upper(fs_get_filename_without_ext(name, ext), false, true);
   bg->next = NULL;
 
   // actually load the file
