@@ -149,9 +149,20 @@ Func cmd_splitscreen($cmd)
 	; Press the start button!
 	ControlClick($hwnd,"",$GTA2_LOBBY_CTRL_START)
 	
+	;
+	; FIXME:
+	; The code below needs better testing and fixing. It should react
+	; when a GTA2 instance crashes and restart it for example! Also it
+	; should find the right timing, when to move windows so that GTA2
+	; won't crash. Patches welcome!
+	;
+	
+	; Try to avoid directx errors, when we move the window too early
+	Sleep(2000)
+	
 	; Wait for all windows and move them to the right place
 	For $i = $player_count To 0 Step -1
-		status(($player_count - $i + 1) & "/" & $player_count+1 _
+		status(($player_count - $i + 1) & "/" & ($player_count+1) _
 			& " GAME WINDOWS OPEN")
 	
 		$hwnd = wait_for_hwnd_with_desc($global_game_process_ids[$i], _
@@ -160,13 +171,15 @@ Func cmd_splitscreen($cmd)
 		If Not $WINE Then _WinAPI_SetParent($hwnd, $HWND_SDL)
 		
 		Local $geo = $global_game_screen_layouts[$i]
-		move_until_it_works($hwnd, $geo)
+		move_until_it_works($hwnd, $geo) ; FIXME
 	Next
+	
+	status("SHOWING ALL WINDOWS")
 	
 	; Show all windows "at the same time"
 	If $WINE Then
 		; this doesn't work in wine.
-		WinSetOnTop($HWND_SDL, "", 0)
+		; WinSetOnTop($HWND_SDL, "", 0)
 	Else	
 		For $i = $player_count To 0 Step -1
 			$hwnd = wait_for_hwnd_with_desc($global_game_process_ids[$i], _
@@ -175,4 +188,9 @@ Func cmd_splitscreen($cmd)
 			If Not $WINE Then WinSetState($hwnd, "", @SW_SHOW)
 		Next
 	Endif
+	
+	; Activate the last player's window, so it could be played with
+	; the keyboard
+	WinActivate(wait_for_hwnd_with_desc( _
+		$global_game_process_ids[$player_count],$GTA2_GAME_WINDOW_DESC))
 Endfunc

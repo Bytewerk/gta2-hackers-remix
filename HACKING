@@ -8,7 +8,8 @@ Lots of the splitscreen code is written in au3, and it still needs lots
 of polishing at this state (for example: Windows Taskbar only gets
 hidden on Windows 7, the Window merging code doesn't always work, ...).
 If you want to get started with the AutoIt3 code, read this beginner-
-friendly guide [0].
+friendly guide [0] (especially src/meta/cmds/splitscreen.au3 needs to be
+improved, see the big FIXME comment there!).
 
 Please break code lines (also in AutoIt3 if possible) longer than 72
 columns, and never use multi-line (#cs, #ce) comments in AutoIt3, as the
@@ -42,6 +43,8 @@ Right now, the native component can either be built for Windows, or for
 Linux. Run "make -C src/native clean" before switching. The release.sh
 script does this automatically.
 
+Read the bug tracker, the KNOWN ISSUES in the README and the wiki for
+information about what could be fixed.
 
 Coding has been mostly a one-man-show, so pull-requests are really
 welcome :)

@@ -1,12 +1,11 @@
 ------------------------------------------------------------------------
                       GTA2: Hacker's Remix (G2HR)
                        0.4.0 (technical preview)
-                           http://g2hr.org
+                               g2hr.org
 ------------------------------------------------------------------------
 
-The release is a bit rushed, so it might have some (big) issues.
-
-In case something doesn't work, you might want to play with the previous
+BEWARE: The release is rushed, so it might have some (big) issues. In
+case something doesn't work, you might want to play with the previous
 version instead!
 
 Please read this file carefully, as you're dealing with a technical
@@ -15,6 +14,11 @@ de as much feedback as possible by opening / commenting bug reports [0]
 if you find any issues, and for everything else by posting in the gtamp
 forums [1].
 
+To get the splitscreen mode with more than 3 players working, a quad-
+core is recommended. Yes, it's an old game, but nevertheless it runs in
+parallel for each player and there are also processes for the gamepad
+input etc. If your CPU can't handle it, the game instances will simply
+crash (maybe this will improve a bit with future versions?).
 
 
 INSTALLATION:
@@ -29,9 +33,15 @@ INSTALLATION:
    wall program, in case you get asked. The mod is divided into
    multiple components, which need to connect via TCP in order to make
    everything work.
+
+USAGE:
  - Have the task manager ready and kill all G2HR* processes manually, if
    it has crashed.
-
+ - Even when the game has crashed, you might be able to quit all GTA2
+   processes by pressing START twice on the controller, as the con-
+   troller code is handled outside of the GTA2 processes.
+ - Pressing ESC will not show the 'Is that it?' text anymore, but you
+   can still quit the game with ESC and ENTER if it has focus
 
 CHANGES in 0.4.0 (2015-08-18)
 	- Re-implemented the original GTA2 menu with SDL2 (not all screens
@@ -93,13 +103,14 @@ CHANGES in 0.3.0 (2014-12-20):
 	- new icon
 
 KNOWN BUGS:
+ - Splitscreen options don't get saved and restored yet (but normal
+   options do)
  - Camera handling needs to be fixed, the player can be off the screen
    when driving cars and for some resolutions, you see black areas, to
    which GTA2 doesn't render to [3]. To avoid this, use the 4:3 layouts
    only (these are shipped, you just need to select them)
  - Linux: The network windows can't be hidden yet, when creating a
    splitscreen game
-
 
 UPGRADING from pre 0.4.0:
   You can delete everything in the %APPDATA%\GTA2 Hackers Remix\ folder,
@@ -112,9 +123,7 @@ UPGRADING from 0.1.0-gamepad_glue:
   this set up, please delete your dmavideo.dll (which
   is the proxy dll) and rename dmavideo_original.dll
   back to dmavideo.dll.
-  
 
-   
 URLS:
    [0]: http://git.io/g2hr-bugs
    [1]: http://gtamp.com/forum/viewtopic.php?t=776

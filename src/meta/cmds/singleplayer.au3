@@ -95,7 +95,6 @@ Func cmd_singleplayer($cmd)
 		_WinAPI_SetParent($hwnd, $HWND_SDL)
 		WinMove($hwnd, "", -5, -20) ; FIXME: don't use hardcoded values!
 		WinSetState($hwnd, "", @SW_SHOW)
-	Else
-		WinActivate("GTA2")
 	Endif
+	WinActivate("GTA2")
 Endfunc
