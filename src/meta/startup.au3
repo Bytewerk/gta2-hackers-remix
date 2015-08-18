@@ -1,7 +1,27 @@
+#include <Misc.au3>
+
 Func startup()
 	If $CmdLine[0] < 1 And $WINE Then
 		Exit Msgbox(16,"G2HR","This program gets opened internally on" _
 			& @CRLF & "Linux. Start g2hr.sh instead!")
+	Endif
+	
+	
+	; Verify the GTA2 version
+	If Not Fileexists("GTA2/gta2.exe") Then
+		MsgBox(16,"G2HR", "Please put the latest official GTA2" _
+			& " release in the 'GTA2' folder!" & @CRLF _
+			& " See http://git.io/g2hr-get-gta2 for more info!")
+		ProcessClose("g2hr_native.exe")
+		Exit 1
+	Endif
+	If 0 <> _VersionCompare(Filegetversion("GTA2/gta2.exe"),"9.6.0.0") _
+		Then
+		MsgBox(16, "G2HR", "This is the wrong GTA2 version!" _
+			& @CRLF & "Only 9.6.0.0 is supported!" & @CRLF & "See " _
+			& "http://git.io/g2hr-get-gta2 for more info.")
+		ProcessClose("g2hr_native.exe")
+		Exit 1
 	Endif
 	
 	taskbar_hide(false)

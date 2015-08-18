@@ -34,7 +34,9 @@ INSTALLATION:
 
 
 CHANGES in 0.4.0 (2015-08-18)
-	- Re-implemented the original GTA2 menu with SDL2
+	- Re-implemented the original GTA2 menu with SDL2 (not all screens
+		work as in the original yet, eg. score, resume savegames,
+		save and delete player names, cheats, ...)
 	- The menu can now be accessed with game controllers
 	- Add a slotmachine mode, that shows a "poweroff" and "reboot"
 		menu entry instead of "quit" (see data/g2hr.ini)
