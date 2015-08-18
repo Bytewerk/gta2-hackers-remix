@@ -29,10 +29,8 @@ build/PKGBUILDs/*/*.bz2
 build/PKGBUILDs/*/*.asc
 
 
-# GTA2 files
-GTA2/*
-GTA2_/
-GTA2
+# GTA2 files and folders
+GTA2*
 !GTA2/README.md
 *.sty
 *.tga
