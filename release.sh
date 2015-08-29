@@ -22,8 +22,7 @@ alternatively: http://g2hr.org
 EOF
 
 cat <<EOF > "$gta2_stub"
-Please copy all files from the latest official GTA2 release in this
-folder. The GTAMP-edition is not supported.
+Please copy all files from GTA2 in this folder.
 See http://git.io/g2hr-get-gta2 for more info and download links.
 EOF
 
