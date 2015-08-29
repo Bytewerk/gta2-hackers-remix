@@ -14,11 +14,11 @@ This is a meta-mod for *Grand Theft Auto 2* (1999), which has an all new **split
 * slotmachine mode
 * still not finished, so **[PATCHES WELCOME.](https://github.com/Bytewerk/gta2-hackers-remix/blob/master/HACKING)**
 
-If the `0.4.1` version doesn't work stable enough for you, you can also check out the [previous version](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.3.2-splitscreen_mod) before the menu rewrite.
-
+### Download
+* **[0.3.2](https://github.com/Bytewerk/gta2-hackers-remix/releases/tag/0.3.2-splitscreen_mod)** (recommended version for trying out the splitscreen mod)
+* **[0.4.1](https://github.com/Bytewerk/gta2-hackers-remix/releases)** (technical preview of the fancy menu, splitscreen mod doesn't work as stable as in `0.3.2`!)
 
 ### Links
-* **[get the latest version](https://github.com/Bytewerk/gta2-hackers-remix/releases)** ***(0.4.1)***
 * **[screenshots](https://github.com/Bytewerk/gta2-hackers-remix/issues/1)** *(and a video, scroll down!)*
 * **[bytewerk wiki](http://wiki.bytewerk.org/index.php/GTA2_Hackers_Remix)** *(german)*
 * **[gtamp.com thread](http://gtamp.com/forum/viewtopic.php?f=4&t=776)**
