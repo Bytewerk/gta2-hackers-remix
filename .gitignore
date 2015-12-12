@@ -73,3 +73,7 @@ GTA2*
 
 # Valgrind SDL2 init rule (make valgrind)
 *.sup
+
+
+# sdl2 controller test bitmaps
+bin/*.bmp
