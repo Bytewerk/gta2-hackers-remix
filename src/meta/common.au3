@@ -1,7 +1,7 @@
 #include <WinAPI.au3>
 #include <Constants.au3>
 
-; Constants (see also: common.h)
+; Constants (see also: http://git.io/g2hr-0.3.2-network-ui-constants )
 Global Const $GTA2_PLAYER_COUNT = 6
 Global Const $GTA2_LOBBY_CTRL_START = 1021
 Global Const $GTA2_LOBBY_CTRL_LIST  = 1024
@@ -79,17 +79,6 @@ Func find_hwnd_with_control($hwnds, $ctrl_id)
 	Return Null
 Endfunc
 
-Func wait_for_hwnd_with_control($pid, $ctrl_id)
-	While True
-		Local $hwnd = find_hwnd_with_control( _
-			get_all_hwnds_from_pid($pid), $ctrl_id)
-		If $hwnd Then _
-			Return $hwnd
-		
-		Sleep(100)
-	Wend
-Endfunc
-
 Func wait_for_hwnd_with_desc($pid, $desc)
 	While True
 		Local $hwnds = get_all_hwnds_from_pid($pid, $desc)
@@ -108,26 +97,6 @@ Func wait_until_only_one_hwnd_left($pid)
 		If IsArray($hwnds) And $hwnds[0] == 1 Then _
 			Return $hwnds[1]
 		
-		
-		Sleep(100)
-	Wend
-Endfunc
-
-Func wait_for_listview_entry_count($hwnd, $ctrl_id, $count)
-
-	Local $last = -1
-	
-	While True
-		Local $current = ControlListView($hwnd, "", $ctrl_id, _
-			"GetItemCount")
-		
-		If $current <> $last And $count > 1 Then
-			$last = $current
-			status($last & "/" & $count & " PLAYERS JOINED")
-		Endif
-		
-		If $current == $count Then _
-			Return
 		
 		Sleep(100)
 	Wend

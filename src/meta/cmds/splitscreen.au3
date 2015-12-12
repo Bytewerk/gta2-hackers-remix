@@ -2,6 +2,52 @@
 #include <WinAPIConstants.au3>
 #include <WindowsConstants.au3> 
 
+; Move all network GUIs off-screen (they can't be hidden properly in
+; wine). Moved windows get renamed, so they don't get catched again.
+Func wine_hide_network_windows()
+	If Not $WINE Then Return
+	While True
+		Local $ret = WinMove("Network GTA2","", _
+			@DesktopWidth + 1, @DesktopHeight + 1)
+		If Not $ret Then Return
+		WinSetTitle($ret, "", "Hidden G2HR Network UI")
+	Wend
+Endfunc
+
+Func wait_for_host_window($pid, $ctrl_id)
+	While True
+		Local $hwnd = find_hwnd_with_control( _
+			get_all_hwnds_from_pid($pid), $ctrl_id)
+		If $hwnd Then _
+			Return $hwnd
+		
+		wine_hide_network_windows()
+		Sleep(100)
+	Wend
+Endfunc
+
+Func wait_for_player_count($hwnd, $ctrl_id, $count)
+
+	Local $last = -1
+	
+	While True
+		Local $current = ControlListView($hwnd, "", $ctrl_id, _
+			"GetItemCount")
+		
+		If $current <> $last Then
+			wine_hide_network_windows()
+			$last = $current
+			status($last & "/" & $count & " PLAYERS JOINED")
+		Endif
+		
+		If $current == $count Then _
+			Return
+		
+		Sleep(100)
+	Wend
+Endfunc
+
+
 ; We have this in an extra function, because we also need to do this
 ; for the normal registry path (Software\DMA Design Ltd\GTA2\). Although
 ; it is replaced in the exe files where it was found, somehow the net-
@@ -151,10 +197,10 @@ Func cmd_splitscreen($cmd)
 	
 	; Wait until all instances are connected to the host
 	Local $host_pid = $global_game_process_ids[0]
-	Local $hwnd = wait_for_hwnd_with_control($host_pid, _
+	Local $hwnd = wait_for_host_window($host_pid, _
 		$GTA2_LOBBY_CTRL_LIST)
 	
-	wait_for_listview_entry_count($hwnd, $GTA2_LOBBY_CTRL_LIST, _
+	wait_for_player_count($hwnd, $GTA2_LOBBY_CTRL_LIST, _
 		$player_count +1)
 	
 	
