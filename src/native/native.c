@@ -10,6 +10,16 @@
 #include <stdio.h>
 #include <string.h>
 
+void load_sdl_game_controller_db() {
+  char txt[] = "data/SDL_GameControllerDB/gamecontrollerdb.txt";
+  printf("loading %s....", txt);
+  int ret = SDL_GameControllerAddMappingsFromFile(txt);
+  if (ret == -1)
+    printf("%s\n", SDL_GetError());
+  else
+    printf("%i entries\n", ret);
+}
+
 int main(int argc, char **argv) {
   if (!strcmp(SDL_GetPlatform(), "Windows"))
     freopen("native.log", "a", stdout);
@@ -19,6 +29,7 @@ int main(int argc, char **argv) {
     return printf("ERROR from SDL: %s\n", SDL_GetError());
   if (SDLNet_Init() == -1)
     exit(printf("SDLNet ERROR: %s\n", SDLNet_GetError()));
+  load_sdl_game_controller_db();
   cmap_t *cmap = cmap_init();
   pads_t *pads = pads_init(0);
   net_t *net = net_init();
