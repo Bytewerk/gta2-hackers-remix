@@ -12,6 +12,9 @@ function STEP
 }
 
 
+STEP "updating SDL_GameControllerDB submodule..."
+git submodule update --remote
+
 STEP "preparing 'rel' folder..."
 [ -e rel ] && rm -r rel
 mkdir -p rel/_temp
@@ -47,6 +50,7 @@ cp -r --parents \
 	data/g2hr.sample.ini \
 	data/vike_patch/vike_patch.plainbsdiff \
 	data/vike_patch/README.md \
+	data/SDL_GameControllerDB/* \
 	\
 	README.txt \
 	LICENSE \
