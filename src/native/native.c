@@ -15,9 +15,11 @@ void load_sdl_game_controller_db() {
   printf("loading %s....", txt);
   int ret = SDL_GameControllerAddMappingsFromFile(txt);
   if (ret == -1)
-    printf("%s\n", SDL_GetError());
+    printf("FAILED: %s (check if the file exists and for syntax"
+           " errors!)\n",
+           SDL_GetError());
   else
-    printf("%i entries\n", ret);
+    printf("%i entries found\n", ret);
 }
 
 int main(int argc, char **argv) {
