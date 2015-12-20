@@ -230,6 +230,17 @@ tk_screen_t *ui_screen_credits(tk_t *tk, ui_t *ui) {
                ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "THEBLACKCROW1",
                    GTA2_FONT_COLOR_CYAN);
 
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 30, 0,
+                   "DUDE WHO BOUGHT THE", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0,
+                   "OFFICIAL G2HR SLOT", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0,
+                   "MACHINE FOR ONE EURO", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0,
+                   "FROM THE INTERNET", GTA2_FONT_COLOR_WHITE);
+               ADD(GTA2_FONT_FSTYLE_WHITE_BLACK_NORMAL, 0, 0, "JUHE",
+                   GTA2_FONT_COLOR_CYAN);
+
                /*
                        G2HR CREDITS: MENU ARTWORK SECTION
                */
